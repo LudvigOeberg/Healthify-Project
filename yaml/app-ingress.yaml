@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations: # This is information to the Ingress modules of kubernetes, to note that you want the endpoint publicly accessible.
+    kubernetes.io/ingress.class: nginx-public
+  name: healthapp-public
+  labels:
+    app: healthapp
+spec:
+  rules:
+    - host: tddc88-company-2-2020.kubernetes-public.it.liu.se
+      http:
+        paths:
+        - frontend:
+            serviceName: healthapp-service
+            servicePort: 80
+          path: /

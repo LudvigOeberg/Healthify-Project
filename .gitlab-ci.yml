@@ -1,13 +1,43 @@
 # This file is a template, and might need editing before it works on your project.
 # Full project: https://gitlab.com/pages/plain-html
-pages:
+#pages:
+#  stage: deploy
+#  script:
+#    - mkdir .public
+#    - cp -r * .public
+#    - mv .public public
+#  artifacts:
+#    paths:
+#      - public
+#  only:
+#    - master
+
+stages:
+  - build
+  - deploy
+
+deploy-app:
+  environment: 'production'
+  needs: []
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+
   stage: deploy
+  image: lachlanevenson/k8s-kubectl
   script:
-    - mkdir .public
-    - cp -r * .public
-    - mv .public public
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
+    - kubectl get all
+    - kubectl apply -f yaml/app-deployment.yaml
+    - kubectl apply -f yaml/app-service.yaml
+    - kubectl apply -f yaml/app-ingress.yaml
+
+build-app-image:
+  stage: build
+  image: docker.io/buildah/buildah
+  needs: []
+  script:
+    - export _BUILDAH_STARTED_IN_USERNS=''
+    - export BUILDAH_ISOLATION=chroot
+    - export STORAGE_DRIVER=vfs
+    - export BUILDAH_FORMAT=docker
+    - buildah build-using-dockerfile --tag "app-frontend" "frontend"
+    - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "app-frontend" "docker://${CI_REGISTRY_IMAGE}/app-frontend:latest"

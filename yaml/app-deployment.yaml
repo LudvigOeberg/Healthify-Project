@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthapp-deployment
+  labels:
+    app: healthapp
+spec:
+  replicas: 1 # How many replicas we want
+  selector:   # How do we indentify pods we should manage?
+    matchLabels:
+      app: healthapp # Match all nodes with this label
+  template: # How should pods within this deployment be created?
+    metadata:
+      labels:
+        app: healthapp # Specify a label, used in the above selector
+    spec:
+      containers:
+        - name: healthapp
+          image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy/app-frontend #Specify what image we want to use
+          ports:
+          - containerPort: 3000 # Specify what port our container is listening on.
+            protocol: TCP
+          resources: # Specify what resources we need...
+            limits: # ...both absolute limits...
+              cpu: 100m
+              memory: 80Mi
+            requests: # ...and what we probably will get by with.
+              cpu: 10m
+              memory: 42Mi
