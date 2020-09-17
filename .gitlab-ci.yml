@@ -18,7 +18,7 @@ stages:
 
 deploy-app:
   environment: 'production'
-  needs: ["build-app-image"]
+  needs: []
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
@@ -39,5 +39,9 @@ build-app-image:
     - export BUILDAH_ISOLATION=chroot
     - export STORAGE_DRIVER=vfs
     - export BUILDAH_FORMAT=docker
+    - echo "${CI_REGISTRY_PASSWORD}"
+    - echo "${CI_REGISTRY_IMAGE}"
+    - echo "${CI_REGISTRY_USER}"
+    - echo "${CI_JOB_TOKEN}"
     - buildah build-using-dockerfile --tag "app-frontend" "frontend"
     - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "app-frontend" "docker://${CI_REGISTRY_IMAGE}/app-frontend:latest"
