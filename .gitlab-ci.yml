@@ -18,7 +18,7 @@ stages:
 
 deploy-app:
   environment: 'production'
-  needs: []
+  needs: ["build-app-image"]
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
