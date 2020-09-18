@@ -20,14 +20,12 @@ stages:
 deploy-app:
   environment: 'production'
   needs: []
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
 
-  except:
+  only:
     refs:
       - master
     changes:
-      - public/*
+      - yaml/*
 
   stage: deploy
   image: lachlanevenson/k8s-kubectl
@@ -46,6 +44,7 @@ build-app-image:
       - master
     changes:
       - public/*
+
   script:
     - export _BUILDAH_STARTED_IN_USERNS=''
     - export BUILDAH_ISOLATION=chroot
