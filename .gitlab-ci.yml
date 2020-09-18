@@ -57,7 +57,7 @@ pages:
     paths:
       - public
   only:
-    - master
-  rules:
-    - changes:
-      - /public/*
+    refs:
+      - master
+    changes:
+      - public/*
