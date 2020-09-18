@@ -58,7 +58,7 @@ pages:
     paths:
       - public
   only:
-    branches:
+    refs:
       - master
     changes:
       - public/*
