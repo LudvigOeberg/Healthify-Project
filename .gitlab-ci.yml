@@ -47,7 +47,7 @@ build-app-image:
     - buildah build-using-dockerfile --tag "app-frontend" "frontend"
     - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "app-frontend" "docker://${CI_REGISTRY_IMAGE}/app-frontend:latest"
 
-pages:
+pages-deploy:
   stage: pages  
   script:
     - mkdir .public
