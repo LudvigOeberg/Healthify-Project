@@ -40,10 +40,10 @@ build-app-image:
   image: docker.io/buildah/buildah
   needs: []
   except:
-    refs:
-      - master
     changes:
       - public/*
+      - "*/README.md"
+      - "README.md"
 
   script:
     - export _BUILDAH_STARTED_IN_USERNS=''
