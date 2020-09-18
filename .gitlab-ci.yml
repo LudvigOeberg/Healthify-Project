@@ -58,7 +58,4 @@ pages-deploy:
     paths:
       - public
   only:
-    refs:
-      - master
-    changes:
-      - public/*
+    - master
