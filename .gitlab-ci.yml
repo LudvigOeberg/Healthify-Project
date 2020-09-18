@@ -49,6 +49,7 @@ build-app-image:
 
 pages-deploy:
   stage: pages  
+  needs: []
   script:
     - mkdir .public
     - cp -r * .public
