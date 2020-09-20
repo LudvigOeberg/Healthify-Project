@@ -27,3 +27,5 @@ spec:
             requests: # ...and what we probably will get by with.
               cpu: 10m
               memory: 42Mi
+      imagePullSecrets:
+       - name: student-access-token-92w47
