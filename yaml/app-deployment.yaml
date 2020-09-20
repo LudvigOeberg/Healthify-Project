@@ -28,4 +28,4 @@ spec:
               cpu: 10m
               memory: 42Mi
       imagePullSecrets:
-       - name: student-access-token-92w47
+       - name: gitlab-ci-token-bvjcf
