@@ -16,10 +16,14 @@ spec:
     spec:
       containers:
         - name: healthapp
-          image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy/app-frontend #Specify what image we want to use
+          image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy/app-frontend
+          imagePullPolicy: Always
           ports:
-          - containerPort: 3000 # Specify what port our container is listening on.
+          - containerPort: 3000
             protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 3000
           resources: # Specify what resources we need...
             limits: # ...both absolute limits...
               cpu: 100m
@@ -29,3 +33,4 @@ spec:
               memory: 42Mi
       imagePullSecrets:
        - name: gitlab-ci-token-bvjcf
+      restartPolicy: Always
