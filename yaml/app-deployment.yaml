@@ -15,20 +15,22 @@ spec:
         app: healthapp # Specify a label, used in the above selector
     spec:
       containers:
-        - name: healthapp
-          image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy/app-frontend:latest
-          imagePullPolicy: Always
-          ports:
-          - containerPort: 3000
-            protocol: TCP
-          readinessProbe:
-            tcpSocket:
-              port: 3000
-          resources: # Specify what resources we need...
-            limits: # ...both absolute limits...
-              cpu: 100m
-              memory: 80Mi
-            requests: # ...and what we probably will get by with.
-              cpu: 10m
-              memory: 42Mi
+      - name: healthapp
+        image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy/app-frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+        resources: # Specify what resources we need...
+          limits: # ...both absolute limits...
+            cpu: 100m
+            memory: 80Mi
+          requests: # ...and what we probably will get by with.
+            cpu: 10m
+            memory: 42Mi
+      imagePullSecrets:
+        - name: regcred
       restartPolicy: Always
