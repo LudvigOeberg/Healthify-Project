@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: healthapp
-  name: healthapp-service
+  name: healthapp
 spec:
   ports:
   - name: web # This port is named `web`...
