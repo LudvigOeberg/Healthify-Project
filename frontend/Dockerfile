@@ -11,9 +11,11 @@ ENV PATH /app/node_modules/.bin:$PATH
 # install app dependencies
 COPY package.json .
 RUN npm install
+RUN npm install react-scripts@3.0.1 -g
+RUN npm run build
 
 # add app
 COPY . .
 
 # start app
-CMD ["npm", "start"]
+CMD ["serve", "-s build"]
