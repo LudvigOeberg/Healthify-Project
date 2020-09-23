@@ -30,7 +30,7 @@ install-app-dependencies:
 build-frontend:
   stage: build
   image: node
-  needs: []
+  needs: ["install-app-dependencies"]
   dependencies:
     - install-app-dependencies
   artifacts:
