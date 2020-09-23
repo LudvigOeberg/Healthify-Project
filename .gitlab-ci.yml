@@ -5,6 +5,8 @@ stages:
   - deploy
   - pages
 
+
+
 install-app-dependencies:
   stage: install-dependencies
   image: node
@@ -20,6 +22,8 @@ install-app-dependencies:
     changes:
       - frontend/package-lock.json
 
+
+
 build-frontend:
   stage: build
   image: node
@@ -33,8 +37,12 @@ build-frontend:
     paths:
       - frontend/build
   script:
+    - ls -la
     - cd frontend
+    - ls -la
     - npm run build
+
+
 
 build-app-image:
   stage: build-image
@@ -60,6 +68,8 @@ build-app-image:
     - buildah build-using-dockerfile --tag "app-frontend" "frontend"
     - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "app-frontend" "docker://${CI_REGISTRY_IMAGE}/app-frontend:latest"
 
+
+
 deploy-app:
   environment: 'production'
   needs: ["build-app-image"]
@@ -77,6 +87,8 @@ deploy-app:
     - kubectl apply -f yaml/app-deployment.yaml
     - kubectl apply -f yaml/app-service.yaml
     - kubectl apply -f yaml/app-ingress.yaml
+
+
 
 pages:
   stage: pages  
