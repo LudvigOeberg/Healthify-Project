@@ -19,7 +19,7 @@ install-app-dependencies:
       - master
     changes:
       - frontend/package-lock.json
-  allow_failure: true
+  
   script:
     - cd frontend
     - npm ci
@@ -30,9 +30,9 @@ install-app-dependencies:
 build-frontend:
   stage: build
   image: node
-  needs: ["install-app-dependencies"]
-  dependencies:
-    - install-app-dependencies
+  needs: 
+    - job: install-app-dependencies
+      artifacts: true
   artifacts:
     expire_in: 1 hour
     paths:
