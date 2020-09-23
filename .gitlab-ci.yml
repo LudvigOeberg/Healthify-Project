@@ -1,27 +1,9 @@
 stages:
+  - install-dependencies
   - build
+  - build-image
   - deploy
   - pages
-  - build-image
-  - install-dependencies
-
-deploy-app:
-  environment: 'production'
-  needs: ["build-app-image"]
-
-  only:
-    refs:
-      - master
-    changes:
-      - yaml/*
-
-  stage: deploy
-  image: lachlanevenson/k8s-kubectl
-  script:
-    - kubectl get all
-    - kubectl apply -f yaml/app-deployment.yaml
-    - kubectl apply -f yaml/app-service.yaml
-    - kubectl apply -f yaml/app-ingress.yaml
 
 install-dependencies:
   stage: install-dependencies
@@ -74,6 +56,24 @@ build-app-image:
     - echo "${CI_JOB_TOKEN}"
     - buildah build-using-dockerfile --tag "app-frontend" "frontend"
     - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "app-frontend" "docker://${CI_REGISTRY_IMAGE}/app-frontend:latest"
+
+deploy-app:
+  environment: 'production'
+  needs: ["build-app-image"]
+
+  only:
+    refs:
+      - master
+    changes:
+      - yaml/*
+
+  stage: deploy
+  image: lachlanevenson/k8s-kubectl
+  script:
+    - kubectl get all
+    - kubectl apply -f yaml/app-deployment.yaml
+    - kubectl apply -f yaml/app-service.yaml
+    - kubectl apply -f yaml/app-ingress.yaml
 
 pages:
   stage: pages  
