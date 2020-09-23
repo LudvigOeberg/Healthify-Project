@@ -37,9 +37,6 @@ build-frontend:
     paths:
       - frontend/build
   script:
-    - ls -la
-    - cd frontend
-    - ls -la
     - npm run build
 
 
