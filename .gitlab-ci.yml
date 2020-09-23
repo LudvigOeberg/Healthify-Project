@@ -19,7 +19,7 @@ install-app-dependencies:
       - master
     changes:
       - frontend/package-lock.json
-
+  allow_failure: true
   script:
     - cd frontend
     - npm ci
@@ -40,10 +40,6 @@ build-frontend:
 
   script:
     - cd frontend
-    - ls -la
-    - ls -la ..
-    - ls -la ~
-    - ls -la ~/..
     - npm run build
 
 
@@ -78,16 +74,9 @@ deploy-app:
   environment: 'production'
   needs: ["build-app-image"]
 
-  only:
-    refs:
-      - master
-    changes:
-      - yaml/*
-
   stage: deploy
   image: lachlanevenson/k8s-kubectl
   script:
-    - kubectl get all
     - kubectl apply -f yaml/app-deployment.yaml
     - kubectl apply -f yaml/app-service.yaml
     - kubectl apply -f yaml/app-ingress.yaml
