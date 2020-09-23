@@ -16,7 +16,6 @@ install-app-dependencies:
     - if [ "$SRC_HASH_CALC" == "$SRC_HASH_CACHE" ]; then echo "Folder has not changed. Skip Job."; exit 0; fi
 
     - echo "Now do something long........"
-    - cd frontend
     - npm ci
     - npm install react-scripts@3.0.1 -g
 
