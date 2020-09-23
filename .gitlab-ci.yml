@@ -13,7 +13,7 @@ install-app-dependencies:
   cache: 
     key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
     paths:
-      - frontend/node_modules
+      - frontend/node_modules/
   script:
     - cd frontend
     - npm ci
@@ -30,13 +30,14 @@ build-frontend:
   cache: 
     key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
     paths:
-      - frontend/node_modules
+      - frontend/node_modules/
     policy: pull
   artifacts:
     expire_in: 1 hour
     paths:
       - frontend/build
   script:
+    - cd frontend
     - npm run build
 
 
