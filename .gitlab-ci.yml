@@ -36,7 +36,7 @@ build-frontend:
     - npm ci
     - npm install react-scripts@3.0.1 -g
     - npm run build
-    - npm install -g serve
+    #- npm install -g serve
 
 #build-app-image:
 #  stage: build-image
