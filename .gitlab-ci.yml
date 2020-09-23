@@ -1,9 +1,9 @@
 stages:
   - install-dependencies
-  #- build
-  #- build-image
-  #- deploy
-  #- pages
+  - build
+  - build-image
+  - deploy
+  - pages
 
 
 install-app-dependencies:
