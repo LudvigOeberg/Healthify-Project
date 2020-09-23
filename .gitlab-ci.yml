@@ -1,12 +1,12 @@
-stages:
-  - install-dependencies
-  - build
-  - build-image
-  - deploy
-  - pages
+#stages:
+#  - install-dependencies
+#  - build
+#  - build-image
+#  - deploy
+#  - pages
 
 
-install-app-dependencies:
+.install-app-dependencies:
   stage: install-dependencies
   image: node
   script:
@@ -50,7 +50,7 @@ install-app-dependencies:
 
 
 
-build-frontend:
+.build-frontend:
   stage: build
   image: node
   needs: ["install-app-dependencies"]
@@ -67,7 +67,7 @@ build-frontend:
 
 
 
-build-app-image:
+.build-app-image:
   stage: build-image
   image: docker.io/buildah/buildah
   needs: ["build-frontend"]
@@ -93,7 +93,7 @@ build-app-image:
 
 
 
-deploy-app:
+.deploy-app:
   environment: 'production'
   needs: ["build-app-image"]
   dependencies: []
@@ -106,7 +106,7 @@ deploy-app:
 
 
 
-pages:
+.pages:
   stage: pages
   needs: []
   dependencies: []
@@ -122,3 +122,24 @@ pages:
       - master
     changes:
       - public/*
+
+image: srghma/docker-nixos-with-git-crypt
+
+cache:
+  key: "test00000" # to reset cache - change this key OR clear cache in project settings page
+  paths:
+    - .mycache # gitlab allows only cache dirs that are relative to project root OR /cache (created automatically)
+
+testtest:
+  script:
+    - nix-env -i tree
+
+    - tree --dirsfirst -L 4 /cache
+    - ls -al ./.mycache || true
+
+    - echo "test" > /cache/test
+    - mkdir -p ./.mycache
+    - echo "test" > ./.mycache/test
+
+    - tree --dirsfirst -L 4 /cache
+    - ls -al ./.mycache || true
