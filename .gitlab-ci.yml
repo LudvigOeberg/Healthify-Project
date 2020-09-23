@@ -6,7 +6,7 @@ stages:
   - pages
 
 
-install-app-dependencie:
+install-app-dependencies:
   stage: install-dependencies
   image: node
   script:
@@ -31,7 +31,7 @@ install-app-dependencie:
 
 
 
-.install-app-dependencies:
+.install-app-dependencie:
   stage: install-dependencies
   image: node
   artifacts:
@@ -54,6 +54,7 @@ install-app-dependencie:
 build-frontend:
   stage: build
   image: node
+  needs: ["install-app-dependencies"]
   dependencies:
     - install-app-dependencies
   artifacts:
