@@ -2,9 +2,9 @@ cache:
   untracked: true
   key:
     files:
-      - frontend/package-lock.json
+      - .frontend/package-lock.json
   paths:
-    - frontend/.npm/
+    - .frontend/node_modules/
 
 stages:
   - install-dependencies
@@ -22,13 +22,13 @@ install-app-dependencies:
     untracked: true
     key:
     paths:
-      - frontend/.npm/
+      - .frontend/node_modules/
   script:
     - ls -la ..
     - ls -la ~
     - ls -la ~/..
     - cd frontend
-    - npm ci --cache frontend/.npm/ --prefer-offline
+    - npm ci
     - ls -la ..
     - ls -la ~
     - ls -la ~/..
@@ -44,16 +44,18 @@ build-frontend:
     untracked: true
     key:
     paths:
-      - frontend/.npm/
+      - .frontend/node_modules/
     policy: pull
   artifacts:
     expire_in: 1 hour
     paths:
       - frontend/build
   script:
-    - ls -la
     - cd frontend
     - ls -la
+    - ls -la ..
+    - ls -la ~
+    - ls -la ~/..
     - npm run build
 
 
