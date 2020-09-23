@@ -1,3 +1,11 @@
+cache:
+  untracked: true
+  key:
+    files:
+      - frontend/package-lock.json
+  paths:
+    - frontend/node_modules
+
 stages:
   - install-dependencies
   - build
@@ -10,17 +18,15 @@ stages:
 install-app-dependencies:
   stage: install-dependencies
   image: node
-  cache: 
-    key: "$CI_BUILD_REF_NAME"
+  cache:
+    untracked: true
+    key:
     paths:
       - frontend/node_modules/
   script:
     - cd frontend
     - npm ci
     - npm install react-scripts@3.0.1 -g
-  only:
-    changes:
-      - frontend/package-lock.json
 
 
 
@@ -28,7 +34,8 @@ build-frontend:
   stage: build
   image: node
   cache: 
-    key: "$CI_BUILD_REF_NAME"
+    untracked: true
+    key:
     paths:
       - frontend/node_modules/
     policy: pull
