@@ -5,7 +5,7 @@ stages:
   - deploy
   - pages
 
-install-dependencies:
+install-app-dependencies:
   stage: install-dependencies
   cache: 
     key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
@@ -22,7 +22,7 @@ install-dependencies:
 build-frontend:
   stage: build
   image: node
-  needs: ["install-dependencies"]
+  needs: ["install-app-dependencies"]
   cache: 
     key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
     paths:
