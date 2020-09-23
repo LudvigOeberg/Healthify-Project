@@ -72,7 +72,7 @@ build-app-image:
 deploy-app:
   environment: 'production'
   needs: ["build-app-image"]
-
+  dependencies: []
   stage: deploy
   image: lachlanevenson/k8s-kubectl
   script:
@@ -83,8 +83,9 @@ deploy-app:
 
 
 pages:
-  stage: pages  
+  stage: pages
   needs: []
+  dependencies: []
   script:
     - mkdir .public
     - cp -r * .public
