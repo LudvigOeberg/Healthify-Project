@@ -26,7 +26,7 @@ install-app-dependencies:
     key: "${CI_JOB_NAME}_${CI_COMMIT_REF_SLUG}" # <jobname>_<branchname>
     paths:
       - frontend/node_modules
-      - src.hash
+      - frontend/src.hash
 
 
 
