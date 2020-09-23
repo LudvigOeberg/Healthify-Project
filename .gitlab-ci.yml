@@ -22,7 +22,6 @@ install-app-dependencies:
 build-frontend:
   stage: build
   image: node
-  needs: ["install-app-dependencies"]
   cache: 
     key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
     paths:
