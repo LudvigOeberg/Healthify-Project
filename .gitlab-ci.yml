@@ -41,9 +41,9 @@ deploy-app:
 build-app-image:
   stage: build-image
   image: docker:latest
-  needs: ["build-frontend"]
-  dependencies:
-    - build-frontend
+  #needs: ["build-frontend"]
+  #dependencies:
+  #  - build-frontend
   except:
     changes:
       - public/*
