@@ -1,9 +1,7 @@
 # pull official base image
-FROM node:13.12.0-alpine
+FROM nginx:stable-alpine
 
 # set working directory
-RUN mkdir /app
-RUN ls /app -la
 WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
@@ -18,7 +16,10 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY . .
 RUN ls
 RUN ls /app
+COPY /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
 #RUN npm run build
 #RUN npm install -g serve
 # start app
-CMD ["serve", "-s", "build"]
+#CMD ["serve", "-s", "build"]
