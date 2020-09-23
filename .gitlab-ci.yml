@@ -25,6 +25,8 @@ install-app-dependencies:
       - frontend/node_modules/
   script:
     - cd frontend
+    - ls -la ..
+    - ls -la ~
     - npm ci --cache frontend/node_modules/ --prefer-offline
     - npm install react-scripts@3.0.1 -g
 
