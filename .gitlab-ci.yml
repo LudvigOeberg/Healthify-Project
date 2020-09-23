@@ -6,8 +6,32 @@ stages:
   - pages
 
 
+install-app-dependencie:
+  stage: install-dependencies
+  image: node
+  script:
+    - cd frontend
+    - SRC_HASH_CACHE=`cat src.hash 2> /dev/null || true`; echo $SRC_HASH_CACHE
+    - SRC_HASH_CALC=`find package-lock.json -type f | xargs sha1sum | sha1sum | tee src.hash`; echo $SRC_HASH_CALC 
+    - if [ "$SRC_HASH_CALC" == "$SRC_HASH_CACHE" ]; then echo "Folder has not changed. Skip Job."; exit 0; fi
 
-install-app-dependencies:
+    - echo "Now do something long........"
+    - cd frontend
+    - npm ci
+    - npm install react-scripts@3.0.1 -g
+
+  artifacts:
+    paths:
+      - frontend/node_modules
+  cache:
+    key: "${CI_JOB_NAME}_${CI_COMMIT_REF_SLUG}" # <jobname>_<branchname>
+    paths:
+      - frontend/node_modules
+      - src.hash
+
+
+
+.install-app-dependencies:
   stage: install-dependencies
   image: node
   artifacts:
