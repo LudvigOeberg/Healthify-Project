@@ -7,6 +7,7 @@ stages:
 
 install-app-dependencies:
   stage: install-dependencies
+  image: node
   cache: 
     key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
     paths:
