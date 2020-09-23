@@ -11,7 +11,7 @@ install-app-dependencies:
   stage: install-dependencies
   image: node
   cache: 
-    key: $CI_BUILD_REF_NAME
+    key: "$CI_BUILD_REF_NAME"
     paths:
       - frontend/node_modules/
   script:
@@ -28,7 +28,7 @@ build-frontend:
   stage: build
   image: node
   cache: 
-    key: $CI_BUILD_REF_NAME
+    key: "$CI_BUILD_REF_NAME"
     paths:
       - frontend/node_modules/
     policy: pull
