@@ -40,7 +40,7 @@ deploy-app:
 
 build-app-image:
   stage: build-image
-  image: docker:latest
+  image: gitlab/gitlab-runner:alpine
   #needs: ["build-frontend"]
   #dependencies:
   #  - build-frontend
@@ -50,8 +50,6 @@ build-app-image:
       - "*/README.md"
       - "README.md"
   
-  services: 
-    - name: docker:19.03.8-dind
   before_script:
     - docker info
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
