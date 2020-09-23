@@ -30,9 +30,8 @@ install-app-dependencies:
 build-frontend:
   stage: build
   image: node
-  needs: 
-    - job: install-app-dependencies
-      artifacts: true
+  dependencies:
+    - install-app-dependencies
   artifacts:
     expire_in: 1 hour
     paths:
