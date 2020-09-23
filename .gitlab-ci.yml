@@ -23,20 +23,20 @@ deploy-app:
     - kubectl apply -f yaml/app-ingress.yaml
 
 
-build-frontend:
-  stage: build
-  image: node
-  artifacts:
-    expire_in: 1 hour
-    paths:
-      - frontend/build
-
-  script:
-    - cd frontend
-    - npm install
-    - npm install react-scripts@3.0.1 -g
-    - npm run build
-    - npm install -g serve
+#build-frontend:
+#  stage: build
+#  image: node
+#  artifacts:
+#    expire_in: 1 hour
+#    paths:
+#      - frontend/build
+#
+#  script:
+#    - cd frontend
+#    - npm install
+#    - npm install react-scripts@3.0.1 -g
+#    - npm run build
+#    - npm install -g serve
 
 build-app-image:
   stage: build-image
