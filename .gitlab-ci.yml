@@ -20,7 +20,7 @@ install-app-dependencies:
     #- npm ci
     #- npm install react-scripts@3.0.1 -g
 
-  #artifacts:
+  #artifacts: 
   #  paths:
   #    - frontend/node_modules
   cache:
