@@ -2,10 +2,10 @@ cache:
   untracked: true
   key:
     files:
-      - ./frontend/package-lock.json
+      - /builds/tddc88-company-2-2020/deploy/frontend/package-lock.json
   paths:
-    - ./frontend/node_modules/
-    - ./frontend/.npm/
+    - /builds/tddc88-company-2-2020/deploy/frontend/node_modules/
+    - /builds/tddc88-company-2-2020/deploy/frontend/.npm/
 
 stages:
   - install-dependencies
@@ -23,8 +23,8 @@ install-app-dependencies:
     untracked: true
     key:
     paths:
-      - ./frontend/node_modules/
-      - ./frontend/.npm/
+      - /builds/tddc88-company-2-2020/deploy/frontend/node_modules/
+      - /builds/tddc88-company-2-2020/deploy/frontend/.npm/
   script:
     - ls -la ..
     - ls -la ~
@@ -46,8 +46,8 @@ build-frontend:
     untracked: true
     key:
     paths:
-      - ./frontend/node_modules/
-      - ./frontend/.npm/
+      - /builds/tddc88-company-2-2020/deploy/frontend/node_modules/
+      - /builds/tddc88-company-2-2020/deploy/frontend/.npm/
     policy: pull
   artifacts:
     expire_in: 1 hour
