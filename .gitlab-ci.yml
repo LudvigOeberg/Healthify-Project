@@ -23,8 +23,11 @@ build-frontend:
   stage: build
   image: node
   needs: ["install-dependencies"]
-  dependencies:
-    - install-dependencies
+  cache: 
+    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    paths:
+      - frontend/node_modules
+    policy: pull
   artifacts:
     expire_in: 1 hour
     paths:
