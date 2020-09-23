@@ -17,7 +17,7 @@ install-app-dependencies:
     - npm install react-scripts@3.0.1 -g
   only:
     changes:
-      - package-lock.json
+      - frontend/package-lock.json
 
 build-frontend:
   stage: build
