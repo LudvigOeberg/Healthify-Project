@@ -29,13 +29,14 @@ build-frontend:
   artifacts:
     expire_in: 1 hour
     paths:
-      - build
-      - node_modules/
+      - frontend/build
+      - frontend/node_modules/
 
   script:
     - cd frontend
     - npm install
-    - npm build
+    - npm install react-scripts@3.0.1 -g
+    - npm run build
     - npm install -g serve
 
 #build-app-image:
