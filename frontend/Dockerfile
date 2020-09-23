@@ -3,7 +3,7 @@ FROM node:13.12.0-alpine
 
 # set working directory
 RUN mkdir /app
-RUN ls -la
+RUN ls /app -la
 WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
@@ -16,6 +16,8 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # add app
 COPY . .
+RUN ls
+RUN ls /app
 #RUN npm run build
 #RUN npm install -g serve
 # start app

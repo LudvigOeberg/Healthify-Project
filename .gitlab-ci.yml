@@ -61,7 +61,7 @@ build-frontend:
 build-app-image:
   stage: build-image
   image: docker.io/buildah/buildah
-  needs: []
+  needs: ["build-frontend"]
   dependencies:
     - build-frontend
   except:
@@ -80,6 +80,7 @@ build-app-image:
     - echo "${CI_REGISTRY_USER}"
     - echo "${CI_JOB_TOKEN}"
     - ls
+    - ls frontend
     - buildah build-using-dockerfile --tag "app-frontend" "frontend"
     - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "app-frontend" "docker://${CI_REGISTRY_IMAGE}/app-frontend:latest"
 
