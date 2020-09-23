@@ -38,28 +38,9 @@ build-frontend:
     - npm run build
     - npm install -g serve
 
-#build-app-image:
-#  stage: build-image
-#  image: docker:latest
-#  needs: ["build-frontend"]
-#  except:
-#    changes:
-#      - public/*
-#      - "*/README.md"
-#      - "README.md"
-#  
-#  services: 
-#    - name: docker:19.03.8-dind
-#  before_script:
-#    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-#  script:
-#    - docker build --pull -t "$CI_REGISTRY_IMAGE" ./frontend
-#    - docker push "$CI_REGISTRY_IMAGE"
-
-
 build-app-image:
   stage: build-image
-  image: docker.io/buildah/buildah
+  image: docker:latest
   needs: ["build-frontend"]
   dependencies:
     - build-frontend
@@ -68,20 +49,41 @@ build-app-image:
       - public/*
       - "*/README.md"
       - "README.md"
-
+  
+  services: 
+    - name: docker:19.03.8-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - export _BUILDAH_STARTED_IN_USERNS=''
-    - export BUILDAH_ISOLATION=chroot
-    - export STORAGE_DRIVER=vfs
-    - export BUILDAH_FORMAT=docker
-    - echo "${CI_REGISTRY_PASSWORD}"
-    - echo "${CI_REGISTRY_IMAGE}"
-    - echo "${CI_REGISTRY_USER}"
-    - echo "${CI_JOB_TOKEN}"
-    - ls
-    - ls frontend
-    - buildah build-using-dockerfile --tag "app-frontend" "frontend"
-    - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "app-frontend" "docker://${CI_REGISTRY_IMAGE}/app-frontend:latest"
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" ./frontend
+    - docker push "$CI_REGISTRY_IMAGE"
+
+
+#build-app-image:
+#  stage: build-image
+#  image: docker.io/buildah/buildah
+#  needs: ["build-frontend"]
+#  dependencies:
+#    - build-frontend
+#  except:
+#    changes:
+#      - public/*
+#      - "*/README.md"
+#      - "README.md"
+#
+#  script:
+#    - export _BUILDAH_STARTED_IN_USERNS=''
+#    - export BUILDAH_ISOLATION=chroot
+#    - export STORAGE_DRIVER=vfs
+#    - export BUILDAH_FORMAT=docker
+#    - echo "${CI_REGISTRY_PASSWORD}"
+#    - echo "${CI_REGISTRY_IMAGE}"
+#    - echo "${CI_REGISTRY_USER}"
+#    - echo "${CI_JOB_TOKEN}"
+#    - ls
+#    - ls frontend
+#    - buildah build-using-dockerfile --tag "app-frontend" "frontend"
+#    - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "app-frontend" "docker://${CI_REGISTRY_IMAGE}/app-frontend:latest"
 
 pages:
   stage: pages  
