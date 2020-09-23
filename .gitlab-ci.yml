@@ -26,6 +26,11 @@ deploy-app:
 build-frontend:
   stage: build
   image: node
+  except:
+    changes:
+      - public/*
+      - "*/README.md"
+      - "README.md"
   artifacts:
     expire_in: 1 hour
     paths:
@@ -64,11 +69,6 @@ build-app-image:
   needs: []
   dependencies:
     - build-frontend
-  except:
-    changes:
-      - public/*
-      - "*/README.md"
-      - "README.md"
 
   script:
     - export _BUILDAH_STARTED_IN_USERNS=''
@@ -79,6 +79,7 @@ build-app-image:
     - echo "${CI_REGISTRY_IMAGE}"
     - echo "${CI_REGISTRY_USER}"
     - echo "${CI_JOB_TOKEN}"
+    - echo ls
     - buildah build-using-dockerfile --tag "app-frontend" "frontend"
     - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "app-frontend" "docker://${CI_REGISTRY_IMAGE}/app-frontend:latest"
 

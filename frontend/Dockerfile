@@ -3,6 +3,7 @@ FROM node:13.12.0-alpine
 
 # set working directory
 RUN mkdir /app
+RUN echo ls -la
 WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
