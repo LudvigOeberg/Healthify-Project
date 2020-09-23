@@ -19,11 +19,11 @@ spec:
           image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy/app-frontend:latest
           imagePullPolicy: Always
           ports:
-          - containerPort: 5000
+          - containerPort: 80
             protocol: TCP
           readinessProbe:
             tcpSocket:
-              port: 5000
+              port: 80
           resources: # Specify what resources we need...
             limits: # ...both absolute limits...
               cpu: 100m
