@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - build-image
   - deploy
   - pages
@@ -12,12 +13,30 @@ build-frontend:
     expire_in: 1 hour
     paths:
       - frontend/build
+  except:
+    changes:
+      - public/*
+      - "*/README.md"
+      - "README.md"
 
   script:
     - cd frontend
     - npm ci
     - npm install react-scripts@3.0.1 -g
     - npm run build
+
+
+
+.test-frontend:
+  stage: test
+  image: node
+  needs: ["build-frontend"]
+  dependencies:
+    - build-frontend
+  script:
+    - echo "Testing App"
+    - CI=true npm test
+    - echo "Test successfully!"
 
 
 
@@ -32,6 +51,9 @@ build-app-image:
       - public/*
       - "*/README.md"
       - "README.md"
+  only:
+    refs: 
+      - master
 
   script:
     - export _BUILDAH_STARTED_IN_USERNS=''
@@ -53,6 +75,15 @@ deploy-app:
   dependencies: []
   stage: deploy
   image: lachlanevenson/k8s-kubectl
+  except:
+    changes:
+      - public/*
+      - "*/README.md"
+      - "README.md"
+  only:
+    refs: 
+      - master
+
   script:
     - kubectl apply -f yaml/app-deployment.yaml
     - kubectl apply -f yaml/app-service.yaml
