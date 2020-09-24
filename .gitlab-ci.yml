@@ -85,6 +85,7 @@ deploy-app:
       - master
 
   script:
+    - kubectl delete pods -l app=healthapp
     - kubectl apply -f yaml/app-deployment.yaml
     - kubectl apply -f yaml/app-service.yaml
     - kubectl apply -f yaml/app-ingress.yaml
