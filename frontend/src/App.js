@@ -1,11 +1,11 @@
 import React from 'react';
-import Drawer from './components/Drawer';
+import SignIn from './components/SignIn';
 import './assets/App.css';
 
 function App() {
   return (
     <div>
-      <Drawer></Drawer>
+      <SignIn></SignIn>
     </div>
   );
 }
