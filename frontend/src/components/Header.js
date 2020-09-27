@@ -31,8 +31,9 @@ const LoggedOutView = props => {
 const LoggedInView = props => {
   const classes = useStyles();
   if (props.currentUser) {
+    return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar className={classes.nav} position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
@@ -44,6 +45,7 @@ const LoggedInView = props => {
         </Toolbar>
       </AppBar>
     </div>
+    );
   }
 
   return null;
