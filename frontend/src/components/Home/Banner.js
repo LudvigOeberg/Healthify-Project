@@ -9,7 +9,6 @@ const Banner = ({ appName, token }) => {
     return null;
   }
   return (
-    
     <div className={classes.paper}>
       <Typography variant="h3">
         {appName}

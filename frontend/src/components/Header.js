@@ -51,15 +51,13 @@ const LoggedInView = props => {
   return null;
 };
 
-class Header extends React.Component {
-  render() {
-    return (
-      <nav className="navbar navbar-light" style={{zIndex: 100}}>
-          <LoggedOutView currentUser={this.props.currentUser} appName={this.props.appName} />
-          <LoggedInView currentUser={this.props.currentUser} appName={this.props.appName} />
-      </nav>
-    );
-  }
+const Header = (props) => {
+  return (
+    <nav className="navbar navbar-light" style={{zIndex: 100}}>
+        <LoggedOutView currentUser={props.currentUser} appName={props.appName} />
+        <LoggedInView currentUser={props.currentUser} appName={props.appName} />
+    </nav>
+  );
 }
 
 const useStyles = makeStyles((theme) => ({

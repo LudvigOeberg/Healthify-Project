@@ -27,5 +27,5 @@ export default function Copyright() {
         </Typography>
       </Container>
     </footer>
-    );
-  }
+  );
+}
