@@ -15,6 +15,10 @@ spec:
           backend:
             serviceName: flask
             servicePort: 80
+        - path: /flask-apispec/static/
+          backend:
+            serviceName: flask
+            servicePort: 80
         - path: /swagger-ui/
           backend:
             serviceName: flask

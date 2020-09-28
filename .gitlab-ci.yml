@@ -6,6 +6,28 @@ stages:
   - pages
 
 
+build-backend:
+  stage: build
+  image: python:3.6.9-slim-buster
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - backend
+  except:
+    changes:
+      - public/*
+      - "*/README.md"
+      - "README.md"
+
+  script:
+    - cd backend
+    - apt-get update && apt-get install -y build-essential && apt-get install -y python3-pip
+    - pip3 install -r requirements.txt --no-cache-dir
+    - export FLASK_APP=autoapp.py
+    - flask db init && flask db migrate && flask db upgrade
+
+
+
 build-frontend:
   stage: build
   image: node
@@ -40,8 +62,11 @@ build-frontend:
 
 
 build-flask-image:
-  stage: build
+  stage: build-image
   image: docker.io/buildah/buildah
+  needs: ["build-backend"]
+  dependencies:
+    - build-backend
   except:
     changes:
       - public/*
