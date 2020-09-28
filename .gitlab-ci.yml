@@ -96,7 +96,7 @@ build-app-image:
 
 deploy-app:
   environment: 'production'
-  needs: ["build-app-image"]
+  needs: ["build-app-image", "build-flask-image"]
   dependencies: []
   stage: deploy
   image: lachlanevenson/k8s-kubectl

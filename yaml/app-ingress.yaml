@@ -15,6 +15,10 @@ spec:
           backend:
             serviceName: flask
             servicePort: 80
+        - path: /swagger-ui/
+          backend:
+            serviceName: flask
+            servicePort: 80
         - path: /
           backend:
             serviceName: healthapp

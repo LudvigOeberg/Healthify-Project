@@ -39,7 +39,7 @@ class Config(object):
                 plugins=[MarshmallowPlugin()],
             )
     APISPEC_SWAGGER_URL = "/api/swagger"
-    APISPEC_SWAGGER_UI_URL = "/api/swagger-ui"
+    APISPEC_SWAGGER_UI_URL = "/swagger-ui"
 
 
 class ProdConfig(Config):
