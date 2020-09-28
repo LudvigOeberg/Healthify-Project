@@ -39,6 +39,31 @@ build-frontend:
     - echo "Test successfully!"
 
 
+build-flask-image:
+  stage: build-image
+  image: docker.io/buildah/buildah
+  except:
+    changes:
+      - public/*
+      - "*/README.md"
+      - "README.md"
+  only:
+    refs: 
+      - master
+
+  script:
+    - export _BUILDAH_STARTED_IN_USERNS=''
+    - export BUILDAH_ISOLATION=chroot
+    - export STORAGE_DRIVER=vfs
+    - export BUILDAH_FORMAT=docker
+    - echo "${CI_REGISTRY_PASSWORD}"
+    - echo "${CI_REGISTRY_IMAGE}"
+    - echo "${CI_REGISTRY_USER}"
+    - echo "${CI_JOB_TOKEN}"
+    - buildah build-using-dockerfile --tag "flask" "backend"
+    - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "flask" "docker://${CI_REGISTRY_IMAGE}/flask:latest"
+
+
 
 build-app-image:
   stage: build-image
@@ -88,7 +113,10 @@ deploy-app:
     - kubectl delete pods -l app=healthapp
     - kubectl apply -f yaml/app-deployment.yaml
     - kubectl apply -f yaml/app-service.yaml
+    - kubectl apply -f yaml/flask-deployment.yaml
+    - kubectl apply -f yaml/flask-service.yaml
     - kubectl apply -f yaml/app-ingress.yaml
+
 
 
 

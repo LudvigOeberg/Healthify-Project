@@ -10,8 +10,12 @@ spec:
   rules:
     - host: tddc88-company-2-2020.kubernetes-public.it.liu.se
       http:
-        paths:
-        - backend:
-            serviceName: healthapp
-            servicePort: 80
-          path: /
+      paths:
+      - path: /
+        backend:
+          serviceName: healthapp
+          servicePort: 80
+      - path: /api
+        backend:
+          serviceName: flask
+          servicePort: 5000

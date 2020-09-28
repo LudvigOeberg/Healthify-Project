@@ -55,8 +55,8 @@ class App extends React.Component {
             <div id="main" style={{ marginTop: 0, marginBottom: 0 }}>
               <Switch>
                 <Route exact path="/" component={Home}/>
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
               </Switch>
             </div>
             <Footer />

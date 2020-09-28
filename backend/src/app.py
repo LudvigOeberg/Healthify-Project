@@ -4,16 +4,18 @@ from flask import Flask
 from src.extensions import bcrypt, cache, db, migrate, jwt, cors, docs, api
 
 from src import commands, user, todo
-from src.settings import ProdConfig
+from src.settings import DevConfig
 from src.exceptions import InvalidUsage
 
 
-def create_app(config_object=ProdConfig):
+def create_app(config_object=DevConfig):
     """An application factory, as explained here:
     http://flask.pocoo.org/docs/patterns/appfactories/.
 
     :param config_object: The configuration object to use.
     """
+    print(config_object)
+    print(config_object.__name__)
     app = Flask(__name__.split('.')[0])
     app.url_map.strict_slashes = False
     app.config.from_object(config_object)

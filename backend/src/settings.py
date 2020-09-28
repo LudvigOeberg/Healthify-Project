@@ -27,10 +27,12 @@ class Config(object):
         'http://localhost:4200',
         'http://0.0.0.0:4000',
         'http://localhost:4000',
+        'http://localhost:80',
+        'http://0.0.0.0:80',
     ]
     JWT_HEADER_TYPE = 'Token'
     APISPEC_SPEC = APISpec(
-                title='RESTful API - Gruop 2 TDDC88',
+                title='RESTful API - Healthify',
                 version='v1',
                 openapi_version='2.0',
                 info=dict(description='Swagger docs for exploring the API'),

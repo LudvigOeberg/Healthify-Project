@@ -21,5 +21,13 @@ const getMiddleware = () => {
   }
 };
 
+const persistedState = localStorage.getItem('store') 
+                       ? JSON.parse(localStorage.getItem('store'))
+                       : {}
+
 export const store = createStore(
-  reducer, composeWithDevTools(getMiddleware()));
+  reducer, persistedState, composeWithDevTools(getMiddleware()));
+
+store.subscribe(()=>{
+    localStorage.setItem('store', JSON.stringify(store.getState()))
+  })

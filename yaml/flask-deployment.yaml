@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask
+  labels:
+    app: flask
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask
+  template:
+    metadata:
+      labels:
+        app: flask
+    spec:
+      containers:
+        - name: flask
+          image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy/flask:latest
+          imagePullPolicy: Always
+          ports:
+          env:
+          - name: FLASK_ENV
+            value: "development"
+          - name: APP_SETTINGS
+            value: "project.config.DevelopmentConfig"
+          - containerPort: 5000
+            protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 5000
+          resources: # Specify what resources we need...
+            limits: # ...both absolute limits...
+              cpu: 100m
+              memory: 80Mi
+            requests: # ...and what we probably will get by with.
+              cpu: 10m
+              memory: 42Mi
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always
