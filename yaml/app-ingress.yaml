@@ -14,7 +14,7 @@ spec:
         - path: /api/
           backend:
             serviceName: flask
-            servicePort: 5000
+            servicePort: 80
         - path: /
           backend:
             serviceName: healthapp
