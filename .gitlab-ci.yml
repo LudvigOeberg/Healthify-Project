@@ -1,5 +1,4 @@
 stages:
-  - deploy2
   - build
   - test
   - build-image
@@ -119,30 +118,6 @@ deploy-app:
     - kubectl apply -f yaml/flask-service.yaml
     - kubectl apply -f yaml/app-ingress.yaml
 
-
-deploy-app-first:
-  environment: 'production'
-  needs: []
-  dependencies: []
-  stage: deploy2
-  image: lachlanevenson/k8s-kubectl
-  except:
-    changes:
-      - public/*
-      - "*/README.md"
-      - "README.md"
-  only:
-    refs: 
-      - master
-
-  script:
-    - kubectl delete pods -l app=healthapp
-    - kubectl delete pods -l app=flask
-    - kubectl apply -f yaml/app-deployment.yaml
-    - kubectl apply -f yaml/app-service.yaml
-    - kubectl apply -f yaml/flask-deployment.yaml
-    - kubectl apply -f yaml/flask-service.yaml
-    - kubectl apply -f yaml/app-ingress.yaml
 
 
 pages:

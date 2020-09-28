@@ -9,13 +9,13 @@ COPY ./requirements/dev.txt ./requirements/
 RUN \
     apt-get update && apt-get install -y build-essential && apt-get install -y python3-pip
 
-#RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt --no-cache-dir
 
-#ENV FLASK_APP=autoapp.py
 #ENV FLASK_DEBUG=1
 COPY . .
-
+ENV FLASK_APP=autoapp.py
+RUN flask db init && flask db migrate && flask db upgrade
+RUN ls -la
 EXPOSE 5000
 
 CMD ["gunicorn", "autoapp:app", "-b", "0.0.0.0:5000"]

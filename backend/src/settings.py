@@ -38,6 +38,8 @@ class Config(object):
                 info=dict(description='Swagger docs for exploring the API'),
                 plugins=[MarshmallowPlugin()],
             )
+    APISPEC_SWAGGER_URL = "/api/swagger"
+    APISPEC_SWAGGER_UI_URL = "/api/swagger-ui"
 
 
 class ProdConfig(Config):

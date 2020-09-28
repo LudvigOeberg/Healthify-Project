@@ -29,7 +29,6 @@ nosetests.xml
 
 # Virtualenvs
 env/
-dev.db
 .cache/v/cache
 
 # Intellij IDEA based IDEs folder
