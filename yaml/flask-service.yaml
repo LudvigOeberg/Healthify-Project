@@ -5,8 +5,10 @@ metadata:
   labels:
     service: flask
 spec:
-  selector:
-    app: flask
   ports:
-  - port: 5000
-    targetPort: 5000
+  - port: 80  # ... and should be exposed on port 80, ...
+    protocol: TCP # ... using TCP ...
+    targetPort: 5000 # ... to expose port 8000 of internal pods ...
+  selector: # ... designated by the selector 'hello' ...
+    app: flask
+  type: ClusterIP # ... to an internal cluster IP address
