@@ -40,7 +40,7 @@ build-frontend:
 
 
 build-flask-image:
-  stage: build-image
+  stage: build
   image: docker.io/buildah/buildah
   except:
     changes:
