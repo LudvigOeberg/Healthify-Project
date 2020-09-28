@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Frontend
 
 ## Available Scripts
 
@@ -11,7 +11,7 @@ Installs the app dependencies and creates the folder node_modules. Needed to run
 ### `npm start`
 
 Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:4100](http://localhost:4100) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
@@ -26,3 +26,13 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Structure
+```
+.
+├── Dockerfile              =>  Builds the app using docker (keep away!)
+├── nginx.conf              =>  Nginx config
+├── package-lock.json       =>  Package dependencies (keep away!)
+├── package.json            =>  Package dependencies (keep away!)
+├── public                  =>  Only for a few images, index.html, etc. No CSS!
+└── src                     =>  Main entry-point for all code.
