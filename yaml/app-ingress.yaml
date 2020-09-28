@@ -12,13 +12,10 @@ spec:
       http:
         paths:
         - path: /api/
-          pathType: Prefix
           backend:
-            service:
-              name: flask
-              port: 5000
+            serviceName: flask
+            servicePort: 5000
         - path: /
           backend:
-            service:
-              name: healthapp
-              port: 80
+            serviceName: healthapp
+            serviecPort: 80
