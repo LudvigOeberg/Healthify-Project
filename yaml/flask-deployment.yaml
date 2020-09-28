@@ -19,13 +19,13 @@ spec:
           image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy/flask:latest
           imagePullPolicy: Always
           ports:
+          - containerPort: 5000
+            protocol: TCP
           env:
           - name: FLASK_ENV
             value: "development"
           - name: APP_SETTINGS
             value: "project.config.DevelopmentConfig"
-          - containerPort: 5000
-            protocol: TCP
           readinessProbe:
             tcpSocket:
               port: 5000
