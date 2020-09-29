@@ -1,6 +1,6 @@
 # TDDC88 - Healthify
 
-## Instructions
+### Instructions
 All available scripts explained in `frontend/` and `backend/` must be run in these directories.
 
 
