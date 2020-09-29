@@ -4,11 +4,11 @@
 
 In the project directory, you can run:
 
-### `npm install`
+#### `npm install`
 
 Installs the app dependencies and creates the folder node_modules. Needed to run `npm start`.
 
-### `npm start`
+#### `npm start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:4100](http://localhost:4100) to view it in the browser.
@@ -16,16 +16,16 @@ Open [http://localhost:4100](http://localhost:4100) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `npm test`
+#### `npm test`
 
 Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+To learn React-Redux, check-out [React-Redux documentation](https://redux.js.org/introduction/getting-started).
 
 ## Structure
 ```

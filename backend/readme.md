@@ -3,13 +3,19 @@ Built on Python Flask-RESTful and Swagger for docs.
 
 Visit [/swagger-ui/](http://tddc88-company-2-2020.kubernetes-public.it.liu.se/swagger-ui/) for Swagger RESTful-API documentation.
 
+## Available Scripts
+
+In the project directory, use following scripts to install and run:
+
 ### Install
+Only needs to be run once, (or if dependecies are updated or if `venv/` folder is gone).
 ```bash
 python3 -m venv venv
 . venv/bin/activate
 pip install -r requirments.txt
 ```
 ### Run
+To run use the following scripts in order:
 ```
 . venv/bin/activate
 export FLASK_DEBUG=1
