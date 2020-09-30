@@ -2,7 +2,7 @@ import superagentPromise from 'superagent-promise';
 import _superagent from 'superagent';
 
 const superagent = superagentPromise(_superagent, global.Promise);
-const API_ROOT = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/api';
+export const API_ROOT = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:5000/api' : 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/api';
 const responseBody = res => res.body;
 
 let token = null;
@@ -13,9 +13,9 @@ const tokenPlugin = req => {
 }
 
 const requests = {
-  del: url =>
+  del: url => 
     superagent.del(`${API_ROOT}${url}`).use(tokenPlugin).then(responseBody),
-  get: url =>
+  get: url => 
     superagent.get(`${API_ROOT}${url}`).use(tokenPlugin).then(responseBody),
   put: (url, body) =>
     superagent.put(`${API_ROOT}${url}`, body).use(tokenPlugin).then(responseBody),

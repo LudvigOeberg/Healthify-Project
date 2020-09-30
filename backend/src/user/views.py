@@ -12,7 +12,7 @@ from src.database import db
 from src.extensions import api
 from src.exceptions import InvalidUsage
 from .models import User
-from .schema import user_schema, user_schemas
+from .schema import user_schema, user_schemas, login_schema, register_user_schema
 
 
 @api.resource('/user')
@@ -40,7 +40,7 @@ class UserResource(MethodResource):
         return user
 
     @jwt_optional
-    @use_kwargs(user_schema)
+    @use_kwargs(login_schema)
     @doc(description="Login user")
     def post(self, email, password, **kwargs):
         user = User.query.filter_by(email=email).first()
@@ -61,8 +61,8 @@ class UserListResource(MethodResource):
         users = User.query.all()
         return users
 
-    @use_kwargs(user_schema)
-    @marshal_with(user_schema)
+    @use_kwargs(register_user_schema)
+    @marshal_with(register_user_schema)
     @doc(tags=["User"], description="Register user")
     def post(self, name, surname, email, password, confirmPassword, **kwargs):
         if (password != confirmPassword): raise InvalidUsage.password_dont_match()

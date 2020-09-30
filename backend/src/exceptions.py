@@ -4,7 +4,7 @@ from flask import jsonify
 def template(name='general', data='Something is wrong', code=500):
     return {'message': {name: [data]}, 'status_code': code}
 
-USER_NOT_FOUND = template('general', 'User not found', code=404)
+USER_NOT_FOUND = template('general', 'User not found or wrong password', code=404)
 PASSWORD_DONT_MATCH = template('password', 'Password dont match', code=404)
 USER_ALREADY_REGISTERED = template('email', 'User already registered', code=422)
 UNKNOWN_ERROR = template()

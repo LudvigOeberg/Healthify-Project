@@ -78,8 +78,8 @@ class Login extends React.Component {
             name="email"
             label="Mailadress"
             autoComplete="email"
-            helperText={errors && errors.email}
-            error={errors && errors.email ? true : false}
+            helperText={errors && (errors.email || errors.general)}
+            error={errors && (errors.email ? true : false || errors.general ? true : false)}
             onChange={this.changeAuth}
             value={email}
             autoFocus
@@ -94,8 +94,8 @@ class Login extends React.Component {
             label="Lösenord"
             type="password"
             autoComplete="current-password"
-            helperText={errors && errors.password}
-            error={errors && errors.password ? true : false}
+            helperText={errors && (errors.password || errors.general)}
+            error={errors && (errors.password ? true : false || errors.general ? true : false)}
             onChange={this.changeAuth}
             value={password}
           />

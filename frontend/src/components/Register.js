@@ -75,8 +75,8 @@ class Register extends React.Component {
                 id="name"
                 name="name"
                 label="Förnamn"
-                helperText={errors && errors.name}
-                error={errors && errors.name ? true : false}
+                helperText={errors && (errors.name || errors.general)}
+                error={errors && (errors.name ? true : false || errors.general ? true : false)}
                 autoFocus
                 value={this.props.name}
                 onChange={this.changeAuth}
@@ -91,8 +91,8 @@ class Register extends React.Component {
                 id="surname"
                 name="surname"
                 label="Efternamn"
-                helperText={errors && errors.surname}
-                error={errors && errors.surname ? true : false}
+                helperText={errors && (errors.surname || errors.general)}
+                error={errors && (errors.surname ? true : false || errors.general ? true : false)}
                 value={this.props.surname}
                 onChange={this.changeAuth}
               />
@@ -106,8 +106,8 @@ class Register extends React.Component {
                 name="email"
                 label="Mailaddress"
                 autoComplete="email"
-                helperText={errors && errors.email}
-                error={errors && errors.email ? true : false}
+                helperText={errors && (errors.email || errors.general)}
+                error={errors && (errors.email ? true : false || errors.general ? true : false)}
                 value={this.props.email}
                 onChange={this.changeAuth}
               />
@@ -122,8 +122,8 @@ class Register extends React.Component {
                 id="password"
                 label="Lösenord"
                 autoComplete="current-password"
-                helperText={errors && errors.password}
-                error={errors && errors.password ? true : false}
+                helperText={errors && (errors.password || errors.general)}
+                error={errors && (errors.password ? true : false || errors.general ? true : false)}
                 value={this.props.password}
                 onChange={this.changeAuth}
               />
@@ -137,8 +137,8 @@ class Register extends React.Component {
                 type="password"
                 id="confirmPassword"
                 label="Bekräfta lösenord"
-                helperText={errors && errors.confirmPassword}
-                error={errors && errors.confirmPassword ? true : false}
+                helperText={errors && (errors.confirmPassword || errors.general)}
+                error={errors && (errors.confirmPassword ? true : false || errors.general ? true : false)}
                 value={this.props.confirmPassword}
                 onChange={this.changeAuth}
               />
