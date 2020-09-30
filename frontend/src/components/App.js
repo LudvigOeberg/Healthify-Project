@@ -1,15 +1,15 @@
-import agent from '../agent';
-import Header from './Header';
 import React from 'react';
 import { connect } from 'react-redux';
-import { APP_LOAD, REDIRECT } from '../constants/actionTypes';
 import { Route, Switch } from 'react-router-dom';
+import { push } from 'react-router-redux';
+import agent from '../agent';
 import Home from '../components/Home';
 import Login from '../components/Login';
 import Register from '../components/Register';
+import { APP_LOAD, REDIRECT } from '../constants/actionTypes';
 import { store } from '../store';
-import { push } from 'react-router-redux';
 import Footer from './Footer';
+import Header from './Header';
 
 
 const mapStateToProps = state => {

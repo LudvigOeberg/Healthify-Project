@@ -16,14 +16,7 @@ export default function Copyright() {
   return (
     <footer className={classes.footer}>
       <Container maxWidth="sm">
-        <Typography variant="body2" color="textSecondary" align="center">
-          {'Copyright © '}
-          <Link color="inherit" href="/">
-            Healthify
-          </Link>{' '}
-          {new Date().getFullYear()}
-          {'.'}
-        </Typography>
+        
       </Container>
     </footer>
   );
