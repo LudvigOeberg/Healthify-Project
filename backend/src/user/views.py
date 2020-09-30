@@ -7,11 +7,10 @@ from flask_apispec import use_kwargs, marshal_with, MethodResource
 from flask_apispec.annotations import doc
 from flask_jwt_extended import jwt_required, jwt_optional, create_access_token, current_user
 from sqlalchemy.exc import IntegrityError
-
 from src.database import db
-from src.exceptions import InvalidUsage
-from src.extensions import api
 
+from src.extensions import api
+from src.exceptions import InvalidUsage
 from .models import User
 from .schema import user_schema, user_schemas
 
@@ -42,7 +41,7 @@ class UserResource(MethodResource):
 
     @jwt_optional
     @use_kwargs(user_schema)
-    @doc(description="Log in user")
+    @doc(description="Login user")
     def post(self, email, password, **kwargs):
         user = User.query.filter_by(email=email).first()
         if user is not None and user.check_password(password):
@@ -65,9 +64,10 @@ class UserListResource(MethodResource):
     @use_kwargs(user_schema)
     @marshal_with(user_schema)
     @doc(tags=["User"], description="Register user")
-    def post(self, username, password, email, **kwargs):
+    def post(self, name, surname, email, password, confirmPassword, **kwargs):
+        if (password != confirmPassword): raise InvalidUsage.password_dont_match()
         try:
-            user = User(username, email, password=password, **kwargs).save().save()
+            user = User(name, surname, email, password, **kwargs).save().save()
             user.token = create_access_token(identity=user)
         except IntegrityError:
             db.session.rollback()

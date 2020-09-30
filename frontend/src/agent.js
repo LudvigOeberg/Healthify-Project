@@ -2,7 +2,7 @@ import superagentPromise from 'superagent-promise';
 import _superagent from 'superagent';
 
 const superagent = superagentPromise(_superagent, global.Promise);
-const API_ROOT = 'https://conduit.productionready.io/api';
+const API_ROOT = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/api';
 const responseBody = res => res.body;
 
 let token = null;
@@ -27,9 +27,9 @@ const Auth = {
   current: () =>
     requests.get('/user'),
   login: (email, password) =>
-    requests.post('/users/login', { user: { email, password } }),
-  register: (username, email, password) =>
-    requests.post('/users', { user: { username, email, password } }),
+    requests.post('/user', { user: { email, password } }),
+  register: (name, surname, email, password, confirmPassword) =>
+    requests.post('/users', { user: { name, surname, email, password, confirmPassword } }),
   save: user =>
     requests.put('/user', { user })
 };

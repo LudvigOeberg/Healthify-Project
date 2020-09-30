@@ -1,4 +1,3 @@
-import ListErrors from './ListErrors';
 import React from 'react';
 import agent from '../agent';
 import { connect } from 'react-redux';
@@ -27,10 +26,8 @@ const mapStateToProps = state => {
 }};
 
 const mapDispatchToProps = dispatch => ({
-  onChangeEmail: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'email', value }),
-  onChangePassword: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'password', value }),
+  onChangeAuth: (key, value) =>
+    dispatch({ type: UPDATE_FIELD_AUTH, key: key, value }),
   onSubmit: (email, password) =>
     dispatch({ type: LOGIN, payload: agent.Auth.login(email, password) }),
   onUnload: () =>
@@ -42,8 +39,7 @@ const mapDispatchToProps = dispatch => ({
 class Login extends React.Component {
   constructor() {
     super();
-    this.changeEmail = ev => this.props.onChangeEmail(ev.target.value);
-    this.changePassword = ev => this.props.onChangePassword(ev.target.value);
+    this.changeAuth = ev => this.props.onChangeAuth(ev.target.id, ev.target.value);
     this.changeRememberMe = ev => {
       this.props.onChangeRemberMe(ev.target.checked);
     };
@@ -61,6 +57,8 @@ class Login extends React.Component {
     const { classes } = this.props;
     const email = this.props.email;
     const password = this.props.password;
+    const errors = this.props.errors ? this.props.errors : null;
+
     return (
       <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -77,10 +75,12 @@ class Login extends React.Component {
             required
             fullWidth
             id="email"
-            label="Mailadress"
             name="email"
+            label="Mailadress"
             autoComplete="email"
-            onChange={this.changeEmail}
+            helperText={errors && errors.email}
+            error={errors && errors.email ? true : false}
+            onChange={this.changeAuth}
             value={email}
             autoFocus
           />
@@ -89,19 +89,20 @@ class Login extends React.Component {
             margin="normal"
             required
             fullWidth
+            id="password"
             name="password"
             label="Lösenord"
             type="password"
-            id="password"
-            onChange={this.changePassword}
-            value={password}
             autoComplete="current-password"
+            helperText={errors && errors.password}
+            error={errors && errors.password ? true : false}
+            onChange={this.changeAuth}
+            value={password}
           />
           <FormControlLabel
             control={<Checkbox onChange={this.changeRememberMe} color="primary" />}
             label="Kom ihåg mig"
           />
-          <ListErrors errors={this.props.errors} />
           <Button
             type="submit"
             fullWidth

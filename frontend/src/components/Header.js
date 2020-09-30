@@ -7,6 +7,8 @@ import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import { LOGOUT } from '../constants/actionTypes';
+import { connect } from 'react-redux';
 
 const LoggedOutView = props => {
   const classes = useStyles();
@@ -41,7 +43,8 @@ const LoggedInView = props => {
           <Typography variant="h6" className={classes.title}>
             <Button component={Link} href="/" color="inherit">{props.appName}</Button>
           </Typography>
-          <Link href="/logout" color="inherit">Logga ut</Link>
+          <Button component={Link} href="/" color="inherit">{props.currentUser.name}</Button>
+          <Button component={Link} onClick={props.logout} color="inherit">Logga ut</Button>
         </Toolbar>
       </AppBar>
     </div>
@@ -51,13 +54,28 @@ const LoggedInView = props => {
   return null;
 };
 
-const Header = (props) => {
-  return (
-    <nav className="navbar navbar-light" style={{zIndex: 100}}>
-        <LoggedOutView currentUser={props.currentUser} appName={props.appName} />
-        <LoggedInView currentUser={props.currentUser} appName={props.appName} />
-    </nav>
-  );
+const mapStateToProps = state => ({
+  currentUser: state.common.currentUser
+});
+
+const mapDispatchToProps = dispatch => ({
+  onClickLogout: () => dispatch({ type: LOGOUT }),
+});
+
+class Header extends React.Component {
+  constructor() {
+    super();
+    this.logout = ev => this.props.onClickLogout();
+  }
+
+  render() {
+    return (
+      <nav className="navbar navbar-light" style={{zIndex: 100}}>
+          <LoggedOutView currentUser={this.props.currentUser} appName={this.props.appName} />
+          <LoggedInView currentUser={this.props.currentUser} appName={this.props.appName} logout={this.logout} />
+      </nav>
+    );
+  }
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -74,4 +92,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

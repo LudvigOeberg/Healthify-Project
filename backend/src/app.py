@@ -3,7 +3,7 @@
 from flask import Flask
 from src.extensions import bcrypt, cache, db, migrate, jwt, cors, docs, api
 
-from src import commands, user, todo
+from src import commands, user
 from src.settings import DevConfig
 from src.exceptions import InvalidUsage
 
@@ -40,8 +40,6 @@ def register_extensions(app):
 
 def register_docs(app):
     """Register Swagger docs."""
-    docs.register(todo.views.TodoResource)
-    docs.register(todo.views.TodoListResource)
     docs.register(user.views.UserResource)
     docs.register(user.views.UserListResource)
 
@@ -62,8 +60,7 @@ def register_shellcontext(app):
         """Shell context objects."""
         return {
             'db': db,
-            'User': user.models.User,
-            'Todo': todo.models.Todo,
+            'User': user.models.User
         }
 
     app.shell_context_processor(shell_context)
