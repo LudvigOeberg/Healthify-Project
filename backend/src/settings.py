@@ -49,7 +49,7 @@ class ProdConfig(Config):
     DEBUG = False
     # <service-name>.<namespace-name>.svc.cluster.local
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL',
-                                             'postgresql://postgresadmin:admin123@postgres/postgres')
+                                             'postgresql://postgresadmin:admin123@postgres.tddc88-company-2-2020.svc.cluster.local:5432/postgres')
 
 
 class DevConfig(Config):
