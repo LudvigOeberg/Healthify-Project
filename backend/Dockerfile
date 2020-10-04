@@ -14,6 +14,7 @@ RUN pip3 install -r requirements.txt --no-cache-dir
 #ENV FLASK_DEBUG=1
 COPY . .
 ENV FLASK_APP=autoapp.py
+RUN pip3 list
 RUN flask db init
 RUN flask db migrate
 RUN flask db upgrade
