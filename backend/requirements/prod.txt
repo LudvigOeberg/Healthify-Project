@@ -18,4 +18,4 @@ gunicorn
 Flask-Cors
 bcrypt
 flask-restful
-psycopg2
+psycopg2-binary
