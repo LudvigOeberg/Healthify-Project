@@ -14,7 +14,9 @@ RUN pip3 install -r requirements.txt --no-cache-dir
 #ENV FLASK_DEBUG=1
 COPY . .
 ENV FLASK_APP=autoapp.py
-RUN flask db init && flask db migrate && flask db upgrade
+RUN flask db init
+RUN flask db migrate
+RUN flask db upgrade
 EXPOSE 5000
 
 CMD ["gunicorn", "autoapp:app", "-b", "0.0.0.0:5000"]

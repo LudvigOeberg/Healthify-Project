@@ -40,8 +40,8 @@ def register_extensions(app):
 
 def register_docs(app):
     """Register Swagger docs."""
-    docs.register(user.views.UserResource)
     docs.register(user.views.UserListResource)
+    docs.register(user.views.UserResource)
 
 
 def register_errorhandlers(app):
