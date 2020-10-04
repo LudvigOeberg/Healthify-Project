@@ -48,12 +48,9 @@ class ProdConfig(Config):
     ENV = 'prod'
     DEBUG = False
     PROPAGATE_EXCEPTIONS = True
-    DB_NAME = 'dev.db'
-    DB_PATH = os.path.join(Config.PROJECT_ROOT, DB_NAME)
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///{0}'.format(DB_PATH)
     # <service-name>.<namespace-name>.svc.cluster.local
-    #SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL',
-    #                                         'postgresql://postgresadmin:admin123@postgres.tddc88-company-2-2020.svc.cluster.local:5432/postgres')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL',
+                                             'postgresql://postgresadmin:admin123@postgres.tddc88-company-2-2020.svc.cluster.local:5432/postgres')
 
 
 class DevConfig(Config):
