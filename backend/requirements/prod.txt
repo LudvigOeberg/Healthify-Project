@@ -1,6 +1,7 @@
 # Everything needed in production
 
 Werkzeug
+apispec==3.3.2
 SQLAlchemy==1.1.9
 Flask_Caching
 Flask_SQLAlchemy==2.2
