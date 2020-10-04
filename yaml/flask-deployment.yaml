@@ -21,11 +21,9 @@ spec:
           ports:
           - containerPort: 5000
             protocol: TCP
-          env:
-          - name: FLASK_ENV
-            value: "development"
-          - name: APP_SETTINGS
-            value: "project.config.DevelopmentConfig"
+          #env:
+          #- name: FLASK_ENV
+          #  value: "production"
           readinessProbe:
             tcpSocket:
               port: 5000

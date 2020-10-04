@@ -40,6 +40,7 @@ build-frontend:
     - echo "Test successfully!"
 
 
+
 build-flask-image:
   stage: build
   image: docker.io/buildah/buildah
@@ -118,6 +119,10 @@ deploy-app:
     - kubectl apply -f yaml/flask-deployment.yaml
     - kubectl apply -f yaml/flask-service.yaml
     - kubectl apply -f yaml/app-ingress.yaml
+    - kubectl apply -f yaml/postgres-service.yml
+    - kubectl apply -f yaml/postgres-deployment.yml
+    - kubectl apply -f yaml/postgres-configmap.yml
+    - kubectl apply -f yaml/postgres-storage.yml
 
 
 

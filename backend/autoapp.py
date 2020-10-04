@@ -3,8 +3,8 @@
 from flask.helpers import get_debug_flag
 
 from src.app import create_app
-from src.settings import DevConfig
+from src.settings import DevConfig, ProdConfig
 
-CONFIG = DevConfig
+CONFIG = DevConfig if get_debug_flag() else ProdConfig
 
 app = create_app(CONFIG)
