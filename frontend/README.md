@@ -11,6 +11,12 @@ Installs the app dependencies and creates the folder node_modules. Needed to run
 #### `npm start`
 
 Runs the app in the development mode.<br />
+If you wan't the backend-server to work you need to set:
+```bash
+export NODE_ENV=development
+```
+before you run the server!
+
 Open [http://localhost:4100](http://localhost:4100) to view it in the browser.
 
 The page will reload if you make edits.<br />
