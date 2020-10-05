@@ -28,9 +28,13 @@ def drop_db():
     """Run the db setup."""
     from src.extensions import db
     from sqlalchemy import text
-    db.drop_all()
-    sql = text("DROP TABLE alembic_version;")
-    db.engine.execute(sql)
+    from sqlalchemy import exc
+    try:
+        db.drop_all()
+        sql = text("DROP TABLE alembic_version;")
+        db.engine.execute(sql)
+    except:
+        pass
 
 
 @click.command()
