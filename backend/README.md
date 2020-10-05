@@ -12,7 +12,7 @@ Only needs to be run once, (or if dependecies are updated or if `venv/` folder i
 ```sh
 python3 -m venv venv
 . venv/bin/activate
-pip install -r requirments.txt
+pip install -r requirements.txt
 
 export FLASK_DEBUG=1
 export FLASK_APP=autoapp.py
