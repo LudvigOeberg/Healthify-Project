@@ -23,6 +23,14 @@ def test():
 
 
 @click.command()
+@with_appcontext
+def drop_db():
+    """Run the db setup."""
+    from src.extensions import db
+    db.drop_all()
+
+
+@click.command()
 @click.option('-f', '--fix-imports', default=False, is_flag=True,
               help='Fix imports using isort, before linting')
 def lint(fix_imports):

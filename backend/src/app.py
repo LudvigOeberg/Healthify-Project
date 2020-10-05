@@ -4,11 +4,11 @@ from flask import Flask
 from src.extensions import bcrypt, cache, db, migrate, jwt, cors, docs, api
 
 from src import commands, user
-from src.settings import DevConfig
+from src.settings import ProdConfig
 from src.exceptions import InvalidUsage
 
 
-def create_app(config_object=DevConfig):
+def create_app(config_object=ProdConfig):
     """An application factory, as explained here:
     http://flask.pocoo.org/docs/patterns/appfactories/.
 
@@ -69,6 +69,7 @@ def register_shellcontext(app):
 def register_commands(app):
     """Register Click commands."""
     app.cli.add_command(commands.test)
+    app.cli.add_command(commands.drop_db)
     app.cli.add_command(commands.lint)
     app.cli.add_command(commands.clean)
     app.cli.add_command(commands.urls)

@@ -54,19 +54,7 @@ class Child(Model):
     __mapper_args__ = {'polymorphic_identity': 'user'}
     id = Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     parent_id = reference_col('parent')
-    caregiver_id = reference_col('caregiver')
     
     def __repr__(self):
         """Represent instance as a unique string."""
         return '<Child({username!r})>'.format(username=self.username)
-
-
-class CareGiver(Model):
-    __tablename__ = 'caregiver'
-    __mapper_args__ = {'polymorphic_identity': 'user'}
-    id = Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    patients = relationship('Child', backref='caregiver')
-
-    def __repr__(self):
-        """Represent instance as a unique string."""
-        return '<CareGiver({username!r})>'.format(username=self.username)
