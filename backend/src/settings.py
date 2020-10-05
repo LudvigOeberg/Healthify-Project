@@ -12,7 +12,7 @@ class Config(object):
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     TEST_PATH = os.path.join(PROJECT_ROOT, 'tests')
-    BCRYPT_LOG_ROUNDS = 3
+    BCRYPT_LOG_ROUNDS = 4
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
