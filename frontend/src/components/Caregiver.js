@@ -12,8 +12,17 @@ import { Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
-
-export default function Cargiver() {
+/**
+ * Displays a caregiver
+ * @param {const} props- a const with a name, an email and a telephone number to the caregiver 
+ * should look like below
+ * const doctor={
+ * name: "Sebastian",
+ * mail: "hej@gmail.com",
+ * telephone: "XXX-XXXXXXX"
+ * }  
+ */
+export default function Caregiver(props) {
     const classes = useStyles();  
     return (
         <Container maxWidth="sm">
@@ -22,22 +31,22 @@ export default function Cargiver() {
                 <List>
                     <ListItem alignItems="center">
                         <ListItemAvatar alignItems="flex">
-                            <Avatar alt="Dr.X" />
+                            <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" alt={props.name}/>
                         </ListItemAvatar>
-                        <ListItemText primary="Doktor X" />
+                        <ListItemText primary={props.name} />
                     </ListItem>
                     <Divider />
-                    <ListItem button component="a" href="mailto:Dr.X@gmail.com"  alignItems="center">
+                    <ListItem button component="a" href={`mailto:${props.mail}`}  alignItems="center">
                         <ListItemIcon>
                             <MailIcon color="primary" />
                         </ListItemIcon>
-                        <ListItemText primary="Dr.X@gmail.com" />
+                        <ListItemText primary={props.mail} />
                     </ListItem>
-                    <ListItem button component="a" href="tel:070-XXX XX XX" alignItems="center">
+                    <ListItem button component="a" href={`tel:${props.telephone}`}  alignItems="center">
                         <ListItemIcon>
                             <PhoneIcon color="primary" />
                         </ListItemIcon>
-                        <ListItemText primary="070-XXX XX XX" />
+                        <ListItemText primary={props.telephone} />
                     </ListItem>
                 </List>
                 </Paper>
