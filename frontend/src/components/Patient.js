@@ -5,6 +5,7 @@ import {Button} from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 
+
 export default class Patient extends Component {
     render() {
         return (
@@ -15,24 +16,38 @@ export default class Patient extends Component {
                 <form className="bloodSugarForm" noValidate autoComplete="off">
                     <TextField 
                         required id = "standard-required"
-                        id="standard-basic" 
+                        id="blodsugar" 
                         label="Blodsocker värde" 
                         variant = "outlined"
                         InputProps={{
                                         startAdornment: <InputAdornment position="start">mmol/L</InputAdornment>,
                                     }}
+                        onChange= {handleTestFieldState(this)}
                     />
                 </form>
                 <Button 
                     className="uploadBloodSugarLevel" 
                     variant="contained" 
                     color="primary"
-                    onClick={() => { alert('clicked') }}>
+                    onClick={() => { alert('clicked'), localStorage.setItem("BloodSugarValue",) }}>
                 Skicka in
                 </Button>
             </div>
         )
     }
+}
+
+function getInitialState() {
+    return {
+        textFieldValue: ''
+    }
+}
+
+function handleTestFieldState(e) {
+    alert('updated');
+    this.setState({
+        textFieldValue: e.target.value
+    });
 }
 
 const useStyles = makeStyles((theme) => ({
