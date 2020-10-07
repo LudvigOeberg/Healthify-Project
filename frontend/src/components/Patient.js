@@ -44,7 +44,6 @@ function getInitialState() {
 }
 
 function handleTestFieldState(e) {
-    alert('updated');
     this.setState({
         textFieldValue: e.target.value
     });
