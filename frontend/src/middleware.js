@@ -4,12 +4,11 @@ import {
   ASYNC_END,
   LOGIN,
   LOGOUT,
-  REGISTER
+  REGISTER, 
+  LOCAL_SAVE
 } from './constants/actionTypes';
 
 const promiseMiddleware = store => next => action => {
-  //window.localStorage.setItem('store', JSON.stringify(store.getState()))
-
   if (isPromise(action.payload)) {
     store.dispatch({ type: ASYNC_START, subtype: action.type });
 
@@ -49,6 +48,9 @@ const promiseMiddleware = store => next => action => {
 };
 
 const localStorageMiddleware = store => next => action => {
+  if (action.type === LOCAL_SAVE) {
+    window.localStorage.setItem(action.key, action.value);
+  }
   if (action.type === REGISTER || action.type === LOGIN) {
     if (!action.error) {
       window.localStorage.setItem('jwt', action.payload.user.token);

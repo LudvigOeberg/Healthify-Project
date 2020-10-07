@@ -6,7 +6,9 @@ import {
   REGISTER,
   HOME_PAGE_UNLOADED,
   LOGIN_PAGE_UNLOADED,
-  REGISTER_PAGE_UNLOADED
+  REGISTER_PAGE_UNLOADED,
+  PATIENT_PAGE_UNLOADED, 
+  FIELD_CHANGE
 } from '../constants/actionTypes';
 
 const defaultState = {
@@ -36,9 +38,12 @@ export default (state = defaultState, action) => {
         token: action.error ? null : action.payload.user.token,
         currentUser: action.error ? null : action.payload.user
       };
+    case FIELD_CHANGE:
+      return { ...state, [action.key]: action.value };
     case HOME_PAGE_UNLOADED:
     case LOGIN_PAGE_UNLOADED:
     case REGISTER_PAGE_UNLOADED:
+    case PATIENT_PAGE_UNLOADED:
       return { ...state, viewChangeCounter: state.viewChangeCounter + 1 };
     default:
       return state;
