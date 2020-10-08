@@ -29,11 +29,13 @@ def drop_db():
     from src.extensions import db
     from sqlalchemy import text
     from sqlalchemy import exc
+    import traceback
     try:
         db.drop_all()
         sql = text("DROP TABLE alembic_version;")
         db.engine.execute(sql)
-    except:
+    except Exception:
+        traceback.print_exc()
         pass
 
 
