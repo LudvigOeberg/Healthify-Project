@@ -34,7 +34,21 @@ const Auth = {
     requests.put('/user', { user })
 };
 
+const Parent = {
+  registerChild: (name, surname, email, password, confirmPassword) =>
+    requests.post('/parent', { user: { name, surname, email, password, confirmPassword } }),
+  children: () =>
+    requests.get('/parent')
+};
+
+const Child = {
+  parents: () =>
+    requests.get('/child')
+};
+
 export default {
   Auth,
+  Parent,
+  Child,
   setToken: _token => { token = _token; }
 };

@@ -8,7 +8,7 @@ import {
   LOGIN_PAGE_UNLOADED,
   REGISTER_PAGE_UNLOADED,
   PATIENT_PAGE_UNLOADED, 
-  FIELD_CHANGE
+  FIELD_CHANGE, REGISTER_CHILD
 } from '../constants/actionTypes';
 
 const defaultState = {
@@ -32,9 +32,10 @@ export default (state = defaultState, action) => {
       return { ...state, redirectTo: '/', token: null, currentUser: null };
     case LOGIN:
     case REGISTER:
+    case REGISTER_CHILD:
       return {
         ...state,
-        redirectTo: action.error ? null : '/',
+        redirectTo: action.error ? null : "/",
         token: action.error ? null : action.payload.user.token,
         currentUser: action.error ? null : action.payload.user
       };
