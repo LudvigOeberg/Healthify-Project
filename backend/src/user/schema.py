@@ -7,13 +7,15 @@ import json
 
 
 class LoginSchema(Schema):
-    name = fields.Str(dump_only=True)
-    surname = fields.Str(dump_only=True)
     email = fields.Email(required=True)
     password = fields.Str(load_only=True, validate=validate.Length(min=1), required=True)
+    
+    name = fields.Str(dump_only=True)
+    surname = fields.Str(dump_only=True)
     token = fields.Str(dump_only=True)
     createdAt = fields.DateTime(attribute='created_at', dump_only=True)
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
+    type = fields.Str(dump_only=True)
 
     @pre_load
     def make_user(self, data, **kwargs):
@@ -36,17 +38,16 @@ class UserSchema(Schema):
     name = fields.Str(validate=validate.Length(min=1))
     surname = fields.Str(validate=validate.Length(min=1))
     email = fields.Email()
-    password = fields.Str(load_only=True, validate=validate.Length(min=1))
-    confirmPassword = fields.Str(load_only=True, validate=validate.Length(min=1))
     token = fields.Str(dump_only=True)
     createdAt = fields.DateTime(attribute='created_at', dump_only=True)
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
+    children = fields.List(fields.Nested(lambda: UserSchema(exclude=("parents", "children", "token"))), dump_only=True)
+    parents = fields.List(fields.Nested(lambda: UserSchema(exclude=("children", "parents", "token"))), dump_only=True)
+    type = fields.Str(dump_only=True)
 
     @pre_load
     def make_user(self, data, **kwargs):
         data = data.get('user')
-        if not data.get('email', True):
-            del data['email']
         return data
 
     def handle_error(self, exc, data, **kwargs):
@@ -67,9 +68,11 @@ class RegisterUserSchema(Schema):
     email = fields.Email(required=True)
     password = fields.Str(load_only=True, validate=validate.Length(min=1), required=True)
     confirmPassword = fields.Str(load_only=True, validate=validate.Length(min=1), required=True)
+    
     token = fields.Str(dump_only=True)
     createdAt = fields.DateTime(attribute='created_at', dump_only=True)
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
+    type = fields.Str(dump_only=True)
 
     @pre_load
     def make_user(self, data, **kwargs):
@@ -87,7 +90,64 @@ class RegisterUserSchema(Schema):
     class Meta:
         strict = True
 
+
+
+class ChildSchema(Schema):
+    name = fields.Str(dump_only=True)
+    surname = fields.Str(dump_only=True)
+    email = fields.Email(dump_only=True)
+    ehrid = fields.Str(dump_only=True)
+    createdAt = fields.DateTime(attribute='created_at', dump_only=True)
+    lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
+    type = fields.Str(dump_only=True)
+
+    @pre_load
+    def make_user(self, data, **kwargs):
+        data = data.get('user')
+        return data
+
+    def handle_error(self, exc, data, **kwargs):
+        """Log and raise our custom exception when (de)serialization fails."""
+        raise InvalidUsage(exc.messages)
+
+    @post_dump
+    def dump_user(self, data, **kwargs):
+        return {'child': data}
+
+    class Meta:
+        strict = True
+
+
+class ParentSchema(Schema):
+    name = fields.Str(dump_only=True)
+    surname = fields.Str(dump_only=True)
+    email = fields.Email(dump_only=True)
+    createdAt = fields.DateTime(attribute='created_at', dump_only=True)
+    lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
+    type = fields.Str(dump_only=True)
+
+    @pre_load
+    def make_user(self, data, **kwargs):
+        data = data.get('user')
+        return data
+
+    def handle_error(self, exc, data, **kwargs):
+        """Log and raise our custom exception when (de)serialization fails."""
+        raise InvalidUsage(exc.messages)
+
+    @post_dump
+    def dump_user(self, data, **kwargs):
+        return {'child': data}
+
+    class Meta:
+        strict = True
+
+
+
 login_schema = LoginSchema()
 register_user_schema = RegisterUserSchema()
 user_schema = UserSchema()
 user_schemas = UserSchema(many=True)
+child_schema = ChildSchema()
+child_schemas = ChildSchema(many=True)
+parent_schemas = ParentSchema(many=True)

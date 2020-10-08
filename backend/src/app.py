@@ -40,8 +40,10 @@ def register_extensions(app):
 
 def register_docs(app):
     """Register Swagger docs."""
-    docs.register(user.views.UserListResource)
-    docs.register(user.views.UserResource)
+    docs.register(user.views.AccountListResource)
+    docs.register(user.views.AccountResource)
+    docs.register(user.views.ParentResource)
+    docs.register(user.views.ChildResource)
 
 
 def register_errorhandlers(app):
@@ -60,7 +62,9 @@ def register_shellcontext(app):
         """Shell context objects."""
         return {
             'db': db,
-            'User': user.models.User
+            'User': user.models.User,
+            'Parent': user.models.Parent,
+            'Child': user.models.Child
         }
 
     app.shell_context_processor(shell_context)

@@ -11,14 +11,14 @@ from src.database import db
 
 from src.extensions import api
 from src.exceptions import InvalidUsage
-from .models import User
-from .schema import user_schema, user_schemas, login_schema, register_user_schema
+from .models import User, Parent, Child
+from .schema import user_schema, user_schemas, login_schema, register_user_schema, child_schemas, child_schema, parent_schemas
 
 
 @api.resource('/user')
 @marshal_with(user_schema)
-@doc(tags=["User"])
-class UserResource(MethodResource):
+@doc(tags=["Accounts"])
+class AccountResource(MethodResource):
     @jwt_required
     @doc(description="Get current user")
     def get(self):
@@ -26,15 +26,11 @@ class UserResource(MethodResource):
         user.token = request.headers.environ['HTTP_AUTHORIZATION'].split('Token ')[1]
         return current_user
     
-    @use_kwargs(user_schema)
     @jwt_required
-    @doc(description="Update user")
+    @use_kwargs(user_schema)
+    @doc(description="Update current user")
     def put(self, **kwargs):
         user = current_user
-        # take in consideration the password
-        password = kwargs.pop('password', None)
-        if password:
-            user.set_password(password)
         user.update(last_seen=dt.datetime.utcnow())
         user.update(**kwargs)
         return user
@@ -50,26 +46,74 @@ class UserResource(MethodResource):
             return user
         else:
             raise InvalidUsage.user_not_found()
-
+    
 
 @api.resource('/users')
-@doc(tags=["User"])
-class UserListResource(MethodResource):
+@doc(tags=["Accounts"])
+class AccountListResource(MethodResource):
     @marshal_with(user_schemas)
-    @doc(tags=["User"], description="Get all users")
+    @doc(description="Get all users")
     def get(self):
         users = User.query.all()
         return users
 
     @use_kwargs(register_user_schema)
     @marshal_with(register_user_schema)
-    @doc(tags=["User"], description="Register user")
+    @doc(description="Register account as parent")
     def post(self, name, surname, email, password, confirmPassword, **kwargs):
         if (password != confirmPassword): raise InvalidUsage.password_dont_match()
         try:
-            user = User(name, surname, email, password, **kwargs).save().save()
+            user = Parent(name, surname, email, password, **kwargs).save().save()
             user.token = create_access_token(identity=user)
         except IntegrityError:
             db.session.rollback()
             raise InvalidUsage.user_already_registered()
         return user
+
+
+@api.resource('/parent')
+@doc(tags=["Parent"])
+class ParentResource(MethodResource):
+    @jwt_required
+    @marshal_with(child_schemas)
+    @doc(description="Get all children for a current logged in parent")
+    def get(self):
+        if not current_user: 
+            raise InvalidUsage.user_not_found()
+        user = current_user
+        if user.type == "parent":
+            return user.children
+        else:
+            raise InvalidUsage.unknown_error()
+    
+    @jwt_required
+    @use_kwargs(register_user_schema)
+    @marshal_with(child_schema)
+    @doc(description="Register a child to current logged in parent")
+    def post(self, name, surname, email, password, confirmPassword, **kwargs):
+        if (password != confirmPassword): 
+            raise InvalidUsage.password_dont_match()
+        if not current_user: 
+            raise InvalidUsage.user_not_found()
+        try:
+            child = Child(name, surname, email, password, current_user, **kwargs).save().save()
+        except IntegrityError:
+            db.session.rollback()
+            raise InvalidUsage.user_already_registered()
+        return child
+
+
+@api.resource('/child')
+@doc(tags=["Child"])
+class ChildResource(MethodResource):
+    @jwt_required
+    @marshal_with(parent_schemas)
+    @doc(description="Get all parents for a current logged in child")
+    def get(self):
+        if not current_user: 
+            raise InvalidUsage.user_not_found()
+        user = current_user
+        if user.type == "child":
+            return user.parents
+        else:
+            raise InvalidUsage.unknown_error()

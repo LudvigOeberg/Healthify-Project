@@ -14,7 +14,13 @@ class User(SurrogatePK, Model):
     password = Column(db.Binary(128), nullable=True)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     last_seen = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    type = Column(db.String(50))
     token: str = ''
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'user',
+        'polymorphic_on': type
+    }
 
     def __init__(self, name, surname, email, password, **kwargs):
         """Create instance."""
@@ -34,27 +40,40 @@ class User(SurrogatePK, Model):
 
     def __repr__(self):
         """Represent instance as a unique string."""
-        return '<User({username!r})>'.format(username=self.username)
+        return '<User({name!r})>'.format(name=self.name)
 
 
-class Parent(Model):
+parents_children = db.Table('parents_children',
+    Column('parent_id', db.Integer, db.ForeignKey('parent.id')),
+    Column('child_id', db.Integer, db.ForeignKey('child.id'))
+)
+
+
+class Parent(User):
     __tablename__ = 'parent'
-    __mapper_args__ = {'polymorphic_identity': 'user'}
+    __mapper_args__ = {'polymorphic_identity': 'parent'}
     id = Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    children = relationship('Child', backref='parent')
+    children = relationship('Child', secondary=parents_children, back_populates="parents")
 
+    def __init__(self, name, surname, email, password, **kwargs):
+        super().__init__(name, surname, email, password, **kwargs)
 
     def __repr__(self):
         """Represent instance as a unique string."""
-        return '<Parent({username!r})>'.format(username=self.username)
+        return '<Parent({name!r})>'.format(name=self.name)
 
 
-class Child(Model):
+class Child(User):
     __tablename__ = 'child'
-    __mapper_args__ = {'polymorphic_identity': 'user'}
+    __mapper_args__ = {'polymorphic_identity': 'child'}
     id = Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    parent_id = reference_col('parent')
+    parents = relationship('Parent', secondary=parents_children, back_populates="children")
+    ehrid = Column(db.Integer)
+
+    def __init__(self, name, surname, email, password, parent, **kwargs):
+        super().__init__(name, surname, email, password, **kwargs)
+        self.parents.append(parent)
     
     def __repr__(self):
         """Represent instance as a unique string."""
-        return '<Child({username!r})>'.format(username=self.username)
+        return '<Child({name!r}{parent!r})>'.format(name=self.name, parent=self.parents)
