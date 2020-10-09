@@ -5,7 +5,7 @@ import {
   UPDATE_FIELD_AUTH,
   LOGIN,
   LOGIN_PAGE_UNLOADED,
-  UPDATE_BOOLEAN
+  UPDATE_AUTH_BOOLEAN
 } from '../constants/actionTypes';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -33,7 +33,7 @@ const mapDispatchToProps = dispatch => ({
   onUnload: () =>
     dispatch({ type: LOGIN_PAGE_UNLOADED }),
   onChangeRemberMe: value =>
-    dispatch({ type: UPDATE_BOOLEAN, key: 'rememberMe', value })
+    dispatch({ type: UPDATE_AUTH_BOOLEAN, key: 'rememberMe', value })
 });
 
 class Login extends React.Component {
