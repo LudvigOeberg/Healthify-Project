@@ -10,7 +10,6 @@ import { APP_LOAD, REDIRECT } from '../constants/actionTypes';
 import { store } from '../store';
 import Footer from './Footer';
 import Header from './Header';
-import MonitorChildValue from './MonitorChildValue';
 import Patient from './Patient';
 
 
@@ -60,7 +59,6 @@ class App extends React.Component {
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/patient-view" component={Patient} />
-                <Route exact path="/test" component={MonitorChildValue} />
               </Switch>
             </div>
             <Footer />
