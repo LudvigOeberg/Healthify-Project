@@ -11,5 +11,7 @@ The purpose of this file is to get a quick overview of the components we have cr
 | [Footer](Footer.js)   | Static   | The static footer for the website   |
 | [Header](Header.js)   |  Dynamic  | The header for the website   |
 | [Login](Login.js)   | /login   | Login page   |
+| [MonitorChildValue](MonitorChildValue.js) | Dynamic | Add value for child bloodsugar |
+| [MySnackbar](MySnackbar.js) | Dynamic | Creates a snackbar on any page |
 | [Patient](Patient.js)   | /patient-view   | Patient page   |
 | [Register](Register.js)   | /register   | Register page   |
