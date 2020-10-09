@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  UPDATE_FIELD_AUTH,
-  UPDATE_BOOLEAN
+  UPDATE_BOOLEAN,
+  FIELD_CHANGE
 } from '../constants/actionTypes';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -12,39 +12,27 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MySnackbar from './MySnackbar';
-import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const mapStateToProps = state => { 
   return {
-    ...state.auth,
-    open: false
+    ...state.common
 }};
 
 const mapDispatchToProps = dispatch => ({
-  onChangeAuth: (value) => {
-    return dispatch({ type: UPDATE_FIELD_AUTH, key: 'message', value })
-  },
+  onChangeField: (key, value) => 
+    dispatch({ type: FIELD_CHANGE, key: key, value }),
   onOpenSnackbar: (value) =>
-  {
-    return dispatch({ type: UPDATE_BOOLEAN, key: 'open', value });
-  }
+    dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
 });
 
 class MonitorChildValue extends React.Component {
   constructor() {
     super();
-    this.submitForm = (childValue) => ev => {
+    this.submitForm = ev => {
       ev.preventDefault();
-      console.log(childValue)
-      this.props.onChangeAuth(childValue);
       this.props.onOpenSnackbar(true);
-      if (childValue > 100 || childValue < 0 || typeof(childValue) == 'undefined') {
-        //Här vill vi trigga en error snackbar, försök igen
-      } else {
-        //Här kör vi en success snackbar
-      }
-      //this.props.onSubmit(email, password);
     };
+    this.changeField = ev => this.props.onChangeField(ev.target.id, ev.target.value);
   }
 
   componentWillUnmount() {
@@ -55,7 +43,7 @@ class MonitorChildValue extends React.Component {
     const { classes } = this.props;
     const childValue = this.props.childValue;
     const errors = this.props.errors ? this.props.errors : null;
-    const open = this.props.open;
+    const open = this.props.snackbarOpen;
 
     return (
       <Container component="main" maxWidth="xs">
@@ -66,7 +54,7 @@ class MonitorChildValue extends React.Component {
         <Typography component="h1" variant="h5">
           Logga nytt värde
         </Typography>
-        <form className={classes.form} noValidate onSubmit={this.submitForm(childValue)}>
+        <form className={classes.form} noValidate onSubmit={this.submitForm}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -76,6 +64,7 @@ class MonitorChildValue extends React.Component {
             name="childValue"
             label="Barnets värde"
             value={childValue}
+            onChange={this.changeField}
             autoFocus
           />
           <Button
@@ -89,7 +78,7 @@ class MonitorChildValue extends React.Component {
             Logga värde
           </Button>
           </form>
-          <MySnackbar open={open}/>
+          <MySnackbar open={open} color={"success"} message={"Du loggade värdet: " + childValue + " mmol/g"} />
       </div>
     </Container>
     );

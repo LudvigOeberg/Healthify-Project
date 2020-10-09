@@ -1,19 +1,23 @@
 
 
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import { connect } from 'react-redux';
 import {
-  UPDATE_FIELD_AUTH,
-  LOGIN,
-  LOGIN_PAGE_UNLOADED,
   UPDATE_BOOLEAN
 } from '../constants/actionTypes';
+
+
+/**
+ * Displays a snackbar at the bottom
+ * @param {const} props- a const with a message, open=true and a color.
+ * Should look like below:
+ * <Snackbar open={true} message={message} color={"success"} />
+ * 
+ *  Author: Martin Dagermo
+ */
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,20 +29,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const mapStateToProps = state => { 
-    console.log(state.auth)
-    return {
-      ...state.auth,
-    }
-};
+  return {
+    ...state.common
+}};
+
+const mapDispatchToProps = dispatch => ({
+  onOpenSnackbar: (value) =>
+    dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
+});
 
 const MySnackbar = (props) => {
   const classes = useStyles();
-
   const handleClose = (event, reason) => {
-    // if (reason === 'clickaway') {
-    //   return;
-    // }
-
+    if (reason === 'clickaway') {
+       return;
+    }
+    props.onOpenSnackbar(false);
   };
 
   return (
@@ -50,18 +56,18 @@ const MySnackbar = (props) => {
       >
         <Alert
           elevation={6}
-          severity="success"
+          severity={props.color}
           variant="filled"
           onClose={handleClose}
-          color="success"
+          color={props.color}
         >
-          {"Du loggade värdet: " + props.childValue + "mmol/L"}
+          {props.message}
         </Alert>
       </Snackbar>
     </div>
   );
 }
 
-export default connect(mapStateToProps)(MySnackbar);
+export default connect(mapStateToProps, mapDispatchToProps)(MySnackbar);
 
 

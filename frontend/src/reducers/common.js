@@ -8,7 +8,9 @@ import {
   LOGIN_PAGE_UNLOADED,
   REGISTER_PAGE_UNLOADED,
   PATIENT_PAGE_UNLOADED, 
-  FIELD_CHANGE, REGISTER_CHILD
+  FIELD_CHANGE, 
+  REGISTER_CHILD,
+  UPDATE_BOOLEAN
 } from '../constants/actionTypes';
 
 const defaultState = {
@@ -41,6 +43,8 @@ export default (state = defaultState, action) => {
       };
     case FIELD_CHANGE:
       return { ...state, [action.key]: action.value };
+    case UPDATE_BOOLEAN:  
+        return { ...state, [action.key]: action.value ? true : false };
     case HOME_PAGE_UNLOADED:
     case LOGIN_PAGE_UNLOADED:
     case REGISTER_PAGE_UNLOADED:
