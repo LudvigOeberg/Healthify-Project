@@ -7,7 +7,7 @@ import {
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -15,7 +15,7 @@ import MySnackbar from './MySnackbar';
 
 const mapStateToProps = state => { 
   return {
-    ...state.common
+    ...state.common,
 }};
 
 const mapDispatchToProps = dispatch => ({
@@ -32,13 +32,19 @@ class MonitorChildValue extends React.Component {
       ev.preventDefault();
       this.props.onOpenSnackbar(true);
     };
-    this.changeField = ev => this.props.onChangeField(ev.target.id, ev.target.value);
+    this.changeField = ev => {
+      this.props.onChangeField(ev.target.id, ev.target.value);
+    }
   }
 
   componentWillUnmount() {
     this.props.onUnload();
   }
   
+  validate = (val) => {
+    return (val < 100 && val > 0)
+  }
+
   render() {
     const { classes } = this.props;
     const childValue = this.props.childValue;
@@ -49,10 +55,10 @@ class MonitorChildValue extends React.Component {
       <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <AddIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Logga nytt värde
+          Skriv in ditt barns blodsockervärde
         </Typography>
         <form className={classes.form} noValidate onSubmit={this.submitForm}>
           <TextField
@@ -62,8 +68,10 @@ class MonitorChildValue extends React.Component {
             fullWidth
             id="childValue"
             name="childValue"
-            label="Barnets värde"
+            label="Blodsocker (mmol/g)"
             value={childValue}
+            disabled={open}
+            
             onChange={this.changeField}
             autoFocus
           />
@@ -72,13 +80,14 @@ class MonitorChildValue extends React.Component {
             fullWidth
             variant="contained"
             color="primary" 
-            disabled={this.props.inProgress}
+            disabled={this.props.inProgress || open}
             className={classes.submit}
           >
             Logga värde
           </Button>
           </form>
-          <MySnackbar open={open} color={"success"} message={"Du loggade värdet: " + childValue + " mmol/g"} />
+          <MySnackbar open={open} color={this.validate(childValue) ? "success":"error"} 
+          message={this.validate(childValue) ? "Du loggade värdet: " + childValue + " mmol/g" : "Fel format!"} />
       </div>
     </Container>
     );
@@ -99,7 +108,7 @@ const styles = theme => {
       backgroundColor: theme.palette.secondary.main,
     },
     form: {
-      width: '100%', // Fix IE 11 issue.
+      width: '50%', // Fix IE 11 issue.
       marginTop: theme.spacing(1),
     },
     submit: {

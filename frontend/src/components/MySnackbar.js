@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const mapStateToProps = state => { 
+  console.log(state.common)
   return {
     ...state.common
 }};
