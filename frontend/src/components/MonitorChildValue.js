@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MySnackbar from './MySnackbar';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const mapStateToProps = state => { 
   return {
@@ -60,7 +61,7 @@ class MonitorChildValue extends React.Component {
         <Typography component="h1" variant="h5">
           Skriv in ditt barns blodsockervärde
         </Typography>
-        <form className={classes.form} noValidate onSubmit={this.submitForm}>
+        <form className={classes.form} noValidate onSubmit={this.submitForm} autoComplete="off">
           <TextField
             variant="outlined"
             margin="normal"
@@ -68,7 +69,10 @@ class MonitorChildValue extends React.Component {
             fullWidth
             id="childValue"
             name="childValue"
-            label="Blodsocker (mmol/g)"
+            InputProps={{
+              startAdornment: <InputAdornment position="start">mmol/L</InputAdornment>,
+            }}
+            label="Blodsocker"
             value={childValue}
             disabled={open}
             
@@ -87,7 +91,7 @@ class MonitorChildValue extends React.Component {
           </Button>
           </form>
           <MySnackbar open={open} color={this.validate(childValue) ? "success":"error"} 
-          message={this.validate(childValue) ? "Du loggade värdet: " + childValue + " mmol/g" : "Fel format!"} />
+          message={this.validate(childValue) ? "Du loggade värdet: " + childValue + " mmol/L" : "Fel format!"} />
       </div>
     </Container>
     );
