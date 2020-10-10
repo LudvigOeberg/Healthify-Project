@@ -124,7 +124,7 @@ const PersistantDrawer = (props) => {
                             <ListItemIcon><Settings /></ListItemIcon>
                             <ListItemText primary={"Inställningar"} />
                         </ListItem>
-                        <ListItem button component="a" href="/register_child">
+                        <ListItem button component="a" href="/register-patient">
                             <ListItemIcon><Add /></ListItemIcon>
                             <ListItemText primary={"Registrering av barn"} />
                         </ListItem>

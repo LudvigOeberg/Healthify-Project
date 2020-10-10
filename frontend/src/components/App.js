@@ -12,7 +12,7 @@ import Footer from './Footer';
 import Header from './Header';
 import Patient from './Child/Patient';
 import Parent from './Parent/Parent';
-import PatientRegister from './PatientRegister'
+import PatientRegister from './Parent/PatientRegister'
 
 
 const mapStateToProps = state => {

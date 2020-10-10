@@ -1,6 +1,6 @@
 import { Avatar, Container, Grid, TextField, Typography, Accordion, AccordionSummary, AccordionDetails, Button, FormControlLabel } from '@material-ui/core';
 import React, { Component } from 'react';
-import agent from '../agent';
+import agent from '../../agent';
 import { connect } from 'react-redux';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
 import { withStyles } from '@material-ui/core/styles';
@@ -10,7 +10,7 @@ import {
     UPDATE_FIELD_AUTH,
     REGISTER_PAGE_UNLOADED,
     
-} from '../constants/actionTypes';
+} from '../../constants/actionTypes';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
@@ -29,8 +29,6 @@ const mapDispatchToProps = dispatch => ({
     },
     onUnload: () =>
         dispatch({ type: REGISTER_PAGE_UNLOADED })
-    
-
 });
 
 
@@ -226,7 +224,7 @@ class PatientRegister extends Component {
                             </Grid>
                         </Grid>
                         <Button
-                            onClick={this.onClickRegister}
+                            type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
