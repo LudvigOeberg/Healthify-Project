@@ -10,8 +10,8 @@ import { APP_LOAD, REDIRECT } from '../constants/actionTypes';
 import { store } from '../store';
 import Footer from './Footer';
 import Header from './Header';
-import Patient from './Patient';
-import Parent from './Parent';
+import Patient from './Child/Patient';
+import Parent from './Parent/Parent';
 
 
 const mapStateToProps = state => {
