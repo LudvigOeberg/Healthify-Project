@@ -59,8 +59,8 @@ class App extends React.Component {
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
-                <Route exact path="/patient-view" component={Patient} />
-                <Route exact path="/parent-view" component={Parent} />
+                <Route exact path="/child" component={Patient} />
+                <Route exact path="/parent" component={Parent} />
               </Switch>
             </div>
             <Footer />
