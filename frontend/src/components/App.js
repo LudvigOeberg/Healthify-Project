@@ -12,6 +12,7 @@ import Footer from './Footer';
 import Header from './Header';
 import Patient from './Child/Patient';
 import Parent from './Parent/Parent';
+import PatientRegister from './PatientRegister'
 
 
 const mapStateToProps = state => {
@@ -61,6 +62,7 @@ class App extends React.Component {
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/child" component={Patient} />
                 <Route exact path="/parent" component={Parent} />
+                <Route exact path="/register-patient" component={PatientRegister} />
               </Switch>
             </div>
             <Footer />
