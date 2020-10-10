@@ -14,6 +14,7 @@ import {
 } from '../../constants/actionTypes';
 import Measurements from '../Measurements';
 
+
 const mapStateToProps = state => {
     return {
         ...state.common
@@ -31,6 +32,8 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
 });
 
+
+
 class Patient extends Component {
 
     constructor() {
@@ -42,6 +45,7 @@ class Patient extends Component {
             this.props.onOpenSnackbar(true);
         };
     }
+    
 
     componentWillUnmount() {
         this.props.onUnload();
@@ -51,7 +55,8 @@ class Patient extends Component {
         return (val < 100 && val > 0)
     }
 
-    render() {
+    render() { 
+        Object.keys(localStorage)
         const bloodsugar = this.props.bloodsugar;
         const { classes } = this.props;
         const open = this.props.snackbarOpen;
@@ -60,7 +65,7 @@ class Patient extends Component {
                 <div className={classes.paper}>
                     <h1>Patientvy</h1>
                     <h2> Var vänlig skriv in ditt blodsockervärde</h2>
-                    <form className={classes.form} noValidate autoComplete="off" onSubmit={this.submitForm("bloodsugar:" + getCurrentDate(), bloodsugar)}>
+                    <form className={classes.form} noValidate autoComplete="off" onSubmit={this.submitForm(getCurrentDate(), bloodsugar)}>
                         <TextField
                             required
                             id="bloodsugar"
@@ -117,7 +122,7 @@ const styles = theme => {
 
 export function getCurrentDate() {
     var today = new Date();
-    var todaysDate = String(today.getFullYear()) + '-' + String(today.getMonth()) + '-' + String(today.getDate());
+    var todaysDate = String(today.getFullYear()) + '-' + String(today.getMonth()) + '-' + String(today.getDate())+ " "+ String(today.getHours()) + ":" + String(today.getMinutes());
     return todaysDate;
 }
 
