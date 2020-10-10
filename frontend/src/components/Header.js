@@ -1,14 +1,16 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
-import { LOGOUT } from '../constants/actionTypes';
+import clsx from 'clsx';
+import React from 'react';
 import { connect } from 'react-redux';
+import { LOGOUT, UPDATE_BOOLEAN } from '../constants/actionTypes';
+import PersistantDrawer from './Drawer';
 
 const LoggedOutView = props => {
   const classes = useStyles();
@@ -35,10 +37,12 @@ const LoggedInView = props => {
   if (props.currentUser) {
     return (
     <div className={classes.root}>
-      <AppBar className={classes.nav} position="static">
+      <AppBar className={clsx(classes.nav, {
+          [classes.appBarShift]: props.drawerOpen,
+        })} position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
+          <IconButton className={clsx(classes.menuButton, props.drawerOpen && classes.hide)} onClick={props.openDrawer(props.drawerOpen)} edge="start" color="inherit" aria-label="menu">
+            <MenuIcon/>
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             <Button component={Link} href="/" color="inherit">{props.appName}</Button>
@@ -47,6 +51,7 @@ const LoggedInView = props => {
           <Button component={Link} onClick={props.logout} color="inherit">Logga ut</Button>
         </Toolbar>
       </AppBar>
+      <PersistantDrawer />
     </div>
     );
   }
@@ -55,24 +60,28 @@ const LoggedInView = props => {
 };
 
 const mapStateToProps = state => ({
-  currentUser: state.common.currentUser
+  currentUser: state.common.currentUser,
+  drawerOpen: state.common.drawerOpen
 });
 
 const mapDispatchToProps = dispatch => ({
   onClickLogout: () => dispatch({ type: LOGOUT }),
+  onClickDrawerOpen: (value) => dispatch({ type: UPDATE_BOOLEAN, key: "drawerOpen", value })
 });
 
 class Header extends React.Component {
   constructor() {
     super();
     this.logout = ev => this.props.onClickLogout();
+    this.openDrawer = ev => val => this.props.onClickDrawerOpen(val);
   }
 
   render() {
+    const drawerOpen = this.props.drawerOpen;
     return (
       <nav className="navbar navbar-light" style={{zIndex: 100}}>
           <LoggedOutView currentUser={this.props.currentUser} appName={this.props.appName} />
-          <LoggedInView currentUser={this.props.currentUser} appName={this.props.appName} logout={this.logout} />
+          <LoggedInView openDrawer={this.openDrawer} drawerOpen={drawerOpen} currentUser={this.props.currentUser} appName={this.props.appName} logout={this.logout} />
       </nav>
     );
   }
@@ -89,6 +98,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     textTransform: `none`,
     fontSize: `1rem`,
+  },
+  hide: {
+    display: 'none',
   },
 }));
 

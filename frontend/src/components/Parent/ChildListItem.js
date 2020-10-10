@@ -22,7 +22,7 @@ export default function ChildListItem(props) {
     const classes = useStyles();
     Moment.locale('sv');
     return (
-        <Container maxWidth="ml">
+        <Container maxWidth="md">
             <div className={classes.paper}>
                 <Paper>
                 <List>

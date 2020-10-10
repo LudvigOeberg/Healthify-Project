@@ -10,8 +10,8 @@ export default function CaregivingTeam(props) {
     return (
         <Container>
             <Grid container direction="row" justify="center" alignItems="center" spacing={0}>
-                {caregivers.map((caregiver)=>(
-                    <Grid item>
+                {caregivers.map((caregiver, i)=>(
+                    <Grid key={i}>
                         {Caregiver(caregiver)}
                     </Grid>
                  ))}
