@@ -5,13 +5,13 @@ import { Button } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
-import MySnackbar from './MySnackbar';
+import MySnackbar from '../MySnackbar';
 import {
     PATIENT_PAGE_UNLOADED,
     LOCAL_SAVE,
     FIELD_CHANGE,
     UPDATE_BOOLEAN
-} from '../constants/actionTypes';
+} from '../../constants/actionTypes';
 
 const mapStateToProps = state => {
     return {
@@ -27,7 +27,7 @@ const mapDispatchToProps = dispatch => ({
     onUnload: () =>
         dispatch({ type: PATIENT_PAGE_UNLOADED }),
     onOpenSnackbar: (value) =>
-    dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
+        dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
 });
 
 class Patient extends Component {

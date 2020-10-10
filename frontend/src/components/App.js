@@ -10,7 +10,8 @@ import { APP_LOAD, REDIRECT } from '../constants/actionTypes';
 import { store } from '../store';
 import Footer from './Footer';
 import Header from './Header';
-import Patient from './Patient';
+import Patient from './Child/Patient';
+import Parent from './Parent/Parent';
 
 
 const mapStateToProps = state => {
@@ -58,7 +59,8 @@ class App extends React.Component {
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
-                <Route exact path="/patient-view" component={Patient} />
+                <Route exact path="/child" component={Patient} />
+                <Route exact path="/parent" component={Parent} />
               </Switch>
             </div>
             <Footer />

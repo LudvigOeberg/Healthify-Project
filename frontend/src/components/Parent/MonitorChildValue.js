@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   UPDATE_BOOLEAN,
   FIELD_CHANGE
-} from '../constants/actionTypes';
+} from '../../constants/actionTypes';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -11,7 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import MySnackbar from './MySnackbar';
+import MySnackbar from '../MySnackbar';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 const mapStateToProps = state => { 

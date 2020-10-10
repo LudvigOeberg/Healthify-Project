@@ -10,7 +10,8 @@ import {
   PATIENT_PAGE_UNLOADED, 
   FIELD_CHANGE, 
   REGISTER_CHILD,
-  UPDATE_BOOLEAN
+  UPDATE_BOOLEAN,
+  PAGE_UNLOADED
 } from '../constants/actionTypes';
 
 const defaultState = {
@@ -34,12 +35,16 @@ export default (state = defaultState, action) => {
       return { ...state, redirectTo: '/', token: null, currentUser: null };
     case LOGIN:
     case REGISTER:
+      return {
+        ...state,
+        redirectTo: action.error ? null : '/' + action.payload.user.type,
+        token: action.error ? null : action.payload.user.token,
+        currentUser: action.error ? null : action.payload.user
+      };
     case REGISTER_CHILD:
       return {
         ...state,
-        redirectTo: action.error ? null : "/",
-        token: action.error ? null : action.payload.user.token,
-        currentUser: action.error ? null : action.payload.user
+        redirectTo: action.error ? null : '/parent',
       };
     case FIELD_CHANGE:
       return { ...state, [action.key]: action.value };
@@ -49,6 +54,7 @@ export default (state = defaultState, action) => {
     case LOGIN_PAGE_UNLOADED:
     case REGISTER_PAGE_UNLOADED:
     case PATIENT_PAGE_UNLOADED:
+    case PAGE_UNLOADED:
       return { ...state, viewChangeCounter: state.viewChangeCounter + 1 };
     default:
       return state;

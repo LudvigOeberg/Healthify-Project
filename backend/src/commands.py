@@ -24,6 +24,16 @@ def test():
 
 @click.command()
 @with_appcontext
+def init_db():
+    """Run the db setup."""
+    from src.extensions import db
+    from src.user.models import Parent, Child
+    parent = Parent("Förälder", "Svensson", "p@test.se", "test123").save().save()
+    child = Child("Barn", "Svensson", "c@test.se", "test123", parent).save().save()
+
+
+@click.command()
+@with_appcontext
 def drop_db():
     """Run the db setup."""
     from src.extensions import db

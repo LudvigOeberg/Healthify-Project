@@ -5,13 +5,15 @@ import {
   REGISTER_PAGE_UNLOADED,
   ASYNC_START,
   UPDATE_FIELD_AUTH,
-  UPDATE_AUTH_BOOLEAN
+  UPDATE_AUTH_BOOLEAN,
+  REGISTER_CHILD
 } from '../constants/actionTypes';
 
 export default (state = {}, action) => {
   switch (action.type) {
     case LOGIN:
     case REGISTER:
+    case REGISTER_CHILD:
       return {
         ...state,
         inProgress: false,
