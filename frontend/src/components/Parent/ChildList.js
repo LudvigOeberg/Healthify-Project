@@ -1,18 +1,18 @@
 import { Container, Grid } from '@material-ui/core'
 import React from 'react'
-import Caregiver from './Caregiver';
+import ChildListItem from './ChildListItem';
 /**
- * Displays a team of caregivers in a grid
- * @param {Caregiver} props - an array of caregivers (see input for component Caregiver)
+ * Displays a list of childrens
+ * @param {ChildListItem} props
  */
-export default function CaregivingTeam(props) {
-    const caregivers = props  
+export default function ChildList(props) {
+    const children = props.children;
     return (
         <Container>
             <Grid container direction="row" justify="center" alignItems="center" spacing={0}>
-                {caregivers.map((caregiver, i)=>(
+                {children.map((child, i)=>(
                     <Grid key={i}>
-                        {Caregiver(caregiver)}
+                        {ChildListItem(child.child)}
                     </Grid>
                  ))}
             </Grid>
