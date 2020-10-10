@@ -26,7 +26,7 @@ class Parent extends React.Component {
     const children = this.props.currentUser ? this.props.currentUser.children : null;
     if (children) {
       return (
-        <Container component="main" maxWidth="ml">
+        <Container component="main" maxWidth="md">
           <div className={classes.paper}>
             <ChildList children={children} />
           </div>
@@ -34,7 +34,7 @@ class Parent extends React.Component {
       );
     } else {
       return (
-      <Container component="main" maxWidth="ml">
+      <Container component="main" maxWidth="md">
         <div className={classes.paper}>
           <Typography type="h5">Inga barn</Typography>
         </div>

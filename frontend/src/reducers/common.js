@@ -17,7 +17,8 @@ import {
 const defaultState = {
   appName: 'Healthify',
   token: null,
-  viewChangeCounter: 0
+  viewChangeCounter: 0,
+  drawerOpen: false
 };
 
 export default (state = defaultState, action) => {
