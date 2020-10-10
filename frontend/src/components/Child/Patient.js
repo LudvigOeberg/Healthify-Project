@@ -12,6 +12,7 @@ import {
     FIELD_CHANGE,
     UPDATE_BOOLEAN
 } from '../../constants/actionTypes';
+import Measurements from '../Measurements';
 
 const mapStateToProps = state => {
     return {
@@ -84,6 +85,8 @@ class Patient extends Component {
                         <MySnackbar open={open} color={this.validate(bloodsugar) ? "success":"error"} 
                         message={this.validate(bloodsugar) ? "Du loggade värdet: " + bloodsugar + " mmol/L" : "Fel format!"} />
                     </form>
+                    <Measurements>
+                    </Measurements>
                 </div>
             </Container>
         );
