@@ -41,7 +41,7 @@ class UserSchema(Schema):
     token = fields.Str(dump_only=True)
     createdAt = fields.DateTime(attribute='created_at', dump_only=True)
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
-    children = fields.List(fields.Nested(lambda: UserSchema(exclude=("parents", "children", "token"))), dump_only=True)
+    children = fields.List(fields.Nested(lambda: ChildSchema()), dump_only=True)
     parents = fields.List(fields.Nested(lambda: UserSchema(exclude=("children", "parents", "token"))), dump_only=True)
     type = fields.Str(dump_only=True)
 

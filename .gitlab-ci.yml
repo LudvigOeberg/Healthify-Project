@@ -50,6 +50,9 @@ build-flask-image:
       - "*/README.md"
       - "README.md"
   only:
+    changes:
+      - backend/*
+  only:
     refs: 
       - master
 
