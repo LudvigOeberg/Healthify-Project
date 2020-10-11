@@ -4,6 +4,7 @@ import Container from '@material-ui/core/Container';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Link from '@material-ui/core/Link';
 
 const mapStateToProps = (state) => ({
 
@@ -70,6 +71,7 @@ class ParentPage extends Component {
                     </Button>
 
                         <Button
+                            component={Link} href="/PatientRegister"
                             type="submit"
                             fullWidth
                             variant="contained"
