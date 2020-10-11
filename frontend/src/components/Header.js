@@ -24,7 +24,6 @@ const LoggedOutView = props => {
           </Typography>
           <Button component={Link} href="/login" color="inherit">Logga in</Button>
           <Button component={Link} href="/register" color="inherit">Registrera dig</Button>
-          <Button component={Link} href="/ParentPage" color="inherit"> Förälder </Button>
         </Toolbar>
       </AppBar>
     </div>
