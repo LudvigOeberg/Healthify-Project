@@ -15,7 +15,6 @@ import Parent from './Parent/Parent';
 import ParentOverview from './Parent/ParentOverview';
 import PatientRegister from './Parent/PatientRegister'
 
-
 const mapStateToProps = state => {
   return {
     appLoaded: state.common.appLoaded,
