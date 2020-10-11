@@ -28,11 +28,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const mapStateToProps = state => { 
+const mapStateToProps = state => {
   console.log(state.common)
   return {
     ...state.common
-}};
+  }
+};
 
 const mapDispatchToProps = dispatch => ({
   onOpenSnackbar: (value) =>
@@ -43,7 +44,7 @@ const MySnackbar = (props) => {
   const classes = useStyles();
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
-       return;
+      return;
     }
     props.onOpenSnackbar(false);
   };

@@ -45,7 +45,7 @@ class Patient extends Component {
             this.props.onOpenSnackbar(true);
         };
     }
-    
+
 
     componentWillUnmount() {
         this.props.onUnload();
@@ -55,7 +55,7 @@ class Patient extends Component {
         return (val < 100 && val > 0)
     }
 
-    render() { 
+    render() {
         Object.keys(localStorage)
         const bloodsugar = this.props.bloodsugar;
         const { classes } = this.props;
@@ -87,8 +87,8 @@ class Patient extends Component {
                         >
                             Skicka in
                         </Button>
-                        <MySnackbar open={open} color={this.validate(bloodsugar) ? "success":"error"} 
-                        message={this.validate(bloodsugar) ? "Du loggade värdet: " + bloodsugar + " mmol/L" : "Fel format!"} />
+                        <MySnackbar open={open} color={this.validate(bloodsugar) ? "success" : "error"}
+                            message={this.validate(bloodsugar) ? "Du loggade värdet: " + bloodsugar + " mmol/L" : "Fel format!"} />
                     </form>
                     <Measurements>
                     </Measurements>
@@ -122,7 +122,7 @@ const styles = theme => {
 
 export function getCurrentDate() {
     var today = new Date();
-    var todaysDate = String(today.getFullYear()) + '-' + String(today.getMonth()) + '-' + String(today.getDate())+ " "+ String(today.getHours()) + ":" + String(today.getMinutes());
+    var todaysDate = String(today.getFullYear()) + '-' + String(today.getMonth()) + '-' + String(today.getDate()) + " " + String(today.getHours()) + ":" + String(today.getMinutes());
     return todaysDate;
 }
 

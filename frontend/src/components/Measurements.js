@@ -34,8 +34,8 @@ function createRows() {
   var length = keys.length;
   var i;
 
-  for(i = 0; i < length; i++){
-    rows[i+8] = createData(keys[i],localStorage.getItem(keys[i]));
+  for (i = 0; i < length; i++) {
+    rows[i + 8] = createData(keys[i], localStorage.getItem(keys[i]));
   }
   return (rows);
 }
@@ -43,46 +43,46 @@ function createRows() {
 
 
 export default function Measurements(props,) {
-    const classes = useStyles(); 
-    var rows = createRows();
-    return (
-        <Container maxWidth="sm">
-            <div className={classes.paper}>
-            <Typography component="h1" variant="h3">
-            Previous Measurements
+  const classes = useStyles();
+  var rows = createRows();
+  return (
+    <Container maxWidth="sm">
+      <div className={classes.paper}>
+        <Typography component="h1" variant="h3">
+          Previous Measurements
                     </Typography>
 
-            
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell align="right">Bloodsugar (mmol / L)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.date}>
-              <TableCell component="th" scope="row">
-                {row.date}
-              </TableCell>
-              <TableCell align="right">{row.bloodsugarLvl}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-            </div>
-        </Container>
-    )
+
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                <TableCell align="right">Bloodsugar (mmol / L)</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.date}>
+                  <TableCell component="th" scope="row">
+                    {row.date}
+                  </TableCell>
+                  <TableCell align="right">{row.bloodsugarLvl}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </Container>
+  )
 }
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
 }));
