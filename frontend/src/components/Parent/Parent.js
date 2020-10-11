@@ -9,13 +9,14 @@ import ChildList from './ChildList';
 import { PAGE_UNLOADED } from '../../constants/actionTypes';
 
 const mapStateToProps = state => {
-  return {
-      ...state.common
-  }};
+    return {
+        ...state.common
+    }
+};
 
 const mapDispatchToProps = dispatch => ({
- onUnload: () =>
-    dispatch({ type: PAGE_UNLOADED})
+    onUnload: () =>
+        dispatch({ type: PAGE_UNLOADED })
 });
 
 class ParentPage extends Component {
@@ -25,82 +26,88 @@ class ParentPage extends Component {
     render() {
         const { classes } = this.props;
         const children = this.props.currentUser ? this.props.currentUser.children : null;
-        const name = this.props.currentUser ? this.props.currentUser.surname : null;
-        return (
-            <Container component="main" maxWidth="xs">
-                <div className={classes.paper}>
-                    <Avatar
-                        className={classes.purple}>B
-            </Avatar>
+        const name = this.props.currentUser ? this.props.currentUser.name + " " + this.props.currentUser.surname : null;
+        if (children) {
+            return (
+                <Container component="main" maxWidth="md">
+                    <div className={classes.paper}>
+                        <Avatar
+                            className={classes.purple}
+                            src="test.123"
+                            alt={name}
+                        />
 
-                <Typography
-                        component="h1"
-                        variant="h5"> 
-                        {name}
-                </Typography>
-
-                <Typography type="h5">Dina barn</Typography>
-
-                    {/* child list component to list children for logged in user */}
-                    <ChildList children={children} /> 
-
-                    <form className={classes.form}>
-        
                         <Typography
                             component="h1"
                             variant="h5">
-                            Maja, 7
-                </Typography>
-                        <Typography
-                            component="h1"
-                            variant="h5">
-                            Diabetes, 1
-                </Typography>
+                            {name}
+                        </Typography>
 
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Om diabetes
-                    </Button>
+                        <Typography type="h5">Dina barn</Typography>
 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Ändra uppgifter
-                    </Button>
+                        {/* child list component to list children for logged in user */}
+                        <ChildList children={children} />
 
-                        <Button
-                            component={Link} href="/PatientRegister"
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Lägg till barn
-                    </Button>
+                        <form className={classes.form}>
 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Se vårdteam
-                    </Button>
+                            <Typography
+                                component="h1"
+                                variant="h5">
+                                Maja, 7
+                            </Typography>
+                            <Typography
+                                component="h1"
+                                variant="h5">
+                                Diabetes, 1
+                            </Typography>
 
-                    </form>
-                </div>
-            </Container>
-        )
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Om diabetes
+                            </Button>
+
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Ändra uppgifter
+                            </Button>
+
+                            <Button
+                                component={Link} href="/PatientRegister"
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Lägg till barn
+                            </Button>
+
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Se vårdteam
+                            </Button>
+
+                        </form>
+                    </div>
+                </Container>
+            )
+        } else {
+            return (<div></div>);
+        }
     }
 }
 
