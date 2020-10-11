@@ -13,5 +13,5 @@ The purpose of this file is to get a quick overview of the components we have cr
 | [Login](Login.js)   | /login   | Login page   |
 | [MonitorChildValue](MonitorChildValue.js) | Dynamic | Add value for child bloodsugar |
 | [MySnackbar](MySnackbar.js) | Dynamic | Creates a snackbar on any page |
-| [Patient](Patient.js)   | /patient-view   | Patient page   |
+| [Patient](Child/Patient.js)   | /patient-view   | Patient page   |
 | [Register](Register.js)   | /register   | Register page   |

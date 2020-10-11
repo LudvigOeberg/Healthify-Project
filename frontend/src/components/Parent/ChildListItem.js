@@ -33,7 +33,7 @@ export default function ChildListItem(props) {
                         <ListItemText primary={props.name + " " + props.surname} />
                     </ListItem>
                     <Divider />
-                    <ListItem button component="a" href={"/child/" + props.ehrid}  alignItems="center">
+                    <ListItem button component="a" href={"/parent-child-overview/"}  alignItems="center">
                         <ListItemIcon>
                             <AccountBox color="primary" />
                         </ListItemIcon>

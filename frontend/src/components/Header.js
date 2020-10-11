@@ -47,11 +47,10 @@ const LoggedInView = props => {
           <Typography variant="h6" className={classes.title}>
             <Button component={Link} href="/" color="inherit">{props.appName}</Button>
           </Typography>
-          <Button component={Link} href={"/" + props.currentUser.type} color="inherit">{props.currentUser.name} {props.currentUser.surname}</Button>
           <Button component={Link} onClick={props.logout} color="inherit">Logga ut</Button>
         </Toolbar>
       </AppBar>
-      <PersistantDrawer />
+      <PersistantDrawer/>
     </div>
     );
   }

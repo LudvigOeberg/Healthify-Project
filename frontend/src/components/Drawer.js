@@ -130,14 +130,6 @@ const PersistantDrawer = (props) => {
                         </ListItem>
                     </List>
                     <Divider />
-                    <List>
-                        {['Här kan', 'mer saker', 'läggas'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
-                    </List>
                 </Drawer>
             </div>
         );
@@ -165,20 +157,12 @@ const PersistantDrawer = (props) => {
                             <ListItemIcon><AccountCircle /></ListItemIcon>
                             <ListItemText primary={"Min profil"} />
                         </ListItem>
-                        <ListItem button component="a" href="/stats">
+                        <ListItem button component="a" href="/parent-child-overview">
                             <ListItemIcon><InsertChart /></ListItemIcon>
                             <ListItemText primary={"Statistik"} />
                         </ListItem>
                     </List>
                     <Divider />
-                    <List>
-                        {['Här kan', 'mer saker', 'läggas'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
-                    </List>
                 </Drawer>
             </div>
         );
