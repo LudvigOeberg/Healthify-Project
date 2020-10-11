@@ -12,6 +12,7 @@ import Footer from './Footer';
 import Header from './Header';
 import Patient from './Child/Patient';
 import Parent from './Parent/Parent';
+import ParentPage from './Parent/ParentPage';
 import ParentOverview from './Parent/ParentOverview';
 import PatientRegister from './Parent/PatientRegister'
 
@@ -64,6 +65,7 @@ class App extends React.Component {
                 <Route exact path="/parent" component={Parent} />
                 <Route exact path="/parent-child-overview" component={ParentOverview} />
                 <Route exact path="/register-patient" component={PatientRegister} />
+                <Route exact path="/ParentPage" component={ParentPage} />
               </Switch>
             </div>
             <Footer />
