@@ -1,4 +1,4 @@
-import { Avatar, TextField, Typography } from '@material-ui/core';
+import { Avatar, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import { withStyles } from '@material-ui/core/styles';
@@ -15,10 +15,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class ParentPage extends Component {
-    constructor(props) {
-        super(props)
 
-    }
     render() {
         const { classes } = this.props;
         return (
