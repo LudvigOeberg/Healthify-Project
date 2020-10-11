@@ -3,6 +3,32 @@
 ### Instructions
 All available scripts explained in `frontend/` and `backend/` must be run in these directories.
 
+#### Local development
+1. Start backend
+```bash
+cd backend
+. venv/bin/activate
+export FLASK_APP=autoapp.py
+export FLASK_DEBUG=1
+### If you don' have dev.db and migrations in your backend-dir run these scripts:
+flask db init
+flask db migrate
+flask db upgrade
+flask init-db
+### 
+flask run
+```
+2. Start frontend
+```bash
+cd frontend
+export NODE_ENV=development
+npm start
+### If npm fails, make sure you have the latest package.json and run:
+npm install
+### If it still fails to run, try removing node_modules and package-lock.json 
+### and run above script again.
+```
+
 
 ### Live Version of Healthify
 Go to [Healtify](http://tddc88-company-2-2020.kubernetes-public.it.liu.se) to see the live deployment!
