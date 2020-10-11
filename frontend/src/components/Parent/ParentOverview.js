@@ -58,9 +58,6 @@ const chart_data = [
 
 
 class ParentOverview extends Component {
-    constructor(props) {
-        super(props)
-    }
 
     render() {
         const { classes } = this.props;
