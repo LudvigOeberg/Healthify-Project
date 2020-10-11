@@ -4,7 +4,6 @@
   "private": true,
   "devDependencies": {
     "cross-env": "^5.1.4",
-    "jest": "^26.5.2",
     "react-scripts": "^3.4.3"
   },
   "dependencies": {
