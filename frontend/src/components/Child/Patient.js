@@ -12,7 +12,7 @@ import {
     FIELD_CHANGE,
     UPDATE_BOOLEAN
 } from '../../constants/actionTypes';
-import Measurements from '../Measurements';
+import Measurements from './Measurements';
 
 
 const mapStateToProps = state => {
