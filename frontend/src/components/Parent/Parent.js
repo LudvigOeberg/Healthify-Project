@@ -81,7 +81,7 @@ class ParentPage extends Component {
                             </Button>
 
                             <Button
-                                component={Link} href="/PatientRegister"
+                                component={Link} href="/register-patient"
                                 type="submit"
                                 fullWidth
                                 variant="contained"
