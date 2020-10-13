@@ -49,27 +49,7 @@ class ParentPage extends Component {
                         <ChildList children={children} />
 
                         <form className={classes.form}>
-
-                            <Typography
-                                component="h1"
-                                variant="h5">
-                                Maja, 7
-                            </Typography>
-                            <Typography
-                                component="h1"
-                                variant="h5">
-                                Diabetes, 1
-                            </Typography>
-
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                            >
-                                Om diabetes
-                            </Button>
-
+                          
                             <Button
                                 type="submit"
                                 fullWidth
@@ -106,7 +86,7 @@ class ParentPage extends Component {
                 </Container>
             )
         } else {
-            return (<div></div>);
+            return (<div><Typography type="h5">Inga barn</Typography></div>);
         }
     }
 }
