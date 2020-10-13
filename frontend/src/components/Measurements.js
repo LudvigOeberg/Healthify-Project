@@ -9,36 +9,35 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Typography } from '@material-ui/core';
+import CustomPaginationActionsTable from './TablePagination';
 
 
 //TODO:
 //Försöka koppla detta med värdena från 'patient' (funktion till createData)
 //Snygga till den lite(kolla så det är rätt tema, font osv)
 
-function createData(date, bloodsugarLvl) {
-  return { date, bloodsugarLvl };
-}
 
 function createRows() {
-  var rows = [
-    createData('2020-05-01 17:00', 5.0),
-    createData('2020-05-01 17:00', 6.0),
-    createData('2020-05-01 17:00', 7.0),
-    createData('2020-05-01 17:00', 8.0),
-    createData('2020-05-02 17:00', 4.3),
-    createData('2020-05-03 17:00', 4.2),
-    createData('2020-05-04 17:00', 4.1),
-    createData('2020-05-05 17:00', 4.0),
-  ]
+  var rows =[
+    ['2020-05-01 17:00', 5.0],
+    ['2020-05-02 17:00', 6.0],
+    ['2020-05-03 17:00', 7.0],
+    ['2020-05-04 17:00', 8.0],
+    ['2020-05-05 17:00', 10.0],
+    ['2020-05-06 17:00', 23.0]
+  ];
+ 
+
   var keys = Object.keys(localStorage);
   var length = keys.length;
   var i;
 
   for (i = 0; i < length; i++) {
-    rows[i + 8] = createData(keys[i], localStorage.getItem(keys[i]));
+    rows[i + 5] = [keys[i], localStorage.getItem(keys[i])];
   }
   return (rows);
 }
+const titles = ['Registration Date', 'Value (mmol/L)'];
 
 
 
@@ -46,7 +45,7 @@ export default function Measurements(props,) {
   const classes = useStyles();
   var rows = createRows();
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       <div className={classes.paper}>
         <Typography component="h1" variant="h3">
           Previous Measurements
@@ -54,24 +53,8 @@ export default function Measurements(props,) {
 
 
         <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell align="right">Bloodsugar (mmol / L)</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.date}>
-                  <TableCell component="th" scope="row">
-                    {row.date}
-                  </TableCell>
-                  <TableCell align="right">{row.bloodsugarLvl}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <CustomPaginationActionsTable rows = {rows} titles = {titles}>
+          </CustomPaginationActionsTable>
         </TableContainer>
       </div>
     </Container>

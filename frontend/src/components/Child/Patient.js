@@ -61,7 +61,7 @@ class Patient extends Component {
         const { classes } = this.props;
         const open = this.props.snackbarOpen;
         return (
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="sm">
                 <div className={classes.paper}>
                     <h1>Patientvy</h1>
                     <h2> Var vänlig skriv in ditt blodsockervärde</h2>
