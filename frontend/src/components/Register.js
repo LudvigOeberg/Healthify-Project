@@ -1,21 +1,20 @@
-import React from 'react';
-import agent from '../agent';
-import { connect } from 'react-redux';
-import {
-  UPDATE_FIELD_AUTH,
-  REGISTER,
-  REGISTER_PAGE_UNLOADED
-} from '../constants/actionTypes';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import agent from '../agent';
+import {
+  REGISTER,
+  REGISTER_PAGE_UNLOADED, UPDATE_FIELD_AUTH
+} from '../constants/actionTypes';
 
 const mapStateToProps = state => ({ ...state.auth });
 
@@ -30,32 +29,33 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: REGISTER_PAGE_UNLOADED })
 });
 
-class Register extends React.Component {
-  constructor() {
-    super();
-    this.changeAuth = ev => this.props.onChangeFieldAuth(ev.target.id, ev.target.value);
-    
-    this.submitForm = (name, surname, email, password, confirmPassword) => ev => {
-      ev.preventDefault();
-      this.props.onSubmit(name, surname, email, password, confirmPassword);
+
+const Register = (props) => {
+  const classes = styles();
+  const email = props.email;
+  const password = props.password;
+  const confirmPassword = props.confirmPassword;
+  const name = props.name;
+  const surname = props.surname;
+  const errors = props.errors ? props.errors : null;
+
+  const submitForm = (name, surname, email, password, confirmPassword) => ev => {
+    ev.preventDefault();
+    props.onSubmit(name, surname, email, password, confirmPassword);
+  }
+
+  const changeAuth = ev => props.onChangeFieldAuth(ev.target.id, ev.target.value);
+
+  // Used to unload the props from this component. Should be used in views to unload
+  // props, has to be used with the correct action.
+  useEffect(() => {
+    return function cleanUp() {
+      props.onUnload();
     }
-  }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  componentWillUnmount() {
-    this.props.onUnload();
-  }
-
-  render() {
-    const { classes } = this.props;
-    const email = this.props.email;
-    const password = this.props.password;
-    const confirmPassword = this.props.confirmPassword;
-    const name = this.props.name;
-    const surname = this.props.surname;
-    const errors = this.props.errors ? this.props.errors : null;
-
-    return (
-      <Container component="main" maxWidth="xs">
+  return (
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -64,7 +64,7 @@ class Register extends React.Component {
         <Typography component="h1" variant="h5">
           Registrera dig
         </Typography>
-        <form className={classes.form} noValidate onSubmit={this.submitForm(name, surname, email, password, confirmPassword)}>
+        <form className={classes.form} noValidate onSubmit={submitForm(name, surname, email, password, confirmPassword)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -75,11 +75,11 @@ class Register extends React.Component {
                 id="name"
                 name="name"
                 label="Förnamn"
-                helperText={errors && (errors.name || errors.general)}
-                error={errors && (errors.name ? true : false || errors.general ? true : false)}
+                helperText={errors && (errors.name || errors.general)}
+                error={errors && (errors.name ? true : false || errors.general ? true : false)}
                 autoFocus
-                value={this.props.name}
-                onChange={this.changeAuth}
+                value={props.name}
+                onChange={changeAuth}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -91,10 +91,10 @@ class Register extends React.Component {
                 id="surname"
                 name="surname"
                 label="Efternamn"
-                helperText={errors && (errors.surname || errors.general)}
-                error={errors && (errors.surname ? true : false || errors.general ? true : false)}
-                value={this.props.surname}
-                onChange={this.changeAuth}
+                helperText={errors && (errors.surname || errors.general)}
+                error={errors && (errors.surname ? true : false || errors.general ? true : false)}
+                value={props.surname}
+                onChange={changeAuth}
               />
             </Grid>
             <Grid item xs={12}>
@@ -106,10 +106,10 @@ class Register extends React.Component {
                 name="email"
                 label="Mailaddress"
                 autoComplete="email"
-                helperText={errors && (errors.email || errors.general)}
-                error={errors && (errors.email ? true : false || errors.general ? true : false)}
-                value={this.props.email}
-                onChange={this.changeAuth}
+                helperText={errors && (errors.email || errors.general)}
+                error={errors && (errors.email ? true : false || errors.general ? true : false)}
+                value={props.email}
+                onChange={changeAuth}
               />
             </Grid>
             <Grid item xs={12}>
@@ -122,10 +122,10 @@ class Register extends React.Component {
                 id="password"
                 label="Lösenord"
                 autoComplete="current-password"
-                helperText={errors && (errors.password || errors.general)}
-                error={errors && (errors.password ? true : false || errors.general ? true : false)}
-                value={this.props.password}
-                onChange={this.changeAuth}
+                helperText={errors && (errors.password || errors.general)}
+                error={errors && (errors.password ? true : false || errors.general ? true : false)}
+                value={props.password}
+                onChange={changeAuth}
               />
             </Grid>
             <Grid item xs={12}>
@@ -137,10 +137,10 @@ class Register extends React.Component {
                 type="password"
                 id="confirmPassword"
                 label="Bekräfta lösenord"
-                helperText={errors && (errors.confirmPassword || errors.general)}
-                error={errors && (errors.confirmPassword ? true : false || errors.general ? true : false)}
-                value={this.props.confirmPassword}
-                onChange={this.changeAuth}
+                helperText={errors && (errors.confirmPassword || errors.general)}
+                error={errors && (errors.confirmPassword ? true : false || errors.general ? true : false)}
+                value={props.confirmPassword}
+                onChange={changeAuth}
               />
             </Grid>
           </Grid>
@@ -150,7 +150,7 @@ class Register extends React.Component {
             variant="contained"
             color="primary"
             className={classes.submit}
-            disabled={this.props.inProgress}>
+            disabled={props.inProgress}>
             Registrera
           </Button>
           <Grid container justify="flex-end">
@@ -163,11 +163,10 @@ class Register extends React.Component {
         </form>
       </div>
     </Container>
-    );
-  }
+  );
 }
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -185,6 +184,6 @@ const styles = theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-});
+}));
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Register));
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
