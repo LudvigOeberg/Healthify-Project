@@ -12,7 +12,7 @@ import {
     FIELD_CHANGE,
     UPDATE_BOOLEAN
 } from '../../constants/actionTypes';
-import Measurements from '../Measurements';
+import Measurements from './Measurements';
 
 
 const mapStateToProps = state => {
@@ -61,7 +61,7 @@ class Patient extends Component {
         const { classes } = this.props;
         const open = this.props.snackbarOpen;
         return (
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="sm">
                 <div className={classes.paper}>
                     <h1>Patientvy</h1>
                     <h2> Var vänlig skriv in ditt blodsockervärde</h2>
