@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { push } from 'react-router-redux';
 import agent from '../agent';
 import Home from '../components/Home';
@@ -8,12 +8,13 @@ import Login from '../components/Login';
 import Register from '../components/Register';
 import { APP_LOAD, REDIRECT } from '../constants/actionTypes';
 import { store } from '../store';
+import Patient from './Child/Patient';
 import Footer from './Footer';
 import Header from './Header';
-import Patient from './Child/Patient';
+import NotFound from './NotFound';
 import Parent from './Parent/Parent';
 import ParentOverview from './Parent/ParentOverview';
-import PatientRegister from './Parent/PatientRegister'
+import PatientRegister from './Parent/PatientRegister';
 
 const mapStateToProps = state => {
   return {
@@ -57,13 +58,16 @@ class App extends React.Component {
             currentUser={this.props.currentUser} />
             <div id="main" style={{ marginTop: 0, marginBottom: 0 }}>
               <Switch>
-                <Route exact path="/" component={Home}/>
+                <Route exact path="/">
+                  { this.props.currentUser ? <Redirect to={"/" + this.props.currentUser.type}/> : <Home />}
+                </Route>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/child" component={Patient} />
                 <Route exact path="/parent" component={Parent} />
                 <Route exact path="/parent-child-overview" component={ParentOverview} />
                 <Route exact path="/register-patient" component={PatientRegister} />
+                <Route path="*" component={NotFound} />
               </Switch>
             </div>
             <Footer />
