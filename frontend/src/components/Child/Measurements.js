@@ -45,7 +45,7 @@ export default function Measurements(props,) {
   const classes = useStyles();
   var rows = createRows();
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
       <div className={classes.paper}>
         <Typography component="h1" variant="h3">
           Previous Measurements
@@ -53,7 +53,7 @@ export default function Measurements(props,) {
 
 
         <TableContainer component={Paper}>
-          <CustomPaginationActionsTable rows = {rows} titles = {titles}>
+          <CustomPaginationActionsTable rows = {rows} titles = {titles} paginate = {true}>
           </CustomPaginationActionsTable>
         </TableContainer>
       </div>
