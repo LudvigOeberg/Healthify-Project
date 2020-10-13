@@ -35,6 +35,7 @@ const mapDispatchToProps = dispatch => ({
 
 // In future we access the database and create values 
 // with a format suited for the Table here.
+// You can insert an arbitrary amount of columns here.
 const test_data = [
   ['2020-09-01', 3.7],
   ['2020-09-15', 16.7],
@@ -42,7 +43,7 @@ const test_data = [
   ['2020-09-14', 6.2],
   ['2020-09-25', 9.0],
   ['2020-09-15', 19.5],
-].sort((a, b) => (a[0] < b[0] ? -1 : 1));
+].sort((a, b) => (b[0] < a[0] ? -1 : 1));
 
 const col_desc = ['Registration Date', 'Value (mmol/L)'];
 
@@ -98,7 +99,7 @@ class MonitorChildValue extends React.Component {
               </LineChart>  
             </Grid>
             <Grid item xs={12} sm={6}>
-              <CustomPaginationActionsTable rows = {test_data} titles = {col_desc}>
+              <CustomPaginationActionsTable rows = {test_data} titles = {col_desc} paginate = {true}>
 
               </CustomPaginationActionsTable>
             </Grid>
