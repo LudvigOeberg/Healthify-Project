@@ -39,6 +39,12 @@ export default function ChildListItem(props) {
                         </ListItemIcon>
                         <ListItemText primary={"Gå till översikt"} />
                     </ListItem>
+                    <ListItem button component="a" href={"/caregiving-team"}  alignItems="center">
+                        <ListItemIcon>
+                            <AccountBox color="primary" />
+                        </ListItemIcon>
+                        <ListItemText primary={"Se vårdteam"} />
+                    </ListItem>
                     <ListItem alignItems="center">
                         <ListItemIcon>
                             <AccessTime color="primary" />

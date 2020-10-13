@@ -36,51 +36,26 @@ class ParentPage extends Component {
                             src="test.123"
                             alt={name}
                         />
-
                         <Typography
                             component="h1"
                             variant="h5">
                             {name}
                         </Typography>
-
-                        <Typography type="h5">Dina barn</Typography>
-
+                        
                         {/* child list component to list children for logged in user */}
                         <ChildList children={children} />
 
-                        <form className={classes.form}>
-                          
+                        <form className={classes.form}>      
                             <Button
+                                component={Link} href="/parent-settings"
                                 type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Ändra uppgifter
+                                Inställningar
                             </Button>
-
-                            <Button
-                                component={Link} href="/register-patient"
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                            >
-                                Lägg till barn
-                            </Button>
-
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                            >
-                                Se vårdteam
-                            </Button>
-
                         </form>
                     </div>
                 </Container>
