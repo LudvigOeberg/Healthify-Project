@@ -24,12 +24,9 @@ const requests = {
 };
 
 const ehr = {
-    create: () =>
-      requests.post('/ehr'),
     info: ehr_id =>
       requests.get('/ehr/' + ehr_id )
 };
-
 
 export default {
     ehr,

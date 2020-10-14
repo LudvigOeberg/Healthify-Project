@@ -68,11 +68,12 @@ class Child(User):
     __mapper_args__ = {'polymorphic_identity': 'child'}
     id = Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     parents = relationship('Parent', secondary=parents_children, back_populates="children")
-    ehrid = Column(db.Integer)
+    ehrid = Column(db.String)
 
-    def __init__(self, name, surname, email, password, parent, **kwargs):
+    def __init__(self, name, surname, email, password, parent, ehrid, **kwargs):
         super().__init__(name, surname, email, password, **kwargs)
         self.parents.append(parent)
+        self.ehrid = ehrid
     
     def __repr__(self):
         """Represent instance as a unique string."""

@@ -13,7 +13,11 @@ from src.extensions import api
 from src.exceptions import InvalidUsage
 from .models import User, Parent, Child
 from .schema import user_schema, user_schemas, login_schema, register_user_schema, child_schemas, child_schema, parent_schemas
+from requests.auth import HTTPBasicAuth
+import requests
+from flask import current_app
 
+apiurl = 'https://rest.ehrscape.com/rest/v1/'
 
 @api.resource('/user')
 @marshal_with(user_schema)
@@ -22,9 +26,12 @@ class AccountResource(MethodResource):
     @jwt_required
     @doc(description="Get current user")
     def get(self):
-        user = current_user
-        user.token = request.headers.environ['HTTP_AUTHORIZATION'].split('Token ')[1]
-        return current_user
+        if current_user is not None:
+            user = current_user
+            user.token = request.headers.environ['HTTP_AUTHORIZATION'].split('Token ')[1]
+            return current_user
+        else:
+            raise InvalidUsage.user_not_found()
     
     @jwt_required
     @use_kwargs(user_schema)
@@ -35,7 +42,6 @@ class AccountResource(MethodResource):
         user.update(**kwargs)
         return user
 
-    @jwt_optional
     @use_kwargs(login_schema)
     @doc(description="Login user")
     def post(self, email, password, **kwargs):
@@ -95,12 +101,17 @@ class ParentResource(MethodResource):
             raise InvalidUsage.password_dont_match()
         if not current_user: 
             raise InvalidUsage.user_not_found()
-        try:
-            child = Child(name, surname, email, password, current_user, **kwargs).save().save()
-        except IntegrityError:
-            db.session.rollback()
-            raise InvalidUsage.user_already_registered()
-        return child
+        r = requests.post(apiurl + 'ehr', auth=HTTPBasicAuth(current_app.config['EHR_USER'], current_app.config['EHR_USER_PASS']))
+        if r.status_code == 201:
+            try:
+                ehrid = r.json()['ehrId']
+                child = Child(name, surname, email, password, current_user, ehrid, **kwargs)
+                db.session.add(child)
+                db.session.commit()
+                return child
+            except IntegrityError:
+                db.session.rollback()
+                raise InvalidUsage.user_already_registered()
 
 
 @api.resource('/child')
