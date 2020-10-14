@@ -42,6 +42,8 @@ class Patient extends Component {
             ev.preventDefault();
             this.props.onSubmit(key, value);
             this.props.onOpenSnackbar(true);
+            window.location.reload();
+
         };
     }
 
@@ -72,7 +74,6 @@ class Patient extends Component {
         const bloodsugar = this.props.bloodsugar;
         const { classes } = this.props;
         const open = this.props.snackbarOpen;
-       // this.props.onSubmit("bloodSugarJson", {"bloodsugar":[]});
         return (
 
             <Container component="main" maxWidth="sm">
@@ -98,6 +99,7 @@ class Patient extends Component {
                             fullWidth
                             type="submit"
                             className={classes.submit}
+                            onClick = {(this.submitForm("bloodSugarJson", this.updateBloodSugarJson()))}
                         >
                             Skicka in
                         </Button>
