@@ -78,7 +78,8 @@ const styles = makeStyles(theme => ({
 
 const mapStateToProps = state => {
     return {
-        ...state.common
+        ...state.common,
+        location: state.router.location.pathname
     }
 };
 
@@ -114,18 +115,24 @@ const PersistantDrawer = (props) => {
                     </div>
                     <Divider />
                     <List>
-                        <ListItem button component="a" href="/parent">
-                            <ListItemIcon><AccountCircle /></ListItemIcon>
-                            <ListItemText primary={"Min profil"} />
-                        </ListItem>
-                        <ListItem button component="a" href="/settings">
-                            <ListItemIcon><Settings /></ListItemIcon>
-                            <ListItemText primary={"Inställningar"} />
-                        </ListItem>
-                        <ListItem button component="a" href="/register-patient">
-                            <ListItemIcon><Add /></ListItemIcon>
-                            <ListItemText primary={"Registrering av barn"} />
-                        </ListItem>
+                        <ListItemLink 
+                            href="/parent" 
+                            text="Min profil" 
+                            avatarComponent={<AccountCircle />}
+                            location={props.location}
+                        />
+                        <ListItemLink 
+                            href="/settings" 
+                            text="Inställningar" 
+                            avatarComponent={<Settings />}
+                            location={props.location}
+                        />
+                        <ListItemLink 
+                            href="/register-patient" 
+                            text="Registrering av barn" 
+                            avatarComponent={<Add />}
+                            location={props.location}
+                        />
                     </List>
                     <Divider />
                 </Drawer>
@@ -151,20 +158,33 @@ const PersistantDrawer = (props) => {
                     </div>
                     <Divider />
                     <List>
-                        <ListItem button component="a" href="/child">
-                            <ListItemIcon><AccountCircle /></ListItemIcon>
-                            <ListItemText primary={"Min profil"} />
-                        </ListItem>
-                        <ListItem button component="a" href="/parent-child-overview">
-                            <ListItemIcon><InsertChart /></ListItemIcon>
-                            <ListItemText primary={"Statistik"} />
-                        </ListItem>
+                        <ListItemLink 
+                            href="/child" 
+                            text="Min profil" 
+                            avatarComponent={<AccountCircle />}
+                            location={props.location}
+                        />
+                        <ListItemLink 
+                            href="/parent-child-overview" 
+                            text="Statistik" 
+                            avatarComponent={<InsertChart />}
+                            location={props.location}
+                        />
                     </List>
                     <Divider />
                 </Drawer>
             </div>
         );
     }
+}
+
+const ListItemLink = props => {
+    return (
+        <ListItem button selected={props.href === props.location} component="a" href={props.href}>
+            <ListItemIcon>{props.avatarComponent}</ListItemIcon>
+            <ListItemText primary={props.text} />
+        </ListItem>
+    )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersistantDrawer);

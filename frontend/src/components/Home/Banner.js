@@ -2,16 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
-
-const Banner = ({ appName, token }) => {
+const Banner = (props) => {
   const classes = useStyles();
-  if (token) {
-    return null;
-  }
   return (
     <div className={classes.paper}>
       <Typography variant="h3">
-        {appName}
+        {props.appName}
       </Typography>
     </div>
   );
