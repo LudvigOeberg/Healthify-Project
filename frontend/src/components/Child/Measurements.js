@@ -29,7 +29,7 @@ function createRows() {
  
   for (i = 0; i < length; i++) {
     if(keys[i] !== "jwt"){
-      rows[i + 5] = [keys[i], parseInt(localStorage.getItem(keys[i]))];
+      rows[i + 6] = [keys[i], parseInt(localStorage.getItem(keys[i]))];
     }
   }
   return rows;
