@@ -9,17 +9,13 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MySnackbar from '../MySnackbar';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import Measurements from '../Measurements';
-import {
-  LineChart, XAxis, Tooltip, CartesianGrid, Line,
-  YAxis
-} from 'recharts';
-import { Grid, Paper, } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import CustomPaginationActionsTable from '../TablePagination';
+import TimeLineChart from '../TimeLineChart'
 
 const mapStateToProps = state => { 
   return {
@@ -36,16 +32,20 @@ const mapDispatchToProps = dispatch => ({
 // In future we access the database and create values 
 // with a format suited for the Table here.
 // You can insert an arbitrary amount of columns here.
-const test_data = [
-  ['2020-09-01', 3.7],
-  ['2020-09-15', 16.7],
-  ['2020-09-05', 25.0],
-  ['2020-09-14', 6.2],
-  ['2020-09-25', 9.0],
-  ['2020-09-15', 19.5],
-].sort((a, b) => (b[0] < a[0] ? -1 : 1));
+const testData = [
+  [new Date(2020, 9, 3).toLocaleDateString(), 3.7],
+  [new Date(2020, 9, 12).toLocaleDateString(), 14.0],
+  [new Date(2020, 9, 0).toLocaleDateString(), 17.2],
+  [new Date(2020, 9, 18).toLocaleDateString(), 32.3],
+  [new Date(2020, 9, 29).toLocaleDateString(), 17.2],
+  [new Date(2020, 9 ,10).toLocaleDateString(), 11.3],
+  [new Date(2020, 10, 25).toLocaleDateString(), 3.3],
+  [new Date(2020, 8 ,25).toLocaleDateString(), 22.3],
+  [new Date(2020, 10 ,14).toLocaleDateString(), 14.3],
+  
+].sort((a, b) => (a[0] < b[0] ? -1 : 1));
 
-const col_desc = ['Registration Date', 'Value (mmol/L)'];
+const col_desc = ['Datum vid registrering', 'Värde (mmol/L)'];
 
 
 class MonitorChildValue extends React.Component {
@@ -73,35 +73,27 @@ class MonitorChildValue extends React.Component {
     const childValue = this.props.childValue;
     const errors = this.props.errors ? this.props.errors : null;
     const open = this.props.snackbarOpen;
-
     return (
       <Container>
         <div className={classes.paper}>
-
-          <Grid container spacing={5}>
+        <Typography component="h1" variant="h3">
+              Hantera (namn) värden
+          </Typography>
+          <p></p>
+          <Grid container spacing={5}>            
             <Grid item xs={12} sm={6}>
-              <LineChart
-              width={300} height={400}
-              margin={{ top: 40, right: 40, bottom: 20, left: 20 }}  >
-              <CartesianGrid vertical={false} />
-
-              <XAxis dataKey="date" />
-              <YAxis domain={['auto', 'auto']} />
-                <Tooltip
-                    wrapperStyle={{
-                        borderColor: 'white',
-                        boxShadow: '2px 2px 3px 0px rgb(204, 204, 204)',
-                    }}
-                    contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
-                    labelStyle={{ fontWeight: 'bold', color: '#666666' }}
-                />
-                <Line dataKey="value" stroke="#ff7300" dot={false} />
-              </LineChart>  
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <CustomPaginationActionsTable rows = {test_data} titles = {col_desc} paginate = {true}>
+            <Typography component="h1" variant="h5">
+              Tabell
+              </Typography>
+              <CustomPaginationActionsTable rows = {testData} titles = {col_desc} paginate = {true}>
 
               </CustomPaginationActionsTable>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+            <Typography component="h1" variant="h5">
+              Graf
+              </Typography>
+              <TimeLineChart chartData = {testData} label = {"Blodsocker (mmol/L)"} unit = {'day'}></TimeLineChart>
             </Grid>
             <Grid item xs={12} align = "center">
               <Avatar className={classes.avatar}>
