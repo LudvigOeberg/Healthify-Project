@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import MySnackbar from '../MySnackbar';
 import {
     PATIENT_PAGE_UNLOADED,
-    LOCAL_SAVE,
     FIELD_CHANGE,
     UPDATE_BOOLEAN
 } from '../../constants/actionTypes';
@@ -25,7 +24,7 @@ const mapDispatchToProps = dispatch => ({
     onChangeAuth: (key, value) =>
         dispatch({ type: FIELD_CHANGE, key: key, value }),
     onSubmit: (key, value) =>
-        dispatch({ type: LOCAL_SAVE, key: key, value }),
+        dispatch({ type: FIELD_CHANGE, key: key, value }),
     onUnload: () =>
         dispatch({ type: PATIENT_PAGE_UNLOADED }),
     onOpenSnackbar: (value) =>
@@ -51,21 +50,36 @@ class Patient extends Component {
         this.props.onUnload();
     }
 
+    updateBloodSugarJson(){
+        const bloodsugar = this.props.bloodsugar;
+        var jsonState = "";
+        if(!this.props.bloodSugarJson){
+            jsonState = {"bloodsugar":[
+                {"Date": getCurrentDate(), "bloodsugar value" : bloodsugar}
+            ]};
+        }else {
+            jsonState = this.props.bloodSugarJson;
+            jsonState.bloodsugar[jsonState.bloodsugar.length] = {"Date": getCurrentDate(), "bloodsugar value" : bloodsugar};
+        }
+        return jsonState;
+    }
+
     validate = (val) => {
         return (val < 100 && val > 0)
     }
-
     render() {
         Object.keys(localStorage)
         const bloodsugar = this.props.bloodsugar;
         const { classes } = this.props;
         const open = this.props.snackbarOpen;
+       // this.props.onSubmit("bloodSugarJson", {"bloodsugar":[]});
         return (
+
             <Container component="main" maxWidth="sm">
                 <div className={classes.paper}>
                     <h1>Patientvy</h1>
                     <h2> Var vänlig skriv in ditt blodsockervärde</h2>
-                    <form className={classes.form} noValidate autoComplete="off" onSubmit={this.submitForm(getCurrentDate(), bloodsugar)}>
+                    <form className={classes.form} noValidate autoComplete="off" onSubmit={this.submitForm("bloodSugarJson", this.updateBloodSugarJson())}>
                         <TextField
                             required
                             id="bloodsugar"
@@ -122,8 +136,31 @@ const styles = theme => {
 
 export function getCurrentDate() {
     var today = new Date();
-    var todaysDate = String(today.getFullYear()) + '-' + String(today.getMonth()) + '-' + String(today.getDate()) + " " + String(today.getHours()) + ":" + String(today.getMinutes());
-    return todaysDate;
+    var month = String(today.getMonth());
+    var day = String(today.getDate());
+    var hours = String(today.getHours());
+    var minutes = String(today.getMinutes());
+
+    if(today.getMonth() < 10){
+        month = "0" + String(today.getMonth());
+    }
+    if(today.getDate() < 10){
+        day ="0" + String(today.getDate());
+    }
+    if(today.getHours() < 10){
+        hours ="0" + String(today.getDate());
+    }
+    if(today.getMinutes() < 10){
+        minutes ="0" + String(today.getDate());
+    }
+
+
+    var dateInfo = {"year": String(today.getFullYear()),
+                    "month": month,
+                    "day": day,
+                    "hours": hours,
+                    "minutes" : minutes};
+    return dateInfo;
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Patient));
