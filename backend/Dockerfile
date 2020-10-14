@@ -19,6 +19,7 @@ RUN flask drop-db
 RUN flask db init
 RUN flask db migrate
 RUN flask db upgrade
+RUN flask init-db
 EXPOSE 5000
 
 CMD ["gunicorn", "autoapp:app", "-b", "0.0.0.0:5000"]

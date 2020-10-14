@@ -40,6 +40,10 @@ class Config(object):
             )
     APISPEC_SWAGGER_URL = "/api/swagger"
     APISPEC_SWAGGER_UI_URL = "/swagger-ui"
+    EHR_USER = os.getenv('ehr_user')
+    EHR_USER_PASS = os.getenv('ehr_user_pass')
+    EHR_ADMIN = os.getenv('ehr_admin')
+    EHR_ADMIN_PASS = os.getenv('ehr_admin_pass')
 
 
 class ProdConfig(Config):

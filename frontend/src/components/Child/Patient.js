@@ -5,11 +5,15 @@ import { Button } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
+import MySnackbar from '../MySnackbar';
 import {
     PATIENT_PAGE_UNLOADED,
     LOCAL_SAVE,
-    FIELD_CHANGE
-} from '../constants/actionTypes';
+    FIELD_CHANGE,
+    UPDATE_BOOLEAN
+} from '../../constants/actionTypes';
+import Measurements from './Measurements';
+
 
 const mapStateToProps = state => {
     return {
@@ -24,7 +28,11 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: LOCAL_SAVE, key: key, value }),
     onUnload: () =>
         dispatch({ type: PATIENT_PAGE_UNLOADED }),
+    onOpenSnackbar: (value) =>
+        dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
 });
+
+
 
 class Patient extends Component {
 
@@ -34,33 +42,41 @@ class Patient extends Component {
         this.submitForm = (key, value) => ev => {
             ev.preventDefault();
             this.props.onSubmit(key, value);
+            this.props.onOpenSnackbar(true);
         };
     }
+
 
     componentWillUnmount() {
         this.props.onUnload();
     }
 
+    validate = (val) => {
+        return (val < 100 && val > 0)
+    }
+
     render() {
-        const blodsugar = this.props.blodsugar;
+        Object.keys(localStorage)
+        const bloodsugar = this.props.bloodsugar;
         const { classes } = this.props;
+        const open = this.props.snackbarOpen;
         return (
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="sm">
                 <div className={classes.paper}>
-                    <h1>Patient vy</h1>
-                    <h2> Var vänlig skriv in ditt blodsocker värde</h2>
-                    <form className={classes.form} noValidate autoComplete="off" onSubmit={this.submitForm("blodsugar:" + getCurrentDate(), blodsugar)}>
+                    <h1>Patientvy</h1>
+                    <h2> Var vänlig skriv in ditt blodsockervärde</h2>
+                    <form className={classes.form} noValidate autoComplete="off" onSubmit={this.submitForm(getCurrentDate(), bloodsugar)}>
                         <TextField
                             required
-                            id="blodsugar"
-                            label="Blodsocker värde"
+                            id="bloodsugar"
+                            label="Blodsockervärde"
                             variant="outlined"
                             fullWidth
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">mmol/L</InputAdornment>,
                             }}
                             onChange={this.changeAuth}
-                            value={blodsugar}
+                            value={bloodsugar}
                         />
                         <Button
                             variant="contained"
@@ -71,8 +87,11 @@ class Patient extends Component {
                         >
                             Skicka in
                         </Button>
+                        <MySnackbar open={open} color={this.validate(bloodsugar) ? "success" : "error"}
+                            message={this.validate(bloodsugar) ? "Du loggade värdet: " + bloodsugar + " mmol/L" : "Fel format!"} />
                     </form>
-                    <h1> {blodsugar} </h1>
+                    <Measurements>
+                    </Measurements>
                 </div>
             </Container>
         );
@@ -103,7 +122,7 @@ const styles = theme => {
 
 export function getCurrentDate() {
     var today = new Date();
-    var todaysDate = String(today.getFullYear()) + '-' + String(today.getMonth()) + '-' + String(today.getDate());
+    var todaysDate = String(today.getFullYear()) + '-' + String(today.getMonth()) + '-' + String(today.getDate()) + " " + String(today.getHours()) + ":" + String(today.getMinutes());
     return todaysDate;
 }
 
