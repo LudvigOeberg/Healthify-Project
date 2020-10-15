@@ -16,6 +16,7 @@ import CaregivingPage from './Parent/CaregivingPage';
 import Parent from './Parent/Parent';
 import ParentOverview from './Parent/ParentOverview';
 import PatientRegister from './Parent/PatientRegister';
+import MySnackbar from './MySnackbar';
 
 const mapStateToProps = state => {
   return {
@@ -73,6 +74,7 @@ class App extends React.Component {
               </Switch>
             </div>
             <Footer />
+            <MySnackbar />
         </div>
       );
     }

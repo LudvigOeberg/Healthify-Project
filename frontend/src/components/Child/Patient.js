@@ -24,8 +24,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     onChangeAuth: (key, value) =>
         dispatch({ type: FIELD_CHANGE, key: key, value }),
-    onSubmit: (key, value) =>
-        dispatch({ type: LOCAL_SAVE, key: key, value }),
+    onSubmit: (key, value, snackbar) =>
+        dispatch({ type: FIELD_CHANGE, key: key, value, snackbar }),
     onUnload: () =>
         dispatch({ type: PATIENT_PAGE_UNLOADED }),
     onOpenSnackbar: (value) =>
@@ -41,8 +41,12 @@ class Patient extends Component {
         this.changeAuth = ev => this.props.onChangeAuth(ev.target.id, ev.target.value);
         this.submitForm = (key, value) => ev => {
             ev.preventDefault();
-            this.props.onSubmit(key, value);
-            this.props.onOpenSnackbar(true);
+            const snackbar = {
+                message: this.validate(this.props.bloodsugar) ? "Du loggade värdet: " + this.props.bloodsugar + " mmol/L" : "Fel format!",
+                open: true,
+                color: this.validate(this.props.bloodsugar) ? "success" : "error"
+            }
+            this.props.onSubmit(key, value, snackbar);
         };
     }
 
@@ -87,8 +91,6 @@ class Patient extends Component {
                         >
                             Skicka in
                         </Button>
-                        <MySnackbar open={open} color={this.validate(bloodsugar) ? "success" : "error"}
-                            message={this.validate(bloodsugar) ? "Du loggade värdet: " + bloodsugar + " mmol/L" : "Fel format!"} />
                     </form>
                     <Measurements>
                     </Measurements>

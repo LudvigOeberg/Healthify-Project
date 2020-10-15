@@ -9,33 +9,24 @@ import {
     REGISTER_CHILD, 
     UPDATE_FIELD_AUTH,
     REGISTER_PAGE_UNLOADED,
-    UPDATE_AUTH_BOOLEAN,
-    UPDATE_BOOLEAN
+    UPDATE_AUTH_BOOLEAN
     
 } from '../../constants/actionTypes';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MySnackbar from '../MySnackbar';
-
-
-
-
-
 
 const mapStateToProps = state => ({ ...state.auth, ...state.common });
 
 const mapDispatchToProps = dispatch => ({
     onChangeFieldAuth: (key, value) =>
         dispatch({ type: UPDATE_FIELD_AUTH, key: key, value }),
-    onSubmit: (name, surname, email, password, confirmPassword) => {
+    onSubmit: (name, surname, email, password, confirmPassword, snackbar) => {
         const payload = agent.Parent.registerChild(name, surname, email, password, confirmPassword);
-        dispatch({ type: REGISTER_CHILD, payload });
+        dispatch({ type: REGISTER_CHILD, payload, snackbar });
     },
     onChangeBooleanAuth: (key, value) => 
         dispatch({type: UPDATE_AUTH_BOOLEAN, key: key, value}),
     onUnload: () =>
-        dispatch({ type: REGISTER_PAGE_UNLOADED }),
-    onOpenSnackbar: (value) =>
-        dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
+        dispatch({ type: REGISTER_PAGE_UNLOADED })
 });
 
 
@@ -48,8 +39,13 @@ class PatientRegister extends Component {
         }  
         this.submitForm = (name, surname, email, password, confirmPassword) => ev => {
             ev.preventDefault();
-            this.props.onOpenSnackbar(true)
-            this.props.onSubmit(name, surname, email, password, confirmPassword);
+            const snackbar = {
+                message: `Du registrerade barnet ${name} ${surname} 
+                    som lider av ${this.props.diabetes ? "diabetes" : "fetma"}`,
+                color: "success",
+                open: true
+            }
+            this.props.onSubmit(name, surname, email, password, confirmPassword, snackbar);
           
         }
      
@@ -57,14 +53,6 @@ class PatientRegister extends Component {
 
     componentWillUnmount() {
         this.props.onUnload();
-    }
-
-    disease(diabetes, fetma) {
-        if (diabetes) {
-            return "diabetes"
-        } else if(fetma) {
-            return "fetma"
-        }
     }
 
     render() {
@@ -75,12 +63,9 @@ class PatientRegister extends Component {
         const name = this.props.name;
         const surname = this.props.surname;
         const errors = this.props.errors ? this.props.errors : null;
-        const open = this.props.snackbarOpen;
         const diabetes = this.props.diabetes;
         const fetma = this.props.fetma;
         
-        
-
         return (
 
             <Container component="main" maxWidth="xs">
@@ -218,8 +203,6 @@ class PatientRegister extends Component {
                             disabled={this.props.inProgress}>
                             Registrera
                         </Button>
-                        <MySnackbar open={open} color="success" message={"Du registrerade barnet " + name + " " + surname 
-                            + " som lider av " + this.disease(diabetes, fetma)} />
                     </form>
                 </div>
               

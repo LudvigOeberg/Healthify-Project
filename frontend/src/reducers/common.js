@@ -7,18 +7,24 @@ import {
   HOME_PAGE_UNLOADED,
   LOGIN_PAGE_UNLOADED,
   REGISTER_PAGE_UNLOADED,
-  PATIENT_PAGE_UNLOADED, 
-  FIELD_CHANGE, 
+  PATIENT_PAGE_UNLOADED,
+  FIELD_CHANGE,
   REGISTER_CHILD,
   UPDATE_BOOLEAN,
-  PAGE_UNLOADED
+  PAGE_UNLOADED,
+  OPEN_SNACKBAR,
+  CLOSE_SNACKBAR,
+  SAVE_BLOODSUGAR
 } from '../constants/actionTypes';
 
 const defaultState = {
   appName: 'Healthify',
   token: null,
   viewChangeCounter: 0,
-  drawerOpen: false
+  drawerOpen: false,
+  snackbar: {
+    snackbarOpen: false
+  }
 };
 
 export default (state = defaultState, action) => {
@@ -46,11 +52,37 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         redirectTo: action.error ? null : '/parent',
+        snackbar: action.error ? {
+          open: true,
+          message: "Något gick fel",
+          color: "warning"
+        } : action.snackbar
       };
     case FIELD_CHANGE:
       return { ...state, [action.key]: action.value };
-    case UPDATE_BOOLEAN:  
-        return { ...state, [action.key]: action.value ? true : false };
+    case SAVE_BLOODSUGAR:
+      return {
+        ...state,
+        snackbar: action.snackbar
+      }
+    case UPDATE_BOOLEAN:
+      return { ...state, [action.key]: action.value ? true : false };
+    case OPEN_SNACKBAR:
+      return {
+        ...state,
+        snackbar: {
+          open: true,
+          message: action.message,
+          color: action.color
+        }
+      }
+    case CLOSE_SNACKBAR:
+      return {
+        ...state,
+        snackbar: {
+          open: false
+        }
+      }
     case HOME_PAGE_UNLOADED:
     case LOGIN_PAGE_UNLOADED:
     case REGISTER_PAGE_UNLOADED:
