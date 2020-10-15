@@ -26,9 +26,6 @@ import TableHead from '@material-ui/core/TableHead';
  *  Author: Martin Dagermo
  */
 
-
-
-
 const useStyles1 = makeStyles((theme) => ({
   root: {
     flexShrink: 0,
