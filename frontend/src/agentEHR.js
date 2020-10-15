@@ -51,7 +51,7 @@ const EHR = {
     requests.get(`/demographics/ehr/${ehr_id}/party`)
 };
 
-const composition = {
+const Composition = {
   save: (composition, ehr_id, templateId) => {
     const params = {
       ehrId: ehr_id,
@@ -62,7 +62,7 @@ const composition = {
   }
 };
 
-const demograhics = {
+const Demograhics = {
   newMeasurment: (height = null, weight = null, ehr_id) => {
     const composition = {
       "ctx/language": "en",
@@ -75,7 +75,7 @@ const demograhics = {
   }
 };
 
-const query = {
+const Query = {
   aql: aql =>
     requests.get('/query?aql=' + aql),
   weight: ehr_id =>
@@ -93,8 +93,8 @@ const param = (params) => {
 
 export default {
   EHR,
-  composition,
-  query,
-  demograhics,
+  Composition,
+  Query,
+  Demograhics,
   setToken: (username, password) => { token = btoa(username + ":" + password); }
 };
