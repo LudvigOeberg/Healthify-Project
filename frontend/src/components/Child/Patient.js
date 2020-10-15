@@ -38,49 +38,41 @@ class Patient extends Component {
     constructor() {
         super();
         this.changeAuth = ev => this.props.onChangeAuth(ev.target.id, ev.target.value);
-        this.submitForm = (key, value) => ev => {
+        this.submitForm = (key) => ev => {
             ev.preventDefault();
-            this.props.onSubmit(key, value);
+            const bloodsugar = this.props.bloodsugar;
+            var jsonState = "";
+            if(!this.props.bloodSugarJson){
+                jsonState = {"bloodsugar":[
+                    {"Date": getCurrentDate(), "bloodsugar value" : bloodsugar}
+                ]};
+            }else {
+                jsonState = this.props.bloodSugarJson;
+                jsonState.bloodsugar[jsonState.bloodsugar.length] = {"Date": getCurrentDate(), "bloodsugar value" : bloodsugar};
+            }
+            this.props.onSubmit(key, jsonState);
             this.props.onOpenSnackbar(true);
-            window.location.reload();
-
+            this.props.onChangeAuth('bloodsugar', null);
         };
     }
 
-
     componentWillUnmount() {
         this.props.onUnload();
-    }
-
-    updateBloodSugarJson(){
-        const bloodsugar = this.props.bloodsugar;
-        var jsonState = "";
-        if(!this.props.bloodSugarJson){
-            jsonState = {"bloodsugar":[
-                {"Date": getCurrentDate(), "bloodsugar value" : bloodsugar}
-            ]};
-        }else {
-            jsonState = this.props.bloodSugarJson;
-            jsonState.bloodsugar[jsonState.bloodsugar.length] = {"Date": getCurrentDate(), "bloodsugar value" : bloodsugar};
-        }
-        return jsonState;
     }
 
     validate = (val) => {
         return (val < 100 && val > 0)
     }
     render() {
-        Object.keys(localStorage)
         const bloodsugar = this.props.bloodsugar;
         const { classes } = this.props;
         const open = this.props.snackbarOpen;
         return (
-
             <Container component="main" maxWidth="sm">
                 <div className={classes.paper}>
                     <h1>Patientvy</h1>
                     <h2> Var vänlig skriv in ditt blodsockervärde</h2>
-                    <form className={classes.form} noValidate autoComplete="off" onSubmit={this.submitForm("bloodSugarJson", this.updateBloodSugarJson())}>
+                    <form className={classes.form} noValidate autoComplete="off" onSubmit={this.submitForm("bloodSugarJson")}>
                         <TextField
                             required
                             id="bloodsugar"
@@ -99,7 +91,6 @@ class Patient extends Component {
                             fullWidth
                             type="submit"
                             className={classes.submit}
-                            onClick = {(this.submitForm("bloodSugarJson", this.updateBloodSugarJson()))}
                         >
                             Skicka in
                         </Button>

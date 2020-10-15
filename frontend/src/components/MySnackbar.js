@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 const mapStateToProps = state => { 
   return {
-    ...state.common
+    open: state.common.snackbarOpen
   }
 };
 
