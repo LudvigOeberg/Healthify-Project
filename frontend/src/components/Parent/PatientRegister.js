@@ -52,10 +52,19 @@ class PatientRegister extends Component {
             //this.props.onSubmit(name, surname, email, password, confirmPassword);
           
         }
+     
     }
 
     componentWillUnmount() {
         this.props.onUnload();
+    }
+
+    disease(diabetes, fetma) {
+        if (diabetes) {
+            return "diabetes"
+        } else if(fetma) {
+            return "fetma"
+        }
     }
 
     render() {
@@ -182,18 +191,18 @@ class PatientRegister extends Component {
                                     <AccordionDetails >  
                                         <FormControlLabel
                                         style={{opacity: "0.87"}}
-                                        control={<Checkbox checked={diabetes} disabled={fetma} onChange={this.changeAuthBoolean} id="diabetes"/>}
+                                        control={<Checkbox checked={diabetes} required disabled={fetma} onChange={this.changeAuthBoolean} id="diabetes"/>}
                                         label="Diabetes"
-                                       
+                                        required
                                         
                                         />
                                     </AccordionDetails>
                                     <AccordionDetails>   
                                         <FormControlLabel
                                         style={{opacity: "0.87"}}
-                                        control={<Checkbox checked={fetma} disabled={diabetes} onChange={this.changeAuthBoolean} id="fetma"/>}
+                                        control={<Checkbox checked={fetma} required disabled={diabetes} onChange={this.changeAuthBoolean} id="fetma"/>}
                                         label="Fetma"
-                                       
+                                        
                                         />
                                     </AccordionDetails>
                                 </Accordion>
@@ -209,7 +218,8 @@ class PatientRegister extends Component {
                             disabled={this.props.inProgress}>
                             Registrera
                         </Button>
-                        <MySnackbar open={open} color="success" message={"Du registrerade barnet " + name + " " + surname} />
+                        <MySnackbar open={open} color="success" message={"Du registrerade barnet " + name + " " + surname 
+                            + " som lider av " + this.disease(diabetes, fetma)} />
                     </form>
                 </div>
               
