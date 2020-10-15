@@ -49,7 +49,7 @@ class PatientRegister extends Component {
         this.submitForm = (name, surname, email, password, confirmPassword) => ev => {
             ev.preventDefault();
             this.props.onOpenSnackbar(true)
-            //this.props.onSubmit(name, surname, email, password, confirmPassword);
+            this.props.onSubmit(name, surname, email, password, confirmPassword);
           
         }
      
