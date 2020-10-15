@@ -33,15 +33,19 @@ const mapDispatchToProps = dispatch => ({
 // with a format suited for the Table here.
 // You can insert an arbitrary amount of columns here.
 const testData = [
-  [new Date(2020, 9, 3).toLocaleDateString(), 3.7],
-  [new Date(2020, 9, 12).toLocaleDateString(), 14.0],
-  [new Date(2020, 9, 0).toLocaleDateString(), 17.2],
-  [new Date(2020, 9, 18).toLocaleDateString(), 32.3],
-  [new Date(2020, 9, 29).toLocaleDateString(), 17.2],
-  [new Date(2020, 9 ,10).toLocaleDateString(), 11.3],
-  [new Date(2020, 10, 25).toLocaleDateString(), 3.3],
-  [new Date(2020, 8 ,25).toLocaleDateString(), 22.3],
-  [new Date(2020, 10 ,14).toLocaleDateString(), 14.3],
+  [new Date(2020, 8, 1, 15, 30).toLocaleString(), 3.7],
+  [new Date(2020, 9, 5, 15, 30).toLocaleString(), 14.0],
+  [new Date(2020, 9, 13, 6, 20).toLocaleString(), 17.2],
+  [new Date(2020, 9, 13, 13, 30).toLocaleString(), 32.3],
+  [new Date(2020, 9, 13, 18, 30).toLocaleString(), 17.2],
+  [new Date(2020, 9, 13, 22, 30).toLocaleString(), 11.3],
+  [new Date(2020, 9, 14, 0, 30).toLocaleString(), 3.3],
+  [new Date(2020, 9, 14, 6, 30).toLocaleString(), 22.3],
+  [new Date(2020, 4, 14, 9, 0).toLocaleString(), 5.3],
+  [new Date(2020, 0, 14, 9, 0).toLocaleString(), 24.3],
+  [new Date(2020, 7, 14, 9, 0).toLocaleString(), 14.3],
+
+
   
 ].sort((a, b) => (a[0] < b[0] ? -1 : 1));
 
@@ -93,7 +97,7 @@ class MonitorChildValue extends React.Component {
             <Typography component="h1" variant="h5">
               Graf
               </Typography>
-              <TimeLineChart chartData = {testData} label = {"Blodsocker (mmol/L)"} unit = {'day'}></TimeLineChart>
+              <TimeLineChart chartData = {testData} label = {"Blodsocker (mmol/L)"}></TimeLineChart>
             </Grid>
             <Grid item xs={12} align = "center">
               <Avatar className={classes.avatar}>
@@ -119,7 +123,6 @@ class MonitorChildValue extends React.Component {
                   disabled={open}
                   
                   onChange={this.changeField}
-                  autoFocus
                   />
                 </Grid>
                 <Grid item xs={12}>
