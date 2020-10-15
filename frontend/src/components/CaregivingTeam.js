@@ -6,7 +6,7 @@ import Caregiver from './Caregiver';
  * @param {Caregiver} props - an array of caregivers (see input for component Caregiver)
  */
 export default function CaregivingTeam(props) {
-    const caregivers = props  
+    const caregivers = props.caregivers  
     return (
         <Container>
             <Grid container direction="row" justify="center" alignItems="center" spacing={0}>
