@@ -10,9 +10,11 @@ import {
     PATIENT_PAGE_UNLOADED,
     LOCAL_SAVE,
     FIELD_CHANGE,
-    UPDATE_BOOLEAN
+    UPDATE_BOOLEAN,
+    LOAD_PARTY
 } from '../../constants/actionTypes';
 import Measurements from './Measurements';
+import agentEHR from '../../agentEHR';
 
 
 const mapStateToProps = state => {
@@ -28,6 +30,8 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: LOCAL_SAVE, key: key, value }),
     onUnload: () =>
         dispatch({ type: PATIENT_PAGE_UNLOADED }),
+    onLoad: (ehr_id) =>
+        dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehr_id) }),
     onOpenSnackbar: (value) =>
         dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
 });
@@ -46,6 +50,9 @@ class Patient extends Component {
         };
     }
 
+    componentWillMount() {
+        this.props.onLoad(this.props.currentUser.ehrId)
+    }
 
     componentWillUnmount() {
         this.props.onUnload();

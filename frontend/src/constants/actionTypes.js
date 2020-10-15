@@ -18,3 +18,6 @@ export const PATIENT_PAGE_UNLOADED = 'PATIENT_PAGE_UNLOADED';
 export const LOCAL_SAVE = 'LOCAL_SAVE';
 export const FIELD_CHANGE = 'FIELD_CHANGE';
 export const REGISTER_CHILD = 'REGISTER_CHILD';
+export const LOAD_PARTY = 'LOAD_PARTY';
+export const SAVE_PARTY = 'SAVE_PARTY';
+export const LOAD_EHR_METRIC = 'LOAD_EHR_METRIC';

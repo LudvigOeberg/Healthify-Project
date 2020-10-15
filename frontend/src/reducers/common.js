@@ -27,6 +27,7 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         token: action.token || null,
+        ehrToken: action.ehrToken || null,
         appLoaded: true,
         currentUser: action.payload ? action.payload.user : null
       };
@@ -40,7 +41,7 @@ export default (state = defaultState, action) => {
         ...state,
         redirectTo: action.error ? null : '/' + action.payload.user.type,
         token: action.error ? null : action.payload.user.token,
-        currentUser: action.error ? null : action.payload.user
+        currentUser: action.error ? null : action.payload.user,
       };
     case REGISTER_CHILD:
       return {
