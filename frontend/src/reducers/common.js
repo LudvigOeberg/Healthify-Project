@@ -63,6 +63,8 @@ export default (state = defaultState, action) => {
     case SAVE_BLOODSUGAR:
       return {
         ...state,
+        bloodSugarJson: action.bloodSugarJson,
+        bloodsugar: "",
         snackbar: action.snackbar
       }
     case UPDATE_BOOLEAN:
