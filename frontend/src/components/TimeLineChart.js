@@ -88,6 +88,7 @@ const getSettings = (horizon) => {
 
 const TimeLineChart = (props) =>  {
   const timeHorizon = props.currSettings === undefined ? 'all' : props.currSettings;
+  //Kan ta bort
   const chartData = props.chartData;
   const label = props.label;
   const theme = useTheme();

@@ -1,37 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
     UPDATE_BOOLEAN,
     FIELD_CHANGE,
+    LOAD_BLOODSUGAR,
+    LOAD_PARTY
 } from '../../constants/actionTypes';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import MySnackbar from '../MySnackbar';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { Grid, Paper, TablePagination } from '@material-ui/core';
+import {  makeStyles } from '@material-ui/core/styles';
+import { Grid, Paper } from '@material-ui/core';
 import CustomPaginationActionsTable from '../TablePagination';
-import TimeLineChart from '../TimeLineChart'
 import ChildCareIcon from '@material-ui/icons/ChildCare';
-import { sizing } from '@material-ui/system';
-import CaregivingTeam from '../CaregivingTeam'
-
-const testData = [
-    [new Date(2020, 8, 1, 15, 30).toLocaleString(), 3.7],
-    [new Date(2020, 9, 5, 15, 30).toLocaleString(), 14.0],
-    [new Date(2020, 9, 13, 6, 20).toLocaleString(), 17.2],
-].sort((a, b) => (a[0] < b[0] ? -1 : 1));
-
-const col_desc = ['Datum', '(mmol/L)'];
-
+import CaregivingTeam from '../CaregivingTeam';
+import agentEHR from '../../agentEHR';
 
 const mapStateToProps = state => {
     return {
         ...state.common,
+        ...state.ehr
     }
 };
 
@@ -40,27 +28,38 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: FIELD_CHANGE, key: key, value }),
     onOpenSnackbar: (value) =>
         dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
+    onLoad: (ehrId, offset, limit) => {
+        dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) });
+        dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) });
+    }
 });
 
 const ParentOverview = (props) => {
+    useEffect(() => {
+        props.onLoad(id, 0, 3);
+    }, [])
+    const col_desc = ['Datum', '(mmol/L)'];
     const classes = styles();
-
-const doctor = {
-    name: "Doktor X",
-    mail: "Dr.x@gmail.com",
-    telephone: "070-XXX XX XX"
-} 
-const shrink = {
-    name: "Psykolog Y",
-    mail: "P.Y@gmail.com",
-    telephone: "070-YYY YY YY"
-} 
-const nurse = {
-    name: "Sjuksköterska Z",
-    mail: "S.Z@gmail.com",
-    telephone: "070-ZZZ ZZ ZZ"
-}
-const caregivers = [doctor, shrink, nurse]
+    const { id } = props.match.params;
+    const bloodsugar = props.bloodsugar;
+    const name = props.party ? props.party[id].firstNames + " " + props.party[id].lastNames : null;
+    
+    const doctor = {
+        name: "Doktor X",
+        mail: "Dr.x@gmail.com",
+        telephone: "070-XXX XX XX"
+    }
+    const shrink = {
+        name: "Psykolog Y",
+        mail: "P.Y@gmail.com",
+        telephone: "070-YYY YY YY"
+    }
+    const nurse = {
+        name: "Sjuksköterska Z",
+        mail: "S.Z@gmail.com",
+        telephone: "070-ZZZ ZZ ZZ"
+    }
+    const caregivers = [doctor, shrink, nurse]
 
     return (
         <Grid container className={classes.root} spacing={5} height="100%">
@@ -74,9 +73,11 @@ const caregivers = [doctor, shrink, nurse]
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.paper} elevation={3}>
+                            <Typography component="h1" variant="h8"> Senaste mätningar
+                        </Typography>
                             HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
                             PLUS EN LÄNK TILL MONITORCHILDVALUE
-                    <CustomPaginationActionsTable rows={testData} titles={col_desc} paginate={false} />
+                    <CustomPaginationActionsTable columns={['time', 'value']} rows={bloodsugar} titles={col_desc} paginate={false} />
                             <Button variant="contained" color="secondary" href="/monitor-child">
                                 Hantera värden
                             </Button>
@@ -85,9 +86,8 @@ const caregivers = [doctor, shrink, nurse]
                     <Grid item xs={12} sm={12} md={6}>
                         <Paper className={classes.paper} elevation={3}>
                             <Typography component="h1" variant="h8">
-                                Greta Gretasson
+                                {name}
                     </Typography>
-
                             <Typography variant="subtitle1">
                                 7 år, Diabetes typ 1
                     </Typography>
@@ -98,7 +98,10 @@ const caregivers = [doctor, shrink, nurse]
                     </Grid>
                     <Grid item item xs={6} sm={12}>
                         <Paper className={classes.paper} elevation={3}>
-                            <CaregivingTeam caregivers = {caregivers}></CaregivingTeam>
+                            <Typography component="h1" variant="h8"> Vårdgivare
+                            </Typography>
+                            Caregivers ska stå här och annan info. Ändra format.
+                            <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
                         </Paper>
                     </Grid>
 

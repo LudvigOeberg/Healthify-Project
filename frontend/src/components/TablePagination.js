@@ -106,6 +106,9 @@ export default function CustomPaginationActionsTable(props) {
   const paginate = props.paginate;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(paginate ? 5:-1);
+  if (!props.rows) {
+    return "";
+  }
   const rows = props.rows;
   const titles = props.titles;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -135,10 +138,10 @@ export default function CustomPaginationActionsTable(props) {
           {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows).map((row) => (
             <TableRow>
-              {(row).map((data) => (
+              {(props.columns).map((data) => (
                 <TableCell>
-                  {data}
-                </TableCell>
+                  {row[data]}
+              </TableCell>
               ))}
             </TableRow>
           ))}

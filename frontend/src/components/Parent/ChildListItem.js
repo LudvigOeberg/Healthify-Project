@@ -21,6 +21,7 @@ import Moment from 'moment';
 export default function ChildListItem(props) {
     const classes = useStyles();
     Moment.locale('sv');
+    console.log(props);
     return (
         <Container maxWidth="md">
             <div className={classes.paper}>
@@ -33,7 +34,7 @@ export default function ChildListItem(props) {
                         <ListItemText primary={props.name + " " + props.surname} />
                     </ListItem>
                     <Divider />
-                    <ListItem button component="a" href={"/parent-child-overview/"}  alignItems="center">
+                    <ListItem button component="a" href={'/parent-child-overview/' + props.ehrid} alignItems="center">
                         <ListItemIcon>
                             <AccountBox color="primary" />
                         </ListItemIcon>
