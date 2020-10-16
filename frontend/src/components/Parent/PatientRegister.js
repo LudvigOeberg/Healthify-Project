@@ -10,7 +10,6 @@ import {
     UPDATE_FIELD_AUTH,
     REGISTER_PAGE_UNLOADED,
     UPDATE_AUTH_BOOLEAN
-    
 } from '../../constants/actionTypes';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -19,8 +18,8 @@ const mapStateToProps = state => ({ ...state.auth, ...state.common });
 const mapDispatchToProps = dispatch => ({
     onChangeFieldAuth: (key, value) =>
         dispatch({ type: UPDATE_FIELD_AUTH, key: key, value }),
-    onSubmit: (name, surname, email, password, confirmPassword, snackbar) => {
-        const payload = agent.Parent.registerChild(name, surname, email, password, confirmPassword);
+    onSubmit: (name, surname, email, password, confirmPassword, dateofbirth, gender, snackbar) => {
+        const payload = agent.Parent.registerChild(name, surname, email, password, confirmPassword, dateofbirth, gender);
         dispatch({ type: REGISTER_CHILD, payload, snackbar });
     },
     onChangeBooleanAuth: (key, value) => 
@@ -45,8 +44,7 @@ class PatientRegister extends Component {
                 color: "success",
                 open: true
             }
-            this.props.onSubmit(name, surname, email, password, confirmPassword, snackbar);
-          
+            this.props.onSubmit(name, surname, email, password, confirmPassword, "1990-03-09T00:00:00.000Z", "MALE", snackbar);
         }
      
     }
@@ -161,10 +159,10 @@ class PatientRegister extends Component {
                                     variant="outlined"
                                     required
                                     fullWidth
-                                    id="age"
-                                    name="age"
                                     value={this.props.age}
                                     onChange={this.changeAuth}
+                                    id="age"
+                                    name="age"
                                     label="Ålder" />
                             </Grid>
                             <Grid item xs={12}>

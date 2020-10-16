@@ -1,12 +1,11 @@
 import { Avatar, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Link from '@material-ui/core/Link';
 import ChildList from './ChildList';
-import { PAGE_UNLOADED } from '../../constants/actionTypes';
+import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes';
+import agentEHR from '../../agentEHR';
 
 const mapStateToProps = state => {
     return {
@@ -15,6 +14,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
+    onLoad: (ehr_id) => {
+        dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehr_id) });
+    },
     onUnload: () =>
         dispatch({ type: PAGE_UNLOADED })
 });
@@ -23,6 +25,13 @@ class ParentPage extends Component {
     componentWillUnmount() {
         this.props.onUnload();
     }
+    
+    componentWillMount() {
+        this.props.currentUser.children.forEach(child => {
+            this.props.onLoad(child.child.ehrid);
+        });
+    }
+
     render() {
         const { classes } = this.props;
         const children = this.props.currentUser ? this.props.currentUser.children : null;
@@ -44,19 +53,6 @@ class ParentPage extends Component {
                         
                         {/* child list component to list children for logged in user */}
                         <ChildList children={children} />
-
-                        <form className={classes.form}>      
-                            <Button
-                                component={Link} href="/parent-settings"
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                            >
-                                Inställningar
-                            </Button>
-                        </form>
                     </div>
                 </Container>
             )

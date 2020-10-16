@@ -33,6 +33,7 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         token: action.token || null,
+        ehrToken: action.ehrToken || null,
         appLoaded: true,
         currentUser: action.payload ? action.payload.user : null
       };
@@ -46,7 +47,7 @@ export default (state = defaultState, action) => {
         ...state,
         redirectTo: action.error ? null : '/' + action.payload.user.type,
         token: action.error ? null : action.payload.user.token,
-        currentUser: action.error ? null : action.payload.user
+        currentUser: action.error ? null : action.payload.user,
       };
     case REGISTER_CHILD:
       return {
@@ -63,9 +64,13 @@ export default (state = defaultState, action) => {
     case SAVE_BLOODSUGAR:
       return {
         ...state,
-        bloodSugarJson: action.bloodSugarJson,
         bloodsugar: "",
-        snackbar: action.snackbar
+        redirectTo: action.error ? null : '/child',
+        snackbar: action.error ? {
+          open: true,
+          message: "Något gick fel",
+          color: "warning"
+        } : action.snackbar
       }
     case UPDATE_BOOLEAN:
       return { ...state, [action.key]: action.value ? true : false };

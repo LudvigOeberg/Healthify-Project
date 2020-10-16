@@ -8,9 +8,13 @@ import { connect } from 'react-redux';
 import {
     PATIENT_PAGE_UNLOADED,
     FIELD_CHANGE,
-    SAVE_BLOODSUGAR
+    UPDATE_BOOLEAN,
+    LOAD_PARTY,
+    SAVE_BLOODSUGAR,
+    LOAD_BLOODSUGAR
 } from '../../constants/actionTypes';
 import Measurements from './Measurements';
+import agentEHR from '../../agentEHR';
 
 
 const mapStateToProps = state => {
@@ -22,10 +26,16 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     onChangeAuth: (key, value) =>
         dispatch({ type: FIELD_CHANGE, key: key, value }),
-    onSubmit: (bloodSugarJson, snackbar) =>
-        dispatch({ type: SAVE_BLOODSUGAR, bloodSugarJson, snackbar }),
+    onSubmit: (ehrid, bloodsugar, snackbar) =>
+        dispatch({ type: SAVE_BLOODSUGAR, payload: agentEHR.Composition.saveBloodSugar(ehrid, bloodsugar), snackbar }),
     onUnload: () =>
-        dispatch({ type: PATIENT_PAGE_UNLOADED })
+        dispatch({ type: PATIENT_PAGE_UNLOADED }),
+    onLoad: (ehr_id) => {
+        dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehr_id) });
+        dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehr_id) })
+    },
+    onOpenSnackbar: (value) =>
+        dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
 });
 
 
@@ -37,37 +47,24 @@ class Patient extends Component {
         this.changeAuth = ev => this.props.onChangeAuth(ev.target.id, ev.target.value);
         this.submitForm = (key) => ev => {
             ev.preventDefault();
-            const bloodsugar = this.validate(this.props.bloodsugar) ? this.props.bloodsugar : null;
-            var bloodSugarJson;
-            if (bloodsugar) {
-                if (this.props.bloodSugarJson) {
-                    bloodSugarJson = this.props.bloodSugarJson;
-                    bloodSugarJson.bloodsugar[bloodSugarJson.bloodsugar.length] = {"Date": getCurrentDate(), "bloodsugar value" : bloodsugar};
-                } else {
-                    bloodSugarJson =
-                        {"bloodsugar":[
-                        {"Date": getCurrentDate(), "bloodsugar value" : bloodsugar}
-                    ]};
-                }
-            } else {
-                bloodSugarJson = this.props.bloodSugarJson;
-            }
+            const bloodsugar = this.props.bloodsugar;
             const snackbar = {
                 open: true,
-                message: this.validate(bloodsugar) ? "Du loggade värdet: " + bloodsugar + " mmol/L" : "Fel format!",
-                color: this.validate(bloodsugar) ? "success" : "error"
+                message: "Du loggade värdet: " + bloodsugar + " mmol/L",
+                color: "success"
             }
-            this.props.onSubmit(bloodSugarJson, snackbar);
+            this.props.onSubmit(this.props.currentUser.ehrid, bloodsugar, snackbar);
         };
+    }
+
+    componentDidMount() {
+        this.props.onLoad(this.props.currentUser.ehrid)
     }
 
     componentWillUnmount() {
         this.props.onUnload();
     }
 
-    validate = (val) => {
-        return (val < 100 && val > 0)
-    }
     render() {
         const bloodsugar = this.props.bloodsugar;
         const { classes } = this.props;

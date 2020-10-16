@@ -29,7 +29,7 @@ def init_db():
     from src.extensions import db
     from src.user.models import Parent, Child
     parent = Parent("Förälder", "Svensson", "p@test.se", "test123").save().save()
-    child = Child("Barn", "Svensson", "c@test.se", "test123", parent).save().save()
+    child = Child("Barn", "Svensson", "c@test.se", "test123", parent, '4508d366-cdc7-44a0-b556-1bef7a45a99a').save().save()
 
 
 @click.command()
