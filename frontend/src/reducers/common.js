@@ -23,7 +23,7 @@ const defaultState = {
   viewChangeCounter: 0,
   drawerOpen: false,
   snackbar: {
-    snackbarOpen: false
+    open: false
   }
 };
 
