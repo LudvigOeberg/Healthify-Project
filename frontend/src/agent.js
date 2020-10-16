@@ -35,8 +35,8 @@ const Auth = {
 };
 
 const Parent = {
-  registerChild: (name, surname, email, password, confirmPassword) =>
-    requests.post('/parent', { user: { name, surname, email, password, confirmPassword } }),
+  registerChild: (name, surname, email, password, confirmPassword, dateofbirth, gender) =>
+    requests.post('/parent', { user: { name, surname, email, password, confirmPassword, dateofbirth, gender } }),
   children: () =>
     requests.get('/parent')
 };
