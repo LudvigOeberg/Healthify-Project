@@ -9,24 +9,22 @@ import {
     REGISTER_CHILD, 
     UPDATE_FIELD_AUTH,
     REGISTER_PAGE_UNLOADED,
+    UPDATE_AUTH_BOOLEAN
     
 } from '../../constants/actionTypes';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-
-
-
-
-
-const mapStateToProps = state => ({ ...state.auth });
+const mapStateToProps = state => ({ ...state.auth, ...state.common });
 
 const mapDispatchToProps = dispatch => ({
     onChangeFieldAuth: (key, value) =>
         dispatch({ type: UPDATE_FIELD_AUTH, key: key, value }),
-    onSubmit: (name, surname, email, password, confirmPassword) => {
+    onSubmit: (name, surname, email, password, confirmPassword, snackbar) => {
         const payload = agent.Parent.registerChild(name, surname, email, password, confirmPassword);
-        dispatch({ type: REGISTER_CHILD, payload });
+        dispatch({ type: REGISTER_CHILD, payload, snackbar });
     },
+    onChangeBooleanAuth: (key, value) => 
+        dispatch({type: UPDATE_AUTH_BOOLEAN, key: key, value}),
     onUnload: () =>
         dispatch({ type: REGISTER_PAGE_UNLOADED })
 });
@@ -36,55 +34,26 @@ class PatientRegister extends Component {
     constructor() {
         super();
         this.changeAuth = ev => this.props.onChangeFieldAuth(ev.target.id, ev.target.value);
+        this.changeAuthBoolean = ev => {
+                this.props.onChangeBooleanAuth(ev.target.id, ev.target.checked);
+        }  
         this.submitForm = (name, surname, email, password, confirmPassword) => ev => {
             ev.preventDefault();
-            this.props.onSubmit(name, surname, email, password, confirmPassword);
-      
+            const snackbar = {
+                message: `Du registrerade barnet ${name} ${surname} 
+                    som lider av ${this.props.diabetes ? "diabetes" : "fetma"}`,
+                color: "success",
+                open: true
+            }
+            this.props.onSubmit(name, surname, email, password, confirmPassword, snackbar);
+          
         }
-
-        this.state = {
-            diabetes: false,
-            fetma: false,
-        };
-        this.handleChangeDiabetes = this.handleChangeDiabetes.bind(this);
-        this.handleChangeFetma = this.handleChangeFetma.bind(this);
-        this.onClickRegister = this.onClickRegister.bind(this)
+     
     }
-
-    handleChangeDiabetes() {
-        if (!this.state.fetma) {
-            this.setState(state => ({
-                diabetes: !state.diabetes
-            }));
-        }
-    }
-
-    handleChangeFetma() {
-        if (!this.state.diabetes) {
-            this.setState(state => ({
-                fetma : !state.fetma
-            }));
-        }
-    }
-
-
-    //Temporary until state handling workshop so i know how to use martins snackbar
-    onClickRegister() {
-        if (this.state.diabetes) {
-            alert(`Namn: ${this.props.name} ${this.props.surname}. Sjukdom: Diabetes `)
-        } else if (this.state.fetma) {
-            alert(`Namn: ${this.props.name} ${this.props.surname}. Sjukdom: Fetma `)
-        } else {
-            alert("OBS! Ingen sjukdom har valts")
-        }
-    }
-
 
     componentWillUnmount() {
         this.props.onUnload();
     }
-
- 
 
     render() {
         const { classes } = this.props;
@@ -94,8 +63,9 @@ class PatientRegister extends Component {
         const name = this.props.name;
         const surname = this.props.surname;
         const errors = this.props.errors ? this.props.errors : null;
-
-    
+        const diabetes = this.props.diabetes;
+        const fetma = this.props.fetma;
+        
         return (
 
             <Container component="main" maxWidth="xs">
@@ -193,6 +163,8 @@ class PatientRegister extends Component {
                                     fullWidth
                                     id="age"
                                     name="age"
+                                    value={this.props.age}
+                                    onChange={this.changeAuth}
                                     label="Ålder" />
                             </Grid>
                             <Grid item xs={12}>
@@ -204,19 +176,18 @@ class PatientRegister extends Component {
                                     <AccordionDetails >  
                                         <FormControlLabel
                                         style={{opacity: "0.87"}}
-                                        control={<Checkbox checked={this.state.diabetes} onChange={this.handleChangeDiabetes} name="checkedDiabetes" />}
+                                        control={<Checkbox checked={diabetes} required disabled={fetma} onChange={this.changeAuthBoolean} id="diabetes"/>}
                                         label="Diabetes"
                                         required
-                                        fullWidth
+                                        
                                         />
                                     </AccordionDetails>
                                     <AccordionDetails>   
                                         <FormControlLabel
                                         style={{opacity: "0.87"}}
-                                        control={<Checkbox checked={this.state.fetma} onChange={this.handleChangeFetma} name="checkedFetma" />}
+                                        control={<Checkbox checked={fetma} required disabled={diabetes} onChange={this.changeAuthBoolean} id="fetma"/>}
                                         label="Fetma"
-                                        required
-                                        fullWidth
+                                        
                                         />
                                     </AccordionDetails>
                                 </Accordion>
@@ -232,7 +203,6 @@ class PatientRegister extends Component {
                             disabled={this.props.inProgress}>
                             Registrera
                         </Button>
-
                     </form>
                 </div>
               

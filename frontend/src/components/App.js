@@ -12,9 +12,12 @@ import Patient from './Child/Patient';
 import Footer from './Footer';
 import Header from './Header';
 import NotFound from './NotFound';
+import CaregivingPage from './Parent/CaregivingPage';
 import Parent from './Parent/Parent';
 import ParentOverview from './Parent/ParentOverview';
 import PatientRegister from './Parent/PatientRegister';
+import MySnackbar from './MySnackbar';
+import MonitorChildValue from './Parent/MonitorChildValue';
 
 const mapStateToProps = state => {
   return {
@@ -66,11 +69,14 @@ class App extends React.Component {
                 <Route exact path="/child" component={Patient} />
                 <Route exact path="/parent" component={Parent} />
                 <Route exact path="/parent-child-overview" component={ParentOverview} />
+                <Route exact path="/parent-child-overview2" component={MonitorChildValue} />
                 <Route exact path="/register-patient" component={PatientRegister} />
+                <Route exact path="/caregiving-team" component={CaregivingPage} />
                 <Route path="*" component={NotFound} />
               </Switch>
             </div>
             <Footer />
+            <MySnackbar />
         </div>
       );
     }

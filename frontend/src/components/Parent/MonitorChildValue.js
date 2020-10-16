@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  UPDATE_BOOLEAN,
+  OPEN_SNACKBAR,
   FIELD_CHANGE,
 } from '../../constants/actionTypes';
 import Avatar from '@material-ui/core/Avatar';
@@ -9,9 +9,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import MySnackbar from '../MySnackbar';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Grid } from '@material-ui/core';
 import CustomPaginationActionsTable from '../TablePagination';
@@ -25,8 +24,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   onChangeField: (key, value) => 
     dispatch({ type: FIELD_CHANGE, key: key, value }),
-  onOpenSnackbar: (value) =>
-    dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
+  onOpenSnackbar: (message, color) =>
+    dispatch({ type: OPEN_SNACKBAR, message, color }),
 });
 
 // In future we access the database and create values 
@@ -57,7 +56,9 @@ class MonitorChildValue extends React.Component {
     super();
     this.submitForm = (key, value) => ev => {
       ev.preventDefault();
-      this.props.onOpenSnackbar(true);
+      const color = this.validate(this.props.childValue) ? "success" : "error";
+      const message = this.validate(this.props.childValue) ? `Du loggade värdet: ${this.props.childValue} mmol/L` : "Fel format!";
+      this.props.onOpenSnackbar(message, color);
     };
     this.changeField = ev => {
       this.props.onChangeField(ev.target.id, ev.target.value);
@@ -75,7 +76,6 @@ class MonitorChildValue extends React.Component {
   render() {
     const { classes } = this.props;
     const childValue = this.props.childValue;
-    const errors = this.props.errors ? this.props.errors : null;
     const open = this.props.snackbarOpen;
     return (
       <Container>
@@ -138,9 +138,6 @@ class MonitorChildValue extends React.Component {
                 </Grid>
               </Grid>
               </form>
-
-              <MySnackbar open={open} color={this.validate(childValue) ? "success":"error"} 
-              message={this.validate(childValue) ? "Du loggade värdet: " + childValue + " mmol/L" : "Fel format!"} />
               
             </Grid> 
         </Grid>
