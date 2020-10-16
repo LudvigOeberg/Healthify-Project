@@ -1,6 +1,5 @@
 import {
     LOAD_PARTY,
-    SAVE_PARTY,
     LOAD_EHR_METRIC
 } from '../constants/actionTypes';
 
@@ -12,10 +11,6 @@ export default (state = {}, action) => {
                 party: action.payload.error ? null : {
                     [action.payload.party.additionalInfo.ehrId]: action.payload.party
                 }
-            }
-        case SAVE_PARTY:
-            return {
-                ...state
             }
         case LOAD_EHR_METRIC:
             return {

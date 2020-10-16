@@ -12,6 +12,7 @@ import {
     
 } from '../../constants/actionTypes';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import agentEHR from '../../agentEHR';
 
 
 
@@ -23,8 +24,9 @@ const mapStateToProps = state => ({ ...state.auth });
 const mapDispatchToProps = dispatch => ({
     onChangeFieldAuth: (key, value) =>
         dispatch({ type: UPDATE_FIELD_AUTH, key: key, value }),
-    onSubmit: (name, surname, email, password, confirmPassword) => {
+    onSubmit: (name, surname, email, password, confirmPassword, age, gender) => {
         const payload = agent.Parent.registerChild(name, surname, email, password, confirmPassword);
+        const ehrPayload = agentEHR.EHR.saveParty(payload.then((res) => res.ehrid), age, gender, name, surname)
         dispatch({ type: REGISTER_CHILD, payload });
     },
     onUnload: () =>
@@ -36,10 +38,9 @@ class PatientRegister extends Component {
     constructor() {
         super();
         this.changeAuth = ev => this.props.onChangeFieldAuth(ev.target.id, ev.target.value);
-        this.submitForm = (name, surname, email, password, confirmPassword) => ev => {
+        this.submitForm = (name, surname, email, password, confirmPassword, age, gender) => ev => {
             ev.preventDefault();
-            this.props.onSubmit(name, surname, email, password, confirmPassword);
-      
+            this.props.onSubmit(name, surname, email, password, confirmPassword, age, gender);
         }
 
         this.state = {
@@ -48,7 +49,7 @@ class PatientRegister extends Component {
         };
         this.handleChangeDiabetes = this.handleChangeDiabetes.bind(this);
         this.handleChangeFetma = this.handleChangeFetma.bind(this);
-        this.onClickRegister = this.onClickRegister.bind(this)
+        //this.onClickRegister = this.onClickRegister.bind(this)
     }
 
     handleChangeDiabetes() {
@@ -93,7 +94,9 @@ class PatientRegister extends Component {
         const confirmPassword = this.props.confirmPassword;
         const name = this.props.name;
         const surname = this.props.surname;
+        const age = this.props.age;
         const errors = this.props.errors ? this.props.errors : null;
+        const gender = this.props.gender;
 
     
         return (
@@ -106,7 +109,7 @@ class PatientRegister extends Component {
                     <Typography component="h1" variant="h5">
                         Registrera patient
                     </Typography>
-                    <form className={classes.form} noValidate onSubmit={this.submitForm(name, surname, email, password, confirmPassword)} >
+                    <form className={classes.form} noValidate onSubmit={this.submitForm(name, surname, email, password, confirmPassword, age, gender)} >
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -191,6 +194,8 @@ class PatientRegister extends Component {
                                     variant="outlined"
                                     required
                                     fullWidth
+                                    value={this.props.age}
+                                    onChange={this.changeAuth}
                                     id="age"
                                     name="age"
                                     label="Ålder" />

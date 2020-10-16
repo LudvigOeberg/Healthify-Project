@@ -17,7 +17,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     onLoad: (ehr_id) => {
         dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehr_id) });
-        dispatch({ type: LOAD_EHR_METRIC, payload: agentEHR.query.weight(ehr_id), metric: WEIGHT });
     },
     onUnload: () =>
         dispatch({ type: PAGE_UNLOADED })
