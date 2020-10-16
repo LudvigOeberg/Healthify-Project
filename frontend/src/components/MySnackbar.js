@@ -6,16 +6,14 @@ import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from 'react-redux';
 import {
-  UPDATE_BOOLEAN
+  CLOSE_SNACKBAR
 } from '../constants/actionTypes';
 
 
 /**
  * Displays a snackbar at the bottom
- * @param {const} props- a const with a message, open=true and a color.
- * Should look like below:
- * <Snackbar open={true} message={message} color={"success"} />
- * 
+ * Use dispatch({ type: OPEN_SNACKBAR, message: message, color: "success" })
+ * to open snackbar with message.
  *  Author: Martin Dagermo
  */
 
@@ -30,13 +28,13 @@ const useStyles = makeStyles(theme => ({
 
 const mapStateToProps = state => { 
   return {
-    ...state.common
+    ...state.common.snackbar
   }
 };
 
 const mapDispatchToProps = dispatch => ({
-  onOpenSnackbar: (value) =>
-    dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
+  closeSnackbar: () =>
+    dispatch({ type: CLOSE_SNACKBAR })
 });
 
 const MySnackbar = (props) => {
@@ -45,7 +43,7 @@ const MySnackbar = (props) => {
     if (reason === 'clickaway') {
       return;
     }
-    props.onOpenSnackbar(false);
+    props.closeSnackbar();
   };
 
   return (

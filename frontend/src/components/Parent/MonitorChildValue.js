@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  UPDATE_BOOLEAN,
+  OPEN_SNACKBAR,
   FIELD_CHANGE,
 } from '../../constants/actionTypes';
 import Avatar from '@material-ui/core/Avatar';
@@ -9,9 +9,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import MySnackbar from '../MySnackbar';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Grid } from '@material-ui/core';
 import CustomPaginationActionsTable from '../TablePagination';
@@ -25,23 +24,27 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   onChangeField: (key, value) => 
     dispatch({ type: FIELD_CHANGE, key: key, value }),
-  onOpenSnackbar: (value) =>
-    dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
+  onOpenSnackbar: (message, color) =>
+    dispatch({ type: OPEN_SNACKBAR, message, color }),
 });
 
 // In future we access the database and create values 
 // with a format suited for the Table here.
 // You can insert an arbitrary amount of columns here.
 const testData = [
-  [new Date(2020, 9, 3).toLocaleDateString(), 3.7],
-  [new Date(2020, 9, 12).toLocaleDateString(), 14.0],
-  [new Date(2020, 9, 0).toLocaleDateString(), 17.2],
-  [new Date(2020, 9, 18).toLocaleDateString(), 32.3],
-  [new Date(2020, 9, 29).toLocaleDateString(), 17.2],
-  [new Date(2020, 9 ,10).toLocaleDateString(), 11.3],
-  [new Date(2020, 10, 25).toLocaleDateString(), 3.3],
-  [new Date(2020, 8 ,25).toLocaleDateString(), 22.3],
-  [new Date(2020, 10 ,14).toLocaleDateString(), 14.3],
+  [new Date(2020, 8, 1, 15, 30).toLocaleString(), 3.7],
+  [new Date(2020, 9, 5, 15, 30).toLocaleString(), 14.0],
+  [new Date(2020, 9, 13, 6, 20).toLocaleString(), 17.2],
+  [new Date(2020, 9, 13, 13, 30).toLocaleString(), 32.3],
+  [new Date(2020, 9, 13, 18, 30).toLocaleString(), 17.2],
+  [new Date(2020, 9, 13, 22, 30).toLocaleString(), 11.3],
+  [new Date(2020, 9, 14, 0, 30).toLocaleString(), 3.3],
+  [new Date(2020, 9, 14, 6, 30).toLocaleString(), 22.3],
+  [new Date(2020, 4, 14, 9, 0).toLocaleString(), 5.3],
+  [new Date(2020, 0, 14, 9, 0).toLocaleString(), 24.3],
+  [new Date(2020, 7, 14, 9, 0).toLocaleString(), 14.3],
+
+
   
 ].sort((a, b) => (a[0] < b[0] ? -1 : 1));
 
@@ -53,7 +56,9 @@ class MonitorChildValue extends React.Component {
     super();
     this.submitForm = (key, value) => ev => {
       ev.preventDefault();
-      this.props.onOpenSnackbar(true);
+      const color = this.validate(this.props.childValue) ? "success" : "error";
+      const message = this.validate(this.props.childValue) ? `Du loggade värdet: ${this.props.childValue} mmol/L` : "Fel format!";
+      this.props.onOpenSnackbar(message, color);
     };
     this.changeField = ev => {
       this.props.onChangeField(ev.target.id, ev.target.value);
@@ -71,7 +76,6 @@ class MonitorChildValue extends React.Component {
   render() {
     const { classes } = this.props;
     const childValue = this.props.childValue;
-    const errors = this.props.errors ? this.props.errors : null;
     const open = this.props.snackbarOpen;
     return (
       <Container>
@@ -93,7 +97,7 @@ class MonitorChildValue extends React.Component {
             <Typography component="h1" variant="h5">
               Graf
               </Typography>
-              <TimeLineChart chartData = {testData} label = {"Blodsocker (mmol/L)"} unit = {'day'}></TimeLineChart>
+              <TimeLineChart chartData = {testData} label = {"Blodsocker (mmol/L)"}></TimeLineChart>
             </Grid>
             <Grid item xs={12} align = "center">
               <Avatar className={classes.avatar}>
@@ -119,7 +123,6 @@ class MonitorChildValue extends React.Component {
                   disabled={open}
                   
                   onChange={this.changeField}
-                  autoFocus
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -135,9 +138,6 @@ class MonitorChildValue extends React.Component {
                 </Grid>
               </Grid>
               </form>
-
-              <MySnackbar open={open} color={this.validate(childValue) ? "success":"error"} 
-              message={this.validate(childValue) ? "Du loggade värdet: " + childValue + " mmol/L" : "Fel format!"} />
               
             </Grid> 
         </Grid>

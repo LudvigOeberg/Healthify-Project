@@ -21,3 +21,6 @@ export const REGISTER_CHILD = 'REGISTER_CHILD';
 export const LOAD_PARTY = 'LOAD_PARTY';
 export const SAVE_PARTY = 'SAVE_PARTY';
 export const LOAD_EHR_METRIC = 'LOAD_EHR_METRIC';
+export const OPEN_SNACKBAR = 'OPEN_SNACKBAR';
+export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR';
+export const SAVE_BLOODSUGAR = 'SAVE_BLOODSUGAR';
