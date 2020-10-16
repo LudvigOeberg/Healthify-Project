@@ -45,6 +45,23 @@ const mapDispatchToProps = dispatch => ({
 const ParentOverview = (props) => {
     const classes = styles();
 
+const doctor = {
+    name: "Doktor X",
+    mail: "Dr.x@gmail.com",
+    telephone: "070-XXX XX XX"
+} 
+const shrink = {
+    name: "Psykolog Y",
+    mail: "P.Y@gmail.com",
+    telephone: "070-YYY YY YY"
+} 
+const nurse = {
+    name: "Sjuksköterska Z",
+    mail: "S.Z@gmail.com",
+    telephone: "070-ZZZ ZZ ZZ"
+}
+const caregivers = [doctor, shrink, nurse]
+
     return (
         <Grid container className={classes.root} spacing={5} height="100%">
             <Grid item xs={12} sm={12} md={6}>
@@ -60,10 +77,10 @@ const ParentOverview = (props) => {
                             HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
                             PLUS EN LÄNK TILL MONITORCHILDVALUE
                     <CustomPaginationActionsTable rows={testData} titles={col_desc} paginate={false} />
-                            <Button variant="contained" color="secondary" href="/monitor">
+                            <Button variant="contained" color="secondary" href="/monitor-child">
                                 Hantera värden
                             </Button>
-                        </Paper>
+                        </Paper >
                     </Grid>
                     <Grid item xs={12} sm={12} md={6}>
                         <Paper className={classes.paper} elevation={3}>
@@ -81,6 +98,7 @@ const ParentOverview = (props) => {
                     </Grid>
                     <Grid item item xs={6} sm={12}>
                         <Paper className={classes.paper} elevation={3}>
+                            <CaregivingTeam caregivers = {caregivers}></CaregivingTeam>
                         </Paper>
                     </Grid>
 
