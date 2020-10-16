@@ -76,7 +76,6 @@ class MonitorChildValue extends React.Component {
   render() {
     const { classes } = this.props;
     const childValue = this.props.childValue;
-    const errors = this.props.errors ? this.props.errors : null;
     const open = this.props.snackbarOpen;
     return (
       <Container>

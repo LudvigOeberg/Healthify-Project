@@ -5,11 +5,9 @@ import { Button } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
-import MySnackbar from '../MySnackbar';
 import {
     PATIENT_PAGE_UNLOADED,
     FIELD_CHANGE,
-    UPDATE_BOOLEAN,
     SAVE_BLOODSUGAR
 } from '../../constants/actionTypes';
 import Measurements from './Measurements';
@@ -73,7 +71,6 @@ class Patient extends Component {
     render() {
         const bloodsugar = this.props.bloodsugar;
         const { classes } = this.props;
-        const open = this.props.snackbarOpen;
         return (
             <Container component="main" maxWidth="sm">
                 <div className={classes.paper}>

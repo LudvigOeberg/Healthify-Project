@@ -4,7 +4,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { RadioGroup, FormControlLabel, FormLabel, Radio, FormControl } from '@material-ui/core';
 import { connect } from 'react-redux';
 import {
-  UPDATE_BOOLEAN, FIELD_CHANGE
+  FIELD_CHANGE
 } from '../constants/actionTypes';
 
 /**
@@ -54,29 +54,29 @@ function createChartProps(chartData, label, theme) {
 }
 
 const getSettings = (horizon) => {
-  var today = new Date;
-  if (horizon == 'day') {
+  var today = new Date();
+  if (horizon === 'day') {
     return {
       min: today.setDate(today.getDate() - 1.1),
       unit: 'hour',
       stepSize: 3,
       dispFormat: 'HH:00'
     }
-  } else if (horizon == 'week') {
+  } else if (horizon === 'week') {
     return {
       min: today.setDate(today.getDate() - 7),
       unit: 'day',
       stepSize: 1,
       dispFormat: 'ddd'
     }
-  } else if (horizon == 'month') {
+  } else if (horizon === 'month') {
     return {
       min: today.setDate(today.getDate() - 30),
       unit: 'day',
       stepSize: 7,
       dispFormat: 'ddd DD MMM'
     }
-  } else if (horizon == 'all') {
+  } else if (horizon === 'all') {
     return {
       min: null,
       unit: 'month',
@@ -87,7 +87,7 @@ const getSettings = (horizon) => {
 }
 
 const TimeLineChart = (props) =>  {
-  const timeHorizon = props.currSettings == undefined ? 'all' : props.currSettings;
+  const timeHorizon = props.currSettings === undefined ? 'all' : props.currSettings;
   const chartData = props.chartData;
   const label = props.label;
   const theme = useTheme();
