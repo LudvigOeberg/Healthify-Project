@@ -59,6 +59,15 @@ const Composition = {
       format: 'FLAT'
     }
     return requests.post('/composition?' + param(params), composition);
+  },
+  saveBloodSugar: (ehr_id, bloodsugar) => {
+    const composition = {
+      "ctx/language": "en",
+      "ctx/territory": "SE",
+      "odl_empower/blodsocker:0/blodsocker|magnitude": bloodsugar,
+      "odl_empower/blodsocker:0/blodsocker|unit": "mmol/l"
+    }
+    return Composition.save(composition, ehr_id, 'ODL Report Vital Signs')
   }
 };
 
@@ -81,7 +90,14 @@ const Query = {
   weight: ehr_id =>
     requests.get(`/view/${ehr_id}/weight`),
   length: ehr_id =>
-    requests.get(`/view/${ehr_id}/length`)
+    requests.get(`/view/${ehr_id}/length`),
+  bloodsugar: ehr_id => 
+    Query.aql(`SELECT y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/magnitude as value, y/data[at0001]/events[at0002,'Point-in-time event']/time/value as Time, y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/units as unit
+    FROM EHR[ehr_id/value='${ehr_id}']
+    CONTAINS COMPOSITION c
+    CONTAINS OBSERVATION y[openEHR-EHR-OBSERVATION.lab_test-blood_glucose.v1]
+    ORDER BY Time desc
+    OFFSET 0 LIMIT 20`)
 };
 
 const param = (params) => {

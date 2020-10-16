@@ -4,9 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ChildList from './ChildList';
-import { PAGE_UNLOADED, LOAD_EHR_METRIC, LOAD_PARTY } from '../../constants/actionTypes';
+import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes';
 import agentEHR from '../../agentEHR';
-import { WEIGHT } from '../../constants/metrics';
 
 const mapStateToProps = state => {
     return {

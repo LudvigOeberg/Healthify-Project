@@ -10,20 +10,17 @@ import {
     UPDATE_FIELD_AUTH,
     REGISTER_PAGE_UNLOADED,
     UPDATE_AUTH_BOOLEAN
-    
 } from '../../constants/actionTypes';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import agentEHR from '../../agentEHR';
 
 const mapStateToProps = state => ({ ...state.auth, ...state.common });
 
 const mapDispatchToProps = dispatch => ({
     onChangeFieldAuth: (key, value) =>
         dispatch({ type: UPDATE_FIELD_AUTH, key: key, value }),
-    onSubmit: (name, surname, email, password, confirmPassword, snackbar, age, gender) => {
-        const payload = agent.Parent.registerChild(name, surname, email, password, confirmPassword);
-        const ehrPayload = agentEHR.EHR.saveParty(payload.then((res) => res.ehrid), age, gender, name, surname)
-        dispatch({ type: REGISTER_CHILD, payload, snackbar, ehrPayload });
+    onSubmit: (name, surname, email, password, confirmPassword, dateofbirth, gender, snackbar) => {
+        const payload = agent.Parent.registerChild(name, surname, email, password, confirmPassword, dateofbirth, gender);
+        dispatch({ type: REGISTER_CHILD, payload, snackbar });
     },
     onChangeBooleanAuth: (key, value) => 
         dispatch({type: UPDATE_AUTH_BOOLEAN, key: key, value}),
@@ -39,7 +36,7 @@ class PatientRegister extends Component {
         this.changeAuthBoolean = ev => {
                 this.props.onChangeBooleanAuth(ev.target.id, ev.target.checked);
         }  
-        this.submitForm = (name, surname, email, password, confirmPassword, age, gender) => ev => {
+        this.submitForm = (name, surname, email, password, confirmPassword) => ev => {
             ev.preventDefault();
             const snackbar = {
                 message: `Du registrerade barnet ${name} ${surname} 
@@ -47,8 +44,7 @@ class PatientRegister extends Component {
                 color: "success",
                 open: true
             }
-            this.props.onSubmit(name, surname, email, password, confirmPassword, snackbar, age, gender);
-          
+            this.props.onSubmit(name, surname, email, password, confirmPassword, "1990-03-09T00:00:00.000Z", "MALE", snackbar);
         }
      
     }
@@ -64,9 +60,7 @@ class PatientRegister extends Component {
         const confirmPassword = this.props.confirmPassword;
         const name = this.props.name;
         const surname = this.props.surname;
-        const age = this.props.age;
         const errors = this.props.errors ? this.props.errors : null;
-        const gender = this.props.gender;
         const diabetes = this.props.diabetes;
         const fetma = this.props.fetma;
         
@@ -80,7 +74,7 @@ class PatientRegister extends Component {
                     <Typography component="h1" variant="h5">
                         Registrera patient
                     </Typography>
-                    <form className={classes.form} noValidate onSubmit={this.submitForm(name, surname, email, password, confirmPassword, age, gender)} >
+                    <form className={classes.form} noValidate onSubmit={this.submitForm(name, surname, email, password, confirmPassword)} >
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -169,8 +163,6 @@ class PatientRegister extends Component {
                                     onChange={this.changeAuth}
                                     id="age"
                                     name="age"
-                                    value={this.props.age}
-                                    onChange={this.changeAuth}
                                     label="Ålder" />
                             </Grid>
                             <Grid item xs={12}>

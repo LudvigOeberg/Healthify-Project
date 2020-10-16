@@ -16,6 +16,7 @@ from .schema import user_schema, user_schemas, login_schema, register_user_schem
 from requests.auth import HTTPBasicAuth
 import requests
 from flask import current_app
+import json
 
 apiurl = 'https://rest.ehrscape.com/rest/v1/'
 
@@ -96,23 +97,39 @@ class ParentResource(MethodResource):
     @use_kwargs(register_user_schema)
     @marshal_with(child_schema)
     @doc(description="Register a child to current logged in parent")
-    def post(self, name, surname, email, password, confirmPassword, **kwargs):
+    def post(self, name, surname, email, password, confirmPassword, dateofbirth, gender, **kwargs):
         if (password != confirmPassword): 
             raise InvalidUsage.password_dont_match()
         if not current_user: 
             raise InvalidUsage.user_not_found()
         r = requests.post(apiurl + 'ehr', auth=HTTPBasicAuth(current_app.config['EHR_USER'], current_app.config['EHR_USER_PASS']))
         if r.status_code == 201:
-            try:
-                ehrid = r.json()['ehrId']
-                child = Child(name, surname, email, password, current_user, ehrid, **kwargs)
-                db.session.add(child)
-                db.session.commit()
-                return child
-            except IntegrityError:
-                db.session.rollback()
-                raise InvalidUsage.user_already_registered()
-
+            body = {
+                "firstNames": name,
+                "lastNames": surname,
+                "gender": gender,
+                "dateOfBirth": dateofbirth.isoformat(),
+                "partyAdditionalInfo": [
+                    {
+                    "key": "ehrId",
+                    "value": r.json()['ehrId']
+                    }
+                ]
+                }
+            party = requests.post(apiurl + '/demographics/party', json=body, auth=HTTPBasicAuth(current_app.config['EHR_USER'], current_app.config['EHR_USER_PASS']))
+            print(party)
+            print(party.status_code)
+            if party.status_code == 201:
+                try:
+                    ehrid = r.json()['ehrId']
+                    child = Child(name, surname, email, password, current_user, ehrid, **kwargs)
+                    db.session.add(child)
+                    db.session.commit()
+                    return child
+                except IntegrityError:
+                    db.session.rollback()
+                    raise InvalidUsage.user_already_registered()
+            raise InvalidUsage.unknown_error()
 
 @api.resource('/child')
 @doc(tags=["Child"])

@@ -43,6 +43,7 @@ class UserSchema(Schema):
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
     children = fields.List(fields.Nested(lambda: ChildSchema()), dump_only=True)
     parents = fields.List(fields.Nested(lambda: UserSchema(exclude=("children", "parents", "token"))), dump_only=True)
+    ehrid = fields.Str(dump_only=True)
     type = fields.Str(dump_only=True)
 
     @pre_load
@@ -68,7 +69,8 @@ class RegisterUserSchema(Schema):
     email = fields.Email(required=True)
     password = fields.Str(load_only=True, validate=validate.Length(min=1), required=True)
     confirmPassword = fields.Str(load_only=True, validate=validate.Length(min=1), required=True)
-    
+    gender = fields.Str(validate=(validate.OneOf(["MALE", "FEMALE", "UNKNOWN", "OTHER"])))
+    dateofbirth = fields.DateTime(format="iso")
     token = fields.Str(dump_only=True)
     createdAt = fields.DateTime(attribute='created_at', dump_only=True)
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)

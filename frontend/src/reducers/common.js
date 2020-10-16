@@ -64,9 +64,13 @@ export default (state = defaultState, action) => {
     case SAVE_BLOODSUGAR:
       return {
         ...state,
-        bloodSugarJson: action.bloodSugarJson,
         bloodsugar: "",
-        snackbar: action.snackbar
+        redirectTo: action.error ? null : '/child',
+        snackbar: action.error ? {
+          open: true,
+          message: "Något gick fel",
+          color: "warning"
+        } : action.snackbar
       }
     case UPDATE_BOOLEAN:
       return { ...state, [action.key]: action.value ? true : false };
