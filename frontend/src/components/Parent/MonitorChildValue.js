@@ -85,7 +85,7 @@ class MonitorChildValue extends React.Component {
           </Typography>
           <p></p>
           <Grid container spacing={5}>            
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12} md={6}>
             <Typography component="h1" variant="h5">
               Tabell
               </Typography>
@@ -93,7 +93,7 @@ class MonitorChildValue extends React.Component {
 
               </CustomPaginationActionsTable>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12} md={6}>
             <Typography component="h1" variant="h5">
               Graf
               </Typography>

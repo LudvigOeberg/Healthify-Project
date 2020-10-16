@@ -91,11 +91,15 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-const useStyles2 = makeStyles({
+const useStyles2 = makeStyles((theme) => ({
   table: {
-    minWidth: 500,
+    minWidth: 100,
+  }, 
+  paper: {
+    margin: theme.spacing(1),
+    width: "auto"
   },
-});
+}));
 
 export default function CustomPaginationActionsTable(props) {
   const classes = useStyles2();
@@ -116,7 +120,7 @@ export default function CustomPaginationActionsTable(props) {
   };
   
   return (
-    <TableContainer component={Paper}>
+    <TableContainer className = {classes.paper} component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
       <TableHead>
           <TableRow>
