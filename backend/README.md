@@ -16,10 +16,13 @@ pip install -r requirements.txt
 
 export FLASK_DEBUG=1
 export FLASK_APP=autoapp.py
+export ehr_user=<EHR username from RÖ>
+export ehr_user_pass=<EHR password from RÖ>
 
 flask db init
 flask db migrate
 flask db upgrade
+flask init-db
 ```
 ### Run
 To run use the following scripts in order:
@@ -27,10 +30,8 @@ To run use the following scripts in order:
 . venv/bin/activate
 export FLASK_DEBUG=1
 export FLASK_APP=autoapp.py
-
-#if there are changes to db classes
-flask db migrate
-flask db upgrade
+export ehr_user=<EHR username from RÖ>
+export ehr_user_pass=<EHR password from RÖ>
 
 flask run
 ```

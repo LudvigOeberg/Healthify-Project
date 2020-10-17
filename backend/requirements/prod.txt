@@ -19,3 +19,4 @@ Flask-Cors
 bcrypt
 flask-restful
 psycopg2-binary
+requests

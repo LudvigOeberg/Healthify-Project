@@ -68,10 +68,11 @@ class App extends React.Component {
         let ehrUser = prompt('Du har ingen cookie för EHRscape.\nSkriv in användarnamn för att använda API:et:');
         if (ehrUser) {
           let ehrUserPass = prompt('Lösenord:');
-          window.localStorage.setItem('ehr_user', ehrUser);
-          window.localStorage.setItem('ehr_user_pass', ehrUserPass);
-        } else {
-          window.localStorage.setItem('ehr_dont_bother', true);
+          if (ehrUserPass) {
+            window.localStorage.setItem('ehr_user', ehrUser);
+            window.localStorage.setItem('ehr_user_pass', ehrUserPass);
+            window.localStorage.setItem('ehr_dont_bother', true);
+          }
         }
       }
       return (
