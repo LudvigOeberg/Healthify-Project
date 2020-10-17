@@ -50,9 +50,14 @@ export default (state = defaultState, action) => {
         currentUser: action.error ? null : action.payload.user,
       };
     case REGISTER_CHILD:
+      var children = state.currentUser.children;
+      children[children.length] = action.payload;
+      var currentUser = state.currentUser;
+      currentUser.children = children;
       return {
         ...state,
         redirectTo: action.error ? null : '/parent',
+        currentUser: currentUser,
         snackbar: action.error ? {
           open: true,
           message: "Något gick fel",
