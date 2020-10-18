@@ -97,12 +97,13 @@ class App extends React.Component {
                 <Route exact path="/parent">
                   <Requires types={['auth', 'parent']} user={this.props.currentUser} component={Parent}/>
                 </Route>
-                <Route exact path="/parent-child-overview/:id">
-                  <Requires types={['auth', 'parent']} user={this.props.currentUser} component={ParentOverview}/>
-                </Route>
-                <Route exact path="/monitor-child/:id">
+                <Route path="/parent-child-overview/:id" component={ParentOverview}/>
+                  {/* <Requires types={['auth', 'parent']} user={this.props.currentUser} component={ParentOverview}/>
+                </Route> */}
+                <Route path="/monitor-child/:id" component={MonitorChildValue}/>
+                {/* <Route exact path="/monitor-child/:id">
                   <Requires types={['auth', 'parent']} user={this.props.currentUser} component={MonitorChildValue}/>
-                </Route>
+                </Route> */}
                 <Route exact path="/register-patient">
                   <Requires types={['auth', 'parent']} user={this.props.currentUser} component={PatientRegister}/>
                 </Route>

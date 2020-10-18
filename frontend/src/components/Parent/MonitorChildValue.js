@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   OPEN_SNACKBAR,
   FIELD_CHANGE,
   LOAD_PARTY,
   LOAD_BLOODSUGAR,
-
 } from '../../constants/actionTypes';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Grid } from '@material-ui/core';
@@ -23,6 +22,7 @@ import agentEHR from '../../agentEHR';
 const mapStateToProps = state => { 
   return {
     ...state.common,
+    ...state.ehr
 }};
 
 const mapDispatchToProps = dispatch => ({
@@ -36,153 +36,133 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-// In future we access the database and create values 
-// with a format suited for the Table here.
-// You can insert an arbitrary amount of columns here.
-const testData = [
-  [new Date(2020, 8, 1, 15, 30).toLocaleString(), 3.7],
-  [new Date(2020, 9, 5, 15, 30).toLocaleString(), 14.0],
-  [new Date(2020, 9, 13, 6, 20).toLocaleString(), 17.2],
-  [new Date(2020, 9, 13, 13, 30).toLocaleString(), 32.3],
-  [new Date(2020, 9, 13, 18, 30).toLocaleString(), 17.2],
-  [new Date(2020, 9, 13, 22, 30).toLocaleString(), 11.3],
-  [new Date(2020, 9, 14, 0, 30).toLocaleString(), 3.3],
-  [new Date(2020, 9, 14, 6, 30).toLocaleString(), 22.3],
-  [new Date(2020, 4, 14, 9, 0).toLocaleString(), 5.3],
-  [new Date(2020, 0, 14, 9, 0).toLocaleString(), 24.3],
-  [new Date(2020, 7, 14, 9, 0).toLocaleString(), 14.3],
-
-
-  
-].sort((a, b) => (a[0] < b[0] ? -1 : 1));
-
 const col_desc = ['Datum vid registrering', 'Värde (mmol/L)'];
 
+const MonitorChildValue = (props) => {
+  useEffect(() => {
+    props.onLoad(id, 0, 20);
+  }, [])
+  const classes = styles();
+  const childValue = props.childValue;
+  const open = props.snackbarOpen;
+  const bloodsugar = props.bloodsugar;
+  const { id } = props.match.params;
+  const name = props.party ? props.party[id].firstNames + " " + props.party[id].lastNames : null;
+  const validate = (val) => {
+    return (val < 100 && val > 0)
+  }
 
-class MonitorChildValue extends React.Component {
-  constructor() {
-    super();
-    this.submitForm = (key, value) => ev => {
+  const reformat = (data, reverse) => {
+    const dataObjects = [];
+    if (reverse) {
+      for ( var i = data.length - 1; i >= 0; i-- ) {
+        dataObjects.push({x : new Date(data[i].time.substring(0,16)).toLocaleString(), y : data[i].value});
+      }
+    } else {
+      for ( var i = 0; i < data.length; i++ ) {
+        dataObjects.push({x : new Date(data[i].time.substring(0,16)).toLocaleString(), y : data[i].value});
+      }
+    }
+    return dataObjects;
+  }
+
+  const submitForm = (key, value) => ev => {
       ev.preventDefault();
-      const color = this.validate(this.props.childValue) ? "success" : "error";
-      const message = this.validate(this.props.childValue) ? `Du loggade värdet: ${this.props.childValue} mmol/L` : "Fel format!";
-      this.props.onOpenSnackbar(message, color);
-    };
-    this.changeField = ev => {
-      this.props.onChangeField(ev.target.id, ev.target.value);
-    };
-  }
-
-
-  
-    componentDidMount() {
-        this.props.onLoad(this.props.match.params.id, 0 , 3);
-    }
-
-    componentWillUnmount() {
-        this.props.onUnload();
-    }
+      const color = validate(props.childValue) ? "success" : "error";
+      const message = validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : "Fel format!";
+      props.onOpenSnackbar(message, color);
+  };
     
-    validate = (val) => {
-      return (val < 100 && val > 0)
-    }
+  const changeField = ev => {
+    props.onChangeField(ev.target.id, ev.target.value);
+  };
 
-  render() {
-    const { classes } = this.props;
-    const childValue = this.props.childValue;
-    const open = this.props.snackbarOpen;
-    return (
-      <Container>
-        <div className={classes.paper}>
-        <Typography component="h1" variant="h3">
-              Hantera (namn) värden
-          </Typography>
-          <p></p>
-          <Grid container spacing={5}>            
-            <Grid item xs={12} sm={12} md={6}>
+  return (
+    <Container>
+      <div className={classes.paper}>
+      <Typography component="h1" variant="h3">
+            Hantera {name}s värden
+        </Typography>
+        <p></p>
+        <Grid container spacing={5}>            
+          <Grid item xs={12} sm={12} md={6}>
+          <Typography component="h1" variant="h5">
+            Tabell
+            </Typography>
+            <CustomPaginationActionsTable columns={['x', 'y']} rows={bloodsugar ? reformat(bloodsugar, false) : null} titles={col_desc} paginate={true} />
+          </Grid>
+          <Grid item xs={12} sm={12} md={6}>
+          <Typography component="h1" variant="h5">
+            Graf
+            </Typography>
+            <TimeLineChart chartData = {bloodsugar ? reformat(bloodsugar, true) : {}} label = {"Blodsocker (mmol/L)"}></TimeLineChart>
+          </Grid>
+          <Grid item xs={12} align = "center">
+            <Avatar className={classes.avatar}>
+            <AddIcon />
+            </Avatar>
             <Typography component="h1" variant="h5">
-              Tabell
-              </Typography>
-              {/* <CustomPaginationActionsTable rows = {testData} titles = {col_desc} paginate = {true}>
-
-              </CustomPaginationActionsTable> */}
-            </Grid>
-            <Grid item xs={12} sm={12} md={6}>
-            <Typography component="h1" variant="h5">
-              Graf
-              </Typography>
-              <TimeLineChart chartData = {testData} label = {"Blodsocker (mmol/L)"}></TimeLineChart>
-            </Grid>
-            <Grid item xs={12} align = "center">
-              <Avatar className={classes.avatar}>
-              <AddIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Skriv in ditt barns blodsockervärde
-              </Typography>
-            
-            <form className={classes.form} noValidate onSubmit={this.submitForm(getCurrentDate(), childValue)} autoComplete="off">
-              <Grid container spacing={0}>
-                <Grid item xs={12}>
-                  <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  id="childValue"
-                  name="childValue"
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">mmol/L</InputAdornment>,
-                  }}
-                  value={childValue}
-                  disabled={open}
-                  
-                  onChange={this.changeField}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary" 
-                  disabled={this.props.inProgress || open}
-                  className={classes.submit}
-                  >
-                    Logga värde
-                  </Button>
-                </Grid>
+              Skriv in ditt barns blodsockervärde
+            </Typography>
+          
+          <form className={classes.form} noValidate onSubmit={submitForm(getCurrentDate(), childValue)} autoComplete="off">
+            <Grid container spacing={0}>
+              <Grid item xs={12}>
+                <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                id="childValue"
+                name="childValue"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">mmol/L</InputAdornment>,
+                }}
+                value={childValue}
+                disabled={open}
+                
+                onChange={changeField}
+                />
               </Grid>
-              </form>
-              
-            </Grid> 
-        </Grid>
-      </div>
-    </Container>
-    );
-  }
+              <Grid item xs={12}>
+                <Button
+                type="submit"
+                variant="contained"
+                color="primary" 
+                disabled={props.inProgress || open}
+                className={classes.submit}
+                >
+                  Logga värde
+                </Button>
+              </Grid>
+            </Grid>
+            </form>
+            
+          </Grid> 
+      </Grid>
+    </div>
+  </Container>
+  );
 }
 
-
-const styles = theme => {
-  return ({
-    paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-      width: '50%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  });
-};
+const styles = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '50%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 export function getCurrentDate() {
   var today = new Date();
@@ -190,6 +170,6 @@ export function getCurrentDate() {
   return todaysDate;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(MonitorChildValue));
+export default connect(mapStateToProps, mapDispatchToProps)(MonitorChildValue);
 
 

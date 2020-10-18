@@ -19,7 +19,7 @@ import agentEHR from '../../agentEHR';
 const mapStateToProps = state => {
     return {
         ...state.common,
-        ...state.ehr
+        ...state.ehr,
     }
 };
 
@@ -34,6 +34,15 @@ const mapDispatchToProps = dispatch => ({
     }
 });
 
+
+const reformat = (data) => {
+    const dataObjects = [];
+    for ( var i = 0; i < data.length; i++ ) {
+        dataObjects.push({time : new Date(data[i].time.substring(0,16)).toLocaleString(), value : data[i].value});
+    }
+    return dataObjects;
+}
+
 const ParentOverview = (props) => {
     useEffect(() => {
         props.onLoad(id, 0, 3);
@@ -43,7 +52,7 @@ const ParentOverview = (props) => {
     const { id } = props.match.params;
     const bloodsugar = props.bloodsugar;
     const name = props.party ? props.party[id].firstNames + " " + props.party[id].lastNames : null;
-    
+
     const doctor = {
         name: "Doktor X",
         mail: "Dr.x@gmail.com",
@@ -65,8 +74,8 @@ const ParentOverview = (props) => {
         <Grid container className={classes.root} spacing={5} height="100%">
             <Grid item xs={12} sm={12} md={6}>
                 <Paper className={classes.paper} elevation={3}>
-                    HÄR SKA DET STÅ INFO OM HUR DET GÅR FÖR BARNET
-                    I GAMIFICATION-ASPEKTEN
+                    {/* HÄR SKA DET STÅ INFO OM HUR DET GÅR FÖR BARNET
+                    I GAMIFICATION-ASPEKTEN */}
                 </Paper>
             </Grid>
             <Grid item xs={12} sm={12} md={6}>
@@ -75,9 +84,9 @@ const ParentOverview = (props) => {
                         <Paper className={classes.paper} elevation={3}>
                             <Typography component="h1" variant="h8"> Senaste mätningar
                         </Typography>
-                            HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
-                            PLUS EN LÄNK TILL MONITORCHILDVALUE
-                    <CustomPaginationActionsTable columns={['time', 'value']} rows={bloodsugar} titles={col_desc} paginate={false} />
+                            {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
+                            PLUS EN LÄNK TILL MONITORCHILDVALUE */}
+                    <CustomPaginationActionsTable columns={['time', 'value']} rows={bloodsugar ? reformat(bloodsugar, false) : null} titles={col_desc} paginate={false} />
                             <Button variant="contained" color="secondary" href={'/monitor-child/' + id}>
                                 Hantera värden
                             </Button>
@@ -100,7 +109,7 @@ const ParentOverview = (props) => {
                         <Paper className={classes.paper} elevation={3}>
                             <Typography component="h1" variant="h8"> Vårdgivare
                             </Typography>
-                            Caregivers ska stå här och annan info. Ändra format.
+                            {/* Caregivers ska stå här och annan info. Ändra format. */}
                             <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
                         </Paper>
                     </Grid>
