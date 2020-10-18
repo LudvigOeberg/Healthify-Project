@@ -107,12 +107,12 @@ export default function CustomPaginationActionsTable(props) {
   const paginate = props.paginate;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(paginate ? 5:-1);
-  if (!props.rows) {
-    return "";
-  }
   const rows = props.rows;
   if (!rows) {
-    return (<Typography component="h4" variant="h8">Loading...</Typography>)
+    return (
+    <TableContainer className = {classes.paper}>
+      <Typography component="h4" variant="h8">Loading...</Typography>
+    </TableContainer>)
   }
   const titles = props.titles;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);

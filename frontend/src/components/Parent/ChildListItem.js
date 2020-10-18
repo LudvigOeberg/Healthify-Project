@@ -21,7 +21,6 @@ import Moment from 'moment';
 export default function ChildListItem(props) {
     const classes = useStyles();
     Moment.locale('sv');
-    console.log(props);
     return (
         <Container maxWidth="md">
             <div className={classes.paper}>

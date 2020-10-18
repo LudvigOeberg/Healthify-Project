@@ -26,7 +26,8 @@ const mapStateToProps = state => {
     appName: state.common.appName,
     currentUser: state.common.currentUser,
     redirectTo: state.common.redirectTo
-  }};
+  }
+};
 
 const mapDispatchToProps = dispatch => ({
   onLoad: (payload, token, ehrToken) =>
@@ -76,45 +77,41 @@ class App extends React.Component {
         }
       }
       return (
-        <div style={{display: `flex`, flexDirection: `column`, minHeight: `100vh`}}>
-            <Header
+        <div style={{ display: `flex`, flexDirection: `column`, minHeight: `100vh` }}>
+          <Header
             appName={this.props.appName}
             currentUser={this.props.currentUser} />
-            <div id="main" style={{ marginTop: 0, marginBottom: 0 }}>
-              <Switch>
-                <Route exact path="/">
-                  <Requires types={['!auth']} user={this.props.currentUser} component={Home}/>
-                </Route>
-                <Route exact path="/login">
-                  <Requires types={['!auth']} user={this.props.currentUser} component={Login}/>
-                </Route>
-                <Route exact path="/register">
-                  <Requires types={['!auth']} user={this.props.currentUser} component={Register}/>
-                </Route>
-                <Route exact path="/child">
-                  <Requires types={['auth', 'child']} user={this.props.currentUser} component={Patient}/>
-                </Route>
-                <Route exact path="/parent">
-                  <Requires types={['auth', 'parent']} user={this.props.currentUser} component={Parent}/>
-                </Route>
-                <Route path="/parent-child-overview/:id" component={ParentOverview}/>
-                  {/* <Requires types={['auth', 'parent']} user={this.props.currentUser} component={ParentOverview}/>
-                </Route> */}
-                <Route path="/monitor-child/:id" component={MonitorChildValue}/>
-                {/* <Route exact path="/monitor-child/:id">
-                  <Requires types={['auth', 'parent']} user={this.props.currentUser} component={MonitorChildValue}/>
-                </Route> */}
-                <Route exact path="/register-patient">
-                  <Requires types={['auth', 'parent']} user={this.props.currentUser} component={PatientRegister}/>
-                </Route>
-                <Route exact path="/caregiving-team">
-                  <Requires types={['auth', 'parent']} user={this.props.currentUser} component={CaregivingPage}/>
-                </Route>
-
-              </Switch>
-            </div>
-            <Footer />
-            <MySnackbar />
+          <div id="main" style={{ marginTop: 0, marginBottom: 0 }}>
+            <Switch>
+              <Route exact path="/">
+                <Requires types={['!auth']} user={this.props.currentUser} component={Home} />
+              </Route>
+              <Route exact path="/login">
+                <Requires types={['!auth']} user={this.props.currentUser} component={Login} />
+              </Route>
+              <Route exact path="/register">
+                <Requires types={['!auth']} user={this.props.currentUser} component={Register} />
+              </Route>
+              <Route exact path="/child">
+                <Requires types={['auth', 'child']} user={this.props.currentUser} component={Patient} />
+              </Route>
+              <Route exact path="/parent">
+                <Requires types={['auth', 'parent']} user={this.props.currentUser} component={Parent} />
+              </Route>
+              <Route exact path="/parent-child-overview/:id" component={ParentOverview} />
+              <Route exact path="/monitor-child/:id" component={MonitorChildValue} />
+              <Route exact path="/register-patient">
+                <Requires types={['auth', 'parent']} user={this.props.currentUser} component={PatientRegister} />
+              </Route>
+              <Route exact path="/caregiving-team">
+                <Requires types={['auth', 'parent']} user={this.props.currentUser} component={CaregivingPage} />
+              </Route>
+              <Redirect exact from='/swagger-ui' to='/swagger-ui/' />
+              <Route path="*" component={NotFound} />
+            </Switch>
+          </div>
+          <Footer />
+          <MySnackbar />
         </div>
       );
     }
@@ -140,12 +137,13 @@ class App extends React.Component {
  */
 const Requires = (props) => {
   if (props.types.includes('auth') && !props.user)
-    return (<Redirect to={"/login"}/>)
+    return (<Redirect to={"/login"} />)
   if (props.user)
     if (props.types.includes('!auth') || !props.types.includes(props.user.type))
-      return (<Redirect to={"/" + props.user.type}/>)
+      return (<Redirect to={"/" + props.user.type} />)
   return <props.component />
 }
+
 
 
 // App.contextTypes = {

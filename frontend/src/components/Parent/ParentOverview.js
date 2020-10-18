@@ -9,7 +9,7 @@ import {
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import {  makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper } from '@material-ui/core';
 import CustomPaginationActionsTable from '../TablePagination';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
@@ -37,21 +37,21 @@ const mapDispatchToProps = dispatch => ({
 
 const reformat = (data) => {
     const dataObjects = [];
-    for ( var i = 0; i < data.length; i++ ) {
-        dataObjects.push({time : new Date(data[i].time.substring(0,16)).toLocaleString(), value : data[i].value});
+    for (var i = 0; i < data.length; i++) {
+        dataObjects.push({ time: new Date(data[i].time.substring(0, 16)).toLocaleString(), value: data[i].value });
     }
     return dataObjects;
 }
 
 const ParentOverview = (props) => {
-    useEffect(() => {
-        props.onLoad(id, 0, 3);
-    }, [])
     const col_desc = ['Datum', '(mmol/L)'];
     const classes = styles();
     const { id } = props.match.params;
     const bloodsugar = props.bloodsugar;
     const name = props.party ? props.party[id].firstNames + " " + props.party[id].lastNames : null;
+    useEffect(() => {
+        props.onLoad(id, 0, 3);
+    }, [id, props])
 
     const doctor = {
         name: "Doktor X",
@@ -67,7 +67,7 @@ const ParentOverview = (props) => {
         name: "Sjuksköterska Z",
         mail: "S.Z@gmail.com",
         telephone: "070-ZZZ ZZ ZZ"
-    }   
+    }
     const caregivers = [doctor, shrink, nurse]
 
     return (
@@ -86,7 +86,7 @@ const ParentOverview = (props) => {
                         </Typography>
                             {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
                             PLUS EN LÄNK TILL MONITORCHILDVALUE */}
-                    <CustomPaginationActionsTable columns={['time', 'value']} rows={bloodsugar ? reformat(bloodsugar, false) : null} titles={col_desc} paginate={false} />
+                            <CustomPaginationActionsTable columns={['time', 'value']} rows={bloodsugar ? reformat(bloodsugar, false) : null} titles={col_desc} paginate={false} />
                             <Button variant="contained" color="secondary" href={'/monitor-child/' + id}>
                                 Hantera värden
                             </Button>
@@ -96,16 +96,16 @@ const ParentOverview = (props) => {
                         <Paper className={classes.paper} elevation={3}>
                             <Typography component="h1" variant="h8">
                                 {name}
-                    </Typography>
+                            </Typography>
                             <Typography variant="subtitle1">
                                 7 år, Diabetes typ 1
-                    </Typography>
+                            </Typography>
                             <Avatar className={classes.avatar}>
                                 <ChildCareIcon fontSize="large" />
                             </Avatar>
                         </Paper>
                     </Grid>
-                    <Grid item item xs={6} sm={12}>
+                    <Grid item xs={6} sm={12}>
                         <Paper className={classes.paper} elevation={3}>
                             <Typography component="h1" variant="h8"> Vårdgivare
                             </Typography>

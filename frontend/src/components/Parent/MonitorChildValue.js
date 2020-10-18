@@ -39,15 +39,17 @@ const mapDispatchToProps = dispatch => ({
 const col_desc = ['Datum vid registrering', 'Värde (mmol/L)'];
 
 const MonitorChildValue = (props) => {
-  useEffect(() => {
-    props.onLoad(id, 0, 20);
-  }, [])
   const classes = styles();
   const childValue = props.childValue;
   const open = props.snackbarOpen;
   const bloodsugar = props.bloodsugar;
   const { id } = props.match.params;
   const name = props.party ? props.party[id].firstNames + " " + props.party[id].lastNames : null;
+  
+  useEffect(() => {
+    props.onLoad(id, 0, 20);
+  }, [id, props])
+
   const validate = (val) => {
     return (val < 100 && val > 0)
   }
@@ -59,7 +61,7 @@ const MonitorChildValue = (props) => {
         dataObjects.push({x : new Date(data[i].time.substring(0,16)).toLocaleString(), y : data[i].value});
       }
     } else {
-      for ( var i = 0; i < data.length; i++ ) {
+      for ( i = 0; i < data.length; i++ ) {
         dataObjects.push({x : new Date(data[i].time.substring(0,16)).toLocaleString(), y : data[i].value});
       }
     }
