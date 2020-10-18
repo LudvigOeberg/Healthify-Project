@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import {
   OPEN_SNACKBAR,
   FIELD_CHANGE,
+  LOAD_PARTY,
+  LOAD_BLOODSUGAR,
+
 } from '../../constants/actionTypes';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -15,6 +18,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { Grid } from '@material-ui/core';
 import CustomPaginationActionsTable from '../TablePagination';
 import TimeLineChart from '../TimeLineChart'
+import agentEHR from '../../agentEHR';
 
 const mapStateToProps = state => { 
   return {
@@ -26,6 +30,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: FIELD_CHANGE, key: key, value }),
   onOpenSnackbar: (message, color) =>
     dispatch({ type: OPEN_SNACKBAR, message, color }),
+  onLoad: (ehrId, offset, limit) => {
+    dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) });
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) });
+  },
 });
 
 // In future we access the database and create values 
@@ -62,16 +70,22 @@ class MonitorChildValue extends React.Component {
     };
     this.changeField = ev => {
       this.props.onChangeField(ev.target.id, ev.target.value);
-    }
+    };
   }
 
-  componentWillUnmount() {
-    this.props.onUnload();
-  }
+
   
-  validate = (val) => {
-    return (val < 100 && val > 0)
-  }
+    componentDidMount() {
+        this.props.onLoad(this.props.match.params.id, 0 , 3);
+    }
+
+    componentWillUnmount() {
+        this.props.onUnload();
+    }
+    
+    validate = (val) => {
+      return (val < 100 && val > 0)
+    }
 
   render() {
     const { classes } = this.props;
@@ -89,9 +103,9 @@ class MonitorChildValue extends React.Component {
             <Typography component="h1" variant="h5">
               Tabell
               </Typography>
-              <CustomPaginationActionsTable rows = {testData} titles = {col_desc} paginate = {true}>
+              {/* <CustomPaginationActionsTable rows = {testData} titles = {col_desc} paginate = {true}>
 
-              </CustomPaginationActionsTable>
+              </CustomPaginationActionsTable> */}
             </Grid>
             <Grid item xs={12} sm={12} md={6}>
             <Typography component="h1" variant="h5">

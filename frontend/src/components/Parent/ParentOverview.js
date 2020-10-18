@@ -58,7 +58,7 @@ const ParentOverview = (props) => {
         name: "Sjuksköterska Z",
         mail: "S.Z@gmail.com",
         telephone: "070-ZZZ ZZ ZZ"
-    }
+    }   
     const caregivers = [doctor, shrink, nurse]
 
     return (
@@ -78,7 +78,7 @@ const ParentOverview = (props) => {
                             HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
                             PLUS EN LÄNK TILL MONITORCHILDVALUE
                     <CustomPaginationActionsTable columns={['time', 'value']} rows={bloodsugar} titles={col_desc} paginate={false} />
-                            <Button variant="contained" color="secondary" href="/monitor-child">
+                            <Button variant="contained" color="secondary" href={'/monitor-child/' + id}>
                                 Hantera värden
                             </Button>
                         </Paper >

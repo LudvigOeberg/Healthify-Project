@@ -90,7 +90,7 @@ class App extends React.Component {
                 <Route exact path="/child" component={Patient} />
                 <Route exact path="/parent" component={Parent} />
                 <Route exact path="/parent-child-overview/:id" component={ParentOverview} />
-                <Route exact path="/monitor-child" component={MonitorChildValue} />
+                <Route exact path="/monitor-child/:id" component={MonitorChildValue} />
                 <Route exact path="/register-patient" component={PatientRegister} />
                 <Route exact path="/caregiving-team" component={CaregivingPage} />
                 <Route path="*" component={NotFound} />
