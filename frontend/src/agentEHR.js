@@ -91,7 +91,7 @@ const Query = {
     requests.get(`/view/${ehr_id}/weight`),
   length: ehr_id =>
     requests.get(`/view/${ehr_id}/length`),
-  bloodsugar: (ehr_id, offset = 0, limit = 20) => 
+  bloodsugar: (ehr_id, offset, limit) => 
     Query.aql(`
     SELECT y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/magnitude as value, 
     y/data[at0001]/events[at0002,'Point-in-time event']/time/value as time, 

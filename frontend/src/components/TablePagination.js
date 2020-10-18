@@ -15,6 +15,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import TableHead from '@material-ui/core/TableHead';
+import { Typography } from '@material-ui/core';
 
 /**
  * Displays a table with a set of given values
@@ -110,6 +111,9 @@ export default function CustomPaginationActionsTable(props) {
     return "";
   }
   const rows = props.rows;
+  if (!rows) {
+    return (<Typography component="h4" variant="h8">Loading...</Typography>)
+  }
   const titles = props.titles;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -121,7 +125,7 @@ export default function CustomPaginationActionsTable(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  
+  console.log(props)
   return (
     <TableContainer className = {classes.paper} component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
@@ -138,10 +142,10 @@ export default function CustomPaginationActionsTable(props) {
           {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows).map((row) => (
             <TableRow>
-              {(props.columns).map((data) => (
+              {(props.dataTitles).map((data) => (
                 <TableCell>
                   {row[data]}
-              </TableCell>
+                </TableCell>
               ))}
             </TableRow>
           ))}

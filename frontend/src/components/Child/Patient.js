@@ -13,13 +13,15 @@ import {
     SAVE_BLOODSUGAR,
     LOAD_BLOODSUGAR
 } from '../../constants/actionTypes';
-import Measurements from './Measurements';
 import agentEHR from '../../agentEHR';
+import CustomPaginationActionsTable from '../TablePagination';
 
 
 const mapStateToProps = state => {
     return {
-        ...state.common
+        ...state.ehr,
+        currentUser: state.common.currentUser,
+        bloodsugarValue: state.common.bloodsugar
     }
 };
 
@@ -32,7 +34,7 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: PATIENT_PAGE_UNLOADED }),
     onLoad: (ehr_id) => {
         dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehr_id) });
-        dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehr_id) })
+        dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehr_id, 0, 20) })
     },
     onOpenSnackbar: (value) =>
         dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
@@ -47,7 +49,7 @@ class Patient extends Component {
         this.changeAuth = ev => this.props.onChangeAuth(ev.target.id, ev.target.value);
         this.submitForm = (key) => ev => {
             ev.preventDefault();
-            const bloodsugar = this.props.bloodsugar;
+            const bloodsugar = this.props.bloodsugarValue;
             const snackbar = {
                 open: true,
                 message: "Du loggade värdet: " + bloodsugar + " mmol/L",
@@ -66,7 +68,7 @@ class Patient extends Component {
     }
 
     render() {
-        const bloodsugar = this.props.bloodsugar;
+        const bloodsugar = this.props.bloodsugarValue;
         const { classes } = this.props;
         return (
             <Container component="main" maxWidth="sm">
@@ -92,12 +94,16 @@ class Patient extends Component {
                             fullWidth
                             type="submit"
                             className={classes.submit}
+                            disabled={this.props.inProgress}
                         >
                             Skicka in
                         </Button>
                     </form>
-                    <Measurements>
-                    </Measurements>
+                    <CustomPaginationActionsTable 
+                        paginate={true} 
+                        titles={['Datum', 'mmol/L']} 
+                        dataTitles={['time', 'value']} 
+                        rows={this.props.bloodsugar}/>
                 </div>
             </Container>
         );

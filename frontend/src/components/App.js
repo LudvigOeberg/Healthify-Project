@@ -83,17 +83,33 @@ class App extends React.Component {
             <div id="main" style={{ marginTop: 0, marginBottom: 0 }}>
               <Switch>
                 <Route exact path="/">
-                  { this.props.currentUser ? <Redirect to={"/" + this.props.currentUser.type}/> : <Home />}
+                  <Requires types={['!auth']} user={this.props.currentUser} component={Home}/>
                 </Route>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/child" component={Patient} />
-                <Route exact path="/parent" component={Parent} />
-                <Route exact path="/parent-child-overview/:id" component={ParentOverview} />
-                <Route exact path="/monitor-child/:id" component={MonitorChildValue} />
-                <Route exact path="/register-patient" component={PatientRegister} />
-                <Route exact path="/caregiving-team" component={CaregivingPage} />
-                <Route path="*" component={NotFound} />
+                <Route exact path="/login">
+                  <Requires types={['!auth']} user={this.props.currentUser} component={Login}/>
+                </Route>
+                <Route exact path="/register">
+                  <Requires types={['!auth']} user={this.props.currentUser} component={Register}/>
+                </Route>
+                <Route exact path="/child">
+                  <Requires types={['auth', 'child']} user={this.props.currentUser} component={Patient}/>
+                </Route>
+                <Route exact path="/parent">
+                  <Requires types={['auth', 'parent']} user={this.props.currentUser} component={Parent}/>
+                </Route>
+                <Route exact path="/parent-child-overview/:id">
+                  <Requires types={['auth', 'parent']} user={this.props.currentUser} component={ParentOverview}/>
+                </Route>
+                <Route exact path="/monitor-child/:id">
+                  <Requires types={['auth', 'parent']} user={this.props.currentUser} component={MonitorChildValue}/>
+                </Route>
+                <Route exact path="/register-patient">
+                  <Requires types={['auth', 'parent']} user={this.props.currentUser} component={PatientRegister}/>
+                </Route>
+                <Route exact path="/caregiving-team">
+                  <Requires types={['auth', 'parent']} user={this.props.currentUser} component={CaregivingPage}/>
+                </Route>
+
               </Switch>
             </div>
             <Footer />
@@ -110,6 +126,26 @@ class App extends React.Component {
     );
   }
 }
+
+/**
+ * 
+ * @param {props} props should contain:
+ * 
+ * types - one or more of following in a array: !auth, auth, parent, child 
+ * 
+ * user - currentUser
+ * 
+ * component - component to render if requirements are passed
+ */
+const Requires = (props) => {
+  if (props.types.includes('auth') && !props.user)
+    return (<Redirect to={"/login"}/>)
+  if (props.user)
+    if (props.types.includes('!auth') || !props.types.includes(props.user.type))
+      return (<Redirect to={"/" + props.user.type}/>)
+  return <props.component />
+}
+
 
 // App.contextTypes = {
 //   router: PropTypes.object.isRequired
