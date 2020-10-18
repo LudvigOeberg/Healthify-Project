@@ -14,9 +14,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    onLoad: (ehr_id) => {
-        dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehr_id) });
-    },
+    onLoad: (ehr_id) =>
+        dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehr_id) }),
     onUnload: () =>
         dispatch({ type: PAGE_UNLOADED })
 });

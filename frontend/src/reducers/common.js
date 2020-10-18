@@ -14,6 +14,7 @@ import {
   PAGE_UNLOADED,
   OPEN_SNACKBAR,
   CLOSE_SNACKBAR,
+  SAVE_PARTY,
   SAVE_BLOODSUGAR
 } from '../constants/actionTypes';
 
@@ -58,6 +59,7 @@ export default (state = defaultState, action) => {
         ...state,
         redirectTo: action.error ? null : '/parent',
         currentUser: currentUser,
+        inProgress: false,
         snackbar: action.error ? {
           open: true,
           message: "Något gick fel",
@@ -66,19 +68,19 @@ export default (state = defaultState, action) => {
       };
     case FIELD_CHANGE:
       return { ...state, [action.key]: action.value };
+    case UPDATE_BOOLEAN:
+      return { ...state, [action.key]: action.value ? true : false };
+    case SAVE_PARTY:
     case SAVE_BLOODSUGAR:
       return {
         ...state,
         bloodsugar: "",
-        redirectTo: action.error ? null : '/child',
         snackbar: action.error ? {
           open: true,
           message: "Något gick fel",
           color: "warning"
         } : action.snackbar
       }
-    case UPDATE_BOOLEAN:
-      return { ...state, [action.key]: action.value ? true : false };
     case OPEN_SNACKBAR:
       return {
         ...state,

@@ -1,8 +1,9 @@
 import {
     LOAD_PARTY,
-    LOAD_EHR_METRIC,
     SAVE_PARTY,
-    LOAD_BLOODSUGAR
+    LOAD_BLOODSUGAR,
+    ASYNC_START,
+    SAVE_BLOODSUGAR
 } from '../constants/actionTypes';
 
 export default (state = {}, action) => {
@@ -10,7 +11,8 @@ export default (state = {}, action) => {
         case LOAD_PARTY:
             return {
                 ...state,
-                party: action.payload.error ? null : {
+                inProgress: false,
+                party: action.error ? null : {
                     ...state.party,
                     [action.payload.party.additionalInfo.ehrId]: action.payload.party
                 }
@@ -18,26 +20,19 @@ export default (state = {}, action) => {
         case LOAD_BLOODSUGAR:
             return {
                 ...state,
-                bloodsugar: action.payload.error ? null :
+                inProgress: false,
+                bloodsugar: action.error ? null :
                     action.payload.resultSet
             }
-        case SAVE_PARTY: {
-            return {
-                ...state,
-                snackbar: action.error ? {
-                    open: true,
-                    message: "Något gick fel",
-                    color: "warning"
-                  } : action.snackbar
-            }
-        }
-        case LOAD_EHR_METRIC:
-            return {
-                ...state,
-                [action.metric]: action.payload.error ? null : action.payload
-            }
+        case SAVE_BLOODSUGAR:
+        case SAVE_PARTY:
+            return { ...state, inProgress: false }
+        case ASYNC_START:
+            if (action.subtype === SAVE_PARTY || action.subtype === LOAD_PARTY || action.subtype === SAVE_BLOODSUGAR || action.subtype === LOAD_BLOODSUGAR)
+                return { ...state, inProgress: true };
+            break;
         default:
             return state;
     }
-
+    return state;
 }

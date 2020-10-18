@@ -23,7 +23,7 @@ export default (state = {}, action) => {
     case REGISTER_PAGE_UNLOADED:
       return {};
     case ASYNC_START:
-      if (action.subtype === LOGIN || action.subtype === REGISTER) {
+      if (action.subtype === LOGIN || action.subtype === REGISTER || action.subtype === REGISTER_CHILD) {
         return { ...state, inProgress: true };
       }
       break;

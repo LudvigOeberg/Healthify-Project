@@ -91,13 +91,16 @@ const Query = {
     requests.get(`/view/${ehr_id}/weight`),
   length: ehr_id =>
     requests.get(`/view/${ehr_id}/length`),
-  bloodsugar: ehr_id => 
-    Query.aql(`SELECT y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/magnitude as value, y/data[at0001]/events[at0002,'Point-in-time event']/time/value as Time, y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/units as unit
+  bloodsugar: (ehr_id, offset, limit) => 
+    Query.aql(`
+    SELECT y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/magnitude as value, 
+    y/data[at0001]/events[at0002,'Point-in-time event']/time/value as time, 
+    y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/units as unit
     FROM EHR[ehr_id/value='${ehr_id}']
     CONTAINS COMPOSITION c
     CONTAINS OBSERVATION y[openEHR-EHR-OBSERVATION.lab_test-blood_glucose.v1]
     ORDER BY Time desc
-    OFFSET 0 LIMIT 20`)
+    OFFSET ${offset} LIMIT ${limit}`)
 };
 
 const param = (params) => {
