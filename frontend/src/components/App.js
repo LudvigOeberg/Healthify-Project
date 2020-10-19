@@ -98,7 +98,7 @@ class App extends React.Component {
               <Route exact path="/parent">
                 <Requires types={['auth', 'parent']} user={this.props.currentUser} component={Parent} />
               </Route>
-              <Route exact path="/parent-child-overview/:id" component={ParentOverview} />
+              <RequiredRoute exact path="/parent-child-overview/:id" requires={['auth', 'parent']} user={this.props.currentUser} component={ParentOverview} />
               <Route exact path="/monitor-child/:id" component={MonitorChildValue} />
               <Route exact path="/register-patient">
                 <Requires types={['auth', 'parent']} user={this.props.currentUser} component={PatientRegister} />
@@ -144,7 +144,20 @@ const Requires = (props) => {
   return <props.component />
 }
 
-
+const RequiredRoute = (props) => {
+  if (props.requires.includes('auth') && !props.user)
+    return (
+        <Redirect to={"/login"} />
+    )
+  if (props.user)
+    if (props.requires.includes('!auth') || !props.requires.includes(props.user.type))
+      return (
+        <Redirect to={"/" + props.user.type} />
+      )
+  return (
+    <Route path={props.path} component={props.component} />
+  )
+}
 
 // App.contextTypes = {
 //   router: PropTypes.object.isRequired

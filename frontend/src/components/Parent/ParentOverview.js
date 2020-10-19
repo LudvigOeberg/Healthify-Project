@@ -51,7 +51,7 @@ const ParentOverview = (props) => {
     const name = props.party ? props.party[id].firstNames + " " + props.party[id].lastNames : null;
     useEffect(() => {
         props.onLoad(id, 0, 3);
-    }, [id, props])
+    }, [id]) // eslint-disable-line
 
     const doctor = {
         name: "Doktor X",

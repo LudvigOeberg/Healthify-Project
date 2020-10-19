@@ -48,7 +48,7 @@ const MonitorChildValue = (props) => {
   
   useEffect(() => {
     props.onLoad(id, 0, 20);
-  }, [id, props])
+  }, [id]) // eslint-disable-line
 
   const validate = (val) => {
     return (val < 100 && val > 0)
