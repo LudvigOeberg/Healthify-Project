@@ -45,7 +45,7 @@ const LoggedInView = props => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              <Button component={Link} href="/" color="inherit">{props.appName}</Button>
+              <Button component={Link} href={"/" + props.currentUser.type} color="inherit">{props.appName}</Button>
             </Typography>
             <Button component={Link} onClick={props.logout} color="inherit">Logga ut</Button>
           </Toolbar>
