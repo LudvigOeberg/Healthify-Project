@@ -22,7 +22,7 @@ import { Typography } from '@material-ui/core';
  * @param {const} props- an array of objects with rows and cols, array with column titles and a 
  * boolean stating if the table is paginated or not.
  * Should look like below:
- * <CustomPaginationActionsTable rows = {data} titles = {col_desc} paginate = {true}>
+ * <CustomPaginationActionsTable rows={data} titles={col_desc} paginate={true} loading={props.inProgress} columns={['x','y']} />
  * 
  *  Author: Martin Dagermo
  */
@@ -102,18 +102,25 @@ const useStyles2 = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomPaginationActionsTable(props) {
+export default function CustomPaginationActionsTable({loading = false, ...props}) {
   const classes = useStyles2();
   const paginate = props.paginate;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(paginate ? 5:-1);
   const rows = props.rows;
+  if (loading) {
+    return (
+      <TableContainer className = {classes.paper}>
+        <Typography component="h4" variant="h8">Laddar...</Typography>
+      </TableContainer>)
+  }
   if (!rows) {
     return (
     <TableContainer className = {classes.paper}>
-      <Typography component="h4" variant="h8">Loading...</Typography>
+      <Typography component="h4" variant="h8">Ingen data</Typography>
     </TableContainer>)
   }
+  
   const titles = props.titles;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 

@@ -29,20 +29,20 @@ export default function Caregiver(props) {
             <div className={classes.paper}>
                 <Paper>
                 <List>
-                    <ListItem alignItems="center">
-                        <ListItemAvatar alignItems="flex">
+                    <ListItem>
+                        <ListItemAvatar >
                             <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" alt={props.name}/>
                         </ListItemAvatar>
                         <ListItemText primary={props.name} />
                     </ListItem>
                     <Divider />
-                    <ListItem button component="a" href={`mailto:${props.mail}`}  alignItems="center">
+                    <ListItem button component="a" href={`mailto:${props.mail}`} >
                         <ListItemIcon>
                             <MailIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText primary={props.mail} />
                     </ListItem>
-                    <ListItem button component="a" href={`tel:${props.telephone}`}  alignItems="center">
+                    <ListItem button component="a" href={`tel:${props.telephone}`} >
                         <ListItemIcon>
                             <PhoneIcon color="primary" />
                         </ListItemIcon>

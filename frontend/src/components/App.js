@@ -37,7 +37,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class App extends React.Component {
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.redirectTo) {
       // this.context.router.replace(nextProps.redirectTo);
       store.dispatch(push(nextProps.redirectTo));
@@ -45,7 +45,7 @@ class App extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const token = window.localStorage.getItem('jwt');
     const ehrUser = window.localStorage.getItem('ehr_user');
     const ehrUserPass = window.localStorage.getItem('ehr_user_pass');

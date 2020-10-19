@@ -25,7 +25,7 @@ class ParentPage extends Component {
         this.props.onUnload();
     }
     
-    componentWillMount() {
+    componentDidMount() {
         this.props.currentUser.children.forEach(child => {
             this.props.onLoad(child.child.ehrid);
         });

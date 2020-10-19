@@ -15,6 +15,7 @@ import CustomPaginationActionsTable from '../TablePagination';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
 import CaregivingTeam from '../CaregivingTeam';
 import agentEHR from '../../agentEHR';
+import Moment from 'moment';
 
 const mapStateToProps = state => {
     return {
@@ -48,6 +49,8 @@ const ParentOverview = (props) => {
     const classes = styles();
     const { id } = props.match.params;
     const bloodsugar = props.bloodsugar;
+    const loading = props.inProgress;
+    const age = props.party ? Moment().diff(props.party[id].dateOfBirth, 'years') + " år" : null;
     const name = props.party ? props.party[id].firstNames + " " + props.party[id].lastNames : null;
     useEffect(() => {
         props.onLoad(id, 0, 3);
@@ -86,7 +89,7 @@ const ParentOverview = (props) => {
                         </Typography>
                             {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
                             PLUS EN LÄNK TILL MONITORCHILDVALUE */}
-                            <CustomPaginationActionsTable columns={['time', 'value']} rows={bloodsugar ? reformat(bloodsugar, false) : null} titles={col_desc} paginate={false} />
+                            <CustomPaginationActionsTable columns={['time', 'value']} loading={loading} rows={bloodsugar ? reformat(bloodsugar, false) : null} titles={col_desc} paginate={false} />
                             <Button variant="contained" color="secondary" href={'/monitor-child/' + id}>
                                 Hantera värden
                             </Button>
@@ -98,7 +101,7 @@ const ParentOverview = (props) => {
                                 {name}
                             </Typography>
                             <Typography variant="subtitle1">
-                                7 år, Diabetes typ 1
+                                {age}
                             </Typography>
                             <Avatar className={classes.avatar}>
                                 <ChildCareIcon fontSize="large" />

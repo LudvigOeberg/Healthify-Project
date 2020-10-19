@@ -3,11 +3,14 @@ import {
     SAVE_PARTY,
     LOAD_BLOODSUGAR,
     ASYNC_START,
-    SAVE_BLOODSUGAR
+    SAVE_BLOODSUGAR,
+    LOGOUT
 } from '../constants/actionTypes';
 
 export default (state = {}, action) => {
     switch (action.type) {
+        case LOGOUT:
+            return { };
         case LOAD_PARTY:
             return {
                 ...state,
@@ -21,7 +24,7 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 inProgress: false,
-                bloodsugar: action.error ? null :
+                bloodsugar: action.error || action.payload === null ? null :
                     action.payload.resultSet
             }
         case SAVE_BLOODSUGAR:

@@ -26,26 +26,26 @@ export default function ChildListItem(props) {
             <div className={classes.paper}>
                 <Paper>
                 <List>
-                    <ListItem alignItems="center">
-                        <ListItemAvatar alignItems="flex">
+                    <ListItem >
+                        <ListItemAvatar>
                             <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" alt={props.name}/>
                         </ListItemAvatar>
                         <ListItemText primary={props.name + " " + props.surname} />
                     </ListItem>
                     <Divider />
-                    <ListItem button component="a" href={'/parent-child-overview/' + props.ehrid} alignItems="center">
+                    <ListItem button component="a" href={'/parent-child-overview/' + props.ehrid} >
                         <ListItemIcon>
                             <AccountBox color="primary" />
                         </ListItemIcon>
                         <ListItemText primary={"Gå till översikt"} />
                     </ListItem>
-                    <ListItem button component="a" href={"/caregiving-team"}  alignItems="center">
+                    <ListItem button component="a" href={"/caregiving-team"} >
                         <ListItemIcon>
                             <AccountBox color="primary" />
                         </ListItemIcon>
                         <ListItemText primary={"Se vårdteam"} />
                     </ListItem>
-                    <ListItem alignItems="center">
+                    <ListItem>
                         <ListItemIcon>
                             <AccessTime color="primary" />
                         </ListItemIcon>

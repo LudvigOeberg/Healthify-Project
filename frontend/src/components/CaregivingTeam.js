@@ -8,7 +8,7 @@ import Caregiver from './Caregiver';
 export default function CaregivingTeam(props) {
     const caregivers = props.caregivers  
     return (
-        <Grid container direction="row" justify="center" alignItems="center" spacing={0}>
+        <Grid container direction="row" justify="center" spacing={0}>
             {caregivers.map((caregiver, i)=>(
                 <Grid key={i}>
                     {Caregiver(caregiver)}

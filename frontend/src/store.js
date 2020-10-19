@@ -5,9 +5,9 @@ import { promiseMiddleware, localStorageMiddleware } from './middleware';
 import reducer from './reducer';
 
 import { routerMiddleware } from 'react-router-redux'
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 
-export const history = createHistory();
+export const history = createBrowserHistory();
 
 // Build the middleware for intercepting and dispatching navigation actions
 const myRouterMiddleware = routerMiddleware(history);
@@ -21,6 +21,7 @@ const getMiddleware = () => {
   }
 };
 
+const composeEnhancers = composeWithDevTools({ trace: true, traceLimit: 25 });
 /*const persistedState = localStorage.getItem('store') 
                        ? JSON.parse(localStorage.getItem('store'))
                        : {}
@@ -29,4 +30,4 @@ store.subscribe(()=>{
   })
 */
 export const store = createStore(
-  reducer, composeWithDevTools(getMiddleware()));
+  reducer, composeEnhancers(getMiddleware()));

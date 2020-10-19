@@ -25,7 +25,7 @@ export default function CaregivingPage() {
 
     return (
         <div className={classes.paper}>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justify="center">
                 <Grid item xs={12}>
                     <Typography className={classes.typography} 
                         component="h1"
