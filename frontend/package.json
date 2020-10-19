@@ -21,7 +21,7 @@
     "react-dom": "^16.3.0",
     "react-plotly.js": "^2.5.0",
     "react-redux": "^5.0.7",
-    "react-router": "^4.1.2",
+    "react-router": "^4.3.1",
     "react-router-dom": "^4.1.2",
     "react-router-redux": "^5.0.0-alpha.6",
     "recharts": "^1.8.5",

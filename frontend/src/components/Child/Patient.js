@@ -102,7 +102,7 @@ class Patient extends Component {
                     <CustomPaginationActionsTable 
                         paginate={true} 
                         titles={['Datum', 'mmol/L']} 
-                        dataTitles={['time', 'value']} 
+                        columns={['time', 'value']} 
                         rows={this.props.bloodsugar}/>
                 </div>
             </Container>

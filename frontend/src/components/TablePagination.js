@@ -19,7 +19,7 @@ import { Typography } from '@material-ui/core';
 
 /**
  * Displays a table with a set of given values
- * @param {const} props- a 2D array with rows and cols, array with column titles and a 
+ * @param {const} props- an array of objects with rows and cols, array with column titles and a 
  * boolean stating if the table is paginated or not.
  * Should look like below:
  * <CustomPaginationActionsTable rows = {data} titles = {col_desc} paginate = {true}>
@@ -92,11 +92,15 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-const useStyles2 = makeStyles({
+const useStyles2 = makeStyles((theme) => ({
   table: {
-    minWidth: 500,
+    minWidth: 100,
+  }, 
+  paper: {
+    margin: theme.spacing(1),
+    width: "auto"
   },
-});
+}));
 
 export default function CustomPaginationActionsTable(props) {
   const classes = useStyles2();
@@ -105,7 +109,10 @@ export default function CustomPaginationActionsTable(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(paginate ? 5:-1);
   const rows = props.rows;
   if (!rows) {
-    return (<Typography component="h4" variant="h8">Loading...</Typography>)
+    return (
+    <TableContainer className = {classes.paper}>
+      <Typography component="h4" variant="h8">Loading...</Typography>
+    </TableContainer>)
   }
   const titles = props.titles;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -118,9 +125,8 @@ export default function CustomPaginationActionsTable(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  console.log(props)
   return (
-    <TableContainer component={Paper}>
+    <TableContainer className = {classes.paper} component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
       <TableHead>
           <TableRow>
@@ -135,7 +141,7 @@ export default function CustomPaginationActionsTable(props) {
           {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows).map((row) => (
             <TableRow>
-              {(props.dataTitles).map((data) => (
+              {(props.columns).map((data) => (
                 <TableCell>
                   {row[data]}
                 </TableCell>

@@ -9,7 +9,7 @@ import {
 
 /**
  * Displays a timeline graph with Xaxis as time format and regular values as Yaxis
- * @param {const} props- a 2D array (can change to array of objects) with x-values and y-values, 
+ * @param {const} props- an array of objects with x-values and y-values, 
  * a label for the values, unit for time (year, month, day)
  * Should look like below:
  * <TimeLineChart chartData = {data} label = {"Blodsocker (mmol/L)"></TimeLineChart>
@@ -28,17 +28,7 @@ const mapDispatchToProps = dispatch => ({
   dispatch({ type: FIELD_CHANGE, key: 'currSettings', value }),
 });
 
-function createChartProps(chartData, label, theme) {
-  const dataObjects = [];
-  for ( var i = 0; i < chartData.length; i++ ) {
-      var subArray = chartData[i],
-          item = {
-            x: subArray[0],
-            y: subArray[1]
-          };
-        dataObjects.push(item);
-  }
-
+const createChartProps = (chartData, label, theme) => {
   const state = {
       datasets: [{
           label: label,
@@ -47,7 +37,7 @@ function createChartProps(chartData, label, theme) {
           fill: false,
           lineTension: 0.1,
           borderWidth: 5,
-          data: dataObjects
+          data: chartData
       }]
   }
   return state;
@@ -88,11 +78,10 @@ const getSettings = (horizon) => {
 
 const TimeLineChart = (props) =>  {
   const timeHorizon = props.currSettings === undefined ? 'all' : props.currSettings;
-  const chartData = props.chartData;
   const label = props.label;
   const theme = useTheme();
+  const chartData = props.chartData;
   const displaySettings = getSettings(timeHorizon);
-
   const changeRadio = (event) => {
     props.onChangeRadio(event.target.value);
   };
@@ -100,7 +89,7 @@ const TimeLineChart = (props) =>  {
   return (
     <div>
       <Line
-        data={createChartProps(chartData, label, theme)}
+        data={chartData && chartData.length > 0 ? createChartProps(chartData, label, theme) : {}}
         options={{
           maintainAspectRatio: true,
           responsive: true,
@@ -113,7 +102,6 @@ const TimeLineChart = (props) =>  {
                   type: 'time',
                   time: {
                       unit: displaySettings.unit,
-                      // unit: timeHorizon == 'month' ? 'day' : 'all' ? 'month' : timeHorizon
                       unitStepSize: displaySettings.stepSize,
                       displayFormats: {
                         day: displaySettings.dispFormat,
@@ -123,7 +111,6 @@ const TimeLineChart = (props) =>  {
                     },
                   ticks: {
                     min: displaySettings.min,
-                    // min: timeHorizon == 'day' ? new Date(1980, 0): new Date(2020, 5)
                   }
               }],
               yAxes: [{
