@@ -88,7 +88,7 @@ const MonitorChildValue = (props) => {
           <Typography component="h1" variant="h5">
             Graf
             </Typography>
-            <TimeLineChart chartData = {bloodsugar ? Reformat.bloodsugar(bloodsugar, true) : {}} label = {"Blodsocker (mmol/L)"}></TimeLineChart>
+            <TimeLineChart chartData={bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null} label={"Blodsocker (mmol/L)"}></TimeLineChart>
           </Grid>
           <Grid item xs={12} align = "center">
             <Avatar className={classes.avatar}>
