@@ -111,13 +111,13 @@ export default function CustomPaginationActionsTable({loading = false, ...props}
   if (loading) {
     return (
       <TableContainer className = {classes.paper}>
-        <Typography component="h4" variant="h8">Laddar...</Typography>
+        <Typography component="h4" variant="subtitle1">Laddar...</Typography>
       </TableContainer>)
   }
   if (!rows) {
     return (
     <TableContainer className = {classes.paper}>
-      <Typography component="h4" variant="h8">Ingen data</Typography>
+      <Typography component="h4" variant="subtitle1">Ingen data</Typography>
     </TableContainer>)
   }
   

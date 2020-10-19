@@ -85,7 +85,7 @@ const ParentOverview = (props) => {
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.paper} elevation={3}>
-                            <Typography component="h1" variant="h8"> Senaste mätningar
+                            <Typography component="h2" variant="h6"> Senaste mätningar
                         </Typography>
                             {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
                             PLUS EN LÄNK TILL MONITORCHILDVALUE */}
@@ -97,7 +97,7 @@ const ParentOverview = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={12} md={6}>
                         <Paper className={classes.paper} elevation={3}>
-                            <Typography component="h1" variant="h8">
+                            <Typography component="h1" variant="h6">
                                 {name}
                             </Typography>
                             <Typography variant="subtitle1">
@@ -110,7 +110,7 @@ const ParentOverview = (props) => {
                     </Grid>
                     <Grid item xs={6} sm={12}>
                         <Paper className={classes.paper} elevation={3}>
-                            <Typography component="h1" variant="h8"> Vårdgivare
+                            <Typography component="h1" variant="h6"> Vårdgivare
                             </Typography>
                             {/* Caregivers ska stå här och annan info. Ändra format. */}
                             <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
