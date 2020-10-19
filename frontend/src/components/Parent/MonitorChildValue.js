@@ -18,6 +18,7 @@ import { Grid } from '@material-ui/core';
 import CustomPaginationActionsTable from '../TablePagination';
 import TimeLineChart from '../TimeLineChart'
 import agentEHR from '../../agentEHR';
+import Reformat from '../../reformatEHRData';
 
 const mapStateToProps = state => { 
   return {
@@ -54,20 +55,6 @@ const MonitorChildValue = (props) => {
     return (val < 100 && val > 0)
   }
 
-  const reformat = (data, reverse) => {
-    const dataObjects = [];
-    if (reverse) {
-      for ( var i = data.length - 1; i >= 0; i-- ) {
-        dataObjects.push({x : new Date(data[i].time.substring(0,16)).toLocaleString(), y : data[i].value});
-      }
-    } else {
-      for ( i = 0; i < data.length; i++ ) {
-        dataObjects.push({x : new Date(data[i].time.substring(0,16)).toLocaleString(), y : data[i].value});
-      }
-    }
-    return dataObjects;
-  }
-
   const submitForm = (key, value) => ev => {
       ev.preventDefault();
       const color = validate(props.childValue) ? "success" : "error";
@@ -91,13 +78,17 @@ const MonitorChildValue = (props) => {
           <Typography component="h1" variant="h5">
             Tabell
             </Typography>
-            <CustomPaginationActionsTable columns={['x', 'y']} rows={bloodsugar ? reformat(bloodsugar, false) : null} titles={col_desc} paginate={true} />
+            <CustomPaginationActionsTable 
+                columns={['x', 'y']} 
+                rows={bloodsugar ? Reformat.bloodsugar(bloodsugar, false) : null} 
+                titles={col_desc} 
+                paginate={true} />
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
           <Typography component="h1" variant="h5">
             Graf
             </Typography>
-            <TimeLineChart chartData = {bloodsugar ? reformat(bloodsugar, true) : {}} label = {"Blodsocker (mmol/L)"}></TimeLineChart>
+            <TimeLineChart chartData = {bloodsugar ? Reformat.bloodsugar(bloodsugar, true) : {}} label = {"Blodsocker (mmol/L)"}></TimeLineChart>
           </Grid>
           <Grid item xs={12} align = "center">
             <Avatar className={classes.avatar}>

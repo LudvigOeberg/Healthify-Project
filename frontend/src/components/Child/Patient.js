@@ -15,6 +15,7 @@ import {
 } from '../../constants/actionTypes';
 import agentEHR from '../../agentEHR';
 import CustomPaginationActionsTable from '../TablePagination';
+import Reformat from '../../reformatEHRData';
 
 
 const mapStateToProps = state => {
@@ -70,6 +71,7 @@ class Patient extends Component {
     render() {
         const bloodsugar = this.props.bloodsugarValue;
         const { classes } = this.props;
+        const bloodsugarData = this.props.bloodsugar;
         return (
             <Container component="main" maxWidth="sm">
                 <div className={classes.paper}>
@@ -102,8 +104,8 @@ class Patient extends Component {
                     <CustomPaginationActionsTable 
                         paginate={true} 
                         titles={['Datum', 'mmol/L']} 
-                        columns={['time', 'value']} 
-                        rows={this.props.bloodsugar}/>
+                        columns={['x', 'y']} 
+                        rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}/>
                 </div>
             </Container>
         );
