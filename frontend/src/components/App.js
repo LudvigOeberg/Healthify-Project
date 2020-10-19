@@ -88,21 +88,11 @@ class App extends React.Component {
               <RequiredRoute exact path="/register" requires={['!auth']} user={this.props.currentUser} component={Register} />
               <RequiredRoute exact path="/parent" requires={['auth', 'parent']} user={this.props.currentUser} component={Parent} />
               <RequiredRoute exact path="/child" requires={['auth', 'child']} user={this.props.currentUser} component={Patient} />
-              <RequiredRoute exact path="/login" requires={['!auth']} user={this.props.currentUser} component={Login} />
-              <RequiredRoute exact path="/login" requires={['!auth']} user={this.props.currentUser} component={Login} />
-              <Route exact path="/parent-child-overview">
-                <Requires types={['auth', 'parent']} user={this.props.currentUser} component={ParentOverview} />
-              </Route>
-              <Route exact path="/parent-child-overview2">
-                <Requires types={['auth', 'parent']} user={this.props.currentUser} component={MonitorChildValue} />
-              </Route>
-              <Route exact path="/register-patient">
-                <Requires types={['auth', 'parent']} user={this.props.currentUser} component={PatientRegister} />
-              </Route>
-
-              <Route exact path="/caregiving-team">
-                <Requires types={['auth', 'parent']} user={this.props.currentUser} component={CaregivingPage} />
-              </Route>
+              <RequiredRoute exact path="/parent-child-overview/:id" requires={['auth', 'parent']} user={this.props.currentUser} component={ParentOverview} />
+              <RequiredRoute exact path="/monitor-child/:id" requires={['auth', 'parent']} user={this.props.currentUser} component={MonitorChildValue} />
+              <RequiredRoute exact path="/register-patient" requires={['auth', 'parent']} user={this.props.currentUser} component={PatientRegister} />
+              <RequiredRoute exact path="/caregiving-team" requires={['auth', 'parent']} user={this.props.currentUser} component={CaregivingPage} />
+              <Redirect exact from='/swagger-ui' to='/swagger-ui/' />
               <Route path="*" component={NotFound} />
             </Switch>
           </div>
@@ -125,36 +115,33 @@ class App extends React.Component {
  * 
  * @param {props} props should contain:
  * 
- * types - one or more of following in a array: !auth, auth, parent, child 
+ * requires - one or more of following in a array: !auth, auth, parent, child 
  * 
  * user - currentUser
  * 
  * component - component to render if requirements are passed
+ * 
+ * path - path to match
+ * 
+ * exact - add if the path should match exact, more info in react-router docs
+ * 
+ * To specify more props to the <Route /> component, please specify them in
+ * this component and it will automatically be mapped to the <Route /> component.
  */
-const RequiredRoute = (props) => {
-  if (props.requires.includes('auth') && !props.user)
+const RequiredRoute = ({requires, user, component, path, exact, ...rest}) => {
+  if (requires.includes('auth') && !user)
     return (
         <Redirect to={"/login"} />
     )
-  if (props.user)
-    if (props.requires.includes('!auth') || !props.requires.includes(props.user.type))
+  if (user)
+    if (requires.includes('!auth') || !requires.includes(user.type))
       return (
-        <Redirect to={"/" + props.user.type} />
+        <Redirect to={"/" + user.type} />
       )
   return (
-    <Route exact={props.exact} path={props.path} component={props.component} />
+    <Route exact={exact} path={path} component={component} {...rest}/>
   )
 }
-
-const Requires = (props) => {
-  if (props.types.includes('auth') && !props.user)
-    return (<Redirect to={"/login"} />)
-  if (props.user)
-    if (props.types.includes('!auth') || !props.types.includes(props.user.type))
-      return (<Redirect to={"/" + props.user.type} />)
-  return <props.component />
-}
-
 
 // App.contextTypes = {
 //   router: PropTypes.object.isRequired
