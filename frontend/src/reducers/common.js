@@ -15,8 +15,8 @@ import {
   OPEN_SNACKBAR,
   CLOSE_SNACKBAR,
   SAVE_PARTY,
-  SAVE_BLOODSUGAR
-} from '../constants/actionTypes';
+  SAVE_BLOODSUGAR,
+} from '../constants/actionTypes'
 
 const defaultState = {
   appName: 'Healthify',
@@ -24,9 +24,9 @@ const defaultState = {
   viewChangeCounter: 0,
   drawerOpen: false,
   snackbar: {
-    open: false
-  }
-};
+    open: false,
+  },
+}
 
 export default (state = defaultState, action) => {
   switch (action.type) {
@@ -36,50 +36,54 @@ export default (state = defaultState, action) => {
         token: action.token || null,
         ehrToken: action.ehrToken || null,
         appLoaded: true,
-        currentUser: action.payload ? action.payload.user : null
-      };
+        currentUser: action.payload ? action.payload.user : null,
+      }
     case REDIRECT:
-      return { ...state, redirectTo: null };
+      return { ...state, redirectTo: null }
     case LOGOUT:
-      return { ...state, redirectTo: '/', token: null, currentUser: null };
+      return { ...state, redirectTo: '/', token: null, currentUser: null }
     case LOGIN:
     case REGISTER:
       return {
         ...state,
-        redirectTo: action.error ? null : '/' + action.payload.user.type,
+        redirectTo: action.error ? null : `/${action.payload.user.type}`,
         token: action.error ? null : action.payload.user.token,
         currentUser: action.error ? null : action.payload.user,
-      };
+      }
     case REGISTER_CHILD:
-      var children = state.currentUser.children;
-      children[children.length] = action.payload;
-      var currentUser = state.currentUser;
-      currentUser.children = children;
+      const { children } = state.currentUser
+      children[children.length] = action.payload
+      const { currentUser } = state
+      currentUser.children = children
       return {
         ...state,
         redirectTo: action.error ? null : '/parent',
-        currentUser: currentUser,
+        currentUser,
         inProgress: false,
-        snackbar: action.error ? {
-          open: true,
-          message: "Något gick fel",
-          color: "warning"
-        } : action.snackbar
-      };
+        snackbar: action.error
+          ? {
+              open: true,
+              message: 'Något gick fel',
+              color: 'warning',
+            }
+          : action.snackbar,
+      }
     case FIELD_CHANGE:
-      return { ...state, [action.key]: action.value };
+      return { ...state, [action.key]: action.value }
     case UPDATE_BOOLEAN:
-      return { ...state, [action.key]: action.value ? true : false };
+      return { ...state, [action.key]: !!action.value }
     case SAVE_PARTY:
     case SAVE_BLOODSUGAR:
       return {
         ...state,
-        bloodsugar: "",
-        snackbar: action.error ? {
-          open: true,
-          message: "Något gick fel",
-          color: "warning"
-        } : action.snackbar
+        bloodsugar: '',
+        snackbar: action.error
+          ? {
+              open: true,
+              message: 'Något gick fel',
+              color: 'warning',
+            }
+          : action.snackbar,
       }
     case OPEN_SNACKBAR:
       return {
@@ -87,23 +91,23 @@ export default (state = defaultState, action) => {
         snackbar: {
           open: true,
           message: action.message,
-          color: action.color
-        }
+          color: action.color,
+        },
       }
     case CLOSE_SNACKBAR:
       return {
         ...state,
         snackbar: {
-          open: false
-        }
+          open: false,
+        },
       }
     case HOME_PAGE_UNLOADED:
     case LOGIN_PAGE_UNLOADED:
     case REGISTER_PAGE_UNLOADED:
     case PATIENT_PAGE_UNLOADED:
     case PAGE_UNLOADED:
-      return { ...state, viewChangeCounter: state.viewChangeCounter + 1 };
+      return { ...state, viewChangeCounter: state.viewChangeCounter + 1 }
     default:
-      return state;
+      return state
   }
-};
+}

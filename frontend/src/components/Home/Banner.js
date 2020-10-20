@@ -1,17 +1,15 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 
 const Banner = (props) => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={classes.paper}>
-      <Typography variant="h3">
-        {props.appName}
-      </Typography>
+      <Typography variant="h3">{props.appName}</Typography>
     </div>
-  );
-};
+  )
+}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -21,6 +19,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-}));
+}))
 
-export default Banner;
+export default Banner

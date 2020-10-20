@@ -1,17 +1,17 @@
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import React from 'react';
-import { store, history} from './store';
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import React from 'react'
 
-import { Route, Switch } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import { Route, Switch } from 'react-router-dom'
+import { ConnectedRouter } from 'react-router-redux'
 
-import App from './components/App';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from './theme'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import { ThemeProvider } from '@material-ui/core/styles'
+import App from './components/App'
+import theme from './theme'
+import { store, history } from './store'
 
-ReactDOM.render((
+ReactDOM.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <Provider store={store}>
@@ -21,6 +21,7 @@ ReactDOM.render((
         </Switch>
       </ConnectedRouter>
     </Provider>
-  </ThemeProvider>
+  </ThemeProvider>,
 
-), document.getElementById('root'));
+  document.getElementById('root'),
+)
