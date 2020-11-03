@@ -39,8 +39,9 @@ class Patient extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
-    this.submitForm = (ev) => {
-      ev.preventDefault()
+    this.submitForm = (ev) =>{
+      ev.preventDefault();
+
       const bloodsugar = this.props.bloodsugarValue
       const snackbar = {
         open: true,
@@ -68,7 +69,7 @@ class Patient extends Component {
         <div className={classes.paper}>
           <h1>Patientvy</h1>
           <h2> Var vänlig skriv in ditt blodsockervärde</h2>
-          <form className={classes.form} noValidate autoComplete="off" onSubmit={this.submitForm('bloodSugarJson')}>
+          <form className={classes.form} noValidate autoComplete="off" onSubmit={(ev) => this.submitForm('bloodSugarJson')}>
             <TextField
               required
               id="bloodsugar"
