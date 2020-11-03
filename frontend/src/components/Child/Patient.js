@@ -69,7 +69,7 @@ class Patient extends Component {
         <div className={classes.paper}>
           <h1>Patientvy</h1>
           <h2> Var vänlig skriv in ditt blodsockervärde</h2>
-          <form className={classes.form} noValidate autoComplete="off" onSubmit={(ev) => this.submitForm('bloodSugarJson')}>
+          <form className={classes.form} noValidate autoComplete="off" onSubmit={(ev) => this.submitForm(ev)}>
             <TextField
               required
               id="bloodsugar"
