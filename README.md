@@ -8,6 +8,7 @@ All available scripts explained in `frontend/` and `backend/` must be run in the
 ```bash
 cd backend
 . venv/bin/activate
+### use . venv/Scripts/activate if you installed the windows version as specified in the backend README
 export FLASK_APP=autoapp.py
 export FLASK_DEBUG=1
 export ehr_user=<EHR username from RÖ>
