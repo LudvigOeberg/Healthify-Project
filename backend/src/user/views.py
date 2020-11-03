@@ -59,7 +59,7 @@ class AccountResource(MethodResource):
 @doc(tags=["Accounts"])
 class AccountListResource(MethodResource):
     @marshal_with(user_schemas)
-    @doc(description="Get all users")
+    @doc(description="Get all users in db")
     def get(self):
         users = User.query.all()
         return users
