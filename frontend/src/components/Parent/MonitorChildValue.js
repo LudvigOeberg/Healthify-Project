@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { Grid } from '@material-ui/core'
-import { OPEN_SNACKBAR, FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR } from '../../constants/actionTypes'
+import { OPEN_SNACKBAR, FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR, SAVE_BLOODSUGAR } from '../../constants/actionTypes'
 import CustomPaginationActionsTable from '../TablePagination'
 import TimeLineChart from '../TimeLineChart'
 import agentEHR from '../../agentEHR'
@@ -22,11 +22,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
+  onSubmit: (ehrId, bloodsugar, snackbar) =>
+    dispatch({ type: SAVE_BLOODSUGAR, payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar), snackbar }),
   onOpenSnackbar: (message, color) => dispatch({ type: OPEN_SNACKBAR, message, color }),
   onLoad: (ehrId, offset, limit) => {
     dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
   },
+
 })
 
 const colDesc = ['Datum vid registrering', 'Värde (mmol/L)']
@@ -47,9 +50,16 @@ const MonitorChildValue = (props) => {
 
   const submitForm = (key, value) => (ev) => {
     ev.preventDefault()
-    const color = validate(props.childValue) ? 'success' : 'error'
-    const message = validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!'
-    props.onOpenSnackbar(message, color)
+    // const color = validate(props.childValue) ? 'success' : 'error'
+    // const message = validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!'
+    // props.onOpenSnackbar(message, color)
+    const bloodsugar = props.childValue
+    const snackbar = {
+      open: true,
+      message: validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!',
+      color: validate(props.childValue) ? 'success' : 'error',
+    }
+    props.onSubmit(id, bloodsugar, snackbar)
   }
 
   const changeField = (ev) => {
@@ -163,3 +173,4 @@ export function getCurrentDate() {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonitorChildValue)
+
