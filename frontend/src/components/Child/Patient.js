@@ -103,7 +103,7 @@ class Patient extends Component {
     return (
       <Container component="main" maxWidth="sm">
         <div className={classes.paper}>
-            <h1> Lägg in ditt mätvärde</h1>
+          <h2> Var vänlig skriv in ditt blodsockervärde</h2>
       <Typography id="input-slider" gutterBottom>
         mmol/L
       </Typography>
@@ -154,38 +154,6 @@ class Patient extends Component {
             columns={['x', 'y']}
             rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
           />
-          {/* <h1>Patientvy</h1>
-          <h2> Var vänlig skriv in ditt blodsockervärde</h2>
-          <form className={classes.form} noValidate autoComplete="off" onSubmit={(ev) => this.submitForm(ev)}>
-            <TextField
-              required
-              id="bloodsugar"
-              label="Blodsockervärde"
-              variant="outlined"
-              fullWidth
-              InputProps={{
-                startAdornment: <InputAdornment position="start">mmol/L</InputAdornment>,
-              }}
-              onChange={this.changeAuth}
-              value={bloodsugar}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              type="submit"
-              className={classes.submit}
-              disabled={this.props.inProgress}
-            >
-              Skicka in
-            </Button>
-          </form>
-          <CustomPaginationActionsTable
-            paginate
-            titles={['Datum', 'mmol/L']}
-            columns={['x', 'y']}
-            rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
-          /> */}
         </div>
       </Container>
     )
