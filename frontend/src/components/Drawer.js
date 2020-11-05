@@ -156,7 +156,7 @@ const PersistantDrawer = (props) => {
         <List>
           <ListItemLink href="/child" text="Min profil" avatarComponent={<AccountCircle />} location={props.location} />
           <ListItemLink
-            href="/parent-child-overview"
+            href="/child-monitor"
             text="Statistik"
             avatarComponent={<InsertChart />}
             location={props.location}

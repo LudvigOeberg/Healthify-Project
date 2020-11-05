@@ -93,34 +93,4 @@ const styles = (theme) => ({
   },
 })
 
-export function getCurrentDate() {
-  const today = new Date()
-  let month = String(today.getMonth())
-  let day = String(today.getDate())
-  let hours = String(today.getHours())
-  let minutes = String(today.getMinutes())
-
-  if (today.getMonth() < 10) {
-    month = `0${String(today.getMonth())}`
-  }
-  if (today.getDate() < 10) {
-    day = `0${String(today.getDate())}`
-  }
-  if (today.getHours() < 10) {
-    hours = `0${String(today.getDate())}`
-  }
-  if (today.getMinutes() < 10) {
-    minutes = `0${String(today.getDate())}`
-  }
-
-  const dateInfo = {
-    year: String(today.getFullYear()),
-    month,
-    day,
-    hours,
-    minutes,
-  }
-  return dateInfo
-}
-
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ChildMonitor))
