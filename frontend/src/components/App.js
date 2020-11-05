@@ -19,6 +19,7 @@ import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
 import MonitorChildValue from './Parent/MonitorChildValue'
+import AccessedData from './Child/AccessedData'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -96,6 +97,13 @@ class App extends React.Component {
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
                 component={Patient}
+              />
+                <RequiredRoute
+                exact
+                path="/accessed-data"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={AccessedData}
               />
               <RequiredRoute
                 exact

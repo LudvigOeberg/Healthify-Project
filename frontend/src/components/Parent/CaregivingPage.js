@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Typography } from '@material-ui/core'
 import CaregivingTeam from '../CaregivingTeam'
 
-export default function CaregivingPage() {
+export default function CaregivingPage(props) {
   const classes = useStyles()
 
   const doctor = {
@@ -23,12 +23,21 @@ export default function CaregivingPage() {
   }
   const caregivers = [doctor, shrink, nurse]
 
+  let description = () => {
+    console.log("isparent: " + { props })
+    if ({ props } == false) {
+      return 'Dina vårdgivare'
+    }
+    return 'Ditt barns vårdgivare'
+  }
+
   return (
     <div className={classes.paper}>
       <Grid container justify="center">
         <Grid item xs={12}>
           <Typography className={classes.typography} component="h1" variant="h5">
-            Ditt barns vårdgivare
+            {description()}
+            {/* Ditt barns vårdgivare */}
           </Typography>
         </Grid>
         <Grid item>
