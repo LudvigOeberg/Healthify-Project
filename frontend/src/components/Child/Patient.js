@@ -58,6 +58,7 @@ class Patient extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
+    this.changeAuthSlider = (ev,value) => this.props.onChangeAuth(ev.target.id, value)
     this.submitForm = (ev) =>{
       ev.preventDefault()
 
@@ -74,12 +75,10 @@ class Patient extends Component {
   componentWillUnmount() {
     this.props.onUnload()
   }
-  
+
   componentDidMount() {
     this.props.onLoad(this.props.currentUser.ehrid)
   }
-
-
 
   valuetext(value) {
     return `${value} mmol/L`;
@@ -99,6 +98,8 @@ class Patient extends Component {
     const bloodsugar = this.props.bloodsugarValue
     const { classes } = this.props
     const bloodsugarData = this.props.bloodsugar
+    console.log(typeof bloodsugar)
+
     return (
       <Container component="main" maxWidth="sm">
         <div className={classes.paper}>
@@ -109,10 +110,11 @@ class Patient extends Component {
       <Grid container spacing={2} alignItems="center">
         <Grid item xs>
           <Slider
-            value={bloodsugar}
-            onChange={this.changeAuth}
+            id="bloodsugar"
+            value={typeof parseInt(bloodsugar) === 'number' ? parseInt(bloodsugar): 0}
+            onChange={(ev,value) => this.changeAuthSlider(ev,value)}
             aria-labelledby="input-slider"
-            getAriaValueText={bloodsugar}
+            defaultValue={10}
             step={1}
             valueLabelDisplay="auto"
             marks={marks}
@@ -130,15 +132,15 @@ class Patient extends Component {
             onBlur={this.handleBlur}
             inputProps={{
               step: 1,
-              min: 3,
+              min: 5,
               max: 15,
               type: 'number',
               'aria-labelledby': 'input-slider',
             }}
           />
           <h5> mmol/L </h5>
-        </Grid>
-      </Grid>
+          </Grid>
+          </Grid> 
       <Button
         className={classes.button}
         startIcon={<CheckBoxIcon/>}
