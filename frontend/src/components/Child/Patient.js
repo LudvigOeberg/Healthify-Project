@@ -87,8 +87,8 @@ class Patient extends Component {
   render() {
     const marks = [
       {
-        value: 4,
-        label: '4° mmol/L',
+        value: 5,
+        label: '5° mmol/L',
       },
       {
         value: 15,
