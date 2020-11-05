@@ -26,16 +26,32 @@ const mapDispatchToProps = (dispatch) => ({
   },
 })
 
+// Checks if given bloodsugar levels are considered low, high or good.
+// getIndication & reformat are dublicated in MonitorChildValue
+let getIndication = (data) => {
+  if (data > 0 && data < 4) {
+  return "Lågt";
+}
+  else if (data > 9){
+    return "Högt";
+  }
+    else {
+      return "Stabilt"
+    }
+  }
+
 const reformat = (data) => {
   const dataObjects = []
   for (let i = 0; i < data.length; i++) {
-    dataObjects.push({ time: new Date(data[i].time.substring(0, 16)).toLocaleString(), value: data[i].value })
+    dataObjects.push({ time: new Date(data[i].time.substring(0, 16)).toLocaleString(), 
+      value: data[i].value, 
+      indicator: getIndication(data[i].value) })
   }
   return dataObjects
 }
 
 const ParentOverview = (props) => {
-  const colDesc = ['Datum', '(mmol/L)']
+  const colDesc = ['Datum', '(mmol/L)', 'Blodsocker']
   const classes = styles()
   const { id } = props.match.params
   const { bloodsugar } = props
@@ -82,7 +98,7 @@ const ParentOverview = (props) => {
               {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
                             PLUS EN LÄNK TILL MONITORCHILDVALUE */}
               <CustomPaginationActionsTable
-                columns={['time', 'value']}
+                columns={['time', 'value', 'indicator']}
                 loading={loading}
                 rows={bloodsugar ? reformat(bloodsugar, false) : null}
                 titles={colDesc}

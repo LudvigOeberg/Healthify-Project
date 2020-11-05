@@ -32,7 +32,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 })
 
-const colDesc = ['Datum vid registrering', 'Värde (mmol/L)']
+const colDesc = ['Datum vid registrering', 'Värde (mmol/L)', 'Blodsocker']
 
 const MonitorChildValue = (props) => {
   const classes = styles()
@@ -41,6 +41,7 @@ const MonitorChildValue = (props) => {
   const { bloodsugar } = props
   const { id } = props.match.params
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
+  const loading = props.inProgress
 
   useEffect(() => {
     props.onLoad(id, 0, 20)
@@ -66,6 +67,31 @@ const MonitorChildValue = (props) => {
     props.onChangeField(ev.target.id, ev.target.value)
   }
 
+
+// getIndication & reformat are dublicated in ParentOverview.
+  let getIndication = (data) => {
+    if (data > 0 && data < 4) {
+    return "Lågt";
+  }
+    else if (data > 9){
+      return "Högt";
+    }
+      else {
+        return "Stabilt"
+      }
+  }
+  
+const reformat = (data) => {
+    const dataObjects = []
+    for (let i = 0; i < data.length; i++) {
+      dataObjects.push({ time: new Date(data[i].time.substring(0, 16)).toLocaleString(), 
+        value: data[i].value, 
+        indicator: getIndication(data[i].value) })
+  
+    }
+    return dataObjects
+  }
+
   return (
     <Container>
       <div className={classes.paper}>
@@ -79,10 +105,13 @@ const MonitorChildValue = (props) => {
               Tabell
             </Typography>
             <CustomPaginationActionsTable
-              columns={['x', 'y']}
-              rows={bloodsugar ? Reformat.bloodsugar(bloodsugar, false) : null}
-              titles={colDesc}
-              paginate
+            //   columns={['x', 'y']}
+            columns={['time', 'value', 'indicator']}
+            loading={loading}
+            rows={bloodsugar ? reformat(bloodsugar, false) : null}
+            // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
+            titles={colDesc}
+            paginate={true}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
