@@ -1,55 +1,102 @@
 import React from 'react'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
-import TableContainer from '@material-ui/core/TableContainer'
+
 import Paper from '@material-ui/core/Paper'
 import { Typography } from '@material-ui/core'
-import CustomPaginationActionsTable from '../TablePagination'
+import Grid from '@material-ui/core/Grid';
+import Slider from '@material-ui/core/Slider';
+import Input from '@material-ui/core/Input';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Button from '@material-ui/core/Button';
 
-// TODO:
-// Försöka koppla detta med värdena från 'patient' (funktion till createData)
-// Snygga till den lite(kolla så det är rätt tema, font osv)
 
-function createRows() {
-  const rows = [
-    ['2020-05-01 17:00', 5.0],
-    ['2020-05-02 17:00', 6.0],
-    ['2020-05-03 17:00', 7.0],
-    ['2020-05-04 17:00', 8.0],
-    ['2020-05-05 17:00', 10.0],
-    ['2020-05-06 17:00', 23.0],
-  ]
+const marks = [
+  {
+    value: 4,
+    label: '4° mmol/L',
+  },
+  {
+    value: 15,
+    label: '15 mmol/L',
+  },
+];
 
-  const keys = Object.keys(localStorage)
-  const { length } = keys
-  let i
+function valuetext(value) {
+  return `${value} mmol/L`;
+}
+export default function InputSlider() {
+  const classes = useStyles();
+  const [value, setValue] = React.useState(10);
 
-  for (i = 0; i < length; i++) {
-    if (keys[i] !== 'jwt') {
-      rows[i + 6] = [keys[i], parseInt(localStorage.getItem(keys[i]))]
+  const handleSliderChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleInputChange = (event) => {
+    setValue(event.target.value === '' ? '' : Number(event.target.value));
+  };
+
+  const handleBlur = () => {
+    if (value < 3) {
+      setValue(3);
+    } else if (value > 20) {
+      setValue(20);
     }
-  }
-  return rows
-}
-const titles = ['Registration Date', 'Value (mmol/L)']
+  };
 
-export default function Measurements(props) {
-  const classes = useStyles()
-  const rows = createRows()
   return (
-    <Container maxWidth="sm">
+    <Container className={classes.paper} component={Paper}>
       <div className={classes.paper}>
-        <Typography component="h1" variant="h3">
-          Previous Measurements
-        </Typography>
-
-        <TableContainer component={Paper}>
-          <CustomPaginationActionsTable rows={rows} titles={titles} paginate></CustomPaginationActionsTable>
-        </TableContainer>
-      </div>
+        <h1> Lägg in ditt mätvärde</h1>
+      <Typography id="input-slider" gutterBottom>
+        mmol/L
+      </Typography>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs>
+          <Slider
+            value={typeof value === 'number' ? value : 0}
+            onChange={handleSliderChange}
+            aria-labelledby="input-slider"
+            defaultValue={10}
+            getAriaValueText={valuetext}
+            step={1}
+            valueLabelDisplay="auto"
+            marks={marks}
+            max = {15}
+            min = {5}
+          />
+        </Grid>
+        <Grid item>
+          <Input
+            defaultValue={15}
+            className={classes.input}
+            value={value}
+            margin="dense"
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            inputProps={{
+              step: 1,
+              min: 3,
+              max: 15,
+              type: 'number',
+              'aria-labelledby': 'input-slider',
+            }}
+          />
+          <h5> mmol/L </h5>
+        </Grid>
+      </Grid>
+      <Button
+        className={classes.button}
+        startIcon={<CheckBoxIcon/>}
+        onClick = {(ev) => this.submitForm(ev)}
+      >
+      </Button>
+    </div>
     </Container>
-  )
+  );
 }
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
