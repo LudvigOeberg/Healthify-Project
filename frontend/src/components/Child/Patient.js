@@ -18,6 +18,7 @@ import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { Typography } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 
 
 const mapStateToProps = (state) => ({
