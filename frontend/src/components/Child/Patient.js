@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import { TextField, Button } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-
-import InputAdornment from '@material-ui/core/InputAdornment'
 import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
 import {
