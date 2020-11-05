@@ -12,6 +12,7 @@ import { Divider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Moment from 'moment'
+import EditIcon from '@material-ui/icons/Edit'
 /**
  * Displays a ChildListItem
  * @param {const} props- a const with a name, an email and a telephone number to the ChildListItem
@@ -31,6 +32,11 @@ export default function ChildListItem(props) {
                 <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" alt={props.name} />
               </ListItemAvatar>
               <ListItemText primary={`${props.name} ${props.surname}`} />
+              <a href={`/edit-child/${props.ehrid}`}>                
+                <ListItemIcon>
+                  <EditIcon color="primary" />
+                </ListItemIcon>
+              </a>
             </ListItem>
             <Divider />
             <ListItem button component="a" href={`/parent-child-overview/${props.ehrid}`}>
