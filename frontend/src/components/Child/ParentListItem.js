@@ -14,7 +14,7 @@ import ScheduleIcon from '@material-ui/icons/Schedule'
 import PhoneIcon from '@material-ui/icons/Phone'
 /**
  * Displays a ParentListItem
- * @param {const} props- a const with a name, an email and a telephone number to the ChildListItem
+ * @param {const} props- a const with a name to the parent
  * should look like below
  *
  */
@@ -31,7 +31,6 @@ export default function ParentListItem(props) {
                <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" />
               </ListItemAvatar>
               <ListItemText primary={`${props.name} ${props.surname}`} />
-              {/* <ListItemText primary="Olle Hakansson" /> */}
             </ListItem>
             <Divider />
             <ListItem>
@@ -39,7 +38,6 @@ export default function ParentListItem(props) {
                 <ScheduleIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary="Tillgång sedan 27 mars 2020" />
-            {/* </ListItem> */}
             </ListItem>
             <ListItem button component="a" href="callto:0701234567">
               <ListItemIcon>
@@ -51,7 +49,6 @@ export default function ParentListItem(props) {
         </Paper>
       </div>
     </Container>
-    
   )
 }
 

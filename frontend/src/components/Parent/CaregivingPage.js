@@ -40,7 +40,7 @@ class NewCaregivingPage extends Component {
     const type = this.props.currentUser ? `${this.props.currentUser.type}` : null
 
     const description = () => {
-      if (type == 'child') {
+      if (type === 'child') {
         return 'Dina vårdgivare'
       }
       return 'Ditt barns vårdgivare'

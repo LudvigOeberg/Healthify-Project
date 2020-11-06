@@ -11,7 +11,7 @@ export default function ParentList(props) {
   return (
     <Container>
       <Grid container direction="row" justify="center" spacing={0}>
-        {parents.map((parent, i) => (
+        {parents.map((parent) => (
           <Grid key>{ParentListItem(parent.parent)}</Grid>
         ))}
       </Grid>
