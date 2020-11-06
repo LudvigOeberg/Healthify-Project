@@ -88,7 +88,7 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 const Header = (props) => {
-  const logout = (ev) => props.onClickLogout()
+  const logout = () => props.onClickLogout()
   const openDrawer = () => (val) => props.onClickDrawerOpen(val)
   const { drawerOpen } = props
   return (
