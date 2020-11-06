@@ -1,7 +1,7 @@
 import { Container, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import React from 'react'
-import { FIELD_CHANGE} from '../../constants/actionTypes'
+import { UPDATE_FIELD_AUTH } from '../../constants/actionTypes'
 import {
     Avatar,
     TextField,
@@ -14,10 +14,11 @@ import {
 
 const mapStateToProps = (state) => ({
     ...state.common,
+    ...state.auth
 })
 
 const mapDispatchToProps = (dispatch) =>({
-    onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
+    onChangeField: (key, value) => dispatch({ type: UPDATE_FIELD_AUTH, key, value }),
     //editPatient: (child) => dispatch({type: EDIT_CHILD, child}),
 })
 
@@ -27,18 +28,21 @@ const PatientEdit = (props) => {
     const id = props.match.params
     const onChangeField = (ev) => props.onChangeField(ev.target.id, ev.target.value)
     const submitForm = () => props
-    var email
+    const email = props.auth
     var childNo
     var name
+    var oldemail
 
+   
     props.currentUser.children.map((child, i) => {
       if(child.child.ehrid=id){
-        email=child.child.email
+        oldemail=child.child.email
         name=child.child.name + child.child.surname
         childNo=i
       }
     })
-    
+
+ 
 
     return (
         <Container component="main" maxWidth="xs">
@@ -60,11 +64,11 @@ const PatientEdit = (props) => {
                         variant="outlined"
                         required
                         fullWidth
-                        disabled
-                        id={`currentUser.children.${childNo}.child.email`}
+                        id={'email'}
                         name="email"
                         label="Mailaddress"
                         autoComplete="email"
+                        defaultValue={oldemail}
                         helperText={errors && (errors.email || errors.general)}
                         error={errors && (errors.email ? true : !!(false || errors.general))}
                         value={email}
@@ -109,7 +113,7 @@ const PatientEdit = (props) => {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        disabled
+                        disabled = {props.inProgress}
                         >
                           Spara
                       </Button>
