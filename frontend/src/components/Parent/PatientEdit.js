@@ -39,7 +39,8 @@ const PatientEdit = (props) => {
       }
       props.editPatient(id, email, snackbar)
     }
-    const email = props.auth.email ? props.auth.email : null
+    const email = props.email ? props.email : null
+    console.log(props)
     var childNo
     var name
     var oldemail
