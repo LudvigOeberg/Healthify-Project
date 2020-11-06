@@ -46,7 +46,7 @@ const PatientEdit = (props) => {
     var name
 
    
-    props.currentUser.children.map((child, i) => {
+    props.currentUser.children.map((child) => {
       if(child.child.ehrid===id){
         oldemail=child.child.email
         name=child.child.name + child.child.surname
