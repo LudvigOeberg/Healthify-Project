@@ -54,6 +54,7 @@ export default (state = defaultState, action) => {
     case EDIT_CHILD:
       return{
         ...state,
+        redirectTo: action.error ? null : '/parent',
         inProgress: false,
         snackbar: action.error
           ? {
