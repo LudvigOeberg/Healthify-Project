@@ -41,7 +41,7 @@ build-frontend:
 
 
 lint-checker:
-  stage: build
+  stage: test
   image: node
 
   script:
