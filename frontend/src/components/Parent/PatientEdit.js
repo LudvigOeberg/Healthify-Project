@@ -1,7 +1,7 @@
 import { Container, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import React from 'react'
-import { UPDATE_FIELD_AUTH } from '../../constants/actionTypes'
+import { UPDATE_FIELD_AUTH, EDIT_CHILD } from '../../constants/actionTypes'
 import {
     Avatar,
     TextField,
@@ -19,23 +19,34 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) =>({
     onChangeField: (key, value) => dispatch({ type: UPDATE_FIELD_AUTH, key, value }),
-    //editPatient: (child) => dispatch({type: EDIT_CHILD, child}),
+    editPatient: (id, email, snackbar) => {
+      const payload = agent.Parent.editChild(id, email)
+      dispatch({type: EDIT_CHILD, payload, snackbar})
+    },
 })
 
 const PatientEdit = (props) => {
     const classes = styles()
     const errors = props.errors ? props.errors : null
-    const id = props.match.params
+    const id = props.match.params.id
     const onChangeField = (ev) => props.onChangeField(ev.target.id, ev.target.value)
-    const submitForm = () => props
-    const email = props.auth
+    const submitForm = (id, email) => (ev) => {
+      ev.preventDefault()
+      const snackbar = {
+        message: `{Du ändrade emailadress för ${name}}`,
+        color: 'success',
+        open: true,
+      }
+      props.editPatient(id, email, snackbar)
+    }
+    const email = props.auth.email ? props.auth.email : null
     var childNo
     var name
     var oldemail
 
    
     props.currentUser.children.map((child, i) => {
-      if(child.child.ehrid=id){
+      if(child.child.ehrid===id){
         oldemail=child.child.email
         name=child.child.name + child.child.surname
         childNo=i
@@ -56,7 +67,7 @@ const PatientEdit = (props) => {
             <form
             className={classes.form}
             noValidate
-            onSubmit={submitForm()}
+            onSubmit={submitForm(id, email)}
             >
                 <Grid container spacing={2}>
                         <Grid item xs={12}>

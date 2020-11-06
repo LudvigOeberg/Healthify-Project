@@ -145,3 +145,14 @@ class ChildResource(MethodResource):
             return user.parents
         else:
             raise InvalidUsage.unknown_error()
+    @jwt_required
+    @use_kwargs(child_schema)
+    @marshal_with(user_schema)
+    @doc(description="Update child")
+    def put(self, ehrid, **kwargs):
+        print(current_user)
+        user = current_user
+        child = Child.query.filter_by(ehrid=ehrid).first()
+        child.update(**kwargs)
+        db.session.commit()
+        return user

@@ -97,8 +97,8 @@ class RegisterUserSchema(Schema):
 class ChildSchema(Schema):
     name = fields.Str(dump_only=True)
     surname = fields.Str(dump_only=True)
-    email = fields.Email(dump_only=True)
-    ehrid = fields.Str(dump_only=True)
+    email = fields.Email()
+    ehrid = fields.Str()
     createdAt = fields.DateTime(attribute='created_at', dump_only=True)
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
     type = fields.Str(dump_only=True)

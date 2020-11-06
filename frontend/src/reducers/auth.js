@@ -7,12 +7,14 @@ import {
   UPDATE_FIELD_AUTH,
   UPDATE_AUTH_BOOLEAN,
   REGISTER_CHILD,
+  EDIT_CHILD,
 } from '../constants/actionTypes'
 
 export default (state = {}, action) => {
   switch (action.type) {
     case LOGIN:
     case REGISTER:
+    case EDIT_CHILD:
     case REGISTER_CHILD:
       return {
         ...state,
