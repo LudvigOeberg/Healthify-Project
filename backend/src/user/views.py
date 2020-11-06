@@ -151,8 +151,12 @@ class ChildResource(MethodResource):
     @marshal_with(user_schema)
     @doc(description="Update child")
     def put(self, ehrid, **kwargs):
-        user = current_user
-        child = Child.query.filter_by(ehrid=ehrid).first()
-        child.update(**kwargs)
-        db.session.commit()
+        try:
+            user = current_user
+            child = Child.query.filter_by(ehrid=ehrid).first()
+            child.update(**kwargs)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            raise InvalidUsage.user_already_registered()
         return user

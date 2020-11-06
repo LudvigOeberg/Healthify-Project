@@ -33,27 +33,28 @@ const PatientEdit = (props) => {
     const submitForm = (id, email) => (ev) => {
       ev.preventDefault()
       const snackbar = {
-        message: `{Du ändrade emailadress för ${name}}`,
+        message: `Du ändrade emailadress för ${name}`,
         color: 'success',
         open: true,
       }
       props.editPatient(id, email, snackbar)
+
     }
-    const email = props.email ? props.email : null
+    
     console.log(props)
-    var childNo
-    var name
     var oldemail
+    var name
 
    
     props.currentUser.children.map((child, i) => {
       if(child.child.ehrid===id){
         oldemail=child.child.email
         name=child.child.name + child.child.surname
-        childNo=i
       }
+      return null
     })
 
+    const email = props.email ? props.email : oldemail
  
 
     return (
@@ -80,7 +81,6 @@ const PatientEdit = (props) => {
                         name="email"
                         label="Mailaddress"
                         autoComplete="email"
-                        defaultValue={oldemail}
                         helperText={errors && (errors.email || errors.general)}
                         error={errors && (errors.email ? true : !!(false || errors.general))}
                         value={email}
@@ -126,6 +126,7 @@ const PatientEdit = (props) => {
                         color="primary"
                         className={classes.submit}
                         disabled = {props.inProgress}
+                        
                         >
                           Spara
                       </Button>

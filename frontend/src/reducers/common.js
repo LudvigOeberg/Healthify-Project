@@ -62,7 +62,7 @@ export default (state = defaultState, action) => {
               color: 'warning',
             }
           : action.snackbar,
-          redirectTo: action.error ? null : '/parent',
+          
       }
     case REGISTER_CHILD:
       const { children } = state.currentUser
