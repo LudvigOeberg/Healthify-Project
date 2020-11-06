@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { TextField, Button } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
 
-import InputAdornment from '@material-ui/core/InputAdornment'
+import { withStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
+import Grid from '@material-ui/core/Grid'
+import Slider from '@material-ui/core/Slider'
+import Input from '@material-ui/core/Input'
+import CheckBoxIcon from '@material-ui/icons/CheckBox'
+import { Typography, Button } from '@material-ui/core'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -26,6 +29,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onChangeAuth: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
   onSubmit: (ehrId, bloodsugar, snackbar) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
     dispatch({
       type: SAVE_BLOODSUGAR,
       payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar).then(() => {
@@ -39,10 +43,8 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: PATIENT_PAGE_UNLOADED }),
   onLoad: (ehrId) => {
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
-    dispatch({
-      type: LOAD_BLOODSUGAR,
-      payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
-    })
+
+    dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, 0, 20) })
   },
   onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
 })
@@ -51,69 +53,96 @@ class Patient extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
+
+    this.changeAuthSlider = (ev, value) => this.props.onChangeAuth(ev.target.id, value)
     this.submitForm = (ev) => {
       ev.preventDefault()
 
       const bloodsugar = this.props.bloodsugarValue
       const snackbar = {
         open: true,
-        message: this.getEncouragingMessage(),
+
+        message: `Du loggade värdet: ${bloodsugar} mmol/L`,
         color: 'success',
       }
       this.props.onSubmit(this.props.currentUser.ehrid, bloodsugar, snackbar)
     }
   }
 
-  getEncouragingMessage() {
-    const messages = [
-      'Fortsätt att hålla koll på ditt blodsockervärde för att hålla det på en hälsosam nivå!',
-      'Ditt blodsockervärde ser bra ut, fortsätt så!',
-    ]
-    let str = messages[Math.floor(Math.random() * Math.floor(2))]
-    return str
+  componentWillUnmount() {
+    this.props.onUnload()
   }
 
   componentDidMount() {
     this.props.onLoad(this.props.currentUser.ehrid)
   }
 
-  componentWillUnmount() {
-    this.props.onUnload()
+  valuetext(value) {
+    return `${value} mmol/L`
   }
 
   render() {
+    const marks = [
+      {
+        value: 5,
+        label: '5° mmol/L',
+      },
+      {
+        value: 15,
+        label: '15 mmol/L',
+      },
+    ]
     const bloodsugar = this.props.bloodsugarValue
     const { classes } = this.props
     const bloodsugarData = this.props.bloodsugar
     return (
       <Container component="main" maxWidth="sm">
         <div className={classes.paper}>
-          <h1>Patientvy</h1>
           <h2> Var vänlig skriv in ditt blodsockervärde</h2>
-          <form className={classes.form} noValidate autoComplete="off" onSubmit={(ev) => this.submitForm(ev)}>
-            <TextField
-              required
-              id="bloodsugar"
-              label="Blodsockervärde"
-              variant="outlined"
-              fullWidth
-              InputProps={{
-                startAdornment: <InputAdornment position="start">mmol/L</InputAdornment>,
-              }}
-              onChange={this.changeAuth}
-              value={bloodsugar}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              type="submit"
-              className={classes.submit}
-              disabled={this.props.inProgress}
-            >
-              Skicka in
-            </Button>
-          </form>
+
+          <Typography id="input-slider" gutterBottom>
+            mmol/L
+          </Typography>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs>
+              <Slider
+                id="bloodsugar"
+                value={typeof parseInt(bloodsugar, 10) === 'number' ? parseInt(bloodsugar, 10) : 0}
+                onChange={(ev, value) => this.changeAuthSlider(ev, value)}
+                aria-labelledby="input-slider"
+                defaultValue={10}
+                step={1}
+                valueLabelDisplay="auto"
+                marks={marks}
+                max={15}
+                min={5}
+              />
+            </Grid>
+            <Grid item>
+              <Input
+                id="bloodsugar"
+                className={classes.input}
+                value={bloodsugar}
+                margin="dense"
+                onChange={this.changeAuth}
+                onBlur={this.handleBlur}
+                inputProps={{
+                  step: 1,
+                  min: 5,
+                  max: 15,
+                  type: 'number',
+                  'aria-labelledby': 'input-slider',
+                }}
+              />
+              <h5> mmol/L </h5>
+            </Grid>
+          </Grid>
+          <Button
+            className={classes.button}
+            startIcon={<CheckBoxIcon />}
+            onClick={(ev) => this.submitForm(ev)}
+            disabled={this.props.inProgress}
+          ></Button>
           <CustomPaginationActionsTable
             paginate
             titles={['Datum', 'mmol/L']}
@@ -166,13 +195,7 @@ export function getCurrentDate() {
     minutes = `0${String(today.getDate())}`
   }
 
-  const dateInfo = {
-    year: String(today.getFullYear()),
-    month,
-    day,
-    hours,
-    minutes,
-  }
+  const dateInfo = { year: String(today.getFullYear()), month, day, hours, minutes }
   return dateInfo
 }
 

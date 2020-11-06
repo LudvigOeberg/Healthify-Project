@@ -1,6 +1,6 @@
 stages:
-  - build
   - test
+  - build
   - build-image
   - deploy
   - pages
@@ -24,7 +24,6 @@ build-frontend:
     - cd frontend
     - npm ci
     - npm install react-scripts@3.0.1 -g
-    - npm run lint:fix
     - npm run build
 
 
@@ -40,6 +39,15 @@ build-frontend:
     - CI=true npm test
     - echo "Test successfully!"
 
+
+lint-checker:
+  stage: test
+  image: node
+
+  script:
+    - cd frontend
+    - npm install lint
+    - npm run lint:fix
 
 
 build-flask-image:
