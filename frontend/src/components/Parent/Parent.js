@@ -41,6 +41,7 @@ class ParentPage extends Component {
             </Typography>
 
             {/* child list component to list children for logged in user */}
+            {/* eslint-disable-next-line react/no-children-prop */}
             <ChildList children={children} />
           </div>
         </Container>
