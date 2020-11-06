@@ -8,8 +8,11 @@ All available scripts explained in `frontend/` and `backend/` must be run in the
 ```bash
 cd backend
 . venv/bin/activate
+### use . venv/Scripts/activate if you installed the windows version as specified in the backend README
 export FLASK_APP=autoapp.py
 export FLASK_DEBUG=1
+export ehr_user=<EHR username from RÖ>
+export ehr_user_pass=<EHR password from RÖ>
 ### If you don' have dev.db and migrations in your backend-dir run these scripts:
 flask db init
 flask db migrate

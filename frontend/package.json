@@ -3,23 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "@imaginary-cloud/eslint-config-react": "^1.0.1",
     "cross-env": "^5.1.4",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.13.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-only-warn": "^1.0.2",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^2.5.1",
     "react-scripts": "^3.4.3"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
+    "chart.js": "^2.9.3",
     "history": "^4.6.3",
     "marked": "^0.3.6",
     "moment": "^2.29.1",
     "plotly.js": "^1.56.0",
     "prop-types": "^15.5.10",
     "react": "^16.3.0",
+    "react-chartjs-2": "^2.10.0",
     "react-dom": "^16.3.0",
     "react-plotly.js": "^2.5.0",
     "react-redux": "^5.0.7",
-    "react-router": "^4.1.2",
+    "react-router": "^4.3.1",
     "react-router-dom": "^4.1.2",
     "react-router-redux": "^5.0.0-alpha.6",
     "recharts": "^1.8.5",
@@ -35,7 +46,9 @@
     "build": "react-scripts build",
     "test": "cross-env PORT=4100 react-scripts test --env=jsdom",
     "jest": "jest --config tests/jest.config.js -t ",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint './src/**/*.{js,jsx}'",
+    "lint:fix": "npm run lint -- --fix"
   },
   "browserslist": {
     "production": [

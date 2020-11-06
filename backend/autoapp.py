@@ -6,5 +6,4 @@ from src.app import create_app
 from src.settings import DevConfig, ProdConfig
 
 CONFIG = DevConfig if get_debug_flag() else ProdConfig
-
 app = create_app(CONFIG)

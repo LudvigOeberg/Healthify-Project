@@ -1,0 +1,33 @@
+{
+    "extends": ["@imaginary-cloud/react"],
+    "plugins": [
+        "only-warn"
+    ],
+    "rules": {
+        "multiline-ternary": "off",
+        "no-param-reassign": "off",
+        "no-case-declarations": "off",
+        "function-call-argument-newline": ["off", "consistent"],
+        "newline-per-chained-call": "off",
+        "function-paren-newline": "off",
+        "implicit-arrow-linebreak": ["error", "beside"],
+        "react/jsx-newline": "off",
+        "react/jsx-equals-spacing": [1, "never"],
+        "react/prop-types": "off",
+        "array-element-newline": ["off", "never"],
+        "no-plusplus": "off",
+        "prettier/prettier": [
+            2,
+            {
+                "$schema": "http://json.schemastore.org/prettierrc",
+                "printWidth": 120,
+                "tabWidth": 2,
+                "useTabs": false,
+                "semi": false,
+                "singleQuote": true,
+                "trailingComma": "all",
+                "endOfLine": "lf"
+            }
+        ]
+    }
+}

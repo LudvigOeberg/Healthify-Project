@@ -24,6 +24,7 @@ build-frontend:
     - cd frontend
     - npm ci
     - npm install react-scripts@3.0.1 -g
+    - npm run lint:fix
     - npm run build
 
 
