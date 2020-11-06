@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch) =>({
 const PatientEdit = (props) => {
     const classes = styles()
     const errors = props.errors ? props.errors : null
-    const id = props.match.params.id
+    const ehrid = props.match.params.id
     const onChangeField = (ev) => props.onChangeField(ev.target.id, ev.target.value)
     const submitForm = (id, email) => (ev) => {
       ev.preventDefault()
@@ -41,13 +41,13 @@ const PatientEdit = (props) => {
 
     }
     
-    console.log(props)
+ 
     var oldemail
     var name
 
    
     props.currentUser.children.map((child) => {
-      if(child.child.ehrid===id){
+      if(child.child.ehrid===ehrid){
         oldemail=child.child.email
         name=child.child.name + child.child.surname
       }
@@ -69,7 +69,7 @@ const PatientEdit = (props) => {
             <form
             className={classes.form}
             noValidate
-            onSubmit={submitForm(id, email)}
+            onSubmit={submitForm(ehrid, email)}
             >
                 <Grid container spacing={2}>
                         <Grid item xs={12}>
