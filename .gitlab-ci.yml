@@ -46,6 +46,8 @@ lint-checker:
 
   script:
     - cd frontend
+    - npm install lint
+    - npm install lint:fix
     - npm run lint:fix
 
 
