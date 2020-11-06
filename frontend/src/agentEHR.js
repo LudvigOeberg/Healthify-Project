@@ -100,9 +100,8 @@ const Query = {
 
 const param = (params) => {
   let s = ''
-  // David please check the line below as it is generating a lot of errors and is probably too condenfed to do what it is suppose to.
-  // eslint-disable-next-line guard-for-in, no-restricted-syntax, no-shadow
-  for (const param in params) s += `${param}=${params[param]}&`
+  // eslint-disable-next-line
+  for (const p in params) s += `${p}=${params[p]}&`
   return s.substr(0, s.length - 1)
 }
 
