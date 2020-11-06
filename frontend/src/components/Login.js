@@ -40,6 +40,7 @@ const Login = (props) => {
   // props, has to be used with the correct action.
   useEffect(
     () =>
+      // eslint-disable-next-line implicit-arrow-linebreak
       function cleanUp() {
         props.onUnload()
       },
@@ -102,7 +103,7 @@ const Login = (props) => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="/forgottenpassword" variant="body2">
                 Glömt ditt lösenord?
               </Link>
             </Grid>

@@ -32,7 +32,7 @@ const Register = (props) => {
   const { name } = props
   const { surname } = props
   const errors = props.errors ? props.errors : null
-
+  // eslint-disable-next-line no-shadow
   const submitForm = (name, surname, email, password, confirmPassword) => (ev) => {
     ev.preventDefault()
     props.onSubmit(name, surname, email, password, confirmPassword)
@@ -44,6 +44,7 @@ const Register = (props) => {
   // props, has to be used with the correct action.
   useEffect(
     () =>
+      // eslint-disable-next-line implicit-arrow-linebreak
       function cleanUp() {
         props.onUnload()
       },
