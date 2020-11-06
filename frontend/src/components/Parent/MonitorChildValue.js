@@ -75,27 +75,25 @@ const MonitorChildValue = (props) => {
     props.onChangeField(ev.target.id, ev.target.value)
   }
 
-
-// getIndication & reformat are dublicated in ParentOverview.
-  let getIndication = (data) => {
+  // getIndication & reformat are dublicated in ParentOverview.
+  const getIndication = (data) => {
     if (data > 0 && data < 4) {
-    return "Lågt";
-  }
-    else if (data > 9){
-      return "Högt";
+      return 'Lågt'
     }
-      else {
-        return "Stabilt"
-      }
+    if (data > 9) {
+      return 'Högt'
+    }
+
+    return 'Stabilt'
   }
-  
-const reformat = (data) => {
+  const reformat = (data) => {
     const dataObjects = []
     for (let i = 0; i < data.length; i++) {
-      dataObjects.push({ time: new Date(data[i].time.substring(0, 16)).toLocaleString(), 
-        value: data[i].value, 
-        indicator: getIndication(data[i].value) })
-  
+      dataObjects.push({
+        time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
+        value: data[i].value,
+        indicator: getIndication(data[i].value),
+      })
     }
     return dataObjects
   }
@@ -113,13 +111,13 @@ const reformat = (data) => {
               Tabell
             </Typography>
             <CustomPaginationActionsTable
-            //   columns={['x', 'y']}
-            columns={['time', 'value', 'indicator']}
-            loading={loading}
-            rows={bloodsugar ? reformat(bloodsugar, false) : null}
-            // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
-            titles={colDesc}
-            paginate={true}
+              //   columns={['x', 'y']}
+              columns={['time', 'value', 'indicator']}
+              loading={loading}
+              rows={bloodsugar ? reformat(bloodsugar, false) : null}
+              // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
+              titles={colDesc}
+              paginate
             />
           </Grid>
           <Grid item xs={12} sm={12} md={6}>

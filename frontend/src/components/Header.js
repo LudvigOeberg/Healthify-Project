@@ -88,12 +88,8 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 const Header = (props) => {
-  // David have a look and see if you can rewrite this to explicitly use ev, I was not able to.
-  // eslint-disable-next-line no-unused-vars
-  const logout = (ev) => props.onClickLogout()
-  // David have a look and see if you can rewrite this to explicitly use ev, I was not able to.
-  // eslint-disable-next-line no-unused-vars
-  const openDrawer = (ev) => (val) => props.onClickDrawerOpen(val)
+  const logout = () => props.onClickLogout()
+  const openDrawer = () => (val) => props.onClickDrawerOpen(val)
   const { drawerOpen } = props
   return (
     <nav className="navbar navbar-light" style={{ zIndex: 100 }}>
