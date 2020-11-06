@@ -64,6 +64,7 @@ const Composition = {
 }
 
 const Demograhics = {
+  // eslint-disable-next-line consistent-return
   newMeasurment: (height = null, weight = null, ehrId) => {
     const composition = {
       'ctx/language': 'en',
@@ -77,21 +78,30 @@ const Demograhics = {
 
 const Query = {
   aql: (aql) => requests.get(`/query?aql=${aql}`),
-  weight: (ehrId) => requests.get(`/view/${ehrId}/weight`),
-  length: (ehrId) => requests.get(`/view/${ehrId}/length`),
-  bloodsugar: (ehrId, offset, limit) => Query.aql(`
-    SELECT y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/magnitude as value, 
-    y/data[at0001]/events[at0002,'Point-in-time event']/time/value as time, 
-    y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/units as unit
-    FROM EHR[ehr_id/value='${ehrId}']
-    CONTAINS COMPOSITION c
-    CONTAINS OBSERVATION y[openEHR-EHR-OBSERVATION.lab_test-blood_glucose.v1]
-    ORDER BY Time desc
-    OFFSET ${offset} LIMIT ${limit}`),
+  weight: (ehrId) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
+    requests.get(`/view/${ehrId}/weight`),
+  length: (ehrId) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
+    requests.get(`/view/${ehrId}/length`),
+  bloodsugar: (ehrId, offset, limit) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
+    Query.aql(
+      `SELECT y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/magnitude as value, 
+      y/data[at0001]/events[at0002,'Point-in-time event']/time/value as time, 
+      y/data[at0001]/events[at0002,'Point-in-time event']/data[at0003]/items[at0078.2,'Blodsocker']/value/units as unit
+      FROM EHR[ehr_id/value='${ehrId}']
+      CONTAINS COMPOSITION c
+      CONTAINS OBSERVATION y[openEHR-EHR-OBSERVATION.lab_test-blood_glucose.v1]
+      ORDER BY Time desc
+      OFFSET ${offset} LIMIT ${limit}`,
+    ),
 }
 
 const param = (params) => {
   let s = ''
+  // David please check the line below as it is generating a lot of errors and is probably too condenfed to do what it is suppose to.
+  // eslint-disable-next-line guard-for-in, no-restricted-syntax, no-shadow
   for (const param in params) s += `${param}=${params[param]}&`
   return s.substr(0, s.length - 1)
 }

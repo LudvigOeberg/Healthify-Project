@@ -26,12 +26,14 @@ const Auth = {
   current: () => requests.get('/user'),
   login: (email, password) => requests.post('/user', { user: { email, password } }),
   register: (name, surname, email, password, confirmPassword) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
     requests.post('/users', { user: { name, surname, email, password, confirmPassword } }),
   save: (user) => requests.put('/user', { user }),
 }
 
 const Parent = {
   registerChild: (name, surname, email, password, confirmPassword, dateofbirth, gender) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
     requests.post('/parent', { user: { name, surname, email, password, confirmPassword, dateofbirth, gender } }),
   children: () => requests.get('/parent'),
 }

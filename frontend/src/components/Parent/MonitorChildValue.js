@@ -23,16 +23,25 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
   onSubmit: (ehrId, bloodsugar, snackbar) =>
-    dispatch({ type: SAVE_BLOODSUGAR, payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar), snackbar }),
+    // eslint-disable-next-line implicit-arrow-linebreak
+    dispatch({
+      type: SAVE_BLOODSUGAR,
+      payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar).then(() => {
+        dispatch({
+          type: LOAD_BLOODSUGAR,
+          payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
+        })
+      }),
+      snackbar,
+    }),
   onOpenSnackbar: (message, color) => dispatch({ type: OPEN_SNACKBAR, message, color }),
   onLoad: (ehrId, offset, limit) => {
     dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
   },
-
 })
 
-const colDesc = ['Datum vid registrering', 'Värde (mmol/L)']
+const colDesc = ['Datum vid registrering', 'Värde (mmol/L)', 'Blodsocker']
 
 const MonitorChildValue = (props) => {
   const classes = styles()
@@ -41,6 +50,7 @@ const MonitorChildValue = (props) => {
   const { bloodsugar } = props
   const { id } = props.match.params
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
+  const loading = props.inProgress
 
   useEffect(() => {
     props.onLoad(id, 0, 20)
@@ -48,22 +58,46 @@ const MonitorChildValue = (props) => {
 
   const validate = (val) => val < 100 && val > 0
 
-  const submitForm = (key, value) => (ev) => {
+  const submitForm = (ev) => {
     ev.preventDefault()
     // const color = validate(props.childValue) ? 'success' : 'error'
     // const message = validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!'
     // props.onOpenSnackbar(message, color)
-    const bloodsugar = props.childValue
+    const bloodsugarChild = props.childValue
     const snackbar = {
       open: true,
       message: validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!',
       color: validate(props.childValue) ? 'success' : 'error',
     }
-    props.onSubmit(id, bloodsugar, snackbar)
+    props.onSubmit(id, bloodsugarChild, snackbar)
   }
-
   const changeField = (ev) => {
     props.onChangeField(ev.target.id, ev.target.value)
+  }
+
+
+// getIndication & reformat are dublicated in ParentOverview.
+  let getIndication = (data) => {
+    if (data > 0 && data < 4) {
+    return "Lågt";
+  }
+    else if (data > 9){
+      return "Högt";
+    }
+      else {
+        return "Stabilt"
+      }
+  }
+  
+const reformat = (data) => {
+    const dataObjects = []
+    for (let i = 0; i < data.length; i++) {
+      dataObjects.push({ time: new Date(data[i].time.substring(0, 16)).toLocaleString(), 
+        value: data[i].value, 
+        indicator: getIndication(data[i].value) })
+  
+    }
+    return dataObjects
   }
 
   return (
@@ -79,10 +113,13 @@ const MonitorChildValue = (props) => {
               Tabell
             </Typography>
             <CustomPaginationActionsTable
-              columns={['x', 'y']}
-              rows={bloodsugar ? Reformat.bloodsugar(bloodsugar, false) : null}
-              titles={colDesc}
-              paginate
+            //   columns={['x', 'y']}
+            columns={['time', 'value', 'indicator']}
+            loading={loading}
+            rows={bloodsugar ? reformat(bloodsugar, false) : null}
+            // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
+            titles={colDesc}
+            paginate={true}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
@@ -101,13 +138,7 @@ const MonitorChildValue = (props) => {
             <Typography component="h1" variant="h5">
               Skriv in ditt barns blodsockervärde
             </Typography>
-
-            <form
-              className={classes.form}
-              noValidate
-              onSubmit={submitForm(getCurrentDate(), childValue)}
-              autoComplete="off"
-            >
+            <form className={classes.form} noValidate onSubmit={(ev) => submitForm(ev)} autoComplete="off">
               <Grid container spacing={0}>
                 <Grid item xs={12}>
                   <TextField
@@ -173,4 +204,3 @@ export function getCurrentDate() {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonitorChildValue)
-

@@ -60,8 +60,12 @@ class App extends React.Component {
   render() {
     if (this.props.appLoaded) {
       if (!window.localStorage.getItem('ehr_dont_bother')) {
+        // Okay with alerts as it is only used in development mode and should not be visible for end user in the final product.
+        // eslint-disable-next-line no-alert
         const ehrUser = prompt('Du har ingen cookie för EHRscape.\nSkriv in användarnamn för att använda API:et:')
         if (ehrUser) {
+          // Okay with alerts as it is only used in development mode and should not be visible for end user in the final product.
+          // eslint-disable-next-line no-alert
           const ehrUserPass = prompt('Lösenord:')
           if (ehrUserPass) {
             window.localStorage.setItem('ehr_user', ehrUser)

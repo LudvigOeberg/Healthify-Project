@@ -39,7 +39,7 @@ const createChartProps = (chartData, label, theme) => {
   }
   return state
 }
-
+// eslint-disable-next-line consistent-return
 const getSettings = (horizon) => {
   const today = new Date()
   if (horizon === 'day') {
