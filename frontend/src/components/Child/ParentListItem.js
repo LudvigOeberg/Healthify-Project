@@ -4,8 +4,6 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import AccessTime from '@material-ui/icons/AccessTime'
-import AccountBox from '@material-ui/icons/AccountBox'
 import Avatar from '@material-ui/core/Avatar'
 import Container from '@material-ui/core/Container'
 import { Divider } from '@material-ui/core'
@@ -20,7 +18,7 @@ import PhoneIcon from '@material-ui/icons/Phone'
  * should look like below
  *
  */
-export default function ChildListItem(props) {
+export default function ParentListItem(props) {
   const classes = useStyles()
   Moment.locale('sv')
   return (
@@ -32,8 +30,8 @@ export default function ChildListItem(props) {
               <ListItemAvatar>
                <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" />
               </ListItemAvatar>
-              {/* <ListItemText primary={`${props.name} ${props.surname}`} /> */}
-              <ListItemText primary="Olle Hakansson" />
+              <ListItemText primary={`${props.name} ${props.surname}`} />
+              {/* <ListItemText primary="Olle Hakansson" /> */}
             </ListItem>
             <Divider />
             <ListItem>
