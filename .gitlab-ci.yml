@@ -5,9 +5,6 @@ stages:
   - deploy
   - pages
 
-include:
-  - template: Code-Quality.gitlab-ci.yml
-
 
 
 build-frontend:
@@ -43,6 +40,7 @@ build-frontend:
     - echo "Test successfully!"
 
 
+
 lint-checker:
   stage: test
   image: node
@@ -52,13 +50,6 @@ lint-checker:
     - npm install lint
     - npm run lint:fix
 
-
-code_quality_html:
-  extends: code_quality
-  variables:
-    REPORT_FORMAT: html
-  artifacts:
-    paths: [gl-code-quality-report.html]
 
 
 build-flask-image:
