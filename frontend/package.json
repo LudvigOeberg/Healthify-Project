@@ -20,6 +20,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "chart.js": "^2.9.3",
+    "clsx": "^1.1.1",
     "history": "^4.6.3",
     "marked": "^0.3.6",
     "moment": "^2.29.1",

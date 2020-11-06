@@ -23,13 +23,22 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
   onSubmit: (ehrId, bloodsugar, snackbar) =>
-    dispatch({ type: SAVE_BLOODSUGAR, payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar), snackbar }),
+    // eslint-disable-next-line implicit-arrow-linebreak
+    dispatch({
+      type: SAVE_BLOODSUGAR,
+      payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar).then(() => {
+        dispatch({
+          type: LOAD_BLOODSUGAR,
+          payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
+        })
+      }),
+      snackbar,
+    }),
   onOpenSnackbar: (message, color) => dispatch({ type: OPEN_SNACKBAR, message, color }),
   onLoad: (ehrId, offset, limit) => {
     dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
   },
-
 })
 
 const colDesc = ['Datum vid registrering', 'Värde (mmol/L)']
@@ -48,20 +57,19 @@ const MonitorChildValue = (props) => {
 
   const validate = (val) => val < 100 && val > 0
 
-  const submitForm = (key, value) => (ev) => {
+  const submitForm = (ev) => {
     ev.preventDefault()
     // const color = validate(props.childValue) ? 'success' : 'error'
     // const message = validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!'
     // props.onOpenSnackbar(message, color)
-    const bloodsugar = props.childValue
+    const bloodsugarChild = props.childValue
     const snackbar = {
       open: true,
       message: validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!',
       color: validate(props.childValue) ? 'success' : 'error',
     }
-    props.onSubmit(id, bloodsugar, snackbar)
+    props.onSubmit(id, bloodsugarChild, snackbar)
   }
-
   const changeField = (ev) => {
     props.onChangeField(ev.target.id, ev.target.value)
   }
@@ -101,13 +109,7 @@ const MonitorChildValue = (props) => {
             <Typography component="h1" variant="h5">
               Skriv in ditt barns blodsockervärde
             </Typography>
-
-            <form
-              className={classes.form}
-              noValidate
-              onSubmit={submitForm(getCurrentDate(), childValue)}
-              autoComplete="off"
-            >
+            <form className={classes.form} noValidate onSubmit={(ev) => submitForm(ev)} autoComplete="off">
               <Grid container spacing={0}>
                 <Grid item xs={12}>
                   <TextField
@@ -173,4 +175,3 @@ export function getCurrentDate() {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonitorChildValue)
-

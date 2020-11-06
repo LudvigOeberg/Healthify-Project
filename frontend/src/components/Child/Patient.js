@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
+import Grid from '@material-ui/core/Grid'
+import Slider from '@material-ui/core/Slider'
+import Input from '@material-ui/core/Input'
+import CheckBoxIcon from '@material-ui/icons/CheckBox'
+import { Typography, Button } from '@material-ui/core'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -13,13 +18,6 @@ import {
 import agentEHR from '../../agentEHR'
 import CustomPaginationActionsTable from '../TablePagination'
 import Reformat from '../../reformatEHRData'
-import Grid from '@material-ui/core/Grid';
-import Slider from '@material-ui/core/Slider';
-import Input from '@material-ui/core/Input';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { Typography } from '@material-ui/core'
-import { Button } from '@material-ui/core'
-
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
@@ -30,16 +28,15 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onChangeAuth: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
   onSubmit: (ehrId, bloodsugar, snackbar) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
     dispatch({
       type: SAVE_BLOODSUGAR,
-      payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar).then(
-        () => {
-          dispatch({
-            type: LOAD_BLOODSUGAR,
-            payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
-          });
-        }
-      ),
+      payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar).then(() => {
+        dispatch({
+          type: LOAD_BLOODSUGAR,
+          payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
+        })
+      }),
       snackbar,
     }),
   onUnload: () => dispatch({ type: PATIENT_PAGE_UNLOADED }),
@@ -50,14 +47,12 @@ const mapDispatchToProps = (dispatch) => ({
   onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
 })
 
-
-
 class Patient extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
-    this.changeAuthSlider = (ev,value) => this.props.onChangeAuth(ev.target.id, value)
-    this.submitForm = (ev) =>{
+    this.changeAuthSlider = (ev, value) => this.props.onChangeAuth(ev.target.id, value)
+    this.submitForm = (ev) => {
       ev.preventDefault()
 
       const bloodsugar = this.props.bloodsugarValue
@@ -79,7 +74,7 @@ class Patient extends Component {
   }
 
   valuetext(value) {
-    return `${value} mmol/L`;
+    return `${value} mmol/L`
   }
 
   render() {
@@ -92,61 +87,58 @@ class Patient extends Component {
         value: 15,
         label: '15 mmol/L',
       },
-    ];
+    ]
     const bloodsugar = this.props.bloodsugarValue
     const { classes } = this.props
     const bloodsugarData = this.props.bloodsugar
-    console.log(typeof bloodsugar)
-
     return (
       <Container component="main" maxWidth="sm">
         <div className={classes.paper}>
           <h2> Var vänlig skriv in ditt blodsockervärde</h2>
-      <Typography id="input-slider" gutterBottom>
-        mmol/L
-      </Typography>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs>
-          <Slider
-            id="bloodsugar"
-            value={typeof parseInt(bloodsugar) === 'number' ? parseInt(bloodsugar): 0}
-            onChange={(ev,value) => this.changeAuthSlider(ev,value)}
-            aria-labelledby="input-slider"
-            defaultValue={10}
-            step={1}
-            valueLabelDisplay="auto"
-            marks={marks}
-            max = {15}
-            min = {5}
-          />
-        </Grid>
-        <Grid item>
-          <Input
-            id="bloodsugar"
-            className={classes.input}
-            value={bloodsugar}
-            margin="dense"
-            onChange={this.changeAuth}
-            onBlur={this.handleBlur}
-            inputProps={{
-              step: 1,
-              min: 5,
-              max: 15,
-              type: 'number',
-              'aria-labelledby': 'input-slider',
-            }}
-          />
-          <h5> mmol/L </h5>
+          <Typography id="input-slider" gutterBottom>
+            mmol/L
+          </Typography>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs>
+              <Slider
+                id="bloodsugar"
+                value={typeof parseInt(bloodsugar, 10) === 'number' ? parseInt(bloodsugar, 10) : 0}
+                onChange={(ev, value) => this.changeAuthSlider(ev, value)}
+                aria-labelledby="input-slider"
+                defaultValue={10}
+                step={1}
+                valueLabelDisplay="auto"
+                marks={marks}
+                max={15}
+                min={5}
+              />
+            </Grid>
+            <Grid item>
+              <Input
+                id="bloodsugar"
+                className={classes.input}
+                value={bloodsugar}
+                margin="dense"
+                onChange={this.changeAuth}
+                onBlur={this.handleBlur}
+                inputProps={{
+                  step: 1,
+                  min: 5,
+                  max: 15,
+                  type: 'number',
+                  'aria-labelledby': 'input-slider',
+                }}
+              />
+              <h5> mmol/L </h5>
+            </Grid>
           </Grid>
-          </Grid> 
-      <Button
-        className={classes.button}
-        startIcon={<CheckBoxIcon/>}
-        onClick = {(ev) => this.submitForm(ev)}
-        disabled={this.props.inProgress}
-      >
-      </Button>
-      <CustomPaginationActionsTable
+          <Button
+            className={classes.button}
+            startIcon={<CheckBoxIcon />}
+            onClick={(ev) => this.submitForm(ev)}
+            disabled={this.props.inProgress}
+          ></Button>
+          <CustomPaginationActionsTable
             paginate
             titles={['Datum', 'mmol/L']}
             columns={['x', 'y']}

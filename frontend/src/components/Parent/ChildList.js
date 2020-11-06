@@ -10,7 +10,7 @@ export default function ChildList(props) {
   return (
     <Container>
       <Grid container direction="row" justify="center" spacing={0}>
-        {children.map((child, i) => (
+        {children.map((child) => (
           <Grid key>{ChildListItem(child.child)}</Grid>
         ))}
       </Grid>

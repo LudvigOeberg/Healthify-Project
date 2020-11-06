@@ -6,6 +6,7 @@ import RestoreIcon from '@material-ui/icons/Restore'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+/* eslint-disable */
 const mapStateToProps = (state) => ({})
 
 const mapDispatchToProps = (dispatch) => ({})
