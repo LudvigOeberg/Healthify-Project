@@ -22,9 +22,11 @@ class ParentPage extends Component {
   }
 
   componentDidMount() {
-    this.props.currentUser.children.forEach((child) => {
-      this.props.onLoad(child.child.ehrid)
-    })
+    if (this.props.currentUser.chidlren) {
+      this.props.currentUser.children.forEach((child) => {
+        this.props.onLoad(child.child.ehrid)
+      })
+    }
   }
 
   render() {

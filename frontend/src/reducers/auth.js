@@ -25,7 +25,12 @@ export default (state = {}, action) => {
     case REGISTER_PAGE_UNLOADED:
       return {}
     case ASYNC_START:
-      if (action.subtype === LOGIN || action.subtype === REGISTER || action.subtype === REGISTER_CHILD) {
+      if (
+        action.subtype === LOGIN ||
+        action.subtype === REGISTER ||
+        action.subtype === REGISTER_CHILD ||
+        action.subtype === EDIT_CHILD
+      ) {
         return { ...state, inProgress: true }
       }
       break

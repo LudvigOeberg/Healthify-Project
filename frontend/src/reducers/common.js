@@ -52,7 +52,7 @@ export default (state = defaultState, action) => {
         currentUser: action.error ? null : action.payload.user,
       }
     case EDIT_CHILD:
-      return{
+      return {
         ...state,
         redirectTo: action.error ? null : '/parent',
         inProgress: false,
@@ -63,7 +63,6 @@ export default (state = defaultState, action) => {
               color: 'warning',
             }
           : action.snackbar,
-          
       }
     case REGISTER_CHILD:
       const { children } = state.currentUser
@@ -112,6 +111,7 @@ export default (state = defaultState, action) => {
     case CLOSE_SNACKBAR:
       return {
         ...state,
+        redirectTo: state.redirectTo,
         snackbar: {
           open: false,
         },

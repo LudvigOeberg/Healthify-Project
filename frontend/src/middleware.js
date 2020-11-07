@@ -11,6 +11,7 @@ const promiseMiddleware = (store) => (next) => (action) => {
     action.payload.then(
       (res) => {
         const currentState = store.getState()
+        console.log(currentState)
         if (!skipTracking && currentState.viewChangeCounter !== currentView) {
           return
         }

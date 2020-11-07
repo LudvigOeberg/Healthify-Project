@@ -32,7 +32,7 @@ export default function ChildListItem(props) {
                 <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" alt={props.name} />
               </ListItemAvatar>
               <ListItemText primary={`${props.name} ${props.surname}`} />
-              <a href={`/edit-child/${props.ehrid}`}>                
+              <a href={`/edit-child/${props.ehrid}`}>
                 <ListItemIcon>
                   <EditIcon color="primary" />
                 </ListItemIcon>

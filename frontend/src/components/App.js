@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class App extends React.Component {
-  componentDidUpdate(nextProps) {
+  componentWillUpdate(nextProps) {
     if (nextProps.redirectTo) {
       // this.context.router.replace(nextProps.redirectTo);
       store.dispatch(push(nextProps.redirectTo))
@@ -137,7 +137,6 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={PatientEdit}
               />
-              <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
             </Switch>
           </div>

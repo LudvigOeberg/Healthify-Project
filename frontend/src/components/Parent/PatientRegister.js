@@ -71,7 +71,6 @@ class PatientRegister extends Component {
     const { diabetes } = this.props
     const { fetma } = this.props
 
-
     return (
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
