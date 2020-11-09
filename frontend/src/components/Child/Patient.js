@@ -1,129 +1,186 @@
-import React, { Component } from 'react'
-import { TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Container from '@material-ui/core/Container';
-import { connect } from 'react-redux';
-import MySnackbar from '../MySnackbar';
+import React, { Component } from "react";
+import { TextField, Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Container from "@material-ui/core/Container";
+import { connect } from "react-redux";
 import {
-    PATIENT_PAGE_UNLOADED,
-    LOCAL_SAVE,
-    FIELD_CHANGE,
-    UPDATE_BOOLEAN
-} from '../../constants/actionTypes';
-import Measurements from '../Measurements';
+  PATIENT_PAGE_UNLOADED,
+  FIELD_CHANGE,
+  UPDATE_BOOLEAN,
+  LOAD_PARTY,
+  SAVE_BLOODSUGAR,
+  LOAD_BLOODSUGAR,
+} from "../../constants/actionTypes";
+import agentEHR from "../../agentEHR";
+import CustomPaginationActionsTable from "../TablePagination";
+import Reformat from "../../reformatEHRData";
 
-
-const mapStateToProps = state => {
-    return {
-        ...state.common
-    }
-};
-
-const mapDispatchToProps = dispatch => ({
-    onChangeAuth: (key, value) =>
-        dispatch({ type: FIELD_CHANGE, key: key, value }),
-    onSubmit: (key, value) =>
-        dispatch({ type: LOCAL_SAVE, key: key, value }),
-    onUnload: () =>
-        dispatch({ type: PATIENT_PAGE_UNLOADED }),
-    onOpenSnackbar: (value) =>
-        dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value })
+const mapStateToProps = (state) => ({
+  ...state.ehr,
+  currentUser: state.common.currentUser,
+  bloodsugarValue: state.common.bloodsugar,
 });
 
-
+const mapDispatchToProps = (dispatch) => ({
+  onChangeAuth: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
+  onSubmit: (ehrId, bloodsugar, snackbar) =>
+    dispatch({
+      type: SAVE_BLOODSUGAR,
+      payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar).then(
+        () => {
+          dispatch({
+            type: LOAD_BLOODSUGAR,
+            payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
+          });
+        }
+      ),
+      snackbar,
+    }),
+  onUnload: () => dispatch({ type: PATIENT_PAGE_UNLOADED }),
+  onLoad: (ehrId) => {
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) });
+    dispatch({
+      type: LOAD_BLOODSUGAR,
+      payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
+    });
+  },
+  onOpenSnackbar: (value) =>
+    dispatch({ type: UPDATE_BOOLEAN, key: "snackbarOpen", value }),
+});
 
 class Patient extends Component {
+  constructor() {
+    super();
+    this.changeAuth = (ev) =>
+      this.props.onChangeAuth(ev.target.id, ev.target.value);
+    this.submitForm = (ev) => {
+      ev.preventDefault();
 
-    constructor() {
-        super();
-        this.changeAuth = ev => this.props.onChangeAuth(ev.target.id, ev.target.value);
-        this.submitForm = (key, value) => ev => {
-            ev.preventDefault();
-            this.props.onSubmit(key, value);
-            this.props.onOpenSnackbar(true);
-        };
-    }
+      const bloodsugar = this.props.bloodsugarValue;
+      const snackbar = {
+        open: true,
+        message: `Du loggade värdet: ${bloodsugar} mmol/L`,
+        color: "success",
+      };
+      this.props.onSubmit(this.props.currentUser.ehrid, bloodsugar, snackbar);
+    };
+  }
 
+  componentDidMount() {
+    this.props.onLoad(this.props.currentUser.ehrid);
+  }
 
-    componentWillUnmount() {
-        this.props.onUnload();
-    }
+  componentWillUnmount() {
+    this.props.onUnload();
+  }
 
-    validate = (val) => {
-        return (val < 100 && val > 0)
-    }
-
-    render() {
-        Object.keys(localStorage)
-        const bloodsugar = this.props.bloodsugar;
-        const { classes } = this.props;
-        const open = this.props.snackbarOpen;
-        return (
-            <Container component="main" maxWidth="xs">
-                <div className={classes.paper}>
-                    <h1>Patientvy</h1>
-                    <h2> Var vänlig skriv in ditt blodsockervärde</h2>
-                    <form className={classes.form} noValidate autoComplete="off" onSubmit={this.submitForm(getCurrentDate(), bloodsugar)}>
-                        <TextField
-                            required
-                            id="bloodsugar"
-                            label="Blodsockervärde"
-                            variant="outlined"
-                            fullWidth
-                            InputProps={{
-                                startAdornment: <InputAdornment position="start">mmol/L</InputAdornment>,
-                            }}
-                            onChange={this.changeAuth}
-                            value={bloodsugar}
-                        />
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            type="submit"
-                            className={classes.submit}
-                        >
-                            Skicka in
-                        </Button>
-                        <MySnackbar open={open} color={this.validate(bloodsugar) ? "success" : "error"}
-                            message={this.validate(bloodsugar) ? "Du loggade värdet: " + bloodsugar + " mmol/L" : "Fel format!"} />
-                    </form>
-                    <Measurements>
-                    </Measurements>
-                </div>
-            </Container>
-        );
-    }
+  render() {
+    const bloodsugar = this.props.bloodsugarValue;
+    const { classes } = this.props;
+    const bloodsugarData = this.props.bloodsugar;
+    return (
+      <Container component="main" maxWidth="sm">
+        <div className={classes.paper}>
+          <h1>Patientvy</h1>
+          <h2> Var vänlig skriv in ditt blodsockervärde</h2>
+          <form
+            className={classes.form}
+            noValidate
+            autoComplete="off"
+            onSubmit={(ev) => this.submitForm(ev)}
+          >
+            <TextField
+              required
+              id="bloodsugar"
+              label="Blodsockervärde"
+              variant="outlined"
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">mmol/L</InputAdornment>
+                ),
+              }}
+              onChange={this.changeAuth}
+              value={bloodsugar}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              type="submit"
+              className={classes.submit}
+              disabled={this.props.inProgress}
+            >
+              Skicka in
+            </Button>
+          </form>
+          <CustomPaginationActionsTable
+            paginate
+            titles={["Datum", "mmol/L"]}
+            columns={["x", "y"]}
+            rows={
+              bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null
+            }
+          />
+        </div>
+      </Container>
+    );
+  }
 }
 
-const styles = theme => {
-    return ({
-        paper: {
-            marginTop: theme.spacing(8),
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-        },
-        avatar: {
-            margin: theme.spacing(1),
-            backgroundColor: theme.palette.secondary.main,
-        },
-        form: {
-            width: '100%', // Fix IE 11 issue.
-            marginTop: theme.spacing(1),
-        },
-        submit: {
-            margin: theme.spacing(3, 0, 2),
-        },
-    });
-};
+const styles = (theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+});
 
 export function getCurrentDate() {
-    var today = new Date();
-    var todaysDate = String(today.getFullYear()) + '-' + String(today.getMonth()) + '-' + String(today.getDate()) + " " + String(today.getHours()) + ":" + String(today.getMinutes());
-    return todaysDate;
+  const today = new Date();
+  let month = String(today.getMonth());
+  let day = String(today.getDate());
+  let hours = String(today.getHours());
+  let minutes = String(today.getMinutes());
+
+  if (today.getMonth() < 10) {
+    month = `0${String(today.getMonth())}`;
+  }
+  if (today.getDate() < 10) {
+    day = `0${String(today.getDate())}`;
+  }
+  if (today.getHours() < 10) {
+    hours = `0${String(today.getDate())}`;
+  }
+  if (today.getMinutes() < 10) {
+    minutes = `0${String(today.getDate())}`;
+  }
+
+  const dateInfo = {
+    year: String(today.getFullYear()),
+    month,
+    day,
+    hours,
+    minutes,
+  };
+  return dateInfo;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Patient));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Patient));

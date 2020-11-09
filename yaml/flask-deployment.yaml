@@ -18,6 +18,9 @@ spec:
         - name: flask
           image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy/flask:latest
           imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: regcred
           ports:
           - containerPort: 5000
             protocol: TCP

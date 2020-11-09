@@ -1,42 +1,31 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
+import React from 'react'
+import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
 
-const mapStateToProps = state => {
-  return {};
-};
+const mapStateToProps = (state) => ({})
 
-const mapDispatchToProps = dispatch => ({
-
-});
+const mapDispatchToProps = (dispatch) => ({})
 
 class Login extends React.Component {
   constructor() {
-    super();
+    super()
   }
 
   componentWillUnmount() {
-    this.props.onUnload();
+    this.props.onUnload()
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
-    return (
-      <Container component="main" maxWidth="xs">
-
-      </Container>
-    );
+    return <Container component="main" maxWidth="xs"></Container>
   }
 }
 
+const styles = (theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+  },
+})
 
-const styles = theme => {
-  return ({
-    paper: {
-      marginTop: theme.spacing(8),
-    },
-  });
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login))
