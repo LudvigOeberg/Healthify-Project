@@ -160,3 +160,13 @@ class ChildResource(MethodResource):
             db.session.rollback()
             raise InvalidUsage.user_already_registered()
         return user
+    
+    @jwt_required
+    @marshal_with(user_schema)
+    @doc(description="Delete child")
+    def delete(self):
+        ehrid = request.args['ehrid']
+        child = Child.query.filter_by(ehrid=ehrid).first()
+        db.session.delete(child)
+        db.session.commit()
+        return current_user

@@ -5,7 +5,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import ChildCareIcon from '@material-ui/icons/ChildCare'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { UPDATE_FIELD_AUTH, EDIT_CHILD, REGISTER_PAGE_UNLOADED } from '../../constants/actionTypes'
+import { UPDATE_FIELD_AUTH, EDIT_CHILD, REGISTER_PAGE_UNLOADED, DELETE_CHILD } from '../../constants/actionTypes'
 import agent from '../../agent'
 
 const mapStateToProps = (state) => ({
@@ -20,6 +20,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: EDIT_CHILD, payload, snackbar })
   },
   onUnload: () => dispatch({ type: REGISTER_PAGE_UNLOADED }),
+  deletePatient: (ehrid, snackbar) => {
+    const payload = agent.Parent.deleteChild(ehrid)
+    dispatch({type: DELETE_CHILD, payload, snackbar})
+  }
 })
 
 const PatientEdit = (props) => {
@@ -35,6 +39,15 @@ const PatientEdit = (props) => {
       open: true,
     }
     props.editPatient(id, email, snackbar)
+  }
+  const deletePatient = (ehrid) => (ev)=> {
+    ev.preventDefault()
+    const snackbar = {
+      message: `Du tog bort kontot för ${name}`,
+      color: 'success',
+      open: true,
+    }
+    props.deletePatient(ehrid, snackbar)
   }
 
   // Used to unload the props from this component. Should be used in views to unload
@@ -106,6 +119,7 @@ const PatientEdit = (props) => {
                 color="secondary"
                 className={classes.submit}
                 disabled={props.inProgress}
+                onClick={deletePatient(ehrid)}
               >
                 <DeleteForeverIcon/>
                 Ta bort {name}  
