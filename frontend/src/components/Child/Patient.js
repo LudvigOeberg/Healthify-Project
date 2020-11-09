@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import { withStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
@@ -42,6 +43,7 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: PATIENT_PAGE_UNLOADED }),
   onLoad: (ehrId) => {
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
+
     dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, 0, 20) })
   },
   onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
@@ -51,6 +53,7 @@ class Patient extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
+
     this.changeAuthSlider = (ev, value) => this.props.onChangeAuth(ev.target.id, value)
     this.submitForm = (ev) => {
       ev.preventDefault()
@@ -58,6 +61,7 @@ class Patient extends Component {
       const bloodsugar = this.props.bloodsugarValue
       const snackbar = {
         open: true,
+
         message: `Du loggade värdet: ${bloodsugar} mmol/L`,
         color: 'success',
       }
@@ -95,6 +99,7 @@ class Patient extends Component {
       <Container component="main" maxWidth="sm">
         <div className={classes.paper}>
           <h2> Var vänlig skriv in ditt blodsockervärde</h2>
+
           <Typography id="input-slider" gutterBottom>
             mmol/L
           </Typography>

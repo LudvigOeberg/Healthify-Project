@@ -12,6 +12,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import Settings from '@material-ui/icons/Settings'
 import Add from '@material-ui/icons/Add'
 import InsertChart from '@material-ui/icons/InsertChart'
+import GroupIcon from '@material-ui/icons/Group';
 import React from 'react'
 import { connect } from 'react-redux'
 import { UPDATE_BOOLEAN } from '../constants/actionTypes'
@@ -159,6 +160,12 @@ const PersistantDrawer = (props) => {
             href="/child-monitor"
             text="Statistik"
             avatarComponent={<InsertChart />}
+            location={props.location}
+          />
+          <ListItemLink
+            href="/accessed-data"
+            text="Delad data"
+            avatarComponent={<GroupIcon />}
             location={props.location}
           />
         </List>

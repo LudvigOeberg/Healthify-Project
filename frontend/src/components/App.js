@@ -20,6 +20,8 @@ import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
 import MonitorChildValue from './Parent/MonitorChildValue'
 import ChildMonitor from './Child/ChildMonitor'
+import AccessedData from './Child/AccessedData'
+
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -111,6 +113,20 @@ class App extends React.Component {
               />
               <RequiredRoute
                 exact
+                path="/accessed-data"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={AccessedData}
+              />
+              <RequiredRoute
+                exact
+                path="/caregiving-team"
+                user={this.props.currentUser}
+                requires={['auth', 'parent', 'child']}
+                component={CaregivingPage}
+              />
+              <RequiredRoute
+                exact
                 path="/parent-child-overview/:id"
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
@@ -129,13 +145,6 @@ class App extends React.Component {
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
                 component={PatientRegister}
-              />
-              <RequiredRoute
-                exact
-                path="/caregiving-team"
-                requires={['auth', 'parent']}
-                user={this.props.currentUser}
-                component={CaregivingPage}
               />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
