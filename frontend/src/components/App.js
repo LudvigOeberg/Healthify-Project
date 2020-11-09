@@ -37,10 +37,7 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class App extends React.Component {
-<<<<<<< HEAD
   // eslint-disable-next-line
-=======
->>>>>>> 4c0d5ec9b8de40883b94191a51ff87eb2dfd5587
   componentWillUpdate(nextProps) {
     if (nextProps.redirectTo) {
       // this.context.router.replace(nextProps.redirectTo);
