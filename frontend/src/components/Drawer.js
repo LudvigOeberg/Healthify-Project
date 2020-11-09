@@ -12,7 +12,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import Settings from '@material-ui/icons/Settings'
 import Add from '@material-ui/icons/Add'
 import InsertChart from '@material-ui/icons/InsertChart'
-import GroupIcon from '@material-ui/icons/Group';
+import GroupIcon from '@material-ui/icons/Group'
 import React from 'react'
 import { connect } from 'react-redux'
 import { UPDATE_BOOLEAN } from '../constants/actionTypes'

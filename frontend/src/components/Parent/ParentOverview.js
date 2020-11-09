@@ -84,31 +84,29 @@ const ParentOverview = (props) => {
 
   return (
     <Grid container className={classes.root} spacing={5} height="100%">
- 
- <Grid item xs = {6} sm ={6}>
- <Grid container spacing={1}>
-      <Grid item xs={6} sm={6}> 
-        <Paper className={classes.paper} elevation={3}>
-        <Typography component="h2" variant="h6">
-                {' '}
-          HÄR SKA DET STÅ INFO OM HUR DET GÅR FÖR BARNET
-                    I GAMIFICATION-ASPEKTEN
-                    </Typography>
-        </Paper>
-      </Grid>
       <Grid item xs={6} sm={6}>
-        <Paper className={classes.paper} elevation={3}>
-        <Typography component="h1" variant="h5">
+        <Grid container spacing={1}>
+          <Grid item xs={6} sm={6}>
+            <Paper className={classes.paper} elevation={3}>
+              <Typography component="h2" variant="h6">
+                {' '}
+                HÄR SKA DET STÅ INFO OM HUR DET GÅR FÖR BARNET I GAMIFICATION-ASPEKTEN
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <Paper className={classes.paper} elevation={3}>
+              <Typography component="h1" variant="h5">
                 {' '}
                 GRAF
               </Typography>
               <TimeLineChart
-              chartData={bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null}
-              label="Blodsocker (mmol/L)"
-            ></TimeLineChart>
-        </Paper>
-      </Grid>
-      </Grid>
+                chartData={bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null}
+                label="Blodsocker (mmol/L)"
+              ></TimeLineChart>
+            </Paper>
+          </Grid>
+        </Grid>
       </Grid>
 
       <Grid item xs={12} sm={12} md={6}>
@@ -156,7 +154,6 @@ const ParentOverview = (props) => {
           </Grid>
         </Grid>
       </Grid>
-    
     </Grid>
   )
 }

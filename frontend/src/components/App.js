@@ -23,7 +23,6 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 
-
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
   appName: state.common.appName,
