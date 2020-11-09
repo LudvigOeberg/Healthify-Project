@@ -1,5 +1,6 @@
-var driver;
+/*var driver;
 const webdriver = require('selenium-webdriver');
+const url = "http://localhost:4102/";
 
 beforeAll(() => {
     var chromeCapabilities = webdriver.Capabilities.chrome();
@@ -23,25 +24,25 @@ function User() {
 
 async function logut(driver) {
     await driver.findElement(webdriver.By.xpath("//span[text()='Logga ut']")).click();
-    await driver.wait(webdriver.until.urlIs("http://tddc88-company-2-2020.kubernetes-public.it.liu.se/"));
-    expect(await driver.getCurrentUrl()).toEqual("http://tddc88-company-2-2020.kubernetes-public.it.liu.se/");
+    await driver.wait(webdriver.until.urlIs(url));
+    expect(await driver.getCurrentUrl()).toEqual(url);
     driver.findElement(webdriver.By.xpath("//span[text()='Logga in']"));
 }
 
 async function login(driver, userPath, user) {
-    await driver.get("http://tddc88-company-2-2020.kubernetes-public.it.liu.se");
+    await driver.get(url);
     await driver.findElement(webdriver.By.xpath("//span[text()='Logga in']")).click();
-    await driver.wait(webdriver.until.urlIs("http://tddc88-company-2-2020.kubernetes-public.it.liu.se/login"));
+    await driver.wait(webdriver.until.urlIs(url + "/login"));
     await driver.findElement(webdriver.By.id('email')).sendKeys(user.email);
     await driver.findElement(webdriver.By.id('password')).sendKeys(user.passw);
     await driver.findElement(webdriver.By.xpath("//span[text()='Logga In']")).click();
-    await driver.wait(webdriver.until.urlIs("http://tddc88-company-2-2020.kubernetes-public.it.liu.se/"+userPath));
-    expect(await driver.getCurrentUrl()).toEqual("http://tddc88-company-2-2020.kubernetes-public.it.liu.se/"+userPath);
+    await driver.wait(webdriver.until.urlIs(url+userPath));
+    expect(await driver.getCurrentUrl()).toEqual(url+userPath);
 }
 
 
 async function register(driver, user) {
-    await driver.get("http://tddc88-company-2-2020.kubernetes-public.it.liu.se");
+    await driver.get(url);
     await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click();
     await driver.findElement(webdriver.By.id('name')).sendKeys("Namn");
     await driver.findElement(webdriver.By.id('surname')).sendKeys("Efteramn");
@@ -49,14 +50,14 @@ async function register(driver, user) {
     await driver.findElement(webdriver.By.id('password')).sendKeys(user.passw);
     await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(user.passw);
     await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click();
-    await driver.wait(webdriver.until.urlIs("http://tddc88-company-2-2020.kubernetes-public.it.liu.se/parent"), 10000, "Timed out after 5 sec", 100);
+    await driver.wait(webdriver.until.urlIs(url + "/parent"), 10000, "Timed out after 5 sec", 100);
 }
 
 
 async function registerPatient(driver, patient) {
     await driver.findElement(webdriver.By.className("MuiButtonBase-root MuiIconButton-root jss2 MuiIconButton-colorInherit MuiIconButton-edgeStart")).click();
     await driver.findElement(webdriver.By.xpath("//a[@href='/register-patient']")).click();
-    await driver.wait(webdriver.until.urlIs("http://tddc88-company-2-2020.kubernetes-public.it.liu.se/register-patient"), 10000, "Timed out after 5 sec", 100);
+    await driver.wait(webdriver.until.urlIs(url + "/register-patient"), 10000, "Timed out after 5 sec", 100);
     await driver.findElement(webdriver.By.id('name')).sendKeys("Namn");
     await driver.findElement(webdriver.By.id('surname')).sendKeys("Efteramn");
     await driver.findElement(webdriver.By.id('email')).sendKeys(patient.email);
@@ -64,14 +65,14 @@ async function registerPatient(driver, patient) {
     await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw);
     await driver.findElement(webdriver.By.id('age')).sendKeys(10);
     await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click();
-    await driver.wait(webdriver.until.urlIs("http://tddc88-company-2-2020.kubernetes-public.it.liu.se/parent"));
-    await driver.get("http://tddc88-company-2-2020.kubernetes-public.it.liu.se/parent");
+    await driver.wait(webdriver.until.urlIs(url + "/parent"));
+    await driver.get(url + "/parent");
     driver.findElement(webdriver.By.className("MuiGrid-root"));
 }
 
 
 test ('ID:S1. Test start application', async() => {
-    await driver.get("http://tddc88-company-2-2020.kubernetes-public.it.liu.se");
+    await driver.get(url);
     expect(await driver.getTitle()).toEqual("Healthify")
 });
 
@@ -116,4 +117,4 @@ test('ID:S6. Registration for an already registered email', async() => {
     await register(driver, user);
     await logut(driver);
     await expect(register(driver, user)).rejects.toThrow("Timed out after 5 sec");
-});
+});*/
