@@ -22,7 +22,6 @@ import MonitorChildValue from './Parent/MonitorChildValue'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 
-
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
   appName: state.common.appName,
@@ -36,6 +35,7 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class App extends React.Component {
+  // eslint-disable-next-line
   componentWillUpdate(nextProps) {
     if (nextProps.redirectTo) {
       // this.context.router.replace(nextProps.redirectTo);

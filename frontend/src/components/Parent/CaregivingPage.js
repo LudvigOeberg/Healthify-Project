@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import { Grid, Typography } from '@material-ui/core'
-import { PAGE_UNLOADED} from '../../constants/actionTypes'
+import { PAGE_UNLOADED } from '../../constants/actionTypes'
 import CaregivingTeam from '../CaregivingTeam'
 
 const mapStateToProps = (state) => ({
