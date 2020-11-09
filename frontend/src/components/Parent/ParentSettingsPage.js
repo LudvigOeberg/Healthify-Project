@@ -1,6 +1,7 @@
 import { Avatar, Typography } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
 import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
@@ -35,8 +36,18 @@ class ParentSettingsPage extends Component {
             </Typography>
 
             Change settings, delete account, etc
-          </div>
-        </Container>
+            </div>
+
+            <div className={classes.paper}>
+            <Button type="submit" variant="contained" color="secondary" >
+              Delete Account
+            </Button>
+            </div>
+       
+
+
+
+          </Container>
       )
   }
 }
