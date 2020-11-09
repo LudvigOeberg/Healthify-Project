@@ -19,6 +19,10 @@ import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
 import MonitorChildValue from './Parent/MonitorChildValue'
+import PatientEdit from './Parent/PatientEdit'
+import ChildMonitor from './Child/ChildMonitor'
+import AccessedData from './Child/AccessedData'
+import ParentSettingsPage from './Parent/ParentSettingsPage';
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -33,7 +37,8 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class App extends React.Component {
-  componentDidUpdate(nextProps) {
+  // eslint-disable-next-line
+  componentWillUpdate(nextProps) {
     if (nextProps.redirectTo) {
       // this.context.router.replace(nextProps.redirectTo);
       store.dispatch(push(nextProps.redirectTo))
@@ -103,6 +108,27 @@ class App extends React.Component {
               />
               <RequiredRoute
                 exact
+                path="/child-monitor"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={ChildMonitor}
+              />
+              <RequiredRoute
+                exact
+                path="/accessed-data"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={AccessedData}
+              />
+              <RequiredRoute
+                exact
+                path="/caregiving-team"
+                user={this.props.currentUser}
+                requires={['auth', 'parent', 'child']}
+                component={CaregivingPage}
+              />
+              <RequiredRoute
+                exact
                 path="/parent-child-overview/:id"
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
@@ -129,6 +155,21 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={CaregivingPage}
               />
+              <RequiredRoute
+                exact
+                path="/edit-child/:id"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={PatientEdit}
+              />
+              <RequiredRoute
+                exact
+                path="/parent-settings"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={ParentSettingsPage}
+              />
+
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
             </Switch>

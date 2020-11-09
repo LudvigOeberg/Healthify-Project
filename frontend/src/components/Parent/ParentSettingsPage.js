@@ -1,9 +1,9 @@
 import { Avatar, Typography } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
 import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import ChildList from './ChildList'
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 
@@ -16,44 +16,37 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
 })
 
-class ParentPage extends Component {
+class ParentSettingsPage extends Component {
   componentWillUnmount() {
     this.props.onUnload()
   }
 
   componentDidMount() {
-    if (this.props.currentUser.children) {
-      this.props.currentUser.children.forEach((child) => {
-        this.props.onLoad(child.child.ehrid)
-      })
-    }
   }
 
   render() {
     const { classes } = this.props
-    const children = this.props.currentUser ? this.props.currentUser.children : null
     const name = this.props.currentUser ? `${this.props.currentUser.name} ${this.props.currentUser.surname}` : null
-    if (children) {
       return (
         <Container component="main" maxWidth="md">
           <div className={classes.paper}>
             <Avatar className={classes.purple} src="test.123" alt={name} />
             <Typography component="h1" variant="h5">
-              {name}
+              {name} Inställningar
             </Typography>
+            </div>
 
-            {/* child list component to list children for logged in user */}
-            {/* eslint-disable-next-line react/no-children-prop */}
-            <ChildList children={children} />
-          </div>
-        </Container>
+            <div className={classes.paper}>
+            <Button type="submit" variant="contained" color="secondary" >
+              Delete Account
+            </Button>
+            </div>
+       
+
+
+
+          </Container>
       )
-    }
-    return (
-      <div>
-        <Typography type="h5">Inga barn</Typography>
-      </div>
-    )
   }
 }
 
@@ -81,4 +74,4 @@ const styles = (theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 })
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ParentPage))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ParentSettingsPage))

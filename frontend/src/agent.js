@@ -36,6 +36,8 @@ const Parent = {
     // eslint-disable-next-line implicit-arrow-linebreak
     requests.post('/parent', { user: { name, surname, email, password, confirmPassword, dateofbirth, gender } }),
   children: () => requests.get('/parent'),
+  editChild: (ehrid, email) => requests.put('/child', { user: { ehrid, email } }),
+  deleteChild: (ehrid) => requests.del(`/child?ehrid=${ehrid}`),
 }
 
 const Child = {
