@@ -34,8 +34,6 @@ class ParentSettingsPage extends Component {
             <Typography component="h1" variant="h5">
               {name} Inställningar
             </Typography>
-
-            Change settings, delete account, etc
             </div>
 
             <div className={classes.paper}>

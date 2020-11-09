@@ -16,6 +16,7 @@ import {
   CLOSE_SNACKBAR,
   SAVE_PARTY,
   SAVE_BLOODSUGAR,
+  EDIT_CHILD,
 } from '../constants/actionTypes'
 
 const defaultState = {
@@ -49,6 +50,19 @@ export default (state = defaultState, action) => {
         redirectTo: action.error ? null : `/${action.payload.user.type}`,
         token: action.error ? null : action.payload.user.token,
         currentUser: action.error ? null : action.payload.user,
+      }
+    case EDIT_CHILD:
+      return {
+        ...state,
+        redirectTo: action.error ? null : '/parent',
+        inProgress: false,
+        snackbar: action.error
+          ? {
+              open: true,
+              message: 'Något gick fel',
+              color: 'warning',
+            }
+          : action.snackbar,
       }
     case REGISTER_CHILD:
       const { children } = state.currentUser
