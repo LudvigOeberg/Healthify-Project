@@ -22,6 +22,7 @@ import MonitorChildValue from './Parent/MonitorChildValue'
 import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
+import ParentSettingsPage from './Parent/ParentSettingsPage';
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -161,6 +162,14 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={PatientEdit}
               />
+              <RequiredRoute
+                exact
+                path="/parent-settings"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={ParentSettingsPage}
+              />
+
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
             </Switch>
