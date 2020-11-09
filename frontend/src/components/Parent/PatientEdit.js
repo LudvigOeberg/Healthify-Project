@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 
 import { connect } from 'react-redux'
 import ChildCareIcon from '@material-ui/icons/ChildCare'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { UPDATE_FIELD_AUTH, EDIT_CHILD, REGISTER_PAGE_UNLOADED } from '../../constants/actionTypes'
 import agent from '../../agent'
 
@@ -53,7 +54,7 @@ const PatientEdit = (props) => {
   props.currentUser.children.map((child) => {
     if (child.child.ehrid === ehrid) {
       oldemail = child.child.email
-      name = child.child.name + child.child.surname
+      name = child.child.name 
     }
     return null
   })
@@ -86,37 +87,6 @@ const PatientEdit = (props) => {
                 onChange={onChangeField}
               />
             </Grid>
-            {/*  <Grid item xs={12}>
-                        <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="password"
-                        type="password"
-                        id="password"
-                        label="Lösenord"
-                        autoComplete="current-password"
-                        helperText={errors && (errors.password || errors.general)}
-                        error={errors && (errors.password ? true : !!(false || errors.general))}
-                        value={password}
-                        onChange={onChangeField}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="confirmPassword"
-                        type="password"
-                        id="confirmPassword"
-                        label="Bekräfta lösenord"
-                        helperText={errors && (errors.confirmPassword || errors.general)}
-                        error={errors && (errors.confirmPassword ? true : !!(false || errors.general))}
-                        value={confirmPassword}
-                        onChange={onChangeField}
-                        />
-                    </Grid> */}
             <Grid item xs={12} sm={6}>
               <Button
                 type="submit"
@@ -131,14 +101,14 @@ const PatientEdit = (props) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Button
-                type="submit"
                 fullWidth
                 variant="contained"
                 color="secondary"
                 className={classes.submit}
                 disabled={props.inProgress}
               >
-                Ta bort {name}
+                <DeleteForeverIcon/>
+                Ta bort {name}  
               </Button>
             </Grid>
           </Grid>
