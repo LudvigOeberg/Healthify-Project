@@ -10,6 +10,8 @@ export default function CaregivingTeam(props) {
   return (
     <Grid container direction="row" justify="center" spacing={0}>
       {caregivers.map((caregiver, i) => (
+        // This loop could use an index of caregivers instead, where in the state each caregiver is given an id and you loop over that
+        // eslint-disable-next-line react/no-array-index-key
         <Grid key={i}>{Caregiver(caregiver)}</Grid>
       ))}
     </Grid>

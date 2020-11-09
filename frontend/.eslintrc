@@ -1,8 +1,5 @@
 {
     "extends": ["@imaginary-cloud/react"],
-    "plugins": [
-        "only-warn"
-    ],
     "rules": {
         "multiline-ternary": "off",
         "no-param-reassign": "off",

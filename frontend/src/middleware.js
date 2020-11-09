@@ -14,7 +14,7 @@ const promiseMiddleware = (store) => (next) => (action) => {
         if (!skipTracking && currentState.viewChangeCounter !== currentView) {
           return
         }
-        console.log('RESULT', res)
+        // Comment out console as Lint doesn't like it, if you need it for testing remove this comment console.log('RESULT', res)
         action.payload = res
         store.dispatch({ type: ASYNC_END, promise: action.payload })
         store.dispatch(action)
@@ -24,7 +24,7 @@ const promiseMiddleware = (store) => (next) => (action) => {
         if (!skipTracking && currentState.viewChangeCounter !== currentView) {
           return
         }
-        console.log('ERROR', error)
+        // Comment out console as Lint doesn't like it, if you need it for testing remove this comment console.log('ERROR', error)
         action.error = true
         action.payload = error.response.body
         if (!action.skipTracking) {
@@ -39,7 +39,7 @@ const promiseMiddleware = (store) => (next) => (action) => {
 
   next(action)
 }
-
+// eslint-disable-next-line no-unused-vars
 const localStorageMiddleware = (store) => (next) => (action) => {
   if (action.type === LOCAL_SAVE) {
     window.localStorage.setItem(action.key, action.value)
