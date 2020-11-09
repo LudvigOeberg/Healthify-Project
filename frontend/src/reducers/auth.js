@@ -7,12 +7,14 @@ import {
   UPDATE_FIELD_AUTH,
   UPDATE_AUTH_BOOLEAN,
   REGISTER_CHILD,
+  EDIT_CHILD,
 } from '../constants/actionTypes'
 
 export default (state = {}, action) => {
   switch (action.type) {
     case LOGIN:
     case REGISTER:
+    case EDIT_CHILD:
     case REGISTER_CHILD:
       return {
         ...state,
@@ -23,7 +25,12 @@ export default (state = {}, action) => {
     case REGISTER_PAGE_UNLOADED:
       return {}
     case ASYNC_START:
-      if (action.subtype === LOGIN || action.subtype === REGISTER || action.subtype === REGISTER_CHILD) {
+      if (
+        action.subtype === LOGIN ||
+        action.subtype === REGISTER ||
+        action.subtype === REGISTER_CHILD ||
+        action.subtype === EDIT_CHILD
+      ) {
         return { ...state, inProgress: true }
       }
       break

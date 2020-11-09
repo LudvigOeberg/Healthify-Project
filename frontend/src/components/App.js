@@ -19,6 +19,7 @@ import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
 import MonitorChildValue from './Parent/MonitorChildValue'
+import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 
@@ -145,6 +146,20 @@ class App extends React.Component {
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
                 component={PatientRegister}
+              />
+              <RequiredRoute
+                exact
+                path="/caregiving-team"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={CaregivingPage}
+              />
+              <RequiredRoute
+                exact
+                path="/edit-child/:id"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={PatientEdit}
               />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />

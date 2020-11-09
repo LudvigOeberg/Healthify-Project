@@ -11,6 +11,7 @@ const promiseMiddleware = (store) => (next) => (action) => {
     action.payload.then(
       (res) => {
         const currentState = store.getState()
+        // Comment out console as Lint doesn't like it, if you need it for testing remove this comment console.log(currentState)
         if (!skipTracking && currentState.viewChangeCounter !== currentView) {
           return
         }
