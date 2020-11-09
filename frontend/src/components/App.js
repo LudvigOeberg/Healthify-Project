@@ -36,7 +36,7 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class App extends React.Component {
-  componentDidUpdate(nextProps) {
+  componentWillUpdate(nextProps) {
     if (nextProps.redirectTo) {
       // this.context.router.replace(nextProps.redirectTo);
       store.dispatch(push(nextProps.redirectTo))
