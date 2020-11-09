@@ -19,6 +19,7 @@ import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
 import MonitorChildValue from './Parent/MonitorChildValue'
+import ChildMonitor from './Child/ChildMonitor'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -100,6 +101,13 @@ class App extends React.Component {
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
                 component={Patient}
+              />
+              <RequiredRoute
+                exact
+                path="/child-monitor"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={ChildMonitor}
               />
               <RequiredRoute
                 exact
