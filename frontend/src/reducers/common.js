@@ -111,7 +111,6 @@ export default (state = defaultState, action) => {
     case CLOSE_SNACKBAR:
       return {
         ...state,
-        redirectTo: state.redirectTo,
         snackbar: {
           open: false,
         },
