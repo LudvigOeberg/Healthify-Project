@@ -19,13 +19,10 @@ import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
 import MonitorChildValue from './Parent/MonitorChildValue'
-<<<<<<< HEAD
 import PatientEdit from './Parent/PatientEdit'
-=======
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 
->>>>>>> 8c3002386dfd664b060955ab2b256221874fce3b
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -151,7 +148,6 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={PatientRegister}
               />
-<<<<<<< HEAD
               <RequiredRoute
                 exact
                 path="/caregiving-team"
@@ -166,9 +162,7 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={PatientEdit}
               />
-=======
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
->>>>>>> 8c3002386dfd664b060955ab2b256221874fce3b
               <Route path="*" component={NotFound} />
             </Switch>
           </div>
