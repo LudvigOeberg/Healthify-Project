@@ -40,14 +40,14 @@ const PatientEdit = (props) => {
     }
     props.editPatient(id, email, snackbar)
   }
-  const deletePatient = (ehrid) => (ev)=> {
+  const deletePatient = (id) => (ev)=> {
     ev.preventDefault()
     const snackbar = {
       message: `Du tog bort kontot för ${name}`,
       color: 'success',
       open: true,
     }
-    props.deletePatient(ehrid, snackbar)
+    props.deletePatient(id, snackbar)
   }
 
   // Used to unload the props from this component. Should be used in views to unload
