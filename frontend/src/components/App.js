@@ -19,7 +19,13 @@ import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
 import MonitorChildValue from './Parent/MonitorChildValue'
+<<<<<<< HEAD
 import PatientEdit from './Parent/PatientEdit'
+=======
+import ChildMonitor from './Child/ChildMonitor'
+import AccessedData from './Child/AccessedData'
+
+>>>>>>> 8c3002386dfd664b060955ab2b256221874fce3b
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -105,6 +111,27 @@ class App extends React.Component {
               />
               <RequiredRoute
                 exact
+                path="/child-monitor"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={ChildMonitor}
+              />
+              <RequiredRoute
+                exact
+                path="/accessed-data"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={AccessedData}
+              />
+              <RequiredRoute
+                exact
+                path="/caregiving-team"
+                user={this.props.currentUser}
+                requires={['auth', 'parent', 'child']}
+                component={CaregivingPage}
+              />
+              <RequiredRoute
+                exact
                 path="/parent-child-overview/:id"
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
@@ -124,6 +151,7 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={PatientRegister}
               />
+<<<<<<< HEAD
               <RequiredRoute
                 exact
                 path="/caregiving-team"
@@ -138,6 +166,9 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={PatientEdit}
               />
+=======
+              <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
+>>>>>>> 8c3002386dfd664b060955ab2b256221874fce3b
               <Route path="*" component={NotFound} />
             </Switch>
           </div>
