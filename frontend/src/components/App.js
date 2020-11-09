@@ -19,7 +19,6 @@ import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
 import MonitorChildValue from './Parent/MonitorChildValue'
-import ParentSettingsPage from './Parent/ParentSettingsPage'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -34,7 +33,8 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class App extends React.Component {
-  componentDidUpdate(nextProps) {
+  // eslint-disable-next-line
+  componentWillUpdate(nextProps) {
     if (nextProps.redirectTo) {
       // this.context.router.replace(nextProps.redirectTo);
       store.dispatch(push(nextProps.redirectTo))
@@ -60,8 +60,12 @@ class App extends React.Component {
   render() {
     if (this.props.appLoaded) {
       if (!window.localStorage.getItem('ehr_dont_bother')) {
+        // Okay with alerts as it is only used in development mode and should not be visible for end user in the final product.
+        // eslint-disable-next-line no-alert
         const ehrUser = prompt('Du har ingen cookie för EHRscape.\nSkriv in användarnamn för att använda API:et:')
         if (ehrUser) {
+          // Okay with alerts as it is only used in development mode and should not be visible for end user in the final product.
+          // eslint-disable-next-line no-alert
           const ehrUserPass = prompt('Lösenord:')
           if (ehrUserPass) {
             window.localStorage.setItem('ehr_user', ehrUser)
@@ -100,6 +104,27 @@ class App extends React.Component {
               />
               <RequiredRoute
                 exact
+                path="/child-monitor"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={ChildMonitor}
+              />
+              <RequiredRoute
+                exact
+                path="/accessed-data"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={AccessedData}
+              />
+              <RequiredRoute
+                exact
+                path="/caregiving-team"
+                user={this.props.currentUser}
+                requires={['auth', 'parent', 'child']}
+                component={CaregivingPage}
+              />
+              <RequiredRoute
+                exact
                 path="/parent-child-overview/:id"
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
@@ -118,20 +143,6 @@ class App extends React.Component {
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
                 component={PatientRegister}
-              />
-              <RequiredRoute
-                exact
-                path="/caregiving-team"
-                requires={['auth', 'parent']}
-                user={this.props.currentUser}
-                component={CaregivingPage}
-              />
-              <RequiredRoute
-                exact
-                path="/parent-settings"
-                requires={['auth', 'parent']}
-                user={this.props.currentUser}
-                component={ParentSettingsPage}
               />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />

@@ -75,6 +75,23 @@ flask run
 ```
 The server is running at http://localhost:5000
 
+### Debugging
+If there is problem with the backend, or any problems overall; it can often be solved by resetting the database:
+1. Remove migrations folder and dev.db, then run:
+```sh
+. venv/bin/activate
+### use . venv/Scripts/activate if you installed the windows version above
+export FLASK_DEBUG=1
+export FLASK_APP=autoapp.py
+export ehr_user=<EHR username from RÖ>
+export ehr_user_pass=<EHR password from RÖ>
+flask db init ### **there may be some problems here
+flask db migrate
+flask db upgrade
+flask init-db
+flask run
+```
+
 ## Structure
 ```
 .

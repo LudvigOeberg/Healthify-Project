@@ -22,9 +22,11 @@ class ParentPage extends Component {
   }
 
   componentDidMount() {
-    this.props.currentUser.children.forEach((child) => {
-      this.props.onLoad(child.child.ehrid)
-    })
+    if (this.props.currentUser.children) {
+      this.props.currentUser.children.forEach((child) => {
+        this.props.onLoad(child.child.ehrid)
+      })
+    }
   }
 
   render() {
@@ -41,6 +43,7 @@ class ParentPage extends Component {
             </Typography>
 
             {/* child list component to list children for logged in user */}
+            {/* eslint-disable-next-line react/no-children-prop */}
             <ChildList children={children} />
           </div>
         </Container>

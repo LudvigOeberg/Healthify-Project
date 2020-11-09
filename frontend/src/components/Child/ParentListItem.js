@@ -28,7 +28,7 @@ export default function ParentListItem(props) {
           <List>
             <ListItem>
               <ListItemAvatar>
-               <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" />
+                <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" />
               </ListItemAvatar>
               <ListItemText primary={`${props.name} ${props.surname}`} />
             </ListItem>
