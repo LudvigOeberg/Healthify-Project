@@ -1,4 +1,4 @@
-import { Avatar, Card, Typography } from '@material-ui/core'
+import { Avatar, Typography } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
 import { withStyles } from '@material-ui/core/styles'
 import React, { Component } from 'react'
