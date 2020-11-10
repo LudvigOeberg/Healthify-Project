@@ -4,19 +4,14 @@ import {
   Grid,
   TextField,
   Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Button,
-  FormControlLabel,
-  Checkbox,
+  InputLabel,
+  FormControl
 } from '@material-ui/core'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ChildCareIcon from '@material-ui/icons/ChildCare'
 import { withStyles } from '@material-ui/core/styles'
-
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import {
   REGISTER_CHILD,
   UPDATE_FIELD_AUTH,
@@ -24,6 +19,9 @@ import {
   UPDATE_AUTH_BOOLEAN,
 } from '../../constants/actionTypes'
 import agent from '../../agent'
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 const mapStateToProps = (state) => ({ ...state.auth, ...state.common })
 
@@ -41,18 +39,23 @@ class PatientRegister extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeFieldAuth(ev.target.id, ev.target.value)
+    this.changeMonth = (ev) => this.props.onChangeFieldAuth('month', ev.target.value)
+    this.changeDay = (ev) => this.props.onChangeFieldAuth('day', ev.target.value)
+    this.changeDisease = (ev) => this.props.onChangeFieldAuth('disease', ev.target.value)
+    this.changeSex = (ev) => this.props.onChangeFieldAuth('sex', ev.target.value)
     this.changeAuthBoolean = (ev) => {
       this.props.onChangeBooleanAuth(ev.target.id, ev.target.checked)
     }
-    this.submitForm = (name, surname, email, password, confirmPassword) => (ev) => {
+    this.submitForm = (name, surname, email, password, confirmPassword, year, disease, month, day, sex) => (ev) => {
       ev.preventDefault()
       const snackbar = {
         message: `Du registrerade barnet ${name} ${surname} 
-                    som lider av ${this.props.diabetes ? 'diabetes' : 'fetma'}`,
+                    som lider av ${disease==='diabetes' ? 'diabetes' : 'fetma'}`,
         color: 'success',
         open: true,
       }
-      this.props.onSubmit(name, surname, email, password, confirmPassword, '1990-03-09T00:00:00.000Z', 'MALE', snackbar)
+      
+      this.props.onSubmit(name, surname, email, password, confirmPassword, `${year}-${month}-${day}T00:00:00.000Z`, sex, snackbar)
     }
   }
 
@@ -67,9 +70,13 @@ class PatientRegister extends Component {
     const { confirmPassword } = this.props
     const { name } = this.props
     const { surname } = this.props
+    const { year } = this.props
+    const { month } = this.props
+    const { day } = this.props
+    const { sex } = this.props
     const errors = this.props.errors ? this.props.errors : null
-    const { diabetes } = this.props
-    const { fetma } = this.props
+    const { disease } = this.props
+   
 
     return (
       <Container component="main" maxWidth="xs">
@@ -83,7 +90,7 @@ class PatientRegister extends Component {
           <form
             className={classes.form}
             noValidate
-            onSubmit={this.submitForm(name, surname, email, password, confirmPassword)}
+            onSubmit={this.submitForm(name, surname, email, password, confirmPassword, year, disease,  month, day, sex)}
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -164,55 +171,125 @@ class PatientRegister extends Component {
                 />
               </Grid>
               <Grid item xs={12}>
+              <InputLabel>Födelsedatum</InputLabel>
+              </Grid>
+              <Grid item xs={12} sm={4}>
                 <TextField
-                  autoComplete=""
-                  variant="outlined"
+                 variant="outlined"
+                 required
+                 fullWidth
+                 name="year"
+                 type="year"
+                 id="year"
+                 label="År"
+                 helperText={errors && (errors.confirmPassword || errors.general)}
+                 error={errors && (errors.confirmPassword ? true : !!(false || errors.general))}
+                 value={year}
+                 onChange={this.changeAuth}
+                /> 
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                <FormControl fullWidth variant="outlined">
+                <InputLabel id='month-label'>Månad</InputLabel>
+                <Select
+                  labelId='month-label'
+                  label='Månad'
+                  //required
+                  value={month}
+                  onChange={this.changeMonth}
+                
+                >
+                <MenuItem value='01'>Januari</MenuItem>
+                <MenuItem value='02'>Februari</MenuItem>
+                <MenuItem value='03'>Mars</MenuItem>
+                <MenuItem value='04'>April</MenuItem>
+                <MenuItem value='05'>Maj</MenuItem>
+                <MenuItem value='06'>Juni</MenuItem>
+                <MenuItem value='07'>Juli</MenuItem>
+                <MenuItem value='08'>Augusti</MenuItem>
+                <MenuItem value='09'>September</MenuItem>
+                <MenuItem value='10'>Oktober</MenuItem>
+                <MenuItem value='11'>November</MenuItem>
+                <MenuItem value='12'>December</MenuItem>
+                </Select>
+                </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                <FormControl fullWidth variant="outlined">
+                <InputLabel id='day-label'>Dag</InputLabel>
+                <Select
+                  labelId='day-label'
+                  label='Dag'
                   required
-                  fullWidth
-                  value={this.props.age}
-                  onChange={this.changeAuth}
-                  id="age"
-                  name="age"
-                  label="Ålder"
-                />
+                  value={day}                  
+                  onChange={this.changeDay}
+                  
+                >
+                <MenuItem id="day" value='01'>1</MenuItem>
+                <MenuItem id="day" value='02'>2</MenuItem>
+                <MenuItem id="day" value='03'>3</MenuItem>
+                <MenuItem id="day" value='04'>4</MenuItem>
+                <MenuItem id="day" value='05'>5</MenuItem>
+                <MenuItem id="day" value='06'>6</MenuItem>
+                <MenuItem id="day" value='07'>7</MenuItem>
+                <MenuItem id="day" value='08'>8</MenuItem>
+                <MenuItem id="day" value='09'>9</MenuItem>
+                <MenuItem id="day" value='10'>10</MenuItem>
+                <MenuItem id="day" value='11'>11</MenuItem>
+                <MenuItem id="day" value='12'>12</MenuItem>
+                <MenuItem id="day" value='13'>13</MenuItem>
+                <MenuItem id="day" value='14'>14</MenuItem>
+                <MenuItem id="day" value='15'>15</MenuItem>
+                <MenuItem id="day" value='16'>16</MenuItem>
+                <MenuItem id="day" value='17'>17</MenuItem>
+                <MenuItem id="day" value='18'>18</MenuItem>
+                <MenuItem id="day" value='19'>19</MenuItem>
+                <MenuItem id="day" value='20'>20</MenuItem>
+                <MenuItem id="day" value='21'>21</MenuItem>
+                <MenuItem id="day" value='22'>22</MenuItem>
+                <MenuItem id="day" value='23'>23</MenuItem>
+                <MenuItem id="day" value='24'>24</MenuItem>
+                <MenuItem id="day" value='25'>25</MenuItem>
+                <MenuItem id="day" value='26'>26</MenuItem>
+                <MenuItem id="day" value='27'>27</MenuItem>
+                <MenuItem id="day" value='28'>28</MenuItem>
+                <MenuItem id="day" value='29'>29</MenuItem>
+                <MenuItem id="day" value='30'>30</MenuItem>
+                <MenuItem id="day" value='31'>31</MenuItem>
+                </Select>
+                </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id='sex-label'>Kön</InputLabel>
+                <Select
+                  labelId='sex-label'
+                  label='kön'
+                  //required
+                  value={sex}
+                  onChange={this.changeSex}
+                >
+                <MenuItem value='MALE'>Man</MenuItem>
+                <MenuItem value='FEMALE'>Kvinna</MenuItem>
+                <MenuItem value='OTHER'>Annat</MenuItem>
+                <MenuItem value='NOT_SPECIFIED'>Vill ej specifiera</MenuItem>
+                </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Accordion className={classes.accordion} elevation={3}>
-                  <AccordionSummary style={{ opacity: '0.87' }} expandIcon={<ExpandMoreIcon />}>
-                    Sjukdom
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <FormControlLabel
-                      style={{ opacity: '0.87' }}
-                      control={
-                        <Checkbox
-                          checked={diabetes}
-                          required
-                          disabled={fetma}
-                          onChange={this.changeAuthBoolean}
-                          id="diabetes"
-                        />
-                      }
-                      label="Diabetes"
-                      required
-                    />
-                  </AccordionDetails>
-                  <AccordionDetails>
-                    <FormControlLabel
-                      style={{ opacity: '0.87' }}
-                      control={
-                        <Checkbox
-                          checked={fetma}
-                          required
-                          disabled={diabetes}
-                          onChange={this.changeAuthBoolean}
-                          id="fetma"
-                        />
-                      }
-                      label="Fetma"
-                    />
-                  </AccordionDetails>
-                </Accordion>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id='disease-label'>Sjukdom</InputLabel>
+                <Select
+                  labelId='disease-label'
+                  label='Sjukdom'
+                  //required
+                  value={disease}
+                  onChange={this.changeDisease}
+                >
+                <MenuItem value='diabetes'>Diabetes</MenuItem>
+                <MenuItem value='obesity'>Fetma</MenuItem>
+                </Select>
+                </FormControl>
               </Grid>
             </Grid>
             <Button
