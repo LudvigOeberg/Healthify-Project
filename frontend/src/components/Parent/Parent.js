@@ -1,4 +1,4 @@
-import { Avatar, Typography } from '@material-ui/core'
+import { Avatar, Card, Typography } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
 import { withStyles } from '@material-ui/core/styles'
 import React, { Component } from 'react'
@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import ChildList from './ChildList'
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
+import AddIcon from '@material-ui/icons/Add'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -45,14 +46,32 @@ class ParentPage extends Component {
             {/* child list component to list children for logged in user */}
             {/* eslint-disable-next-line react/no-children-prop */}
             <ChildList children={children} />
+            
           </div>
         </Container>
       )
     }
     return (
-      <div>
-        <Typography type="h5">Inga barn</Typography>
+      <Container component="main" maxWidth="md">
+      <div className={classes.paper}>
+        <Avatar className={classes.purple} src="test.123" alt={name} />
+        <Typography component="h1" variant="h5">
+          {name}
+        </Typography>
+
+        <div className={classes.paper}>
+          <a href='/register-patient'>
+            <AddIcon 
+            color="primary" 
+            style={{fontSize:100}}
+            />
+          </a>
+          <Typography fontSize='50' color='primary'>
+            Lägg till barn
+          </Typography>
+        </div>
       </div>
+    </Container>
     )
   }
 }
