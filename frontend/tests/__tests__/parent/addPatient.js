@@ -3,8 +3,9 @@ let driver
 const webdriver = require('selenium-webdriver')
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
-beforeAll(() => {
-  jest.setTimeout(10000)
+
+beforeEach(() => {
+  //jest.setTimeout(10000)
   const chromeCapabilities = webdriver.Capabilities.chrome()
 
   // setting chrome options to start the browser fully maximized
@@ -17,17 +18,30 @@ beforeAll(() => {
   driver = new webdriver.Builder().withCapabilities(chromeCapabilities).build()
 })
 
+afterEach(() => {
+  driver.close()
+})
+
+
+async function connectToEHR() {
+  await driver.get(localURL)
+  await driver.wait(webdriver.until.alertIsPresent())
+  const alert1 = await driver.switchTo().alert()
+  // replace username with the username for openEHR
+  await alert1.sendKeys('username')
+  await alert1.accept()
+  await driver.wait(webdriver.until.alertIsPresent())
+  const alert2 = await driver.switchTo().alert()
+  // replace pass with password from openEHR
+  await alert2.sendKeys('password')
+  await alert2.accept()
+}
+
+
 function User() {
   const randomInt = Math.floor(Math.random() * Math.floor(1000000))
   this.email = `${randomInt}epost@test.se`
   this.passw = 'passw'
-}
-
-async function logut(driver) {
-  await driver.findElement(webdriver.By.xpath("//span[text()='Logga ut']")).click()
-  await driver.wait(webdriver.until.urlIs(`${localURL}login`))
-  expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
-  // driver.findElement(webdriver.By.xpath("//span[text()='Logga in']"))
 }
 
 async function login(driver, userPath, user) {
@@ -70,61 +84,42 @@ async function registerPatient(driver, patient) {
   await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
   await driver.findElement(webdriver.By.id('age')).sendKeys(10)
   await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
-  await driver.wait(webdriver.until.urlIs(`${localURL}parent`))
+  await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
   // await driver.get(`${localURL}parent`)
   // driver.findElement(webdriver.By.className(await driver.wait(webdriver.until.alertIsPresent()),'MuiGrid-root'))
 }
 
-test('ID:S1. Test start application', async () => {
-  await driver.get(localURL)
-  await driver.wait(webdriver.until.alertIsPresent())
-  const alert1 = await driver.switchTo().alert()
-  // replace username with the username for openEHR
-  await alert1.sendKeys('username')
-  await alert1.accept()
-  await driver.wait(webdriver.until.alertIsPresent())
-  const alert2 = await driver.switchTo().alert()
-  // replace pass with password from openEHR
-  await alert2.sendKeys('password')
-  await alert2.accept()
+test('ID:XX. Start application', async () => {
+  await connectToEHR();
   expect(await driver.getTitle()).toEqual('Healthify')
 })
 
-test('ID:S2. Test registration follow by auto login for parent', async () => {
+test('ID:XX. Register a new Patient', async () => {
   const user = new User()
-  await register(driver, user)
-  await logut(driver)
-})
-
-test('ID:S3. Register a Patient', async () => {
-  const user = new User()
+  await connectToEHR()
   await register(driver, user)
   const patient = new User()
   await registerPatient(driver, patient)
-  // await logut(driver)
+
 })
 
-// test('ID:S4. Log out', async () => {
-//   const user = new User()
-//   await register(driver, user)
-//   await logut(driver)
-//   await login(driver, 'parent', user)
-//   await logut(driver)
-// })
 
-// test('ID:S5. Login as a registered Patient', async () => {
-//   const parent = new User()
-//   await register(driver, parent)
-//   const patient = new User()
-//   await registerPatient(driver, patient)
-//   await logut(driver)
-//   await login(driver, 'child', patient)
-//   await logut(driver)
-// })
+test('ID:XX. Register two new Patient', async () => {
+  const user = new User()
+  await connectToEHR()
+  await register(driver, user)
+  const patient = new User()
+  await registerPatient(driver, patient)
+  const patient2 = new User()
+  await registerPatient(driver, patient2)
+})
 
-// test('ID:S6. Registration for an already registered email', async () => {
-//   const user = new User()
-//   await register(driver, user)
-//   await logut(driver)
-//   await expect(register(driver, user)).rejects.toThrow('Timed out after 5 sec')
-// })
+test('ID:XX. Register same Patient to same parent twice', async () => {
+  const user = new User()
+  await connectToEHR()
+  await register(driver, user)
+  const patient = new User()
+  await registerPatient(driver, patient)
+  await expect(registerPatient(driver, patient)).rejects.toThrow('Timed out after 5 sec')
+})
+
