@@ -69,9 +69,6 @@ class RegisterUserSchema(Schema):
     email = fields.Email(required=True)
     password = fields.Str(load_only=True, validate=validate.Length(min=1), required=True)
     confirmPassword = fields.Str(load_only=True, validate=validate.Length(min=1), required=True)
-    gender = fields.Str(validate=(validate.OneOf(["MALE", "FEMALE", "UNKNOWN", "OTHER"])))
-    dateofbirth = fields.DateTime(format="iso")
-    disease = fields.Str(validate=(validate.OneOf(["DIABETES", "OBESITY"]))
     token = fields.Str(dump_only=True)
     createdAt = fields.DateTime(attribute='created_at', dump_only=True)
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
@@ -93,6 +90,36 @@ class RegisterUserSchema(Schema):
     class Meta:
         strict = True
 
+
+class RegisterChildSchema(Schema):
+    name = fields.Str(validate=validate.Length(min=1), required=True)
+    surname = fields.Str(validate=validate.Length(min=1), required=True)
+    email = fields.Email(required=True)
+    password = fields.Str(load_only=True, validate=validate.Length(min=1), required=True)
+    confirmPassword = fields.Str(load_only=True, validate=validate.Length(min=1), required=True)
+    gender = fields.Str(validate=(validate.OneOf(["MALE", "FEMALE", "UNKNOWN", "OTHER"])), required=True)
+    dateofbirth = fields.DateTime(format="iso", required=True)
+    disease = fields.Str(validate=(validate.OneOf(["DIABETES", "OBESITY"])), required=True)
+    token = fields.Str(dump_only=True)
+    createdAt = fields.DateTime(attribute='created_at', dump_only=True)
+    lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
+    type = fields.Str(dump_only=True)
+
+    @pre_load
+    def make_user(self, data, **kwargs):
+        data = data.get('user')
+        return data
+
+    def handle_error(self, exc, data, **kwargs):
+        """Log and raise our custom exception when (de)serialization fails."""
+        raise InvalidUsage(exc.messages)
+
+    @post_dump
+    def dump_user(self, data, **kwargs):
+        return {'user': data}
+
+    class Meta:
+        strict = True
 
 
 class ChildSchema(Schema):
@@ -149,6 +176,7 @@ class ParentSchema(Schema):
 
 login_schema = LoginSchema()
 register_user_schema = RegisterUserSchema()
+register_child_schema = RegisterChildSchema()
 user_schema = UserSchema()
 user_schemas = UserSchema(many=True)
 child_schema = ChildSchema()

@@ -69,7 +69,9 @@ export default (state = defaultState, action) => {
       }
     case REGISTER_CHILD:
       const { children } = state.currentUser
-      children[children.length] = action.payload
+      if(!action.error){ 
+        children[children.length] = action.payload
+      }
       const { currentUser } = state
       currentUser.children = children
       return {

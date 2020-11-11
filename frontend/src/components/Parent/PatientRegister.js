@@ -6,7 +6,8 @@ import {
   Typography,
   Button,
   InputLabel,
-  FormControl
+  FormControl,
+  FormHelperText
 } from '@material-ui/core'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -191,7 +192,6 @@ class PatientRegister extends Component {
               fullWidth 
               variant="outlined"
               required
-              helperText={errors && (errors.gender || errors.general)}
               error={errors && (errors.gender ? true : !!(false || errors.general))}
               >
                 <InputLabel id='gender-label'>Kön</InputLabel>
@@ -200,13 +200,14 @@ class PatientRegister extends Component {
                   label='kön'
                   value={gender}
                   onChange={this.changeGender}
-                  
+                  error={errors && (errors.gender ? true : !!(false || errors.general))}
                 >
                 <MenuItem value='MALE'>Man</MenuItem>
                 <MenuItem value='FEMALE'>Kvinna</MenuItem>
                 <MenuItem value='OTHER'>Annat</MenuItem>
                 <MenuItem value='UNKNOWN'>Vill ej specifiera</MenuItem>
                 </Select>
+                <FormHelperText>{errors && (errors.gender || errors.general)}</FormHelperText>
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
@@ -214,6 +215,7 @@ class PatientRegister extends Component {
               fullWidth 
               variant="outlined"
               required
+              error={errors && (errors.disease ? true : !!(false || errors.general))}
               >
                 <InputLabel id='disease-label'>Sjukdom</InputLabel>
                 <Select
@@ -221,12 +223,11 @@ class PatientRegister extends Component {
                   label='Sjukdom'
                   value={disease}
                   onChange={this.changeDisease}
-                  helperText={errors && (errors.disease || errors.general)}
-                  error={errors && (errors.disease ? true : !!(false || errors.general))}
                 >
                 <MenuItem value='DIABETES'>Diabetes</MenuItem>
                 <MenuItem value='OBESITY'>Fetma</MenuItem>
                 </Select>
+                <FormHelperText>{errors && (errors.disease || errors.general)}</FormHelperText>
                 </FormControl>
               </Grid>
             </Grid>
