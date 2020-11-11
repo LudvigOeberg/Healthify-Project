@@ -71,6 +71,7 @@ class RegisterUserSchema(Schema):
     confirmPassword = fields.Str(load_only=True, validate=validate.Length(min=1), required=True)
     gender = fields.Str(validate=(validate.OneOf(["MALE", "FEMALE", "UNKNOWN", "OTHER"])))
     dateofbirth = fields.DateTime(format="iso")
+    disease = fields.Str(validate=(validate.OneOf(["DIABETES", "OBESITY"]))
     token = fields.Str(dump_only=True)
     createdAt = fields.DateTime(attribute='created_at', dump_only=True)
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
