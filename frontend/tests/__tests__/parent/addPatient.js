@@ -5,7 +5,6 @@ const webdriver = require('selenium-webdriver')
 const localURL = 'http://localhost:4100/'
 
 beforeEach(() => {
-  //jest.setTimeout(10000)
   const chromeCapabilities = webdriver.Capabilities.chrome()
 
   // setting chrome options to start the browser fully maximized
@@ -89,22 +88,42 @@ async function registerPatient(driver, patient) {
   // driver.findElement(webdriver.By.className(await driver.wait(webdriver.until.alertIsPresent()),'MuiGrid-root'))
 }
 
-test('ID:XX. Start application', async () => {
-  await connectToEHR();
-  expect(await driver.getTitle()).toEqual('Healthify')
+
+test('TestCaseID:541. Register a new Patient', async () => {
+  const user = new User()
+  await connectToEHR()
+  await register(driver, user)
+  const patient = new User()
+  await registerPatient(driver, patient)
 })
 
-test('ID:XX. Register a new Patient', async () => {
+/*test('TestCaseID:542. Register same Patient to same parent twice', async () => {
   const user = new User()
   await connectToEHR()
   await register(driver, user)
   const patient = new User()
   await registerPatient(driver, patient)
 
-})
+  await driver
+    .findElement(
+      webdriver.By.xpath(
+        "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-2 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
+      ),
+    )
+    .click()
+  await driver.findElement(webdriver.By.xpath("//a[@href='/register-patient']")).click()
+  await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
+  await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
+  await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
+  await driver.findElement(webdriver.By.id('email')).sendKeys(patient.email)
+  await driver.findElement(webdriver.By.id('password')).sendKeys(patient.passw)
+  await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
+  await driver.findElement(webdriver.By.id('age')).sendKeys(10)
+  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
+  await expect(driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)).rejects.toThrow('Timed out after 5 sec')
+}) */
 
-
-test('ID:XX. Register two new Patient', async () => {
+test('TestCaseID:543. Register two new Patient', async () => {
   const user = new User()
   await connectToEHR()
   await register(driver, user)
@@ -114,12 +133,4 @@ test('ID:XX. Register two new Patient', async () => {
   await registerPatient(driver, patient2)
 })
 
-test('ID:XX. Register same Patient to same parent twice', async () => {
-  const user = new User()
-  await connectToEHR()
-  await register(driver, user)
-  const patient = new User()
-  await registerPatient(driver, patient)
-  await expect(registerPatient(driver, patient)).rejects.toThrow('Timed out after 5 sec')
-})
 

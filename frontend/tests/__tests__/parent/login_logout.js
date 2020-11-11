@@ -5,7 +5,6 @@ const webdriver = require('selenium-webdriver')
 const localURL = 'http://localhost:4100/'
 
   beforeEach(() => {
-    //jest.setTimeout(10000)
     const chromeCapabilities = webdriver.Capabilities.chrome()
     // setting chrome options to start the browser fully maximized
     const chromeOptions = {
@@ -72,20 +71,21 @@ function User() {
   }
 
 
+  //Finns ingen req.
+  /*
   test('ID:XX. Log out after registration', async () => {
     const user = new User()
     await connectToEHR()
     await register(driver, user)
     await logout(driver)
-  })
+  }) */
 
 
-  test('ID:XX. Log in and log out', async () => {
+  test('TestCaseID:131. Log in', async () => {
     const user = new User()
     await connectToEHR()
     await register(driver, user)
     await logout(driver)
     await login(driver, 'parent', user)
-    await logout(driver)
   })
  

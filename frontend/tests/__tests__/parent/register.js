@@ -3,7 +3,6 @@ const webdriver = require('selenium-webdriver')
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 beforeEach(() => {
-  //jest.setTimeout(10000)
   const chromeCapabilities = webdriver.Capabilities.chrome()
 
   // setting chrome options to start the browser fully maximized
@@ -60,23 +59,27 @@ async function register(driver, user) {
     expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
   }
   
-
-test('ID:XX. Start application', async () => {
-    await connectToEHR();
-    expect(await driver.getTitle()).toEqual('Healthify')
-})
-
-test('ID:XX. Registration with a new email', async () => {
+test('TestCaseID:121. Registration with a new email', async () => {
     const user = new User()
     await connectToEHR()
     await register(driver, user)
 })
 
-test('ID:XX. Registration with an already registered email', async () => {
+test('TestCaseID:122. Registration with an already registered email', async () => {
   const user = new User()
   await connectToEHR()
   expect(await driver.getTitle()).toEqual('Healthify')
   await register(driver, user)
   await logout(driver)
   await expect(register(driver, user)).rejects.toThrow('Timed out after 5 sec')
+})
+
+
+test('TestCaseID:123. Registration with a new email with invalid data', async () => {
+  const user = new User()
+  await connectToEHR()
+  await driver.get(localURL)
+  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click()
+  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
+  await expect(driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)).rejects.toThrow('Timed out after 5 sec')
 })
