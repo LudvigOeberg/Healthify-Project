@@ -6,8 +6,7 @@ import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import Input from '@material-ui/core/Input'
-import CheckBoxIcon from '@material-ui/icons/CheckBox'
-import { Typography, Button } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -17,8 +16,6 @@ import {
   LOAD_BLOODSUGAR,
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
-import CustomPaginationActionsTable from '../TablePagination'
-import Reformat from '../../reformatEHRData'
 import Avatar from '../../Static/rsz_avatar.png'
 
 const mapStateToProps = (state) => ({
@@ -95,15 +92,17 @@ class Patient extends Component {
     ]
     const bloodsugar = this.props.bloodsugarValue
     const { classes } = this.props
-    const bloodsugarData = this.props.bloodsugar
     const firstName = this.props.currentUser.name
     const lastName = this.props.currentUser.surname
     return (
       <Container component="main" maxWidth="md">
         <div className={classes.paper}>
           <h1>Välkommen!</h1>
-          <img src={Avatar} ></img>
-          <h1> {firstName} {lastName} </h1>
+          <img src={Avatar} alt="logged in users avatar"></img>
+          <h1>
+            {' '}
+            {firstName} {lastName}{' '}
+          </h1>
           <h2> Var vänlig skriv in ditt blodsockervärde </h2>
           <Grid container spacing={5} alignItems="center">
             <Grid item xs>
@@ -139,13 +138,16 @@ class Patient extends Component {
               <h5> mmol/L </h5>
             </Grid>
             <Grid item>
-              <Button 
-                variant="contained" 
+              <Button
+                variant="contained"
                 color="secondary"
                 className={classes.button}
                 onClick={(ev) => this.submitForm(ev)}
                 disabled={this.props.inProgress}
-              > Submit</Button>
+              >
+                {' '}
+                Submit
+              </Button>
             </Grid>
           </Grid>
         </div>
