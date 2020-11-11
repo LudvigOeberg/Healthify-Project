@@ -1,11 +1,10 @@
-
 /* eslint-disable no-shadow */
 let driver
 const webdriver = require('selenium-webdriver')
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 beforeAll(() => {
-  jest.setTimeout(10000)
+  jest.setTimeout(30000)
   const chromeCapabilities = webdriver.Capabilities.chrome()
 
   // setting chrome options to start the browser fully maximized
@@ -28,7 +27,6 @@ async function logut(driver) {
   await driver.findElement(webdriver.By.xpath("//span[text()='Logga ut']")).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}login`))
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
-  // driver.findElement(webdriver.By.xpath("//span[text()='Logga in']"))
 }
 
 async function login(driver, userPath, user) {
@@ -72,8 +70,6 @@ async function registerPatient(driver, patient) {
   await driver.findElement(webdriver.By.id('age')).sendKeys(10)
   await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`))
-  // await driver.get(`${localURL}parent`)
-  // driver.findElement(webdriver.By.className(await driver.wait(webdriver.until.alertIsPresent()),'MuiGrid-root'))
 }
 
 test('ID:S1. Test start application', async () => {
@@ -127,8 +123,8 @@ test('ID:S6. Registration for an already registered email', async () => {
   const user = new User()
   await register(driver, user)
   await logut(driver)
-  await register(driver, user)
-  const text = await driver.findElement(webdriver.By.xpath("//p[@id='email-helper-text']")).getText()
-  // await expect(register(driver, user)).rejects.toThrow('Timed out after 5 sec')
-  await expect(text).toEqual('User already registered')
+  await register(driver, user).catch(async () => {
+    const text = await driver.findElement(webdriver.By.xpath("//p[@id='email-helper-text']"), 10000).getText()
+    await expect(text).toEqual('User already registered')
+  })
 })
