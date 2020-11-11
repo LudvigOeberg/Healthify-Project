@@ -55,7 +55,7 @@ export default function ChildListItem(props) {
               <ListItemIcon>
                 <AccessTime color="primary" />
               </ListItemIcon>
-              <ListItemText primary={`Senast inloggad: ${Moment(props.lastseen).format('YYYY-MM-DD [kl:] hh:mm')}`} />
+              <ListItemText primary={`Senast inloggad: ${Moment(props.lastSeen).format('YYYY-MM-DD [kl:] hh:mm')}`} />
             </ListItem>
           </List>
         </Paper>
