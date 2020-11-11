@@ -102,31 +102,33 @@ test('ID:S3. Register a Patient', async () => {
   await register(driver, user)
   const patient = new User()
   await registerPatient(driver, patient)
-  // await logut(driver)
+  await logut(driver)
 })
 
-// test('ID:S4. Log out', async () => {
-//   const user = new User()
-//   await register(driver, user)
-//   await logut(driver)
-//   await login(driver, 'parent', user)
-//   await logut(driver)
-// })
+test('ID:S4. Log out', async () => {
+  const user = new User()
+  await register(driver, user)
+  await logut(driver)
+  await login(driver, 'parent', user)
+  await logut(driver)
+})
 
-// test('ID:S5. Login as a registered Patient', async () => {
-//   const parent = new User()
-//   await register(driver, parent)
-//   const patient = new User()
-//   await registerPatient(driver, patient)
-//   await logut(driver)
-//   await login(driver, 'child', patient)
-//   await logut(driver)
-// })
+test('ID:S5. Login as a registered Patient', async () => {
+  const parent = new User()
+  await register(driver, parent)
+  const patient = new User()
+  await registerPatient(driver, patient)
+  await logut(driver)
+  await login(driver, 'child', patient)
+  await logut(driver)
+})
 
-// test('ID:S6. Registration for an already registered email', async () => {
-//   const user = new User()
-//   await register(driver, user)
-//   await logut(driver)
-//   await expect(register(driver, user)).rejects.toThrow('Timed out after 5 sec')
-// })
-
+test('ID:S6. Registration for an already registered email', async () => {
+  const user = new User()
+  await register(driver, user)
+  await logut(driver)
+  await register(driver, user)
+  const text = await driver.findElement(webdriver.By.xpath("//p[@id='email-helper-text']")).getText()
+  // await expect(register(driver, user)).rejects.toThrow('Timed out after 5 sec')
+  await expect(text).toEqual('User already registered')
+})
