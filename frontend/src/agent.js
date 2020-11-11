@@ -32,9 +32,9 @@ const Auth = {
 }
 
 const Parent = {
-  registerChild: (name, surname, email, password, confirmPassword, dateofbirth, gender) =>
+  registerChild: (name, surname, email, password, confirmPassword, dateofbirth, gender, disease) =>
     // eslint-disable-next-line implicit-arrow-linebreak
-    requests.post('/parent', { user: { name, surname, email, password, confirmPassword, dateofbirth, gender } }),
+    requests.post('/parent', { user: { name, surname, email, password, confirmPassword, dateofbirth, gender, disease } }),
   children: () => requests.get('/parent'),
   editChild: (ehrid, email) => requests.put('/child', { user: { ehrid, email } }),
   deleteChild: (ehrid) => requests.del(`/child?ehrid=${ehrid}`),

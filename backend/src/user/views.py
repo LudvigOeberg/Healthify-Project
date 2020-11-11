@@ -12,7 +12,7 @@ from src.database import db
 from src.extensions import api
 from src.exceptions import InvalidUsage
 from .models import User, Parent, Child
-from .schema import user_schema, user_schemas, login_schema, register_user_schema, child_schemas, child_schema, parent_schemas
+from .schema import user_schema, user_schemas, login_schema, register_user_schema, child_schemas, child_schema, parent_schemas, register_child_schema
 from requests.auth import HTTPBasicAuth
 import requests
 from flask import current_app
@@ -94,10 +94,10 @@ class ParentResource(MethodResource):
             raise InvalidUsage.unknown_error()
     
     @jwt_required
-    @use_kwargs(register_user_schema)
+    @use_kwargs(register_child_schema)
     @marshal_with(child_schema)
     @doc(description="Register a child to current logged in parent")
-    def post(self, name, surname, email, password, confirmPassword, dateofbirth, gender, **kwargs):
+    def post(self, name, surname, email, password, confirmPassword, dateofbirth, gender, disease, **kwargs):
         if (password != confirmPassword): 
             raise InvalidUsage.password_dont_match()
         if not current_user: 
@@ -113,6 +113,10 @@ class ParentResource(MethodResource):
                     {
                     "key": "ehrId",
                     "value": r.json()['ehrId']
+                    },
+                    {
+                    "key": "disease",
+                    "value": disease
                     }
                 ]
                 }
