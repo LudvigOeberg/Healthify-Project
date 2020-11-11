@@ -53,7 +53,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{js,jsx}'",
     "lint:fix": "npm run lint -- --fix",
-    "jest": "jest --config tests/jest.config.js -t "
+    "jest": "jest --config tests/jest.config.js"
   },
   "browserslist": {
     "production": [
