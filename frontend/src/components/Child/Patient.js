@@ -6,8 +6,7 @@ import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import Input from '@material-ui/core/Input'
-import CheckBoxIcon from '@material-ui/icons/CheckBox'
-import { Typography, Button } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -17,13 +16,14 @@ import {
   LOAD_BLOODSUGAR,
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
-import CustomPaginationActionsTable from '../TablePagination'
-import Reformat from '../../reformatEHRData'
+import happyAvatar from '../../Static/rsz_avatar.png'
+import sadAvatar from '../../Static/sad_avatar.jpeg'
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
   currentUser: state.common.currentUser,
   bloodsugarValue: state.common.bloodsugar,
+  historicalBloodSugar: state.ehr.bloodsugar,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -84,26 +84,38 @@ class Patient extends Component {
   render() {
     const marks = [
       {
-        value: 5,
-        label: '5° mmol/L',
+        value: 2,
+        label: '5 mmol/L',
       },
       {
-        value: 15,
-        label: '15 mmol/L',
+        value: 10,
+        label: '10 mmol/L',
       },
     ]
     const bloodsugar = this.props.bloodsugarValue
     const { classes } = this.props
-    const bloodsugarData = this.props.bloodsugar
-    return (
-      <Container component="main" maxWidth="sm">
-        <div className={classes.paper}>
-          <h2> Var vänlig skriv in ditt blodsockervärde</h2>
+    const firstName = this.props.currentUser.name
+    const lastName = this.props.currentUser.surname
+    let Avatar = happyAvatar
 
-          <Typography id="input-slider" gutterBottom>
-            mmol/L
-          </Typography>
-          <Grid container spacing={2} alignItems="center">
+    if (this.props.historicalBloodSugar !== null && this.props.historicalBloodSugar !== undefined) {
+      if (this.props.historicalBloodSugar[0].value < 4 || this.props.historicalBloodSugar[0].value > 8) {
+        Avatar = sadAvatar
+      } else {
+        Avatar = happyAvatar
+      }
+    }
+    return (
+      <Container component="main" maxWidth="md">
+        <div className={classes.paper}>
+          <h1>Välkommen!</h1>
+          <img src={Avatar} alt="logged in users avatar"></img>
+          <h1>
+            {' '}
+            {firstName} {lastName}{' '}
+          </h1>
+          <h2> Var vänlig skriv in ditt blodsockervärde </h2>
+          <Grid container spacing={5} alignItems="center">
             <Grid item xs>
               <Slider
                 id="bloodsugar"
@@ -114,8 +126,8 @@ class Patient extends Component {
                 step={1}
                 valueLabelDisplay="auto"
                 marks={marks}
-                max={15}
-                min={5}
+                max={10}
+                min={2}
               />
             </Grid>
             <Grid item>
@@ -128,27 +140,27 @@ class Patient extends Component {
                 onBlur={this.handleBlur}
                 inputProps={{
                   step: 1,
-                  min: 5,
-                  max: 15,
+                  min: 2,
+                  max: 10,
                   type: 'number',
                   'aria-labelledby': 'input-slider',
                 }}
               />
               <h5> mmol/L </h5>
             </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                onClick={(ev) => this.submitForm(ev)}
+                disabled={this.props.inProgress}
+              >
+                {' '}
+                Submit
+              </Button>
+            </Grid>
           </Grid>
-          <Button
-            className={classes.button}
-            startIcon={<CheckBoxIcon />}
-            onClick={(ev) => this.submitForm(ev)}
-            disabled={this.props.inProgress}
-          ></Button>
-          <CustomPaginationActionsTable
-            paginate
-            titles={['Datum', 'mmol/L']}
-            columns={['x', 'y']}
-            rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
-          />
         </div>
       </Container>
     )

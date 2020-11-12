@@ -7,12 +7,14 @@ import {
   Button,
   InputLabel,
   FormControl,
-  FormHelperText
+  FormHelperText,
 } from '@material-ui/core'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ChildCareIcon from '@material-ui/icons/ChildCare'
 import { withStyles } from '@material-ui/core/styles'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
 import {
   REGISTER_CHILD,
   UPDATE_FIELD_AUTH,
@@ -20,16 +22,22 @@ import {
   UPDATE_AUTH_BOOLEAN,
 } from '../../constants/actionTypes'
 import agent from '../../agent'
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-
 
 const mapStateToProps = (state) => ({ ...state.auth, ...state.common })
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeFieldAuth: (key, value) => dispatch({ type: UPDATE_FIELD_AUTH, key, value }),
   onSubmit: (name, surname, email, password, confirmPassword, dateofbirth, gender, disease, snackbar) => {
-    const payload = agent.Parent.registerChild(name, surname, email, password, confirmPassword, dateofbirth, gender, disease)
+    const payload = agent.Parent.registerChild(
+      name,
+      surname,
+      email,
+      password,
+      confirmPassword,
+      dateofbirth,
+      gender,
+      disease,
+    )
     dispatch({ type: REGISTER_CHILD, payload, snackbar })
   },
   onChangeBooleanAuth: (key, value) => dispatch({ type: UPDATE_AUTH_BOOLEAN, key, value }),
@@ -51,12 +59,22 @@ class PatientRegister extends Component {
       ev.preventDefault()
       const snackbar = {
         message: `Du registrerade barnet ${name} ${surname} 
-                    som lider av ${disease==='diabetes' ? 'diabetes' : 'fetma'}`,
+                    som lider av ${disease === 'diabetes' ? 'diabetes' : 'fetma'}`,
         color: 'success',
         open: true,
       }
-      
-      this.props.onSubmit(name, surname, email, password, confirmPassword, `${dateofbirth}T00:00:00.000Z`, gender, disease, snackbar)
+
+      this.props.onSubmit(
+        name,
+        surname,
+        email,
+        password,
+        confirmPassword,
+        `${dateofbirth}T00:00:00.000Z`,
+        gender,
+        disease,
+        snackbar,
+      )
     }
   }
 
@@ -75,7 +93,6 @@ class PatientRegister extends Component {
     const { dateofbirth } = this.props
     const errors = this.props.errors ? this.props.errors : null
     const { disease } = this.props
-   
 
     return (
       <Container component="main" maxWidth="xs">
@@ -169,65 +186,60 @@ class PatientRegister extends Component {
                   onChange={this.changeAuth}
                 />
               </Grid>
-              <Grid item xs={12} >
+              <Grid item xs={12}>
                 <TextField
-                 variant="outlined"
-                 required
-                 fullWidth
-                 name="dateofbirth"
-                 type="date"
-                 id="dateofbirth"
-                 label="Födelsedatum"
-                 InputLabelProps={{
-                  shrink: true,
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="dateofbirth"
+                  type="date"
+                  id="dateofbirth"
+                  label="Födelsedatum"
+                  InputLabelProps={{
+                    shrink: true,
                   }}
-                 helperText={errors && (errors.dateofbirth || errors.general)}
-                 error={errors && (errors.dateofbirth ? true : !!(false || errors.general))}
-                 value={dateofbirth}
-                 onChange={this.changeAuth}
-                /> 
-                </Grid>
-                <Grid item xs={12}>
-              <FormControl 
-              fullWidth 
-              variant="outlined"
-              required
-              error={errors && (errors.gender ? true : !!(false || errors.general))}
-              >
-                <InputLabel id='gender-label'>Kön</InputLabel>
-                <Select
-                  labelId='gender-label'
-                  label='kön'
-                  value={gender}
-                  onChange={this.changeGender}
+                  helperText={errors && (errors.dateofbirth || errors.general)}
+                  error={errors && (errors.dateofbirth ? true : !!(false || errors.general))}
+                  value={dateofbirth}
+                  onChange={this.changeAuth}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  required
                   error={errors && (errors.gender ? true : !!(false || errors.general))}
                 >
-                <MenuItem value='MALE'>Man</MenuItem>
-                <MenuItem value='FEMALE'>Kvinna</MenuItem>
-                <MenuItem value='OTHER'>Annat</MenuItem>
-                <MenuItem value='UNKNOWN'>Vill ej specifiera</MenuItem>
-                </Select>
-                <FormHelperText>{errors && (errors.gender || errors.general)}</FormHelperText>
+                  <InputLabel id="gender-label">Kön</InputLabel>
+                  <Select
+                    labelId="gender-label"
+                    label="kön"
+                    value={gender}
+                    onChange={this.changeGender}
+                    error={errors && (errors.gender ? true : !!(false || errors.general))}
+                  >
+                    <MenuItem value="MALE">Man</MenuItem>
+                    <MenuItem value="FEMALE">Kvinna</MenuItem>
+                    <MenuItem value="OTHER">Annat</MenuItem>
+                    <MenuItem value="UNKNOWN">Vill ej specifiera</MenuItem>
+                  </Select>
+                  <FormHelperText>{errors && (errors.gender || errors.general)}</FormHelperText>
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-              <FormControl 
-              fullWidth 
-              variant="outlined"
-              required
-              error={errors && (errors.disease ? true : !!(false || errors.general))}
-              >
-                <InputLabel id='disease-label'>Sjukdom</InputLabel>
-                <Select
-                  labelId='disease-label'
-                  label='Sjukdom'
-                  value={disease}
-                  onChange={this.changeDisease}
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  required
+                  error={errors && (errors.disease ? true : !!(false || errors.general))}
                 >
-                <MenuItem value='DIABETES'>Diabetes</MenuItem>
-                <MenuItem value='OBESITY'>Fetma</MenuItem>
-                </Select>
-                <FormHelperText>{errors && (errors.disease || errors.general)}</FormHelperText>
+                  <InputLabel id="disease-label">Sjukdom</InputLabel>
+                  <Select labelId="disease-label" label="Sjukdom" value={disease} onChange={this.changeDisease}>
+                    <MenuItem value="DIABETES">Diabetes</MenuItem>
+                    <MenuItem value="OBESITY">Fetma</MenuItem>
+                  </Select>
+                  <FormHelperText>{errors && (errors.disease || errors.general)}</FormHelperText>
                 </FormControl>
               </Grid>
             </Grid>
