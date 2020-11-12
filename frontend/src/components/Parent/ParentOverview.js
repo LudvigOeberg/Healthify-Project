@@ -139,7 +139,7 @@ const ParentOverview = (props) => {
                 {name}
               </Typography>
               <Typography variant="subtitle1">{age}</Typography>
-              <Typography variant="subtitle1">{disease==="DIABETES" ? "Diabetes" : "Fetma"}</Typography>
+              <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
               <Avatar className={classes.avatar}>
                 <ChildCareIcon fontSize="large" />
               </Avatar>
