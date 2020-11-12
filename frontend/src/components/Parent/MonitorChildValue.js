@@ -41,16 +41,18 @@ const mapDispatchToProps = (dispatch) => ({
   },
 })
 
-const colDesc = ['Datum vid registrering', 'Värde (mmol/L)', 'Blodsocker']
+
 
 const MonitorChildValue = (props) => {
+  const { id } = props.match.params
   const classes = styles()
   const { childValue } = props
   const open = props.snackbarOpen
   const { bloodsugar } = props
-  const { id } = props.match.params
+  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
   const loading = props.inProgress
+  const colDesc = ['Datum', `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`, `${disease === 'DIABETES' ? 'Blodsocker' : 'Tjock?'}`]
 
   useEffect(() => {
     props.onLoad(id, 0, 20)
@@ -126,7 +128,7 @@ const MonitorChildValue = (props) => {
             </Typography>
             <TimeLineChart
               chartData={bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null}
-              label="Blodsocker (mmol/L)"
+              label={disease === "DIABETES" ? "Blodsocker (mmol/L)" : "Vikt (kg)"}
             ></TimeLineChart>
           </Grid>
           <Grid item xs={12} align="center">
@@ -134,7 +136,7 @@ const MonitorChildValue = (props) => {
               <AddIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Skriv in ditt barns blodsockervärde
+              Skriv in ditt barns {disease === 'DIABETES' ? 'blodsockervärde' : 'uppmätta vikt'}
             </Typography>
             <form className={classes.form} noValidate onSubmit={(ev) => submitForm(ev)} autoComplete="off">
               <Grid container spacing={0}>
@@ -146,7 +148,7 @@ const MonitorChildValue = (props) => {
                     id="childValue"
                     name="childValue"
                     InputProps={{
-                      startAdornment: <InputAdornment position="start">mmol/L</InputAdornment>,
+                      startAdornment: <InputAdornment position="start">{disease === 'DIABETES' ? 'mmol/L' : 'kg'}</InputAdornment>,
                     }}
                     value={childValue}
                     disabled={open}

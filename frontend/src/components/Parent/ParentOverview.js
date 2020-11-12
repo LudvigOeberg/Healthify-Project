@@ -54,14 +54,15 @@ const reformat = (data) => {
 }
 
 const ParentOverview = (props) => {
-  const colDesc = ['Datum', '(mmol/L)', 'Blodsocker']
-  const classes = styles()
   const { id } = props.match.params
+  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const colDesc = ['Datum', `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`, `${disease === 'DIABETES' ? 'Blodsocker' : 'Tjock?'}`]
+  const classes = styles()
   const { bloodsugar } = props
   const loading = props.inProgress
   const age = props.party ? `${Moment().diff(props.party[id].dateOfBirth, 'years')} år` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
-  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  
 
   useEffect(() => {
     props.onLoad(id, 0, 3)
@@ -104,7 +105,7 @@ const ParentOverview = (props) => {
               </Typography>
               <TimeLineChart
                 chartData={bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null}
-                label="Blodsocker (mmol/L)"
+                label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
               ></TimeLineChart>
             </Paper>
           </Grid>
