@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-
 import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
 import PersonIcon from '@material-ui/icons/Person'
+// import { Hidden } from '@material-ui/core'
 import TimeLineChart from '../TimeLineChart'
-
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -54,71 +53,76 @@ class ChildMonitor extends Component {
     const { classes } = this.props
     const bloodsugarData = this.props.bloodsugar
     return (
-      <Container component="main" maxWidth="sm">
-        <div className={classes.paper}>
-          <div className={classes.circle}>
-            <div className={classes.avatarCircle}>
-              <PersonIcon className={classes.centerIcon} />
-            </div>
-            <div className={classes.statCircle2}>
-              <div className={classes.smallCircle}>
-                <h1 className={classes.centerText}>50 </h1>
-                <h5 className={classes.centerText}>
-                  <br />g
-                </h5>
+      <div className={classes.bigDiv}>
+        <Container component="main" maxWidth="sm" disableGutters>
+          <div className={classes.paper}>
+            <div className={classes.circle}>
+              <div className={classes.avatarCircle}>
+                <PersonIcon className={classes.centerIcon} />
+              </div>
+              <div className={classes.statCircle2}>
+                <div className={classes.smallCircle}>
+                  <h1 className={classes.centerText}>50 </h1>
+                  <h5 className={classes.centerText}>
+                    <br />g
+                  </h5>
+                </div>
+              </div>
+              <div className={classes.statCircle1}>
+                <div className={classes.smallCircle}>
+                  <h1 className={classes.centerText}>78 </h1>
+                  <h5 className={classes.centerText}>
+                    <br />
+                    Mg/DL
+                  </h5>
+                </div>
+              </div>
+              <div className={classes.statCircle3}>
+                <div className={classes.smallCircle}>
+                  <h1 className={classes.centerText}>± 1 </h1>
+                </div>
+              </div>
+              <div className={classes.statCircle4}>
+                <div className={classes.smallCircle}>
+                  <h1 className={classes.centerText}>78 </h1>
+                  <h5 className={classes.centerText}>
+                    <br />
+                    Mg/DL
+                  </h5>
+                </div>
+              </div>
+              <div className={classes.statCircle5}>
+                <div className={classes.smallCircle}>
+                  <h2 className={classes.centerText}>0 </h2>
+                  <h2 className={classes.centerText}>
+                    <br />0
+                  </h2>
+                </div>
               </div>
             </div>
-            <div className={classes.statCircle1}>
-              <div className={classes.smallCircle}>
-                <h1 className={classes.centerText}>78 </h1>
-                <h5 className={classes.centerText}>
-                  <br />
-                  Mg/DL
-                </h5>
-              </div>
-            </div>
-            <div className={classes.statCircle3}>
-              <div className={classes.smallCircle}>
-                <h1 className={classes.centerText}>± 1 </h1>
-              </div>
-            </div>
-            <div className={classes.statCircle4}>
-              <div className={classes.smallCircle}>
-                <h1 className={classes.centerText}>78 </h1>
-                <h5 className={classes.centerText}>
-                  <br />
-                  Mg/DL
-                </h5>
-              </div>
-            </div>
-            <div className={classes.statCircle5}>
-              <div className={classes.smallCircle}>
-                <h2 className={classes.centerText}>0 </h2>
-                <h2 className={classes.centerText}>
-                  <br />0
-                </h2>
-              </div>
-            </div>
+            <h2>Blodsocker</h2>
+            <TimeLineChart
+              chartData={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false, true) : null}
+              label="Blodsocker (mmol/L)"
+            ></TimeLineChart>
+            <h2>Tidigare mätningar</h2>
+            <CustomPaginationActionsTable
+              paginate
+              titles={['Datum', 'mmol/L']}
+              columns={['x', 'y']}
+              rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
+            />
           </div>
-          <h2>Blodsocker</h2>
-          <TimeLineChart
-            chartData={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false, true) : null}
-            label="Blodsocker (mmol/L)"
-          ></TimeLineChart>
-          <h2>Tidigare mätningar</h2>
-          <CustomPaginationActionsTable
-            paginate
-            titles={['Datum', 'mmol/L']}
-            columns={['x', 'y']}
-            rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
-          />
-        </div>
-      </Container>
+        </Container>
+      </div>
     )
   }
 }
 
 const styles = (theme) => ({
+  bigDiv: {
+    overflowX: 'hidden',
+  },
   circle: {
     marginTop: '-145vw',
     width: '200vw',
@@ -169,7 +173,6 @@ const styles = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    // overflowX: 'hidden',
   },
   avatarCircle: {
     position: 'absolute',
