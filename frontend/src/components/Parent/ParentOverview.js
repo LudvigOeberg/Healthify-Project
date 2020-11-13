@@ -55,7 +55,7 @@ const ParentOverview = (props) => {
   const loading = props.inProgress
   const age = props.party ? `${Moment().diff(props.party[id].dateOfBirth, 'years')} år` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
-  const data = bloodsugar ? bloodsugar: weight
+  const input = bloodsugar ? bloodsugar: weight
   
   const reformatForChart = (data) => {
     if(bloodsugar)
@@ -121,7 +121,7 @@ const ParentOverview = (props) => {
                 GRAF
               </Typography>
               <TimeLineChart
-              chartData={data ? reformatForChart(data) : null }
+              chartData={data ? reformatForChart(input) : null }
               label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
               ></TimeLineChart>
             </Paper>
@@ -142,7 +142,7 @@ const ParentOverview = (props) => {
               <CustomPaginationActionsTable
                 columns={['time', 'value', 'indicator']}
                 loading={loading}
-                rows={data ? reformat(data, false) : null }
+                rows={data ? reformat(input, false) : null }
                 titles={colDesc}
                 paginate={false}
               />
