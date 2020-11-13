@@ -215,15 +215,22 @@ class PatientRegister extends Component {
                   <Select
                     labelId="gender-label"
                     label="kön"
-                    id="gender"
                     value={gender}
                     onChange={this.changeGender}
                     error={errors && (errors.gender ? true : !!(false || errors.general))}
                   >
-                    <MenuItem value="MALE">Man</MenuItem>
-                    <MenuItem value="FEMALE">Kvinna</MenuItem>
-                    <MenuItem value="OTHER">Annat</MenuItem>
-                    <MenuItem value="UNKNOWN">Vill ej specifiera</MenuItem>
+                    <MenuItem id="gender" value="MALE">
+                      Man
+                    </MenuItem>
+                    <MenuItem id="gender" value="FEMALE">
+                      Kvinna
+                    </MenuItem>
+                    <MenuItem id="gender" value="OTHER">
+                      Annat
+                    </MenuItem>
+                    <MenuItem id="gender" value="UNKNOWN">
+                      Vill ej specifiera
+                    </MenuItem>
                   </Select>
                   <FormHelperText>{errors && (errors.gender || errors.general)}</FormHelperText>
                 </FormControl>
@@ -231,15 +238,18 @@ class PatientRegister extends Component {
               <Grid item xs={12}>
                 <FormControl
                   fullWidth
-                  id ="disease"
                   variant="outlined"
                   required
                   error={errors && (errors.disease ? true : !!(false || errors.general))}
                 >
                   <InputLabel id="disease-label">Sjukdom</InputLabel>
                   <Select labelId="disease-label" label="Sjukdom" value={disease} onChange={this.changeDisease}>
-                    <MenuItem value="DIABETES">Diabetes</MenuItem>
-                    <MenuItem value="OBESITY">Fetma</MenuItem>
+                    <MenuItem id="diease" value="DIABETES">
+                      Diabetes
+                    </MenuItem>
+                    <MenuItem id="diease" value="OBESITY">
+                      Fetma
+                    </MenuItem>
                   </Select>
                   <FormHelperText>{errors && (errors.disease || errors.general)}</FormHelperText>
                 </FormControl>
