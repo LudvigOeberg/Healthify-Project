@@ -1,10 +1,12 @@
-/* eslint-disable no-shadow */
+//import org.openqa.selenium.support.ui.Select
+
 let driver
 const webdriver = require('selenium-webdriver')
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 
 beforeEach(() => {
+  jest.setTimeout(80000)
   const chromeCapabilities = webdriver.Capabilities.chrome()
 
   // setting chrome options to start the browser fully maximized
@@ -42,8 +44,6 @@ function User() {
   this.email = `${randomInt}epost@test.se`
   this.passw = 'passw'
 }
-
-
 
 async function login(driver, userPath, user) {
   await driver.get(localURL)
@@ -83,11 +83,13 @@ async function registerPatient(driver, patient) {
   await driver.findElement(webdriver.By.id('email')).sendKeys(patient.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(patient.passw)
   await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
-  await driver.findElement(webdriver.By.id('age')).sendKeys(10)
+  await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys("2010-01-01T00:00:00Z")
+  await driver.findElement(webdriver.By.css("div[aria-labelledby='gender-label']")).click()
+  await driver.findElement(webdriver.By.css("li[data-value='FEMALE']")).click()
+  await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
+  await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
   await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
-  // await driver.get(`${localURL}parent`)
-  // driver.findElement(webdriver.By.className(await driver.wait(webdriver.until.alertIsPresent()),'MuiGrid-root'))
 }
 
 
@@ -99,31 +101,17 @@ test('TestCaseID:541. Register a new Patient', async () => {
   await registerPatient(driver, patient)
 })
 
-/*test('TestCaseID:542. Register same Patient to same parent twice', async () => {
+test('TestCaseID:542. Register same Patient to same parent twice', async () => {
   const user = new User()
   await connectToEHR()
   await register(driver, user)
   const patient = new User()
   await registerPatient(driver, patient)
-
-  await driver
-    .findElement(
-      webdriver.By.xpath(
-        "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-2 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
-      ),
-    )
-    .click()
-  await driver.findElement(webdriver.By.xpath("//a[@href='/register-patient']")).click()
-  await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
-  await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
-  await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
-  await driver.findElement(webdriver.By.id('email')).sendKeys(patient.email)
-  await driver.findElement(webdriver.By.id('password')).sendKeys(patient.passw)
-  await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
-  await driver.findElement(webdriver.By.id('age')).sendKeys(10)
-  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
-  await expect(driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)).rejects.toThrow('Timed out after 5 sec')
-}) */
+  await registerPatient(driver, patient).catch(async () => {
+    const text = await driver.findElement(webdriver.By.xpath("//p[@id='email-helper-text']"), 10000).getText()
+    await expect(text).toEqual('User already registered')
+  })
+})
 
 test('TestCaseID:543. Register two new Patient', async () => {
   const user = new User()

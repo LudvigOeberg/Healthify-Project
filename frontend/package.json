@@ -13,6 +13,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^2.5.1",
+    "jest": "^26.5.2",
     "react-scripts": "^3.4.3"
   },
   "dependencies": {
@@ -51,7 +52,8 @@
     "jest": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{js,jsx}'",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "jest": "jest --config tests/jest.config.js"
   },
   "browserslist": {
     "production": [

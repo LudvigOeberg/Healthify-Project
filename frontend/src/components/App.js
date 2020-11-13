@@ -22,7 +22,7 @@ import MonitorChildValue from './Parent/MonitorChildValue'
 import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
-import ParentSettingsPage from './Parent/ParentSettingsPage';
+import ParentSettingsPage from './Parent/ParentSettingsPage'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,

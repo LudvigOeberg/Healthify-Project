@@ -61,6 +61,8 @@ const ParentOverview = (props) => {
   const loading = props.inProgress
   const age = props.party ? `${Moment().diff(props.party[id].dateOfBirth, 'years')} år` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
+  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+
   useEffect(() => {
     props.onLoad(id, 0, 3)
     }, [id]) // eslint-disable-line
@@ -84,9 +86,9 @@ const ParentOverview = (props) => {
 
   return (
     <Grid container className={classes.root} spacing={5} height="100%">
-      <Grid item xs={6} sm={6}>
+      <Grid item xs={12} sm={12} md={6}>
         <Grid container spacing={1}>
-          <Grid item xs={6} sm={6}>
+          <Grid item xs={12} sm={6}>
             <Paper className={classes.paper} elevation={3}>
               <Typography component="h2" variant="h6">
                 {' '}
@@ -94,7 +96,7 @@ const ParentOverview = (props) => {
               </Typography>
             </Paper>
           </Grid>
-          <Grid item xs={6} sm={6}>
+          <Grid item xs={12} sm={6}>
             <Paper className={classes.paper} elevation={3}>
               <Typography component="h1" variant="h5">
                 {' '}
@@ -111,7 +113,7 @@ const ParentOverview = (props) => {
 
       <Grid item xs={12} sm={12} md={6}>
         <Grid container spacing={1}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={12} md={6}>
             <Paper className={classes.paper} elevation={3}>
               <Typography component="h2" variant="h6">
                 {' '}
@@ -137,12 +139,13 @@ const ParentOverview = (props) => {
                 {name}
               </Typography>
               <Typography variant="subtitle1">{age}</Typography>
+              <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
               <Avatar className={classes.avatar}>
                 <ChildCareIcon fontSize="large" />
               </Avatar>
             </Paper>
           </Grid>
-          <Grid item xs={6} sm={12}>
+          <Grid item xs={12}>
             <Paper className={classes.paper} elevation={3}>
               <Typography component="h1" variant="h6">
                 {' '}

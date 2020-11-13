@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 
 import { connect } from 'react-redux'
 import ChildCareIcon from '@material-ui/icons/ChildCare'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import { UPDATE_FIELD_AUTH, EDIT_CHILD, REGISTER_PAGE_UNLOADED, DELETE_CHILD } from '../../constants/actionTypes'
 import agent from '../../agent'
 
@@ -22,8 +22,8 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: REGISTER_PAGE_UNLOADED }),
   deletePatient: (ehrid, snackbar) => {
     const payload = agent.Parent.deleteChild(ehrid)
-    dispatch({type: DELETE_CHILD, payload, snackbar})
-  }
+    dispatch({ type: DELETE_CHILD, payload, snackbar })
+  },
 })
 
 const PatientEdit = (props) => {
@@ -40,7 +40,7 @@ const PatientEdit = (props) => {
     }
     props.editPatient(id, email, snackbar)
   }
-  const deletePatient = (id) => (ev)=> {
+  const deletePatient = (id) => (ev) => {
     ev.preventDefault()
     const snackbar = {
       message: `Du tog bort kontot för ${name}`,
@@ -67,7 +67,7 @@ const PatientEdit = (props) => {
   props.currentUser.children.map((child) => {
     if (child.child.ehrid === ehrid) {
       oldemail = child.child.email
-      name = child.child.name 
+      name = child.child.name
     }
     return null
   })
@@ -121,8 +121,8 @@ const PatientEdit = (props) => {
                 disabled={props.inProgress}
                 onClick={deletePatient(ehrid)}
               >
-                <DeleteForeverIcon/>
-                Ta bort {name}  
+                <DeleteForeverIcon />
+                Ta bort {name}
               </Button>
             </Grid>
           </Grid>

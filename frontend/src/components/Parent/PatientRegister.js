@@ -4,19 +4,17 @@ import {
   Grid,
   TextField,
   Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Button,
-  FormControlLabel,
-  Checkbox,
+  InputLabel,
+  FormControl,
+  FormHelperText,
 } from '@material-ui/core'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ChildCareIcon from '@material-ui/icons/ChildCare'
 import { withStyles } from '@material-ui/core/styles'
-
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
 import {
   REGISTER_CHILD,
   UPDATE_FIELD_AUTH,
@@ -29,8 +27,17 @@ const mapStateToProps = (state) => ({ ...state.auth, ...state.common })
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeFieldAuth: (key, value) => dispatch({ type: UPDATE_FIELD_AUTH, key, value }),
-  onSubmit: (name, surname, email, password, confirmPassword, dateofbirth, gender, snackbar) => {
-    const payload = agent.Parent.registerChild(name, surname, email, password, confirmPassword, dateofbirth, gender)
+  onSubmit: (name, surname, email, password, confirmPassword, dateofbirth, gender, disease, snackbar) => {
+    const payload = agent.Parent.registerChild(
+      name,
+      surname,
+      email,
+      password,
+      confirmPassword,
+      dateofbirth,
+      gender,
+      disease,
+    )
     dispatch({ type: REGISTER_CHILD, payload, snackbar })
   },
   onChangeBooleanAuth: (key, value) => dispatch({ type: UPDATE_AUTH_BOOLEAN, key, value }),
@@ -41,18 +48,33 @@ class PatientRegister extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeFieldAuth(ev.target.id, ev.target.value)
+    this.changeMonth = (ev) => this.props.onChangeFieldAuth('month', ev.target.value)
+    this.changeDay = (ev) => this.props.onChangeFieldAuth('day', ev.target.value)
+    this.changeDisease = (ev) => this.props.onChangeFieldAuth('disease', ev.target.value)
+    this.changeGender = (ev) => this.props.onChangeFieldAuth('gender', ev.target.value)
     this.changeAuthBoolean = (ev) => {
       this.props.onChangeBooleanAuth(ev.target.id, ev.target.checked)
     }
-    this.submitForm = (name, surname, email, password, confirmPassword) => (ev) => {
+    this.submitForm = (name, surname, email, password, confirmPassword, disease, dateofbirth, gender) => (ev) => {
       ev.preventDefault()
       const snackbar = {
         message: `Du registrerade barnet ${name} ${surname} 
-                    som lider av ${this.props.diabetes ? 'diabetes' : 'fetma'}`,
+                    som lider av ${disease === 'diabetes' ? 'diabetes' : 'fetma'}`,
         color: 'success',
         open: true,
       }
-      this.props.onSubmit(name, surname, email, password, confirmPassword, '1990-03-09T00:00:00.000Z', 'MALE', snackbar)
+
+      this.props.onSubmit(
+        name,
+        surname,
+        email,
+        password,
+        confirmPassword,
+        `${dateofbirth}T00:00:00.000Z`,
+        gender,
+        disease,
+        snackbar,
+      )
     }
   }
 
@@ -67,9 +89,10 @@ class PatientRegister extends Component {
     const { confirmPassword } = this.props
     const { name } = this.props
     const { surname } = this.props
+    const { gender } = this.props
+    const { dateofbirth } = this.props
     const errors = this.props.errors ? this.props.errors : null
-    const { diabetes } = this.props
-    const { fetma } = this.props
+    const { disease } = this.props
 
     return (
       <Container component="main" maxWidth="xs">
@@ -83,7 +106,7 @@ class PatientRegister extends Component {
           <form
             className={classes.form}
             noValidate
-            onSubmit={this.submitForm(name, surname, email, password, confirmPassword)}
+            onSubmit={this.submitForm(name, surname, email, password, confirmPassword, disease, dateofbirth, gender)}
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -165,54 +188,71 @@ class PatientRegister extends Component {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete=""
                   variant="outlined"
                   required
                   fullWidth
-                  value={this.props.age}
+                  name="dateofbirth"
+                  type="date"
+                  id="dateofbirth"
+                  label="Födelsedatum"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  helperText={errors && (errors.dateofbirth || errors.general)}
+                  error={errors && (errors.dateofbirth ? true : !!(false || errors.general))}
+                  value={dateofbirth}
                   onChange={this.changeAuth}
-                  id="age"
-                  name="age"
-                  label="Ålder"
                 />
               </Grid>
               <Grid item xs={12}>
-                <Accordion className={classes.accordion} elevation={3}>
-                  <AccordionSummary style={{ opacity: '0.87' }} expandIcon={<ExpandMoreIcon />}>
-                    Sjukdom
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <FormControlLabel
-                      style={{ opacity: '0.87' }}
-                      control={
-                        <Checkbox
-                          checked={diabetes}
-                          required
-                          disabled={fetma}
-                          onChange={this.changeAuthBoolean}
-                          id="diabetes"
-                        />
-                      }
-                      label="Diabetes"
-                      required
-                    />
-                  </AccordionDetails>
-                  <AccordionDetails>
-                    <FormControlLabel
-                      style={{ opacity: '0.87' }}
-                      control={
-                        <Checkbox
-                          checked={fetma}
-                          required
-                          disabled={diabetes}
-                          onChange={this.changeAuthBoolean}
-                          id="fetma"
-                        />
-                      }
-                      label="Fetma"
-                    />
-                  </AccordionDetails>
-                </Accordion>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  required
+                  error={errors && (errors.gender ? true : !!(false || errors.general))}
+                >
+                  <InputLabel id="gender-label">Kön</InputLabel>
+                  <Select
+                    labelId="gender-label"
+                    label="kön"
+                    value={gender}
+                    onChange={this.changeGender}
+                    error={errors && (errors.gender ? true : !!(false || errors.general))}
+                  >
+                    <MenuItem id="gender" value="MALE">
+                      Man
+                    </MenuItem>
+                    <MenuItem id="gender" value="FEMALE">
+                      Kvinna
+                    </MenuItem>
+                    <MenuItem id="gender" value="OTHER">
+                      Annat
+                    </MenuItem>
+                    <MenuItem id="gender" value="UNKNOWN">
+                      Vill ej specifiera
+                    </MenuItem>
+                  </Select>
+                  <FormHelperText>{errors && (errors.gender || errors.general)}</FormHelperText>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  required
+                  error={errors && (errors.disease ? true : !!(false || errors.general))}
+                >
+                  <InputLabel id="disease-label">Sjukdom</InputLabel>
+                  <Select labelId="disease-label" label="Sjukdom" value={disease} onChange={this.changeDisease}>
+                    <MenuItem id="diease" value="DIABETES">
+                      Diabetes
+                    </MenuItem>
+                    <MenuItem id="diease" value="OBESITY">
+                      Fetma
+                    </MenuItem>
+                  </Select>
+                  <FormHelperText>{errors && (errors.disease || errors.general)}</FormHelperText>
+                </FormControl>
               </Grid>
             </Grid>
             <Button

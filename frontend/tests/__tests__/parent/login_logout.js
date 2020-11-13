@@ -70,7 +70,6 @@ function User() {
     await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 10000, 'Timed out after 5 sec', 100)
   }
 
-
   //Finns ingen req.
   /*
   test('ID:XX. Log out after registration', async () => {
@@ -79,7 +78,6 @@ function User() {
     await register(driver, user)
     await logout(driver)
   }) */
-
 
   test('TestCaseID:131. Log in', async () => {
     const user = new User()

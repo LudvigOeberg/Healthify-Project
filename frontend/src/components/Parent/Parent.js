@@ -3,6 +3,7 @@ import Container from '@material-ui/core/Container'
 import { withStyles } from '@material-ui/core/styles'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import AddIcon from '@material-ui/icons/Add'
 import ChildList from './ChildList'
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
@@ -50,9 +51,23 @@ class ParentPage extends Component {
       )
     }
     return (
-      <div>
-        <Typography type="h5">Inga barn</Typography>
-      </div>
+      <Container component="main" maxWidth="md">
+        <div className={classes.paper}>
+          <Avatar className={classes.purple} src="test.123" alt={name} />
+          <Typography component="h1" variant="h5">
+            {name}
+          </Typography>
+
+          <div className={classes.paper}>
+            <a href="/register-patient">
+              <AddIcon color="primary" style={{ fontSize: 100 }} />
+            </a>
+            <Typography fontSize="50" color="primary">
+              Lägg till barn
+            </Typography>
+          </div>
+        </div>
+      </Container>
     )
   }
 }

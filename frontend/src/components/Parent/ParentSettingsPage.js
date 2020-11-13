@@ -21,32 +21,27 @@ class ParentSettingsPage extends Component {
     this.props.onUnload()
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   render() {
     const { classes } = this.props
     const name = this.props.currentUser ? `${this.props.currentUser.name} ${this.props.currentUser.surname}` : null
-      return (
-        <Container component="main" maxWidth="md">
-          <div className={classes.paper}>
-            <Avatar className={classes.purple} src="test.123" alt={name} />
-            <Typography component="h1" variant="h5">
-              {name} Inställningar
-            </Typography>
-            </div>
+    return (
+      <Container component="main" maxWidth="md">
+        <div className={classes.paper}>
+          <Avatar className={classes.purple} src="test.123" alt={name} />
+          <Typography component="h1" variant="h5">
+            {name} Inställningar
+          </Typography>
+        </div>
 
-            <div className={classes.paper}>
-            <Button type="submit" variant="contained" color="secondary" >
-              Delete Account
-            </Button>
-            </div>
-       
-
-
-
-          </Container>
-      )
+        <div className={classes.paper}>
+          <Button type="submit" variant="contained" color="secondary">
+            Delete Account
+          </Button>
+        </div>
+      </Container>
+    )
   }
 }
 
