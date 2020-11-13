@@ -145,7 +145,7 @@ const ParentOverview = (props) => {
               </Avatar>
             </Paper>
           </Grid>
-          <Grid item xs={12} >
+          <Grid item xs={12}>
             <Paper className={classes.paper} elevation={3}>
               <Typography component="h1" variant="h6">
                 {' '}
