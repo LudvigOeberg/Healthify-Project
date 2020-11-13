@@ -121,7 +121,7 @@ const ParentOverview = (props) => {
                 GRAF
               </Typography>
               <TimeLineChart
-              chartData={data ? reformatForChart(input) : null }
+              chartData={input ? reformatForChart(input) : null }
               label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
               ></TimeLineChart>
             </Paper>
@@ -142,7 +142,7 @@ const ParentOverview = (props) => {
               <CustomPaginationActionsTable
                 columns={['time', 'value', 'indicator']}
                 loading={loading}
-                rows={data ? reformat(input, false) : null }
+                rows={input ? reformat(input, false) : null }
                 titles={colDesc}
                 paginate={false}
               />

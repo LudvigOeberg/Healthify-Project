@@ -143,7 +143,7 @@ const MonitorChildValue = (props) => {
               //   columns={['x', 'y']}
               columns={['time', 'value', 'indicator']}
               loading={loading}
-              rows={data ? reformat(input, false) : null}
+              rows={input ? reformat(input, false) : null}
               // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
               titles={colDesc}
               paginate
@@ -154,7 +154,7 @@ const MonitorChildValue = (props) => {
               Graf
             </Typography>
             <TimeLineChart
-              chartData={data ? reformatForChart(input) : null}
+              chartData={input ? reformatForChart(input) : null}
               label={disease === "DIABETES" ? "Blodsocker (mmol/L)" : "Vikt (kg)"}
             ></TimeLineChart>
           </Grid>
