@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
+import ConfirmDialog from './ConfirmPopup'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -47,7 +48,7 @@ class ParentSettingsPage extends Component {
 
 const styles = (theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(12),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

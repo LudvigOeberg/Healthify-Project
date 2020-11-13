@@ -163,7 +163,7 @@ const ParentOverview = (props) => {
 
 const styles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(0),
+    marginTop: theme.spacing(6),
     alignItems: 'top',
     display: 'flex',
     padding: theme.spacing(1),
