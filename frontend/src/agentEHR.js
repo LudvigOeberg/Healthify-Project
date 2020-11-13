@@ -78,9 +78,9 @@ const Demograhics = {
 
 const Query = {
   aql: (aql) => requests.get(`/query?aql=${aql}`),
-  weight: (ehrId) =>
+  weight: (ehrId, limit) =>
     // eslint-disable-next-line implicit-arrow-linebreak
-    requests.get(`/view/${ehrId}/weight`),
+    requests.get(`/view/${ehrId}/weight?limit=${limit}`),
   length: (ehrId) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     requests.get(`/view/${ehrId}/length`),

@@ -37,7 +37,7 @@ const mapDispatchToProps = (dispatch) => ({
       agentEHR.Demograhics.newMeasurment(null, measurement, ehrId).then(() => {
         dispatch({
           type: LOAD_WEIGHT,
-          payload: agentEHR.Query.weight(ehrId),
+          payload: agentEHR.Query.weight(ehrId, 20),
         })
       })
       
@@ -52,7 +52,7 @@ const mapDispatchToProps = (dispatch) => ({
     disease==="DIABETES" ?
     dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
     :
-    dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId)})
+    dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit)})
   }
 })
 

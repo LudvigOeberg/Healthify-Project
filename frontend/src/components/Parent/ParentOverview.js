@@ -29,7 +29,7 @@ const mapDispatchToProps = (dispatch) => ({
     disease==="DIABETES" ?
     dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
     :
-    dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId)})
+    dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit)})
   }
 })
 
