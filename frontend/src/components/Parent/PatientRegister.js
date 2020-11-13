@@ -215,6 +215,7 @@ class PatientRegister extends Component {
                   <Select
                     labelId="gender-label"
                     label="kön"
+                    id="gender"
                     value={gender}
                     onChange={this.changeGender}
                     error={errors && (errors.gender ? true : !!(false || errors.general))}
@@ -230,6 +231,7 @@ class PatientRegister extends Component {
               <Grid item xs={12}>
                 <FormControl
                   fullWidth
+                  id ="disease"
                   variant="outlined"
                   required
                   error={errors && (errors.disease ? true : !!(false || errors.general))}
