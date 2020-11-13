@@ -132,7 +132,7 @@ const MonitorChildValue = (props) => {
               //   columns={['x', 'y']}
               columns={['time', 'value', 'indicator']}
               loading={loading}
-              rows={disease==="DIABETES"  ? bloodsugar ? reformat(bloodsugar, false) : null : weight ? reformat(weight, false) : null }
+              rows={disease==="DIABETES"  ? reformat(bloodsugar, false) : reformat(weight, false)}
               // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
               titles={colDesc}
               paginate
@@ -143,7 +143,7 @@ const MonitorChildValue = (props) => {
               Graf
             </Typography>
             <TimeLineChart
-              chartData={disease === "DIABETES" ? bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null : weight ? Reformat.weight(weight, false, true) : null}
+              chartData={disease === "DIABETES" ? Reformat.bloodsugar(bloodsugar, false, true) : Reformat.weight(weight, false, true)}
               label={disease === "DIABETES" ? "Blodsocker (mmol/L)" : "Vikt (kg)"}
             ></TimeLineChart>
           </Grid>
