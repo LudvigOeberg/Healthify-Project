@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
 import PersonIcon from '@material-ui/icons/Person'
-// import { Hidden } from '@material-ui/core'
 import TimeLineChart from '../TimeLineChart'
 import {
   PATIENT_PAGE_UNLOADED,
