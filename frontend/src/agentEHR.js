@@ -72,7 +72,7 @@ const Demograhics = {
       'vital_signs/height_length/any_event/body_height_length': height,
       'vital_signs/body_weight/any_event/body_weight': weight,
     }
-    if (height || weight) return composition.save(composition, ehrId, 'Vital Signs')
+    if (height || weight) return Composition.save(composition, ehrId, 'Vital Signs')
   },
 }
 

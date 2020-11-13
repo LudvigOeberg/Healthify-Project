@@ -24,6 +24,23 @@ const Reformat = {
     }
     return dataObjects
   },
+  weight: (data, reverse = false, iso = false) => {
+    const dataObjects = []
+    if (reverse) {
+      for (let i = data.length - 1; i >= 0; i--) {
+        if (iso) {
+          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD hh:mm'), y: data[i].weight })
+        } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] hh:mm'), y: data[i].weight })
+      }
+    } else {
+      for (let i = 0; i < data.length; i++) {
+        if (iso) {
+          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD hh:mm'), y: data[i].weight })
+        } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] hh:mm'), y: data[i].weight })
+      }
+    }
+    return dataObjects
+  },
 }
 
 export default Reformat

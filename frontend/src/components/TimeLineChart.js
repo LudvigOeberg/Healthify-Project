@@ -84,9 +84,13 @@ const TimeLineChart = (props) => {
   const displaySettings = getSettings(timeHorizon)
   const changeRadio = (event) => {
     props.onChangeRadio(event.target.value)
-  }
+  }   
+  var maxData = 0 
+  
+  for (var data in chartData) 
+    if (data>maxData)
+      maxData=data
  
-
   return (
     <div>
       <Line
@@ -119,8 +123,8 @@ const TimeLineChart = (props) => {
             yAxes: [
               {
                 ticks: {
-                  suggestedMax: label==="Blodsocker (mmol/L)" ? 12 : 80,
-                  suggestedMin: 0
+                  suggestedMax: maxData,
+                  min: 0
                 },
               },
             ],

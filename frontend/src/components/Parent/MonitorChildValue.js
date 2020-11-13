@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { Grid } from '@material-ui/core'
-import { OPEN_SNACKBAR, FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR, SAVE_BLOODSUGAR } from '../../constants/actionTypes'
+import { OPEN_SNACKBAR, FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR, SAVE_BLOODSUGAR, LOAD_WEIGHT, SAVE_WEIGHT } from '../../constants/actionTypes'
 import CustomPaginationActionsTable from '../TablePagination'
 import TimeLineChart from '../TimeLineChart'
 import agentEHR from '../../agentEHR'
@@ -22,23 +22,38 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
-  onSubmit: (ehrId, bloodsugar, snackbar) =>
+  onSubmit: (ehrId, measurement, snackbar, disease) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     dispatch({
-      type: SAVE_BLOODSUGAR,
-      payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar).then(() => {
+      type: disease==="DIABETES" ? SAVE_BLOODSUGAR : SAVE_WEIGHT,
+      payload: disease==="DIABETES" ? 
+      agentEHR.Composition.saveBloodSugar(ehrId, measurement).then(() => {
         dispatch({
           type: LOAD_BLOODSUGAR,
           payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
         })
-      }),
+      }) 
+      :
+      agentEHR.Demograhics.newMeasurment(null, measurement, ehrId).then(() => {
+        dispatch({
+          type: LOAD_WEIGHT,
+          payload: agentEHR.Query.weight(ehrId),
+        })
+      })
+      
+      ,
       snackbar,
     }),
   onOpenSnackbar: (message, color) => dispatch({ type: OPEN_SNACKBAR, message, color }),
-  onLoad: (ehrId, offset, limit) => {
-    dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
-    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
+  onLoad: (ehrId) => {
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }) 
   },
+  loadValues: (ehrId, offset, limit, disease) => {
+    disease==="DIABETES" ?
+    dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+    :
+    dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId)})
+  }
 })
 
 
@@ -49,14 +64,15 @@ const MonitorChildValue = (props) => {
   const { childValue } = props
   const open = props.snackbarOpen
   const { bloodsugar } = props
+  const { weight } = props
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
   const loading = props.inProgress
-  const colDesc = ['Datum', `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`, `${disease === 'DIABETES' ? 'Blodsocker' : 'Tjock?'}`]
+  const colDesc = ['Datum', `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`, `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`]
 
   useEffect(() => {
-    props.onLoad(id, 0, 20)
-  }, [id]) // eslint-disable-line
+    disease ? props.loadValues(id, 0, 20, disease) : props.onLoad(id)
+  }, [id, disease]) // eslint-disable-line
 
   const validate = (val) => val < 100 && val > 0
 
@@ -65,13 +81,13 @@ const MonitorChildValue = (props) => {
     // const color = validate(props.childValue) ? 'success' : 'error'
     // const message = validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!'
     // props.onOpenSnackbar(message, color)
-    const bloodsugarChild = props.childValue
+    const measurementChild = props.childValue
     const snackbar = {
       open: true,
-      message: validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!',
+      message: validate(props.childValue) ? `Du loggade värdet: ${props.childValue} ${disease==="DIABETES" ? 'mmol/L' : 'kg'}` : 'Fel format!',
       color: validate(props.childValue) ? 'success' : 'error',
     }
-    props.onSubmit(id, bloodsugarChild, snackbar)
+    props.onSubmit(id, measurementChild, snackbar, disease)
   }
   const changeField = (ev) => {
     props.onChangeField(ev.target.id, ev.target.value)
@@ -93,8 +109,8 @@ const MonitorChildValue = (props) => {
     for (let i = 0; i < data.length; i++) {
       dataObjects.push({
         time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
-        value: data[i].value,
-        indicator: getIndication(data[i].value),
+        value: disease==="DIABETES" ? data[i].value : data[i].weight,
+        indicator: getIndication(disease==="DIABETES" ? data[i].value : data[i].weight),
       })
     }
     return dataObjects
@@ -116,7 +132,7 @@ const MonitorChildValue = (props) => {
               //   columns={['x', 'y']}
               columns={['time', 'value', 'indicator']}
               loading={loading}
-              rows={bloodsugar ? reformat(bloodsugar, false) : null}
+              rows={disease==="DIABETES"  ? bloodsugar ? reformat(bloodsugar, false) : null : weight ? reformat(weight, false) : null }
               // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
               titles={colDesc}
               paginate
@@ -127,7 +143,7 @@ const MonitorChildValue = (props) => {
               Graf
             </Typography>
             <TimeLineChart
-              chartData={bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null}
+              chartData={disease === "DIABETES" ? bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null : weight ? Reformat.weight(weight, false, true) : null}
               label={disease === "DIABETES" ? "Blodsocker (mmol/L)" : "Vikt (kg)"}
             ></TimeLineChart>
           </Grid>
