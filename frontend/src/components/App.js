@@ -120,6 +120,9 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={AccessedData}
               />
+              {/*Commented out as link from ChildListItem no longer links to /caregiving-team
+               here in case we need it */}
+              {/*
               <RequiredRoute
                 exact
                 path="/caregiving-team"
@@ -127,6 +130,7 @@ class App extends React.Component {
                 requires={['auth', 'parent', 'child']}
                 component={CaregivingPage}
               />
+              */}
               <RequiredRoute
                 exact
                 path="/parent-child-overview/:id"

@@ -219,10 +219,18 @@ class PatientRegister extends Component {
                     onChange={this.changeGender}
                     error={errors && (errors.gender ? true : !!(false || errors.general))}
                   >
-                    <MenuItem value="MALE">Man</MenuItem>
-                    <MenuItem value="FEMALE">Kvinna</MenuItem>
-                    <MenuItem value="OTHER">Annat</MenuItem>
-                    <MenuItem value="UNKNOWN">Vill ej specifiera</MenuItem>
+                    <MenuItem id="gender" value="MALE">
+                      Man
+                    </MenuItem>
+                    <MenuItem id="gender" value="FEMALE">
+                      Kvinna
+                    </MenuItem>
+                    <MenuItem id="gender" value="OTHER">
+                      Annat
+                    </MenuItem>
+                    <MenuItem id="gender" value="UNKNOWN">
+                      Vill ej specifiera
+                    </MenuItem>
                   </Select>
                   <FormHelperText>{errors && (errors.gender || errors.general)}</FormHelperText>
                 </FormControl>
@@ -236,8 +244,12 @@ class PatientRegister extends Component {
                 >
                   <InputLabel id="disease-label">Sjukdom</InputLabel>
                   <Select labelId="disease-label" label="Sjukdom" value={disease} onChange={this.changeDisease}>
-                    <MenuItem value="DIABETES">Diabetes</MenuItem>
-                    <MenuItem value="OBESITY">Fetma</MenuItem>
+                    <MenuItem id="diease" value="DIABETES">
+                      Diabetes
+                    </MenuItem>
+                    <MenuItem id="diease" value="OBESITY">
+                      Fetma
+                    </MenuItem>
                   </Select>
                   <FormHelperText>{errors && (errors.disease || errors.general)}</FormHelperText>
                 </FormControl>
