@@ -47,7 +47,7 @@ const LoggedInView = (props) => {
           className={clsx(classes.nav, {
             [classes.appBarShift]: props.drawerOpen,
           })}
-          position="static"
+          position="fixed"
         >
           <Toolbar>
             <IconButton
