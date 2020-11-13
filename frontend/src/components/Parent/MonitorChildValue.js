@@ -69,6 +69,17 @@ const MonitorChildValue = (props) => {
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
   const loading = props.inProgress
   const colDesc = ['Datum', `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`, `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`]
+  const data = bloodsugar ? bloodsugar: weight
+ 
+  const reformatForChart = (data) => {
+    if(bloodsugar)
+      return Reformat.bloodsugar(data, false, true)
+    else if(weight)
+      return Reformat.weight(data, false, true)
+    else
+      return null
+ }
+
 
   useEffect(() => {
     disease ? props.loadValues(id, 0, 20, disease) : props.onLoad(id)
@@ -132,7 +143,7 @@ const MonitorChildValue = (props) => {
               //   columns={['x', 'y']}
               columns={['time', 'value', 'indicator']}
               loading={loading}
-              rows={disease==="DIABETES"  ? reformat(bloodsugar, false) : reformat(weight, false)}
+              rows={data ? reformat(data, false) : null}
               // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
               titles={colDesc}
               paginate
@@ -143,7 +154,7 @@ const MonitorChildValue = (props) => {
               Graf
             </Typography>
             <TimeLineChart
-              chartData={disease === "DIABETES" ? Reformat.bloodsugar(bloodsugar, false, true) : Reformat.weight(weight, false, true)}
+              chartData={data ? reformatForChart(data) : null}
               label={disease === "DIABETES" ? "Blodsocker (mmol/L)" : "Vikt (kg)"}
             ></TimeLineChart>
           </Grid>

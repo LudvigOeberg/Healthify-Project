@@ -55,7 +55,17 @@ const ParentOverview = (props) => {
   const loading = props.inProgress
   const age = props.party ? `${Moment().diff(props.party[id].dateOfBirth, 'years')} år` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
+  const data = bloodsugar ? bloodsugar: weight
   
+  const reformatForChart = (data) => {
+    if(bloodsugar)
+      return Reformat.bloodsugar(data, false, true)
+    else if(weight)
+      return Reformat.weight(data, false, true)
+    else
+      return null
+ }
+
 
 
   const reformat = (data) => {
@@ -74,6 +84,7 @@ const ParentOverview = (props) => {
     disease ? props.loadValues(id, 0, 3, disease) : props.onLoad(id)
     }, [id, disease]) // eslint-disable-line
 
+    
   const doctor = {
     name: 'Doktor X',
     mail: 'Dr.x@gmail.com',
@@ -110,7 +121,7 @@ const ParentOverview = (props) => {
                 GRAF
               </Typography>
               <TimeLineChart
-              chartData={disease === "DIABETES" ? bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null : weight ? Reformat.weight(weight, false, true) : null}
+              chartData={data ? reformatForChart(data) : null }
               label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
               ></TimeLineChart>
             </Paper>
@@ -131,7 +142,7 @@ const ParentOverview = (props) => {
               <CustomPaginationActionsTable
                 columns={['time', 'value', 'indicator']}
                 loading={loading}
-                rows={disease==="DIABETES"  ? bloodsugar ? reformat(bloodsugar, false) : null : weight ? reformat(weight, false) : null }
+                rows={data ? reformat(data, false) : null }
                 titles={colDesc}
                 paginate={false}
               />
