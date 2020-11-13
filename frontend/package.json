@@ -13,7 +13,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^2.5.1",
-    "jest": "^26.5.2",
+    "jest": "^24.9.0",
     "react-scripts": "^3.4.3"
   },
   "dependencies": {
@@ -49,11 +49,10 @@
     "start": "cross-env PORT=4100 react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env PORT=4100 react-scripts test --env=jsdom",
-    "jest": "jest",
+    "jest": "jest --config tests/jest.config.js",
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{js,jsx}'",
-    "lint:fix": "npm run lint -- --fix",
-    "jest": "jest --config tests/jest.config.js"
+    "lint:fix": "npm run lint -- --fix"
   },
   "browserslist": {
     "production": [
