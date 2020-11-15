@@ -13,6 +13,8 @@ import agentEHR from '../../agentEHR'
 import { UPDATE_BOOLEAN, FIELD_CHANGE, LOAD_BLOODSUGAR, LOAD_PARTY } from '../../constants/actionTypes'
 import TimeLineChart from '../TimeLineChart'
 import Reformat from '../../reformatEHRData'
+import FooterBar from '../FooterBar'
+import AddIcon from '@material-ui/icons/Add'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -85,6 +87,7 @@ const ParentOverview = (props) => {
   const caregivers = [doctor, shrink, nurse]
 
   return (
+    <div>
     <Grid container className={classes.root} spacing={5} height="100%">
       <Grid item xs={12} sm={12} md={6}>
         <Grid container spacing={1}>
@@ -157,7 +160,10 @@ const ParentOverview = (props) => {
           </Grid>
         </Grid>
       </Grid>
+      
     </Grid>
+      <FooterBar/>
+    </div>
   )
 }
 
@@ -188,3 +194,4 @@ const styles = makeStyles((theme) => ({
 }))
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParentOverview)
+
