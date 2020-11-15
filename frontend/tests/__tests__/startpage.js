@@ -1,7 +1,7 @@
 let driver
 const webdriver = require('selenium-webdriver')
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
-const localURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
+const localURL = 'http://localhost:4100/'
 
 beforeEach(() => {
   const chromeCapabilities = webdriver.Capabilities.chrome()
