@@ -12,9 +12,9 @@ beforeAll(() => {
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
-afterAll(() => {
-  driver.close()
-})
+// afterAll(() => {
+//   driver.close()
+// })
 
 function User(user) {
   const randomInt = Math.floor(Math.random() * Math.floor(1000000))

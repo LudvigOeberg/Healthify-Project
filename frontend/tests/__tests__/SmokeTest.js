@@ -13,9 +13,9 @@ beforeAll(() => {
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
-afterAll(() => {
-  driver.close()
-})
+// afterAll(() => {
+//   driver.close()
+// })
 
 function User(user) {
   const randomInt = Math.floor(Math.random() * Math.floor(1000000))
@@ -95,7 +95,7 @@ async function registerPatient(driver, patient) {
 }
 describe('General Smoke Test', () => {
   test('ID:S1. Test start application', async () => {
-    getHomePage(localURL)
+    await getHomePage(localURL)
     expect(await driver.getTitle()).toEqual('Healthify')
   })
 
