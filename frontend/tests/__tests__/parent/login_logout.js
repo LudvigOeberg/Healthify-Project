@@ -76,10 +76,11 @@ async function register(driver, user) {
     await logout(driver)
   }) */
 
-test('TestCaseID:131. Log in', async () => {
+test('TestCaseID:141. Check if a parent is redirected to /parent after a sucessful log on', async () => {
   const user = new User()
   await connectToEHR()
   await register(driver, user)
   await logout(driver)
   await login(driver, 'parent', user)
+  expect(await driver.getCurrentUrl()).toEqual(localURL + "parent")
 })
