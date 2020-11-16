@@ -96,7 +96,7 @@ class App extends React.Component {
 
     if (this.props.appLoaded) {
 
-       if (this.props.currentUser !== null && this.props.currentUser.timer !== undefined && this.props.currentUser.timer !== null) { 
+       if (this.props.currentUser !== null && this.props.currentUser != undefined && this.props.currentUser.timer !== undefined && this.props.currentUser.timer !== null) { 
          if (currTime >= this.props.currentUser.timer) {
            this.props.setTimerSnackbarOpen(true)
          }
