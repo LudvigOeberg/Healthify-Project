@@ -86,7 +86,7 @@ const TimeLineChart = (props) => {
     props.onChangeRadio(event.target.value)
   }   
   var maxData = 0 
-  
+  //eslint-disable-next-line
   for (var data in chartData) 
     if (data>maxData)
       maxData=data
