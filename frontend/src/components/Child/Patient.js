@@ -68,25 +68,37 @@ class Patient extends Component {
       const bloodsugar = this.props.bloodsugarValue
       var snackbar = {
         open: true,
-
         message: `Du loggade värdet: ${bloodsugar} mmol/L`,
         color: 'success',
       }
-      if (bloodsugar > 8) {
+      var timer = this.props.currentUser.timer
+      if (bloodsugar > 8) { //Change the 8 to whatever the upper max-level should be. Same with the 4 below.
+        if (timer === null){
+        timer = setTimer()
+        } else {
+          timer = this.props.currentUser.timer
+        }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat högt blodsockervärde! ÄT NÅGOT SNART OCH GÖR EN NY MÄTNING INOM EN TIMME!`,
+          message: `Du verkar ha loggat högt blodsockervärde! Ät något och gör en ny mätning inom en timme.`,
           color: 'error',
         }
       }
-      if (bloodsugar < 6) {
+      if (bloodsugar < 4) {
+        if (this.props.currentUser.timer === null){ // If and If else= The timer does not reset until a good value is entered. Can be removed. 
+          timer = setTimer()
+        } else {
+          timer = this.props.currentUser.timer
+        }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat lågt blodsockervärde,  Kanske dags för lite insulin OCH GÖR EN NY MÄTNING INOM EN TIMME!`,
+          message: `Du verkar ha loggat lågt blodsockervärde, Kanske dags för lite insulin och gör en ny mätning inom en timme.`,
           color: 'error',
         }
+      } 
+      if (bloodsugar >= 4 && bloodsugar <= 8){
+        timer = null
       }
-      const timer = setTimer()
 
       this.props.onSubmit(this.props.currentUser.ehrid, bloodsugar, snackbar, timer)
     }
