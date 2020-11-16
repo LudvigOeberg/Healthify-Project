@@ -49,10 +49,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }) 
   },
   loadValues: (ehrId, offset, limit, disease) => {
-    disease==="DIABETES" ?
-    dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
-    :
-    dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit)})
+    if (disease==="DIABETES")
+      dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+    else if (disease==="OBESITY")
+      dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit)})
   }
 })
 
@@ -82,7 +82,8 @@ const MonitorChildValue = (props) => {
 
 
   useEffect(() => {
-    disease ? props.loadValues(id, 0, 20, disease) : props.onLoad(id)
+    props.onLoad(id)
+    props.loadValues(id, 0, 20, disease) 
   }, [id, disease]) // eslint-disable-line
 
   const validate = (val) => val < 100 && val > 0
