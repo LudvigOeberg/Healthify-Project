@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { Grid } from '@material-ui/core'
-import { OPEN_SNACKBAR, FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR, SAVE_BLOODSUGAR } from '../../constants/actionTypes'
+import { OPEN_SNACKBAR, FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR, SAVE_BLOODSUGAR, LOAD_WEIGHT, SAVE_WEIGHT } from '../../constants/actionTypes'
 import CustomPaginationActionsTable from '../TablePagination'
 import TimeLineChart from '../TimeLineChart'
 import agentEHR from '../../agentEHR'
@@ -22,39 +22,69 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
-  onSubmit: (ehrId, bloodsugar, snackbar) =>
+  onSubmit: (ehrId, measurement, snackbar, disease) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     dispatch({
-      type: SAVE_BLOODSUGAR,
-      payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar).then(() => {
+      type: disease==="DIABETES" ? SAVE_BLOODSUGAR : SAVE_WEIGHT,
+      payload: disease==="DIABETES" ? 
+      agentEHR.Composition.saveBloodSugar(ehrId, measurement).then(() => {
         dispatch({
           type: LOAD_BLOODSUGAR,
           payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
         })
-      }),
+      }) 
+      :
+      agentEHR.Demograhics.newMeasurment(null, measurement, ehrId).then(() => {
+        dispatch({
+          type: LOAD_WEIGHT,
+          payload: agentEHR.Query.weight(ehrId, 20),
+        })
+      })
+      
+      ,
       snackbar,
     }),
   onOpenSnackbar: (message, color) => dispatch({ type: OPEN_SNACKBAR, message, color }),
-  onLoad: (ehrId, offset, limit) => {
-    dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
-    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
+  onLoad: (ehrId) => {
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }) 
   },
+  loadValues: (ehrId, offset, limit, disease) => {
+    if (disease==="DIABETES")
+      dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+    else if (disease==="OBESITY")
+      dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit)})
+  }
 })
 
-const colDesc = ['Datum vid registrering', 'Värde (mmol/L)', 'Blodsocker']
+
 
 const MonitorChildValue = (props) => {
+  const { id } = props.match.params
   const classes = styles()
   const { childValue } = props
   const open = props.snackbarOpen
   const { bloodsugar } = props
-  const { id } = props.match.params
+  const { weight } = props
+  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
   const loading = props.inProgress
+  const colDesc = ['Datum', `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`, `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`]
+  const input = bloodsugar ? bloodsugar: weight
+ 
+  const reformatForChart = (data) => {
+    if(bloodsugar)
+      return Reformat.bloodsugar(data, false, true)
+    else if(weight)
+      return Reformat.weight(data, false, true)
+    else
+      return null
+ }
+
 
   useEffect(() => {
-    props.onLoad(id, 0, 20)
-  }, [id]) // eslint-disable-line
+    props.onLoad(id)
+    props.loadValues(id, 0, 20, disease) 
+  }, [id, disease]) // eslint-disable-line
 
   const validate = (val) => val < 100 && val > 0
 
@@ -63,13 +93,13 @@ const MonitorChildValue = (props) => {
     // const color = validate(props.childValue) ? 'success' : 'error'
     // const message = validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!'
     // props.onOpenSnackbar(message, color)
-    const bloodsugarChild = props.childValue
+    const measurementChild = props.childValue
     const snackbar = {
       open: true,
-      message: validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!',
+      message: validate(props.childValue) ? `Du loggade värdet: ${props.childValue} ${disease==="DIABETES" ? 'mmol/L' : 'kg'}` : 'Fel format!',
       color: validate(props.childValue) ? 'success' : 'error',
     }
-    props.onSubmit(id, bloodsugarChild, snackbar)
+    props.onSubmit(id, measurementChild, snackbar, disease)
   }
   const changeField = (ev) => {
     props.onChangeField(ev.target.id, ev.target.value)
@@ -91,8 +121,8 @@ const MonitorChildValue = (props) => {
     for (let i = 0; i < data.length; i++) {
       dataObjects.push({
         time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
-        value: data[i].value,
-        indicator: getIndication(data[i].value),
+        value: disease==="DIABETES" ? data[i].value : data[i].weight,
+        indicator: getIndication(disease==="DIABETES" ? data[i].value : data[i].weight),
       })
     }
     return dataObjects
@@ -114,7 +144,7 @@ const MonitorChildValue = (props) => {
               //   columns={['x', 'y']}
               columns={['time', 'value', 'indicator']}
               loading={loading}
-              rows={bloodsugar ? reformat(bloodsugar, false) : null}
+              rows={input ? reformat(input, false) : null}
               // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
               titles={colDesc}
               paginate
@@ -125,8 +155,8 @@ const MonitorChildValue = (props) => {
               Graf
             </Typography>
             <TimeLineChart
-              chartData={bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null}
-              label="Blodsocker (mmol/L)"
+              chartData={input ? reformatForChart(input) : null}
+              label={disease === "DIABETES" ? "Blodsocker (mmol/L)" : "Vikt (kg)"}
             ></TimeLineChart>
           </Grid>
           <Grid item xs={12} align="center">
@@ -134,7 +164,7 @@ const MonitorChildValue = (props) => {
               <AddIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Skriv in ditt barns blodsockervärde
+              Skriv in ditt barns {disease === 'DIABETES' ? 'blodsockervärde' : 'uppmätta vikt'}
             </Typography>
             <form className={classes.form} noValidate onSubmit={(ev) => submitForm(ev)} autoComplete="off">
               <Grid container spacing={0}>
@@ -146,7 +176,7 @@ const MonitorChildValue = (props) => {
                     id="childValue"
                     name="childValue"
                     InputProps={{
-                      startAdornment: <InputAdornment position="start">mmol/L</InputAdornment>,
+                      startAdornment: <InputAdornment position="start">{disease === 'DIABETES' ? 'mmol/L' : 'kg'}</InputAdornment>,
                     }}
                     value={childValue}
                     disabled={open}

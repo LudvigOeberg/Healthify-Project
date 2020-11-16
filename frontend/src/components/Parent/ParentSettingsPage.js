@@ -32,7 +32,7 @@ class ParentSettingsPage extends Component {
   componentDidMount() {}
   deleteAccount() {
     //delete account from database
-    console.log("delete account")
+    //console.log("delete account")
     this.setState({open:false})
   }
   render() {
@@ -40,7 +40,7 @@ class ParentSettingsPage extends Component {
     const name = this.props.currentUser ? `${this.props.currentUser.name} ${this.props.currentUser.surname}` : null
     return (
       <Container component="main" maxWidth="md">
-              {console.log(this.state.open)}
+              {/* {console.log(this.state.open)} */}
         <div className={classes.paper}>
           <Avatar className={classes.purple} src="test.123" alt={name} />
           <Typography component="h1" variant="h5">
@@ -55,7 +55,7 @@ class ParentSettingsPage extends Component {
           <Modal className={classes.modalStyle}
           disableAutoFocus = {true}
           open={this.state.open}
-          onClose={console.log("closed modal")}
+          // onClose={console.log("closed modal")}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
           >

@@ -72,15 +72,15 @@ const Demograhics = {
       'vital_signs/height_length/any_event/body_height_length': height,
       'vital_signs/body_weight/any_event/body_weight': weight,
     }
-    if (height || weight) return composition.save(composition, ehrId, 'Vital Signs')
+    if (height || weight) return Composition.save(composition, ehrId, 'Vital Signs')
   },
 }
 
 const Query = {
   aql: (aql) => requests.get(`/query?aql=${aql}`),
-  weight: (ehrId) =>
+  weight: (ehrId, limit) =>
     // eslint-disable-next-line implicit-arrow-linebreak
-    requests.get(`/view/${ehrId}/weight`),
+    requests.get(`/view/${ehrId}/weight?limit=${limit}`),
   length: (ehrId) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     requests.get(`/view/${ehrId}/length`),
