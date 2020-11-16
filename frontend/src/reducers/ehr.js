@@ -1,4 +1,13 @@
-import { LOAD_PARTY, SAVE_PARTY, LOAD_BLOODSUGAR, ASYNC_START, SAVE_BLOODSUGAR, LOGOUT, SAVE_WEIGHT, LOAD_WEIGHT } from '../constants/actionTypes'
+import {
+  LOAD_PARTY,
+  SAVE_PARTY,
+  LOAD_BLOODSUGAR,
+  ASYNC_START,
+  SAVE_BLOODSUGAR,
+  LOGOUT,
+  SAVE_WEIGHT,
+  LOAD_WEIGHT,
+} from '../constants/actionTypes'
 
 export default (state = {}, action) => {
   switch (action.type) {

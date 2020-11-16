@@ -23,6 +23,8 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
+import Laboration from './Child/Laboration'
+import LabChild from './Child/LabChild'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -120,7 +122,7 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={AccessedData}
               />
-              {/*Commented out as link from ChildListItem no longer links to /caregiving-team
+              {/* Commented out as link from ChildListItem no longer links to /caregiving-team
                here in case we need it */}
               {/*
               <RequiredRoute
@@ -173,7 +175,20 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={ParentSettingsPage}
               />
-
+              <RequiredRoute
+                exact
+                path="/child-laboration"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={Laboration}
+              />
+              <RequiredRoute
+                exact
+                path="/lab-child"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={LabChild}
+              />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
             </Switch>
