@@ -23,6 +23,7 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
+import SimulatePatient from './Parent/SimulatePatient'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -172,6 +173,13 @@ class App extends React.Component {
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
                 component={ParentSettingsPage}
+              />
+              <RequiredRoute
+                exact
+                path="/simulate-patient/:id"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={SimulatePatient}
               />
 
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
