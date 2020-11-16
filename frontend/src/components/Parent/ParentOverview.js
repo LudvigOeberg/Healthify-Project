@@ -153,6 +153,9 @@ const ParentOverview = (props) => {
               <Button variant="contained" color="secondary" href={`/monitor-child/${id}`}>
                 Hantera värden
               </Button>
+              <Button variant="contained" color="secondary" href={`/simulate-patient/${id}`}>
+                Simulera värden
+              </Button>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
