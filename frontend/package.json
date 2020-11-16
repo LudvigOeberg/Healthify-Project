@@ -13,6 +13,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^2.5.1",
+    "jest": "^24.9.0",
     "react-scripts": "^3.4.3"
   },
   "dependencies": {
@@ -20,8 +21,10 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "chart.js": "^2.9.3",
+    "chromedriver": "^85  .0.0",
     "clsx": "^1.1.1",
     "history": "^4.6.3",
+    "jest-html-reporter": "^3.3.0",
     "marked": "^0.3.6",
     "moment": "^2.29.1",
     "plotly.js": "^1.56.0",
@@ -38,6 +41,7 @@
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.2",
     "redux-logger": "^3.0.1",
+    "selenium-webdriver": "^4.0.0-alpha.7",
     "superagent": "^3.8.2",
     "superagent-promise": "^1.1.0"
   },
@@ -45,6 +49,7 @@
     "start": "cross-env PORT=4100 react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env PORT=4100 react-scripts test --env=jsdom",
+    "jest": "jest --config tests/jest.config.js",
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{js,jsx}'",
     "lint:fix": "npm run lint -- --fix"
