@@ -68,16 +68,14 @@ class Patient extends Component {
       const bloodsugar = this.props.bloodsugarValue
       var timer = this.props.currentUser.timer
 
-      //These two IF-s are implemented as encouraging that depends on if it's a 
+      //These are implemented as encouraging that depends on if it's a 
       //measurement that's new or if it's taken after a bad one. 
-      if (timer ===null){
       var snackbar = {
         open: true,
         //message: `Du loggade värdet: ${bloodsugar} mmol/L.` Keeping it just in cause.
         message: `Ditt värde på ${bloodsugar} mmol/L ser jättebra ut! -Att hålla koll på ditt blodsockervärde är ett bra sätt att hålla en bra hälsa. `,
         color: 'success',
       }
-    }
       if (timer !== null){
         snackbar = {
           open: true,
