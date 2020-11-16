@@ -66,12 +66,27 @@ class Patient extends Component {
       ev.preventDefault()
 
       const bloodsugar = this.props.bloodsugarValue
+      var timer = this.props.currentUser.timer
+
+      //These two IF-s are implemented as encouraging that depends on if it's a 
+      //measurement that's new or if it's taken after a bad one. 
+      if (timer ===null){
       var snackbar = {
         open: true,
-        message: `Du loggade värdet: ${bloodsugar} mmol/L`,
+        //message: `Du loggade värdet: ${bloodsugar} mmol/L.` Keeping it just in cause.
+        message: `Ditt värde på ${bloodsugar} mmol/L ser jättebra ut! -Att hålla koll på ditt blodsockervärde är ett bra sätt att hålla en bra hälsa. `,
         color: 'success',
       }
-      var timer = this.props.currentUser.timer
+    }
+      if (timer !== null){
+        snackbar = {
+          open: true,
+          message: `Bra jobbat! Hoppas att du mår bra!`,
+          color: 'success',
+      }
+    }
+      
+    //IF'statements that gives a feedback on a bad value. 
       if (bloodsugar > 8) { //Change the 8 to whatever the upper max-level should be. Same with the 4 below.
         if (timer === null){
         timer = setTimer()
