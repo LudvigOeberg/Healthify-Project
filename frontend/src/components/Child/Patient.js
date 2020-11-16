@@ -129,7 +129,6 @@ class Patient extends Component {
     ]
     const bloodsugar = this.props.bloodsugarValue
     const { classes } = this.props
-    const timer = getCurrentUTCDate()
     const firstName = this.props.currentUser.name
     const lastName = this.props.currentUser.surname
     let Avatar = happyAvatar
@@ -279,7 +278,7 @@ export function getCurrentUTCDate() {
   return dateInfo   
 }
 
-function setTimer(){     //bloodsugar) {
+function setTimer(){ 
   const today = new Date()
   let year = String(today.getUTCFullYear())
   let month = String(today.getUTCMonth())
