@@ -45,6 +45,7 @@ class UserSchema(Schema):
     parents = fields.List(fields.Nested(lambda: UserSchema(exclude=("children", "parents", "token"))), dump_only=True)
     ehrid = fields.Str(dump_only=True)
     type = fields.Str(dump_only=True)
+    timer = fields.DateTime(dump_only=True)
 
     @pre_load
     def make_user(self, data, **kwargs):
@@ -130,6 +131,7 @@ class ChildSchema(Schema):
     createdAt = fields.DateTime(attribute='created_at', dump_only=True)
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
     type = fields.Str(dump_only=True)
+    timer = fields.DateTime(dump_only=True)
 
     @pre_load
     def make_user(self, data, **kwargs):
