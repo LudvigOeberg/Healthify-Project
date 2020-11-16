@@ -44,6 +44,7 @@ const Parent = {
 
 const Child = {
   parents: () => requests.get('/child'),
+  timer: (timer) => requests.post(`/child/timer?timer=${timer}`),
 }
 
 export default {

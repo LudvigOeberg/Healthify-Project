@@ -2,13 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { push } from 'react-router-redux'
+import Alert from '@material-ui/lab/Alert'
+import { Snackbar, withStyles } from '@material-ui/core'
 import agent from '../agent'
 import agentEHR from '../agentEHR'
 import Home from './Home'
 import Login from './Login'
 import Register from './Register'
-import { APP_LOAD, REDIRECT } from '../constants/actionTypes'
+import { APP_LOAD, REDIRECT, UPDATE_BOOLEAN } from '../constants/actionTypes'
 import { store } from '../store'
+// eslint-disable-next-line import/no-duplicates
 import Patient from './Child/Patient'
 import Footer from './Footer'
 import Header from './Header'
@@ -25,17 +28,23 @@ import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Laboration from './Child/Laboration'
 import LabChild from './Child/LabChild'
+// eslint-disable-next-line import/no-duplicates
+import { getCurrentUTCDate } from './Child/Patient'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
   appName: state.common.appName,
   currentUser: state.common.currentUser,
   redirectTo: state.common.redirectTo,
+  timerSnackbarOpen: state.common.timerSnackbarOpen,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   onLoad: (payload, token, ehrToken) => dispatch({ type: APP_LOAD, payload, token, ehrToken, skipTracking: true }),
   onRedirect: () => dispatch({ type: REDIRECT }),
+
+  setTimerSnackbarOpen: (val) => dispatch({ type: UPDATE_BOOLEAN, key: 'timerSnackbarOpen', value: val }),
+  onOpenSnackbar: (snackbar) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', snackbar }),
 })
 
 class App extends React.Component {
@@ -64,7 +73,37 @@ class App extends React.Component {
   }
 
   render() {
+    const { classes } = this.props
+    const currTime = getCurrentUTCDate()
+    const timerSnackbar = {
+      message:
+        'Det har gått en timme sedan förra mätnigen, var snäll och gör en ny. Meddelandet försvinner när värdet är godkänt.',
+      color: 'error',
+    }
+
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return
+      }
+      if (this.props.currentUser !== null) {
+        // handles a bugg that crashes the site on login-page.
+        this.props.currentUser.timer = null // Just removes the snackbar at the current page. Can be changed to change the agent if it's too annoying.
+        this.props.setTimerSnackbarOpen(false)
+      }
+    }
+
     if (this.props.appLoaded) {
+      if (
+        this.props.currentUser !== null &&
+        this.props.currentUser !== undefined &&
+        this.props.currentUser.timer !== undefined &&
+        this.props.currentUser.timer !== null
+      ) {
+        if (currTime >= this.props.currentUser.timer) {
+          this.props.setTimerSnackbarOpen(true)
+        }
+      }
+
       if (!window.localStorage.getItem('ehr_dont_bother')) {
         // Okay with alerts as it is only used in development mode and should not be visible for end user in the final product.
         // eslint-disable-next-line no-alert
@@ -81,9 +120,9 @@ class App extends React.Component {
         }
       }
       return (
-        <div style={{ display: `flex`, flexDirection: `column`, minHeight: `100vh` }}>
+        <div className={classes.root}>
           <Header appName={this.props.appName} currentUser={this.props.currentUser} />
-          <div id="main" style={{ marginTop: 0, marginBottom: 0 }}>
+          <div id="main" className={classes.main}>
             <Switch>
               <RequiredRoute exact path="/" requires={['!auth']} user={this.props.currentUser} component={Home} />
               <RequiredRoute exact path="/login" requires={['!auth']} user={this.props.currentUser} component={Login} />
@@ -195,12 +234,28 @@ class App extends React.Component {
           </div>
           <Footer />
           <MySnackbar />
+
+          <div className={classes.snackbar}>
+            <Snackbar open={this.props.timerSnackbarOpen} autoHideDuration={5000} onClose={handleClose}>
+              <Alert
+                elevation={6}
+                severity={timerSnackbar.color}
+                variant="filled"
+                onClose={handleClose}
+                color={timerSnackbar.color}
+              >
+                {timerSnackbar.message}
+              </Alert>
+            </Snackbar>
+          </div>
         </div>
       )
     }
     return (
-      <div>
+      <div className={classes.root}>
         <Header appName={this.props.appName} currentUser={this.props.currentUser} />
+        <div id="main" className={classes.main}></div>
+        <Footer />
       </div>
     )
   }
@@ -229,8 +284,26 @@ const RequiredRoute = ({ requires, user, component, path, exact, ...rest }) => {
   return <Route exact={exact} path={path} component={component} {...rest} />
 }
 
+const styles = (theme) => ({
+  snackbar: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(4),
+    },
+  },
+  root: {
+    display: `flex`,
+    flexDirection: `column`,
+    minHeight: `100vh`,
+  },
+  main: {
+    marginTop: 0,
+    marginBottom: 0,
+  },
+})
+
 // App.contextTypes = {
 //   router: PropTypes.object.isRequired
 // };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App))
