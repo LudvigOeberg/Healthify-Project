@@ -25,14 +25,10 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
-<<<<<<< HEAD
 import SimulatePatient from './Parent/SimulatePatient'
-import { getCurrentUTCDate } from "./Child/Patient";
-import { Snackbar, withStyles } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
 
-=======
->>>>>>> 2f7a82904738e0b215eb505b383742192f71ecdb
+
+
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
