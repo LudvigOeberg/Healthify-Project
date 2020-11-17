@@ -126,7 +126,7 @@ export default (state = defaultState, action) => {
       return {
         ...state,
       }
-  
+
     case HOME_PAGE_UNLOADED:
     case LOGIN_PAGE_UNLOADED:
     case REGISTER_PAGE_UNLOADED:
