@@ -34,17 +34,19 @@ const mapDispatchToProps = (dispatch) => ({
     // eslint-disable-next-line implicit-arrow-linebreak
     dispatch({
       type: SAVE_BLOODSUGAR,
-      payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar).then(() => {
-        dispatch({
-          type: LOAD_BLOODSUGAR,
-          payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
+      payload: agentEHR.Composition.saveBloodSugar(ehrId, bloodsugar)
+        .then(() => {
+          dispatch({
+            type: LOAD_BLOODSUGAR,
+            payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
+          })
         })
-      }).then(() => {
-        dispatch({
-          type: SAVE_TIMER,
-          payload: agent.Child.timer(timer) 
-        })
-      }),
+        .then(() => {
+          dispatch({
+            type: SAVE_TIMER,
+            payload: agent.Child.timer(timer),
+          })
+        }),
       snackbar,
     }),
   onUnload: () => dispatch({ type: PATIENT_PAGE_UNLOADED }),
@@ -66,28 +68,29 @@ class Patient extends Component {
       ev.preventDefault()
 
       const bloodsugar = this.props.bloodsugarValue
-      var timer = this.props.currentUser.timer
+      let { timer } = this.props.currentUser
 
-      //These are implemented as encouraging that depends on if it's a 
-      //measurement that's new or if it's taken after a bad one. 
-      var snackbar = {
+      // These are implemented as encouraging that depends on if it's a
+      // measurement that's new or if it's taken after a bad one.
+      let snackbar = {
         open: true,
-        //message: `Du loggade värdet: ${bloodsugar} mmol/L.` Keeping it just in cause.
+        // message: `Du loggade värdet: ${bloodsugar} mmol/L.` Keeping it just in cause.
         message: `Ditt värde på ${bloodsugar} mmol/L ser jättebra ut! -Att hålla koll på ditt blodsockervärde är ett bra sätt att hålla en bra hälsa. `,
         color: 'success',
       }
-      if (timer !== null){
+      if (timer !== null) {
         snackbar = {
           open: true,
           message: `Bra jobbat! Hoppas att du mår bra!`,
           color: 'success',
+        }
       }
-    }
-      
-    //IF'statements that gives a feedback on a bad value. 
-      if (bloodsugar > 8) { //Change the 8 to whatever the upper max-level should be. Same with the 4 below.
-        if (timer === null){
-        timer = setTimer()
+
+      // IF'statements that gives a feedback on a bad value.
+      if (bloodsugar > 8) {
+        // Change the 8 to whatever the upper max-level should be. Same with the 4 below.
+        if (timer === null) {
+          timer = setTimer()
         } else {
           timer = this.props.currentUser.timer
         }
@@ -98,7 +101,8 @@ class Patient extends Component {
         }
       }
       if (bloodsugar < 4) {
-        if (this.props.currentUser.timer === null){ // If and If else= The timer does not reset until a good value is entered. Can be removed. 
+        if (this.props.currentUser.timer === null) {
+          // If and If else= The timer does not reset until a good value is entered. Can be removed.
           timer = setTimer()
         } else {
           timer = this.props.currentUser.timer
@@ -108,8 +112,8 @@ class Patient extends Component {
           message: `Du verkar ha loggat lågt blodsockervärde, Kanske dags för lite insulin och gör en ny mätning inom en timme.`,
           color: 'error',
         }
-      } 
-      if (bloodsugar >= 4 && bloodsugar <= 8){
+      }
+      if (bloodsugar >= 4 && bloodsugar <= 8) {
         timer = null
       }
 
@@ -261,14 +265,14 @@ export function getCurrentDate() {
 
 export function getCurrentUTCDate() {
   const today = new Date()
-  let year = String(today.getUTCFullYear())
+  const year = String(today.getUTCFullYear())
   let month = String(today.getUTCMonth())
   let day = String(today.getUTCDate())
   let hours = String(today.getUTCHours())
   let minutes = String(today.getUTCMinutes())
   let seconds = String(today.getUTCSeconds())
 
-  --hours //Handles the amount of time before the timer sets off. 
+  --hours // Handles the amount of time before the timer sets off.
 
   if (today.getUTCMonth() < 10) {
     month = `0${String(today.getUTCMonth())}`
@@ -285,15 +289,15 @@ export function getCurrentUTCDate() {
   if (today.getUTCSeconds() < 10) {
     seconds = `0${String(today.getUTCSeconds())}`
   }
-  ++month //UTC uses month 0-11 in JS. 
+  ++month // UTC uses month 0-11 in JS.
 
-  const dateInfo = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds
-  return dateInfo   
+  const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+  return dateInfo
 }
 
-function setTimer(){ 
+function setTimer() {
   const today = new Date()
-  let year = String(today.getUTCFullYear())
+  const year = String(today.getUTCFullYear())
   let month = String(today.getUTCMonth())
   let day = String(today.getUTCDate())
   let hours = String(today.getUTCHours())
@@ -315,12 +319,10 @@ function setTimer(){
   if (today.getUTCSeconds() < 10) {
     seconds = `0${String(today.getUTCSeconds())}`
   }
-  ++month //UTC uses month 0-11 in JS. 
-  
+  ++month // UTC uses month 0-11 in JS.
 
-    const dateInfo = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds
-    return dateInfo   
+  const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+  return dateInfo
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Patient))
