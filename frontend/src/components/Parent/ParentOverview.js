@@ -14,7 +14,6 @@ import { UPDATE_BOOLEAN, FIELD_CHANGE, LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT 
 import TimeLineChart from '../TimeLineChart'
 import Reformat from '../../reformatEHRData'
 import FooterBar from '../FooterBar'
-import AddIcon from '@material-ui/icons/Add'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -184,7 +183,7 @@ const ParentOverview = (props) => {
       </Grid>
       
     </Grid>
-      <FooterBar/>
+      <FooterBar id = {id}/>
     </div>
   )
 }
