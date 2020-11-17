@@ -171,7 +171,7 @@ const PersistantDrawer = (props) => {
           <ListItemLink
             href="/settings"
             text="Inställningar"
-            avatarComponent={<Settings/>}
+            avatarComponent={<Settings />}
             location={props.location}
           />
         </List>

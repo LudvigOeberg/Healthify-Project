@@ -1,14 +1,8 @@
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { Grid, Paper, Switch } from "@material-ui/core";
-import { connect } from "react-redux";
-
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = (dispatch) => ({});
+import Typography from '@material-ui/core/Typography'
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import { Grid, Paper, Switch } from '@material-ui/core'
 
 const styles = makeStyles((theme) => ({
   paper: {
@@ -16,19 +10,19 @@ const styles = makeStyles((theme) => ({
   },
   main: {
     marginTop: theme.spacing(12),
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
   },
   img: {
-		maxWidth: "-webkit-fill-available",
-		marginRight: theme.spacing(2),
-		border: "0.5px solid #E0E0E0",
-		borderRadius: "10px",
+    maxWidth: '-webkit-fill-available',
+    marginRight: theme.spacing(2),
+    border: '0.5px solid #E0E0E0',
+    borderRadius: '10px',
   },
-}));
+}))
 
 export default function Integrations() {
-  const classes = styles();
+  const classes = styles()
 
   return (
     <Container component="main" maxWidth="xs">
@@ -36,12 +30,10 @@ export default function Integrations() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography variant="h5">
-							Koppla enheter
-							</Typography>
-							<Typography variant="body2">
-							Koppla dina enheter och andra appar för att kunna hämta data automatiskt.
-							</Typography>
+              <Typography variant="h5">Koppla enheter</Typography>
+              <Typography variant="body2">
+                Koppla dina enheter och andra appar för att kunna hämta data automatiskt.
+              </Typography>
             </Paper>
           </Grid>
           <Integration
@@ -72,34 +64,30 @@ export default function Integrations() {
         </Grid>
       </div>
     </Container>
-  );
+  )
 }
 
 function Integration(props) {
-  const classes = styles();
-  const { img } = props;
-  const { desc } = props;
-  const { name } = props;
+  const classes = styles()
+  const { img } = props
+  const { desc } = props
+  const { name } = props
   return (
     <Grid item xs={12}>
       <Paper className={classes.paper}>
         <Grid container>
           <Grid item xs={2}>
-            <img className={classes.img} src={img} />
+            <img alt="App" className={classes.img} src={img} />
           </Grid>
           <Grid item xs={8}>
             <Typography variant="h5">{name}</Typography>
             <Typography variant="body2">{desc}</Typography>
           </Grid>
           <Grid item xs={2}>
-            <Switch
-              color="primary"
-              name="checkedB"
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
+            <Switch color="primary" name="checkedB" inputProps={{ 'aria-label': 'primary checkbox' }} />
           </Grid>
         </Grid>
       </Paper>
     </Grid>
-  );
+  )
 }
