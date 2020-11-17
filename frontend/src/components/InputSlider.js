@@ -1,29 +1,42 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
+import { connect } from 'react-redux'
+import { FIELD_CHANGE } from '../constants/actionTypes';
 
 
-export default function InputSlider(props) {
-  const { unit, step, min, max} = props;
-  const [value, setValue] = React.useState(null);
-  
+const mapStateToProps = (state) => ({
+  ...state.common,
+
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onChange: (key,value) => {dispatch({ type: FIELD_CHANGE, key, value })},
+
+})
+ function InputSlider(props) {
+  const { unit, step, min, max, id, output} = props;
+  //const [value, setValue] = React.useState(output);
+  //const onChange = (ev) => props.onChange(id, ev.target.value)
+  const handleOffset = (val) => props.onChange(id, val)
+ 
+
   
 
   const handleSliderChange = (event, newValue) => {
-    setValue(newValue);
+    props.onChange(id, newValue);
   };
 
   const handleInputChange = (event) => {
-    setValue(event.target.value === '' ? '' : Number(event.target.value));
+    props.onChange(id, event.target.value === '' ? '' : Number(event.target.value));
   };
 
   const handleBlur = () => {
-    if (value < min) {
-      setValue(min);
-    } else if (value > max) {
-      setValue(max);
+    if (output < min) {
+      handleOffset(min);
+    } else if (output > max) {
+      handleOffset(max);
     }
   };
 
@@ -32,7 +45,7 @@ export default function InputSlider(props) {
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={10}>
           <Slider
-            value={typeof value === 'number' ? value : null}
+            value={output}
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
             step={step}
@@ -43,7 +56,7 @@ export default function InputSlider(props) {
         <Grid item xs={2}>
           <Input
             fullWidth
-            value={value}
+            value={output}
             margin="dense"
             placeholder= {unit}
             onChange={handleInputChange}
@@ -63,5 +76,5 @@ export default function InputSlider(props) {
   );
 }
 
-
+export default connect(mapStateToProps, mapDispatchToProps)(InputSlider)
 
