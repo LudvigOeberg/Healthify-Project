@@ -12,8 +12,11 @@ import {
   LOAD_BLOODSUGAR,
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
+import { Grid, Paper } from '@material-ui/core'
 import CustomPaginationActionsTable from '../TablePagination'
 import Reformat from '../../reformatEHRData'
+import smileChild from '../../Static/smile_child.png'
+import Typography from '@material-ui/core/Typography'
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
@@ -52,53 +55,54 @@ class ChildMonitor extends Component {
     const { classes } = this.props
     const bloodsugarData = this.props.bloodsugar
     return (
-      <div className={classes.bigDiv}>
+      <Grid className={classes.bigDiv}>
         <Container component="main" maxWidth="sm" disableGutters>
-          <div className={classes.paper}>
-            <div className={classes.circle}>
-              <div className={classes.avatarCircle}>
-                <PersonIcon className={classes.centerIcon} />
-              </div>
-              <div className={classes.statCircle2}>
-                <div className={classes.smallCircle}>
-                  <h1 className={classes.centerText}>50 </h1>
-                  <h5 className={classes.centerText}>
-                    <br />g
-                  </h5>
-                </div>
-              </div>
-              <div className={classes.statCircle1}>
-                <div className={classes.smallCircle}>
+          <Grid className={classes.paper}>
+            <Grid className={classes.circle}>
+              <Grid className={classes.avatarCircle}>
+                <img className={classes.centerIcon} src={smileChild} alt="smile child"></img>
+              </Grid>
+              <Grid className={classes.statCircle2}>
+                  <Grid className={classes.smallCircle}>
                   <h1 className={classes.centerText}>78 </h1>
                   <h5 className={classes.centerText}>
                     <br />
                     Mg/DL
                   </h5>
-                </div>
-              </div>
-              <div className={classes.statCircle3}>
-                <div className={classes.smallCircle}>
+                  </Grid>
+              </Grid>
+              <Grid className={classes.statCircle1}>
+                <Grid className={classes.smallCircle}>
+                  <h1 className={classes.centerText}>78 </h1>
+                  <h5 className={classes.centerText}>
+                    <br />
+                    Mg/DL
+                  </h5>
+                </Grid>
+              </Grid>
+              <Grid className={classes.statCircle3}>
+                <Grid className={classes.smallCircle}>
                   <h1 className={classes.centerText}>± 1 </h1>
-                </div>
-              </div>
-              <div className={classes.statCircle4}>
-                <div className={classes.smallCircle}>
+                </Grid>
+              </Grid>
+              <Grid className={classes.statCircle4}>
+                <Grid className={classes.smallCircle}>
                   <h1 className={classes.centerText}>78 </h1>
                   <h5 className={classes.centerText}>
                     <br />
                     Mg/DL
                   </h5>
-                </div>
-              </div>
-              <div className={classes.statCircle5}>
-                <div className={classes.smallCircle}>
+                </Grid>
+              </Grid>
+              <Grid className={classes.statCircle5}>
+                <Grid className={classes.smallCircle}>
                   <h2 className={classes.centerText}>0 </h2>
                   <h2 className={classes.centerText}>
                     <br />0
                   </h2>
-                </div>
-              </div>
-            </div>
+                </Grid>
+              </Grid>
+            </Grid>
             <h2>Blodsocker</h2>
             <TimeLineChart
               chartData={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false, true) : null}
@@ -111,9 +115,9 @@ class ChildMonitor extends Component {
               columns={['x', 'y']}
               rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
             />
-          </div>
+          </Grid>
         </Container>
-      </div>
+      </Grid>
     )
   }
 }
@@ -128,28 +132,28 @@ const styles = (theme) => ({
     width: '200vw',
     height: '200vw',
     lineHeight: '500px',
-    borderRadius: '50%',
+    borderRadius: '49%',
     backgroundColor: '#17478c',
     position: 'relative',
   },
   smallCircle: {
-    width: '20vw',
-    height: '20vw',
+    width: '18vw',
+    height: '18vw',
     borderRadius: '50%',
-    fontSize: '1rem',
-    lineHeight: '40px',
+    fontSize: '2.5vw',
+    lineHeight: '8vw',
     color: theme.palette.text.primary,
     backgroundColor: '#fff',
   },
   statCircle1: {
     position: 'absolute',
-    bottom: '43vw',
-    left: '55vw',
+    bottom: '36vw',
+    left: '57vw',
   },
   statCircle2: {
     position: 'absolute',
-    bottom: '20vw',
-    left: '62vw',
+    bottom: '15vw',
+    left: '66vw',
   },
   statCircle3: {
     position: 'absolute',
@@ -159,14 +163,14 @@ const styles = (theme) => ({
 
   statCircle4: {
     position: 'absolute',
-    bottom: '20vw',
-    right: '62vw',
+    bottom: '15vw',
+    right: '66vw',
   },
 
   statCircle5: {
     position: 'absolute',
-    bottom: '43vw',
-    right: '55vw',
+    bottom: '36vw',
+    right: '57vw',
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -178,16 +182,21 @@ const styles = (theme) => ({
     position: 'absolute',
     width: '40vw',
     height: '40vw',
-    bottom: '27vw',
+    bottom: '24vw',
     left: '80vw',
     borderRadius: '50%',
-    fontSize: '25px',
-    textAlign: 'center',
-    backgroundColor: theme.palette.text.secondary,
+    backgroundColor: '#C4C4C4',
   },
   centerText: {
     position: 'absolute',
-    top: '15%',
+    top: '23%',
+    left: '50%',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+  centerSmallerText: {
+    position: 'absolute',
+    top: '23%',
     left: '50%',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
@@ -197,9 +206,9 @@ const styles = (theme) => ({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    fontSize: '15vw',
+    maxWidth: '100%',
+    height: 'auto',
     color: theme.palette.text.disabled,
   },
   form: {
