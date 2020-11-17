@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { push } from 'react-router-redux'
-import Alert from '@material-ui/lab/Alert'
 import { Snackbar, withStyles } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert'
 import agent from '../agent'
 import agentEHR from '../agentEHR'
 import Home from './Home'
@@ -11,8 +11,7 @@ import Login from './Login'
 import Register from './Register'
 import { APP_LOAD, REDIRECT, UPDATE_BOOLEAN } from '../constants/actionTypes'
 import { store } from '../store'
-// eslint-disable-next-line import/no-duplicates
-import Patient from './Child/Patient'
+import Patient, { getCurrentUTCDate } from './Child/Patient'
 import Footer from './Footer'
 import Header from './Header'
 import NotFound from './NotFound'
@@ -28,8 +27,6 @@ import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Laboration from './Child/Laboration'
 import LabChild from './Child/LabChild'
-// eslint-disable-next-line import/no-duplicates
-import { getCurrentUTCDate } from './Child/Patient'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
