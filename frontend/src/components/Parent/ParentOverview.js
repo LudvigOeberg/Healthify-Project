@@ -10,7 +10,7 @@ import Moment from 'moment'
 import CustomPaginationActionsTable from '../TablePagination'
 import CaregivingTeam from '../CaregivingTeam'
 import agentEHR from '../../agentEHR'
-import { UPDATE_BOOLEAN, FIELD_CHANGE, LOAD_BLOODSUGAR, LOAD_PARTY } from '../../constants/actionTypes'
+import { UPDATE_BOOLEAN, FIELD_CHANGE, LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT } from '../../constants/actionTypes'
 import TimeLineChart from '../TimeLineChart'
 import Reformat from '../../reformatEHRData'
 import FooterBar from '../FooterBar'
@@ -24,10 +24,15 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
   onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
-  onLoad: (ehrId, offset, limit) => {
-    dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+  onLoad: (ehrId) => {
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
   },
+  loadValues: (ehrId, offset, limit, disease) => {
+    if (disease==="DIABETES")
+      dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+    else if (disease==="OBESITY")
+      dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit)})
+  }
 })
 
 // Checks if given bloodsugar levels are considered low, high or good.
@@ -43,32 +48,49 @@ const getIndication = (data) => {
   return 'Stabilt'
 }
 
-const reformat = (data) => {
-  const dataObjects = []
-  for (let i = 0; i < data.length; i++) {
-    dataObjects.push({
-      time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
-      value: data[i].value,
-      indicator: getIndication(data[i].value),
-    })
-  }
-  return dataObjects
-}
+
 
 const ParentOverview = (props) => {
-  const colDesc = ['Datum', '(mmol/L)', 'Blodsocker']
-  const classes = styles()
   const { id } = props.match.params
+  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const colDesc = ['Datum', `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`, `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`]
+  const classes = styles()
   const { bloodsugar } = props
+  const { weight } = props
   const loading = props.inProgress
   const age = props.party ? `${Moment().diff(props.party[id].dateOfBirth, 'years')} år` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
-  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const input = bloodsugar ? bloodsugar: weight
+  
+  const reformatForChart = (data) => {
+    if(bloodsugar)
+      return Reformat.bloodsugar(data, false, true)
+    else if(weight)
+      return Reformat.weight(data, false, true)
+    else
+      return null
+ }
+
+
+
+  const reformat = (data) => {
+    const dataObjects = []
+    for (let i = 0; i < data.length; i++) {
+      dataObjects.push({
+        time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
+        value: disease==="DIABETES" ? data[i].value : data[i].weight,
+        indicator: getIndication(disease==="DIABETES" ? data[i].value : data[i].weight),
+      })
+    }
+    return dataObjects
+  }
 
   useEffect(() => {
-    props.onLoad(id, 0, 3)
-    }, [id]) // eslint-disable-line
+    props.onLoad(id)
+    props.loadValues(id, 0, 3, disease) 
+    }, [id, disease]) // eslint-disable-line
 
+    
   const doctor = {
     name: 'Doktor X',
     mail: 'Dr.x@gmail.com',
@@ -106,8 +128,8 @@ const ParentOverview = (props) => {
                 GRAF
               </Typography>
               <TimeLineChart
-                chartData={bloodsugar ? Reformat.bloodsugar(bloodsugar, false, true) : null}
-                label="Blodsocker (mmol/L)"
+              chartData={input ? reformatForChart(input) : null }
+              label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
               ></TimeLineChart>
             </Paper>
           </Grid>
@@ -127,7 +149,7 @@ const ParentOverview = (props) => {
               <CustomPaginationActionsTable
                 columns={['time', 'value', 'indicator']}
                 loading={loading}
-                rows={bloodsugar ? reformat(bloodsugar, false) : null}
+                rows={input ? reformat(input, false) : null }
                 titles={colDesc}
                 paginate={false}
               />

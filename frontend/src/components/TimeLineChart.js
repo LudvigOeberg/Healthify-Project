@@ -84,8 +84,13 @@ const TimeLineChart = (props) => {
   const displaySettings = getSettings(timeHorizon)
   const changeRadio = (event) => {
     props.onChangeRadio(event.target.value)
-  }
-
+  }   
+  var maxData = 0 
+  //eslint-disable-next-line
+  for (var data in chartData) 
+    if (data>maxData)
+      maxData=data
+ 
   return (
     <div>
       <Line
@@ -118,7 +123,8 @@ const TimeLineChart = (props) => {
             yAxes: [
               {
                 ticks: {
-                  suggestedMax: 50,
+                  suggestedMax: maxData,
+                  min: 0
                 },
               },
             ],
