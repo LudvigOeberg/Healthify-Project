@@ -168,6 +168,12 @@ const PersistantDrawer = (props) => {
             avatarComponent={<GroupIcon />}
             location={props.location}
           />
+          <ListItemLink
+            href="/settings"
+            text="Inställningar"
+            avatarComponent={<Settings/>}
+            location={props.location}
+          />
         </List>
         <Divider />
       </Drawer>
