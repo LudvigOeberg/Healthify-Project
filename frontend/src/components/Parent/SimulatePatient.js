@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Accordion, TextField, Typography, FormControl, Select, MenuItem, InputLabel, Container, Paper, Grid, Button, Modal, Slider} from '@material-ui/core';
+import { Accordion, Typography, FormControl, Select, MenuItem, InputLabel, Container, Paper, Grid, Button,  Slider, Input, FormHelperText, InputAdornment} from '@material-ui/core';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -41,12 +41,30 @@ const SimulatePatient = (props) => {
     const { intensity, calorieintake, trainingammount, goalweight, meal, weight, bloodsugar, showGraph } = props
     const onChange = (ev) => props.onChange(ev.target.id, ev.target.value)
     const changeIntensity = (ev) => props.onChange("intensity", ev.target.value)
-
+    var noInputTraining
+    var noInputDiet
+    var noInput
     
     useEffect(() => {
         props.onLoad(id)
         props.loadValues(id, 0, 1, disease) 
         }, [id, disease]) // eslint-disable-line
+
+    if(typeof calorieintake !=='number'){
+            noInputDiet=true
+    } else {
+        noInputDiet=false
+    }
+    
+    if(typeof trainingammount !=='number' || !intensity || typeof goalweight!=='number') {
+        noInputTraining=true
+    }else {
+        noInputTraining=false}
+    
+    if(noInputDiet && noInputTraining)
+        noInput=true
+    else
+        noInput=false
     
     const marks = [
         {
@@ -72,13 +90,27 @@ const SimulatePatient = (props) => {
         props.onChange("meal", newValue);
       };
 
+      const handleGoalweight = (event) => {
+        props.onChange(event.target.id, event.target.value === '' ? '' : Number(event.target.value));
+      };
+    
+      const handleBlur = () => {
+        if (goalweight < 40 && typeof goalweight === 'number') {
+          props.onChange("goalweight", 40);
+        } else if (goalweight > 100) {
+            props.onChange("goalweight", 100);
+        } 
+      };
+    
+
     if(disease==="OBESITY"){
     return (
         <Container className={classes.root}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Card variant="outlined" className={classes.card}>
-                            <CardHeader title="Simulering" />
+                        <CardHeader title={showGraph ? "Info om simulering" : "Simulering"} />
+                          
                             <CardContent hidden={showGraph}>
                                 Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har.
                             </CardContent>
@@ -89,19 +121,18 @@ const SimulatePatient = (props) => {
                     </Grid>
                     <Grid item xs={12}>
                     <Paper className={classes.paper} elevation={2} hidden={showGraph}> 
-                    <Grid container spacing={2}>
-                    
+                    <Grid container spacing={2} >
                     <Grid item xs={12}>
                         <Typography variant="h5">Ny Simulering</Typography>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Accordion variant="outlined" rounded >
+                    <Grid item xs={12} md={6} >
+                        <Accordion variant="outlined" rounded  >
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                             >
                                 <Typography variant="h6">Kost</Typography>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails >
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <Typography id="training-slider" gutterBottom>
@@ -109,12 +140,13 @@ const SimulatePatient = (props) => {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <InputSlider unit={"kcal"} step={200} min={0} max={3000} id="calorieintake" output={calorieintake}></InputSlider>
+                                        <InputSlider unit={"kcal"} step={200} min={0} max={3000} id="calorieintake" output={calorieintake} definition='Kalorier'></InputSlider>
                                     </Grid>
                                 </Grid>
                             </AccordionDetails>
                         </Accordion>
-
+                        </Grid>
+                        <Grid item xs={12} md={6}>
                         <Accordion variant="outlined" rounded>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -122,53 +154,70 @@ const SimulatePatient = (props) => {
                                 <Typography variant="h6">Träning</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Grid container spacing={2}>
+                                <Grid container spacing={2} justify='flex-start' alignItems='flex-start'>
                                     <Grid item xs={12}>
                                         <Typography id="training-slider" gutterBottom>
                                             Antal Träningspass per vecka
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <InputSlider unit={"stycken"} step={1} min={1} max={7} id="trainingammount" output={trainingammount} ></InputSlider>
+                                        <InputSlider unit={"st"} step={1} min={0} max={7} id="trainingammount" output={trainingammount} definition='Antal'></InputSlider>
                                     </Grid>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={6} md={4}>
                                         <FormControl
                                             fullWidth
                                             id="intensity"
+                                        
                                         //error={errors && (errors.gender ? true : !!(false || errors.general))}
                                         >
-                                            <InputLabel id="intensity-label">Intensitet</InputLabel>
+                                            <InputLabel id="intensity-label" >Intensitet</InputLabel>
                                             <Select
                                                 labelId="intensity-label"
                                                 label="intensity"
-                                                
                                                 value={intensity}
                                                 onChange={changeIntensity}
                                             //error={errors && (errors.gender ? true : !!(false || errors.general))}
                                             >
-                                                <MenuItem value={1}>
+                                                <MenuItem type='number' value={1}>
                                                     Lågintensiv
                                                 </MenuItem>
-                                                <MenuItem  value={2}>
+                                                <MenuItem type='number' value={2}>
                                                     Medelintensiv
                                                 </MenuItem>
-                                                <MenuItem value={3}>
+                                                <MenuItem type='number' value={3}>
                                                     Högintensiv
                                                 </MenuItem>
                                             </Select>
                                         </FormControl>
                                     </Grid>
-                                    <Grid item xs={4}>
-                                        <TextField
+                                    <Grid item xs={6} md={4} justify='flex-end' alignItems='flex-end'>
+                                    <FormControl
                                         fullWidth
-                                        name="goalWeight"
-                                        id="goalWeight"
-                                        label="Målvikt"
-                                        helperText="Vikt i kg"
-                                        value={goalweight}
-                                        onChange={onChange}
-                                        />
-                                        </Grid>
+                                        >
+                                    <InputLabel id="goalweight-label" shrink={typeof goalweight === 'number' ? true: false}>Målvikt</InputLabel>
+                                    <Input
+                                        endAdornment={<InputAdornment position="end">Kg</InputAdornment>}
+                                        fullWidth
+                                        value={ goalweight }
+                                        id='goalweight'
+                                        //margin="dense"
+                                        //placeholder='Målvikt'
+                                        onChange={handleGoalweight}
+                                        onBlur={handleBlur}
+                                        labelId="goalweight-label"
+                                        label="goalweight"
+                                        inputProps={{
+                                        step: 1,
+                                        min: 40,
+                                        max: 100,
+                                        type: 'number',
+                                        'aria-labelledby': 'input-slider',
+                                        }}
+                                        
+                                    />
+                                       <FormHelperText id='goalweight'>I heltal mellan 40 och 100</FormHelperText>
+                                    </FormControl>
+                                    </Grid>
                                             
                                 </Grid>
                             </AccordionDetails>
@@ -217,27 +266,11 @@ const SimulatePatient = (props) => {
                          variant="contained"
                          color="primary"
                          onClick = {handleGraph} 
-                         disabled = {showGraph}
+                         disabled = {noInput || showGraph}
                         >
                             Simulera</Button> 
                     </Grid>
                 </Grid>
-              {/*   
-                <Modal
-                    open={modalOpen}
-                    onClose={handleModal}
-                    className={classes.modal}
-                >
-                    <Paper  className={classes.paper} >  
-                    <Typography component="h1" variant="h5">
-                    Simuleringsresultat: 
-                    </Typography>
-                    <Typography>
-                    Ditt barn kommer gå ner 45kg om dagen 
-                    </Typography>
-                    </Paper>
-                </Modal> */}
-               
         </Container>
 
 
@@ -249,14 +282,18 @@ const SimulatePatient = (props) => {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Card variant="outlined" className={classes.card}>
-                            <CardHeader title="Simulering" />
-                            <CardContent>
+                            <CardHeader title="Simulering" hidden={showGraph}/>
+                            <CardHeader title="Info om simulering" hidden={!showGraph}/>
+                            <CardContent hidden={showGraph}>
                                 Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har.
+                            </CardContent>
+                            <CardContent hidden={!showGraph}>
+                                Detta är enbart en simulering och bör ej betraktas som fakta.
                             </CardContent>
                         </Card>
                     </Grid>
                     <Grid item xs={12}>
-                    <Paper className={classes.paper} elevation={2}> 
+                    <Paper className={classes.paper} elevation={2} hidden={showGraph}> 
                     <Grid container spacing={2}>
                     
                     <Grid item xs={12}>
@@ -298,17 +335,38 @@ const SimulatePatient = (props) => {
                 </Grid>
                 </Paper>
                 
+                {/* _____________________________________ */}
+                <Grid item xs={12}>
+                <Paper hidden={!showGraph}>
+                <Grid container spacing={2} justify='center' alignItem='center'>
+                <Grid item xs={12} md={8}>
+                <SimulateChart
+                disease={disease}
+                weight={weight}
+                intensity={intensity}
+                calorieintake={calorieintake}
+                trainingammount={trainingammount}
+                goalweight={goalweight}
+                bloodsugar={bloodsugar}
+                meal={meal}
+                />
+                </Grid>
+                </Grid>    
+                </Paper>
+                </Grid>
+                {/* _____________________________________ */}
+
                 </Grid>
                 <Grid item xs={6}>
-                        <Button
+                <Button
                          type="submit"
                          fullWidth
                          variant="outlined"
                          color="primary"
-                         href={`/parent-child-overview/${id}`}
-                        >
-                        
-                        Tillbaka</Button> 
+                         href={showGraph ?  null : `/parent-child-overview/${id}`}
+                         onClick={showGraph ? handleGraph : null}
+                        > Tillbaka </Button>
+                       
                     </Grid>
                     <Grid item xs={6}>
                         <Button 
@@ -316,6 +374,8 @@ const SimulatePatient = (props) => {
                          fullWidth
                          variant="contained"
                          color="primary"
+                         onClick = {handleGraph} 
+                         disabled = {showGraph}
                         >
                             Simulera</Button> 
                     </Grid>

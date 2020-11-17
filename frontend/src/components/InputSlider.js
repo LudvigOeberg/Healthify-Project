@@ -2,6 +2,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
+import { FormControl, FormHelperText, InputLabel, InputAdornment} from '@material-ui/core/';
 import { connect } from 'react-redux'
 import { FIELD_CHANGE } from '../constants/actionTypes';
 
@@ -16,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 })
  function InputSlider(props) {
-  const { unit, step, min, max, id, output} = props;
+  const { unit, step, min, max, id, output, definition} = props;
   //const [value, setValue] = React.useState(output);
   //const onChange = (ev) => props.onChange(id, ev.target.value)
   const handleOffset = (val) => props.onChange(id, val)
@@ -43,9 +44,9 @@ const mapDispatchToProps = (dispatch) => ({
   return (
     <div>
       <Grid container spacing={2} alignItems="center">
-        <Grid item xs={10}>
+        <Grid item xs={8} md={9}>
           <Slider
-            value={output}
+            value={typeof output === 'number' ? output : 0}
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
             step={step}
@@ -53,12 +54,19 @@ const mapDispatchToProps = (dispatch) => ({
             max= {max}
           />
         </Grid>
-        <Grid item xs={2}>
-          <Input
+        <Grid item xs={4} md={3}>
+          <FormControl
             fullWidth
+            
+          >
+          <InputLabel id={`${unit}-label`} shrink={typeof output === 'number' ? true: false}>{definition}</InputLabel>
+          <Input
+            endAdornment={<InputAdornment position="end">{unit}</InputAdornment>}
+            fullWidth
+            id={`${unit}`}
             value={output}
-            margin="dense"
-            placeholder= {unit}
+            labelId={`${unit}-label`}
+            label={`${unit}`}
             onChange={handleInputChange}
             onBlur={handleBlur}
             inputProps={{
@@ -68,8 +76,9 @@ const mapDispatchToProps = (dispatch) => ({
               type: 'number',
               'aria-labelledby': 'input-slider',
             }}
-            
           />
+          <FormHelperText id={`${unit}`}>{`I heltal mellan ${min} och ${max} `}</FormHelperText>
+          </FormControl>
         </Grid>
       </Grid>
     </div>
