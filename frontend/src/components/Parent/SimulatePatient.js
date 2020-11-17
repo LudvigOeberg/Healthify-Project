@@ -375,7 +375,7 @@ const SimulatePatient = (props) => {
                          variant="contained"
                          color="primary"
                          onClick = {handleGraph} 
-                         disabled = {showGraph}
+                         disabled = {showGraph || !meal}
                         >
                             Simulera</Button> 
                     </Grid>
