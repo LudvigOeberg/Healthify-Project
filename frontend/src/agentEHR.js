@@ -93,8 +93,7 @@ const Query = {
       FROM EHR[ehr_id/value='${ehrId}']
       CONTAINS COMPOSITION c
       CONTAINS OBSERVATION y[openEHR-EHR-OBSERVATION.lab_test-blood_glucose.v1]
-      ORDER BY Time desc
-      OFFSET ${offset} LIMIT ${limit}`,
+      ORDER BY Time desc`,
     ),
 }
 
