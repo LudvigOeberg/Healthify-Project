@@ -103,9 +103,6 @@ const styles = (theme) => ({
   },
   diet: {
      marginTop: "7vh",
-    // textAlign: "center",
-    // flexGrow: 1,
-    // flexDirection: "row",
     borderWidth: 5,
     borderColor: theme.palette.primary.main,
     borderRadius: 20,

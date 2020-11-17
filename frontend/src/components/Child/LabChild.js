@@ -18,103 +18,107 @@ const mapDispatchToProps = (dispatch) => ({});
 const date = getCurrentDate();
 
 const marks = [
-    {
-      value: 1,
-      label: 'Lite',
-    },
-    {
-      value: 2,
-      label: 'Mellan',
-    },
-    {
-      value: 3,
-      label: 'Mycket',
-    },
-  ];
+  {
+    value: 1,
+    label: "Lite",
+  },
+  {
+    value: 2,
+    label: "Mellan",
+  },
+  {
+    value: 3,
+    label: "Mycket",
+  },
+];
 
 class LabChild extends React.Component {
   constructor() {
     super();
   }
-
   componentWillUnmount() {
-    // this.props.onUnload();
   }
-
+  
   render() {
     const { classes } = this.props;
 
     return (
       <Container className={classes.root}>
-          <div className={classes.paper}>
         <Grid container spacing={2}>
-        <Card className={classes.card}>
-          <Grid item xs={12}>
-          <Typography
-            variant="h4"
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
-            Ny simulering
-          </Typography>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={8}>
+            <Card className={classes.card}>
+              <Grid item xs={8}>
+                <Typography
+                  variant="h4"
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                >
+                  Ny simulering
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Typography variant="overline" display="block" gutterBottom>
+                  {date}
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Typography
+                  variant="body1"
+                  className={classes.diet}
+                  gutterBottom
+                >
+                  Måltid
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.eatText}
+                  gutterBottom
+                >
+                  Hur mycket vill du äta?
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Slider
+                  defaultValue={2}
+                  step={1}
+                  marks={marks}
+                  min={1}
+                  max={3}
+                />
+              </Grid>
+            </Card>
           </Grid>
-          <Grid item xs={12}>
-          <Typography variant="overline" display="block" gutterBottom>
-            {date}
-          </Typography>
-          </Grid>
-          <Grid item xs={12}>
-          <Typography variant="body1" className={classes.diet} gutterBottom>
-            Måltid
-          </Typography>
-          </Grid>
-          <Grid item xs={12}>
-          <Typography variant="subtitle1" className={classes.eatText} gutterBottom>
-            Hur mycket vill du äta?
-          </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Slider
-              defaultValue={2}
-              step={1}
-              marks={marks}
-              min={1}
-              max={3}
-            />
-          </Grid>
-          </Card>
-        <Grid container className={classes.buttons} spacing={1}>
-          <Grid item xs={12} xs={3}>
-            <Button
-              component={Link}
-              href={"/child-laboration"}
-              variant="outlined"
-              color="primary"
-            >
-              {" "}
-              Tillbaka
-            </Button>{" "}
-          </Grid>
-          <Grid item xs={12} xs={3}>
-          <MyDialog
-        children={"header"}
-        >
-        </MyDialog> 
-            {/* <Button
-              component={Link}
-              href={"/lab-child"}
-              variant="contained"
-              className={classes.simulateButton}
-            >
-              {" "}
-              Simulera
-              <ArrowForwardIosIcon />
-            </Button> */}
-          </Grid>
+          <Grid item xs={2}></Grid>
+          <Grid container direction="row" justify="center" alignItems="center">
+            {" "}
+            <Grid item xs={5}></Grid>
+            <Grid item xs={1}>
+              <Button
+                component={Link}
+                href={"/child-laboration"}
+                variant="outlined"
+                color="primary"
+              >
+                {" "}
+                Tillbaka
+              </Button>{" "}
+            </Grid>
+            <Grid item xs={1}>
+              <MyDialog
+                buttonLabel="Simulera"
+                title="Simulation"
+                text="Om du äter detta kommer du inte att må så bra."
+                pictureLocation="../Static/sad_avatar.png"
+                alt="sad avatar"
+              ></MyDialog>
+            </Grid>
+            <Grid item xs={5}></Grid>
           </Grid>
         </Grid>
-        </div>
       </Container>
     );
   }
@@ -122,21 +126,15 @@ class LabChild extends React.Component {
 
 const styles = (theme) => ({
   root: {
+    flexGrow: 1,
     marginTop: theme.spacing(8),
-    alignItems: "top",
-    display: "flex",
     padding: theme.spacing(1),
-    alignContent: 'center',
+    position: "absolute",
+    maxWidth: "100%",
   },
   card: {
-      minWidth: 328,
-      padding: 30,
-},
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    minWidth: 328,
+    padding: 30,
   },
   avatar: {
     margin: theme.spacing(1),

@@ -52,8 +52,15 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions)
 
-export default function CustomizedDialogs() {
+export default function MyDialog(props) {
   const [open, setOpen] = React.useState(false)
+
+  const { buttonLabel } = props
+  const { title } = props
+  const { text } = props
+  // const { pictureLocation } = props
+  const { alt } = props
+  // const { value } = props
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -65,18 +72,18 @@ export default function CustomizedDialogs() {
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        Simulera
+        {buttonLabel}
         <ArrowForwardIosIcon />
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Simulation
+          {title}
         </DialogTitle>
         <DialogContent dividers>
           <Typography textAlign="center" gutterBottom>
-            Om du äter detta kommer du inte att må så bra.
+            {text}
           </Typography>
-          <img src={sadAvatar} alt="sad avatar"></img>
+          <img src={sadAvatar} alt={alt}></img>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
