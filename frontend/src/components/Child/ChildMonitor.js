@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
-import PersonIcon from '@material-ui/icons/Person'
 import TimeLineChart from '../TimeLineChart'
 import {
   PATIENT_PAGE_UNLOADED,
@@ -12,11 +11,11 @@ import {
   LOAD_BLOODSUGAR,
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid} from '@material-ui/core'
 import CustomPaginationActionsTable from '../TablePagination'
 import Reformat from '../../reformatEHRData'
 import smileChild from '../../Static/smile_child.png'
-import Typography from '@material-ui/core/Typography'
+
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
