@@ -11,10 +11,12 @@ import {
   LOAD_BLOODSUGAR,
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
-import { Grid} from '@material-ui/core'
 import CustomPaginationActionsTable from '../TablePagination'
 import Reformat from '../../reformatEHRData'
-import smileChild from '../../Static/smile_child.png'
+import { Grid, Paper } from '@material-ui/core'
+//import smileChild from '../../Static/smile_child.png'
+import smileChild from '../../Static/big_smile_child.png'
+import Typography from '@material-ui/core/Typography'
 
 
 const mapStateToProps = (state) => ({
@@ -33,7 +35,6 @@ const mapDispatchToProps = (dispatch) => ({
       payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
     })
   },
-  onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
 })
 
 class ChildMonitor extends Component {
@@ -54,19 +55,18 @@ class ChildMonitor extends Component {
     const { classes } = this.props
     const bloodsugarData = this.props.bloodsugar
     return (
-      <Grid className={classes.bigDiv}>
-        <Container component="main" maxWidth="sm" disableGutters>
-          <Grid className={classes.paper}>
-            <Grid className={classes.circle}>
+      <Grid wholeGrid className={classes.bigDiv} spacing={5} maxWidth="xs" disableGutters> 
+          <Grid className={classes.mainGrid}>
+            <Grid backgroundCircle className={classes.circle}>
               <Grid className={classes.avatarCircle}>
                 <img className={classes.centerIcon} src={smileChild} alt="smile child"></img>
               </Grid>
               <Grid className={classes.statCircle2}>
                   <Grid className={classes.smallCircle}>
-                  <h1 className={classes.centerText}>78 </h1>
+                  <h1 className={classes.centerText}>50 </h1>
                   <h5 className={classes.centerText}>
                     <br />
-                    Mg/DL
+                    g
                   </h5>
                   </Grid>
               </Grid>
@@ -102,31 +102,54 @@ class ChildMonitor extends Component {
                 </Grid>
               </Grid>
             </Grid>
-            <h2>Blodsocker</h2>
-            <TimeLineChart
-              chartData={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false, true) : null}
-              label="Blodsocker (mmol/L)"
-            ></TimeLineChart>
-            <h2>Tidigare mätningar</h2>
-            <CustomPaginationActionsTable
-              paginate
-              titles={['Datum', 'mmol/L']}
-              columns={['x', 'y']}
-              rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
-            />
-          </Grid>
-        </Container>
-      </Grid>
+            <Grid belowAvatar> 
+                <Grid item className={classes.bigDiv} xs={12}>
+                  <Paper className={classes.paper} elevation={3} variant="outlined">
+                    <Typography component="h2" variant="h6">
+                      
+                      Mina mätningar
+                    </Typography>
+                    <CustomPaginationActionsTable
+                      paginate
+                      titles={['Datum', 'mmol/L']}
+                      columns={['x', 'y']}
+                      rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
+                    />
+                  </Paper>
+                </Grid>
+                <Grid item className={classes.bigDiv} xs={12}>
+                  <Paper className={classes.paper} elevation={3} variant="outlined">
+                    <Typography component="h2" variant="h6">
+                      {' '}
+                      Blodsocker
+                    </Typography>
+                    <TimeLineChart
+                    chartData={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false, true) : null}
+                    label="Blodsocker (mmol/L)"
+                    ></TimeLineChart>
+                  </Paper>
+                </Grid>
+              </Grid>
+           </Grid>
+        </Grid>
     )
   }
 }
 
 const styles = (theme) => ({
-  bigDiv: {
+
+  mainGrid: { //Settings for the whole page.
     marginTop: theme.spacing(8),
-    overflowX: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
-  circle: {
+
+  bigDiv: { //Space between objects
+    marginTop: theme.spacing(8),
+    overflowX: 'hidden', //Disables sidescroll
+  },
+  circle: { //The big blue background-circle
     marginTop: '-145vw',
     width: '200vw',
     height: '200vw',
@@ -135,7 +158,7 @@ const styles = (theme) => ({
     backgroundColor: '#17478c',
     position: 'relative',
   },
-  smallCircle: {
+  smallCircle: { //The size, color, fontsize for for all statcircles.
     width: '18vw',
     height: '18vw',
     borderRadius: '50%',
@@ -144,7 +167,7 @@ const styles = (theme) => ({
     color: theme.palette.text.primary,
     backgroundColor: '#fff',
   },
-  statCircle1: {
+  statCircle1: { //Statcircle 1-5 determines the position of each bubble.
     position: 'absolute',
     bottom: '36vw',
     left: '57vw',
@@ -171,13 +194,8 @@ const styles = (theme) => ({
     bottom: '36vw',
     right: '57vw',
   },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatarCircle: {
+
+  avatarCircle: { //Positions for the bubble around the avatar
     position: 'absolute',
     width: '40vw',
     height: '40vw',
@@ -186,14 +204,7 @@ const styles = (theme) => ({
     borderRadius: '50%',
     backgroundColor: '#C4C4C4',
   },
-  centerText: {
-    position: 'absolute',
-    top: '23%',
-    left: '50%',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-  centerSmallerText: {
+  centerText: { //Centers the numbers/text inside the bubble.
     position: 'absolute',
     top: '23%',
     left: '50%',
@@ -201,10 +212,10 @@ const styles = (theme) => ({
     transform: 'translate(-50%, -50%)',
   },
 
-  centerIcon: {
+  centerIcon: { //Centers the avatar inside the bubble.
     position: 'absolute',
-    top: '50%',
-    left: '50%',
+    top: '52.5%',
+    left: '49%',
     transform: 'translate(-50%, -50%)',
     maxWidth: '100%',
     height: 'auto',
@@ -214,8 +225,9 @@ const styles = (theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  paper: { //Defines the papers below avatar
+    height: '100%',
+    padding: theme.spacing(2),
   },
 })
 
