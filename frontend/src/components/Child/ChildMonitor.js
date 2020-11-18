@@ -144,7 +144,6 @@ const styles = (theme) => ({
   },
 
   bigDiv: { //Space between objects
-    marginTop: theme.spacing(8),
     overflowX: 'hidden', //Disables sidescroll
   },
   circle: { //The big blue background-circle
