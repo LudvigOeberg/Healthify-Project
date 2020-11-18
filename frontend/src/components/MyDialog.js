@@ -9,11 +9,15 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
+import Box from '@material-ui/core/Box'
 
 import sadAvatar from '../Static/sad_avatar.png'
+import happyAvatar from '../Static/happy_avatar.png'
 
 const styles = (theme) => ({
   root: {
+    justifyContent: 'center',
+    textAlign: 'center',
     margin: 0,
     padding: theme.spacing(2),
   },
@@ -25,6 +29,7 @@ const styles = (theme) => ({
   },
 })
 
+// eslint-disable-next-line no-unused-vars
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props
   return (
@@ -41,12 +46,14 @@ const DialogTitle = withStyles(styles)((props) => {
 
 const DialogContent = withStyles((theme) => ({
   root: {
+    justifyContent: 'center',
     padding: theme.spacing(2),
   },
 }))(MuiDialogContent)
 
 const DialogActions = withStyles((theme) => ({
   root: {
+    justifyContent: 'center',
     margin: 0,
     padding: theme.spacing(1),
   },
@@ -56,11 +63,17 @@ export default function MyDialog(props) {
   const [open, setOpen] = React.useState(false)
 
   const { buttonLabel } = props
-  const { title } = props
+  // const { title } = props
   const { text } = props
   // const { pictureLocation } = props
   const { alt } = props
-  // const { value } = props
+  let avatar
+
+  if (alt === 'sad avatar') {
+    avatar = sadAvatar
+  } else {
+    avatar = happyAvatar
+  }
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -71,19 +84,18 @@ export default function MyDialog(props) {
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" color="primary" onClick={handleClickOpen} fullWidth>
         {buttonLabel}
         <ArrowForwardIosIcon />
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {title}
-        </DialogTitle>
         <DialogContent dividers>
           <Typography textAlign="center" gutterBottom>
             {text}
           </Typography>
-          <img src={sadAvatar} alt={alt}></img>
+          <Box display="flex" justifyContent="center" alignItems="center" minHeight="30vh">
+            <img src={avatar} alt={alt}></img>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">

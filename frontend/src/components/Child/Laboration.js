@@ -19,6 +19,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({});
 
+const value = 2;
+
 class Laboration extends React.Component {
   constructor() {
     super();
@@ -30,6 +32,8 @@ class Laboration extends React.Component {
 
   render() {
     const { classes } = this.props;
+    // this.props.simulationValue = value;
+    // currentUser.simulationValue = value;
 
     return (
       <Container component="main" maxWidth="md">
@@ -58,7 +62,7 @@ class Laboration extends React.Component {
                 direction="row"
                 justify="center"
                 alignItems="center"
-                spacing={3}
+                spacing={2}
               >
                 <Grid item xs={12} sm={6}>
                   <Typography
@@ -102,7 +106,7 @@ const styles = (theme) => ({
     color: theme.palette.text.primary,
   },
   diet: {
-     marginTop: "7vh",
+    marginTop: "7vh",
     borderWidth: 5,
     borderColor: theme.palette.primary.main,
     borderRadius: 20,

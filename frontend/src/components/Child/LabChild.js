@@ -9,9 +9,12 @@ import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link'
 import Slider from '@material-ui/core/Slider'
 import MyDialog from '../MyDialog'
+// import MySlider from '../MySlider'
 
 /* eslint-disable */
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  // currentUser: state.common.currentUser,
+});
 
 const mapDispatchToProps = (dispatch) => ({});
 
@@ -32,21 +35,38 @@ const marks = [
   },
 ];
 
+const value = 2;
+let info;
+
+const badDialogInfo = [
+  "Simulera",
+  "Simulation",
+  "Du kommer att må sämre om du äter detta.",
+  "../Static/sad_avatar.png",
+  "sad avatar",
+];
+
+const goodDialogInfo = [
+  "Simulera",
+  "Simulation",
+  "Du kommer att må bättre om du äter detta!",
+  "../Static/happy_avatar.png",
+  "happy avatar",
+];
+
 class LabChild extends React.Component {
   constructor() {
     super();
   }
-  componentWillUnmount() {
-  }
-  
+  componentWillUnmount() {}
+
   render() {
     const { classes } = this.props;
 
     return (
       <Container className={classes.root}>
-        <Grid container spacing={2}>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={8}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
             <Card className={classes.card}>
               <Grid item xs={8}>
                 <Typography
@@ -83,6 +103,7 @@ class LabChild extends React.Component {
               </Grid>
               <Grid item xs={12}>
                 <Slider
+                  // value={mealSize}
                   defaultValue={2}
                   step={1}
                   marks={marks}
@@ -92,32 +113,28 @@ class LabChild extends React.Component {
               </Grid>
             </Card>
           </Grid>
-          <Grid item xs={2}></Grid>
-          <Grid container direction="row" justify="center" alignItems="center">
-            {" "}
-            <Grid item xs={5}></Grid>
-            <Grid item xs={1}>
+            <Grid item xs={6}>
               <Button
                 component={Link}
                 href={"/child-laboration"}
                 variant="outlined"
                 color="primary"
-              >
+                fullWidth
+>
                 {" "}
                 Tillbaka
               </Button>{" "}
             </Grid>
-            <Grid item xs={1}>
+            <Grid item xs={6}>
               <MyDialog
-                buttonLabel="Simulera"
-                title="Simulation"
-                text="Om du äter detta kommer du inte att må så bra."
-                pictureLocation="../Static/sad_avatar.png"
-                alt="sad avatar"
+                {...(info = getDialogInfo())}
+                buttonLabel={info[0]}
+                title={info[1]}
+                text={info[2]}
+                pictureLocation={info[3]}
+                alt={info[4]}
               ></MyDialog>
             </Grid>
-            <Grid item xs={5}></Grid>
-          </Grid>
         </Grid>
       </Container>
     );
@@ -126,11 +143,10 @@ class LabChild extends React.Component {
 
 const styles = (theme) => ({
   root: {
-    flexGrow: 1,
+    display: "flex",
     marginTop: theme.spacing(8),
-    padding: theme.spacing(1),
-    position: "absolute",
-    maxWidth: "100%",
+    alignItems: "top",
+    padding: theme.spacing(1),  
   },
   card: {
     minWidth: 328,
@@ -160,6 +176,13 @@ function getCurrentDate() {
     today.getMonth()
   )}-${String(today.getDate())}`;
   return todaysDate;
+}
+
+function getDialogInfo() {
+  if (value === 2) {
+    return goodDialogInfo;
+  }
+  return badDialogInfo;
 }
 
 export default connect(
