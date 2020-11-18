@@ -6,7 +6,6 @@ import HomeIcon from '@material-ui/icons/Home';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import { borders } from '@material-ui/system';
 
 const useStyles = makeStyles((theme) => ({
     root: {
