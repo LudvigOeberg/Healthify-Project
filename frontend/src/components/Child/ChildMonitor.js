@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
 import TimeLineChart from '../TimeLineChart'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
-  UPDATE_BOOLEAN,
   LOAD_PARTY,
   LOAD_BLOODSUGAR,
 } from '../../constants/actionTypes'
