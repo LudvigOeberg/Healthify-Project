@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles'
 import React from 'react'
 import { Line } from 'react-chartjs-2';
@@ -175,20 +176,17 @@ export default function SimulateChart(props) {
 
     return (
         <div>
+        <Typography component='h2' variant='h5'>{disease==="DIABETES" ? "Blodsocker" : "Vikt"}</Typography>
         <Line  
         data={disease==="DIABETES" ? diabetesData : obesityData}
         options={{
           maintainAspectRatio: true,
           responsive: true,
-          title: {
-             display: true,
-             text: disease==='DIABETES' ? 'Blodsocker' : 'Vikt'
-          },
           legend:{
-            display: true,
+            display: false,
             position: "bottom",
             labels:{
-              fontSize: 10
+              fontSize: 14,
             }
             
           },
