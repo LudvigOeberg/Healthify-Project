@@ -30,7 +30,7 @@ const getSettings = (disease) => {
 export default function SimulateChart(props) {
     const disease = props.disease ? props.disease : null 
     const intensity = props.intensity ? props.intensity : 0
-    const calorieintake = props.calorieintake ? props.calorieintake : 0
+    const calorieintake = props.calorieintake ? props.calorieintake : 1600
     const goalweight = props.goalweight ? props.goalweight : 0
     const trainingammount = props.trainingammount ? props.trainingammount : 0
     const meal = props.meal ? props.meal : 0
