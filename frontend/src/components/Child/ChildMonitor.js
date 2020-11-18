@@ -120,7 +120,6 @@ class ChildMonitor extends Component {
 
 const styles = (theme) => ({
   bigDiv: {
-    marginTop: theme.spacing(8),
     overflowX: 'hidden',
   },
   circle: {
@@ -169,7 +168,6 @@ const styles = (theme) => ({
     right: '55vw',
   },
   paper: {
-    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

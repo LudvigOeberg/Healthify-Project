@@ -13,7 +13,6 @@ import agentEHR from '../../agentEHR'
 import { UPDATE_BOOLEAN, FIELD_CHANGE, LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT } from '../../constants/actionTypes'
 import TimeLineChart from '../TimeLineChart'
 import Reformat from '../../reformatEHRData'
-import FooterBar from '../FooterBar'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -27,11 +26,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
   },
   loadValues: (ehrId, offset, limit, disease) => {
-    if (disease==="DIABETES")
+    if (disease === 'DIABETES')
       dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
-    else if (disease==="OBESITY")
-      dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit)})
-  }
+    else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
+  },
 })
 
 // Checks if given bloodsugar levels are considered low, high or good.
@@ -47,38 +45,35 @@ const getIndication = (data) => {
   return 'Stabilt'
 }
 
-
-
 const ParentOverview = (props) => {
   const { id } = props.match.params
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-  const colDesc = ['Datum', `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`, `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`]
+  const colDesc = [
+    'Datum',
+    `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
+    `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
+  ]
   const classes = styles()
   const { bloodsugar } = props
   const { weight } = props
   const loading = props.inProgress
   const age = props.party ? `${Moment().diff(props.party[id].dateOfBirth, 'years')} år` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
-  const input = bloodsugar ? bloodsugar: weight
-  
+  const input = bloodsugar || weight
+
   const reformatForChart = (data) => {
-    if(bloodsugar)
-      return Reformat.bloodsugar(data, false, true)
-    else if(weight)
-      return Reformat.weight(data, false, true)
-    else
-      return null
- }
-
-
+    if (bloodsugar) return Reformat.bloodsugar(data, false, true)
+    if (weight) return Reformat.weight(data, false, true)
+    return null
+  }
 
   const reformat = (data) => {
     const dataObjects = []
     for (let i = 0; i < data.length; i++) {
       dataObjects.push({
         time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
-        value: disease==="DIABETES" ? data[i].value : data[i].weight,
-        indicator: getIndication(disease==="DIABETES" ? data[i].value : data[i].weight),
+        value: disease === 'DIABETES' ? data[i].value : data[i].weight,
+        indicator: getIndication(disease === 'DIABETES' ? data[i].value : data[i].weight),
       })
     }
     return dataObjects
@@ -86,10 +81,9 @@ const ParentOverview = (props) => {
 
   useEffect(() => {
     props.onLoad(id)
-    props.loadValues(id, 0, 3, disease) 
+    props.loadValues(id, 0, 3, disease)
     }, [id, disease]) // eslint-disable-line
 
-    
   const doctor = {
     name: 'Doktor X',
     mail: 'Dr.x@gmail.com',
@@ -108,94 +102,94 @@ const ParentOverview = (props) => {
   const caregivers = [doctor, shrink, nurse]
 
   return (
-    <div>
-    <Grid container className={classes.root} spacing={5} height="100%">
-      <Grid item xs={12} sm={12} md={6}>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h2" variant="h6">
-                {' '}
-                HÄR SKA DET STÅ INFO OM HUR DET GÅR FÖR BARNET I GAMIFICATION-ASPEKTEN
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h1" variant="h5">
-                {' '}
-                GRAF
-              </Typography>
-              <TimeLineChart
-              chartData={input ? reformatForChart(input) : null }
-              label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
-              ></TimeLineChart>
-            </Paper>
+    <div className={classes.main}>
+      <Grid container className={classes.root} spacing={2} height="100%">
+        <Grid item xs={12} sm={12} md={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Paper className={classes.paper} elevation={2}>
+                <Typography component="h2" variant="h6">
+                  {' '}
+                  HÄR SKA DET STÅ INFO OM HUR DET GÅR FÖR BARNET I GAMIFICATION-ASPEKTEN
+                </Typography>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Paper className={classes.paper} elevation={2}>
+                <Typography component="h1" variant="h5">
+                  {' '}
+                  GRAF
+                </Typography>
+                <TimeLineChart
+                  chartData={input ? reformatForChart(input) : null}
+                  label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
+                ></TimeLineChart>
+              </Paper>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      <Grid item xs={12} sm={12} md={6}>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={12} md={6}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h2" variant="h6">
-                {' '}
-                Senaste mätningar
-              </Typography>
-              {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
+        <Grid item xs={12} sm={12} md={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={6}>
+              <Paper className={classes.paper} elevation={2}>
+                <Typography component="h2" variant="h6">
+                  {' '}
+                  Senaste mätningar
+                </Typography>
+                {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
                             PLUS EN LÄNK TILL MONITORCHILDVALUE */}
-              <CustomPaginationActionsTable
-                columns={['time', 'value', 'indicator']}
-                loading={loading}
-                rows={input ? reformat(input, false) : null }
-                titles={colDesc}
-                paginate={false}
-              />
-              <Button variant="contained" color="secondary" href={`/monitor-child/${id}`}>
-                Hantera värden
-              </Button>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h1" variant="h6">
-                {name}
-              </Typography>
-              <Typography variant="subtitle1">{age}</Typography>
-              <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
-              <Avatar className={classes.avatar}>
-                <ChildCareIcon fontSize="large" />
-              </Avatar>
-            </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h1" variant="h6">
-                {' '}
-                Vårdgivare
-              </Typography>
-              {/* Caregivers ska stå här och annan info. Ändra format. */}
-              <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
-            </Paper>
+                <CustomPaginationActionsTable
+                  columns={['time', 'value', 'indicator']}
+                  loading={loading}
+                  rows={input ? reformat(input, false) : null}
+                  titles={colDesc}
+                  paginate={false}
+                />
+                <Button variant="contained" color="secondary" href={`/monitor-child/${id}`}>
+                  Hantera värden
+                </Button>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Paper className={classes.paper} elevation={2}>
+                <Typography component="h1" variant="h6">
+                  {name}
+                </Typography>
+                <Typography variant="subtitle1">{age}</Typography>
+                <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
+                <Avatar className={classes.avatar}>
+                  <ChildCareIcon fontSize="large" />
+                </Avatar>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper} elevation={2}>
+                <Typography component="h1" variant="h6">
+                  {' '}
+                  Vårdgivare
+                </Typography>
+                {/* Caregivers ska stå här och annan info. Ändra format. */}
+                <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
+              </Paper>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-      
-    </Grid>
-      <FooterBar id = {id}/>
     </div>
   )
 }
 
 const styles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(6),
+    margin: '0px !important',
     alignItems: 'top',
     display: 'flex',
     padding: theme.spacing(1),
+    maxWidth: '100vw',
   },
   paper: {
+    marginTop: theme.spacing(4),
     height: '100%',
     padding: theme.spacing(1),
   },
@@ -215,4 +209,3 @@ const styles = makeStyles((theme) => ({
 }))
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParentOverview)
-
