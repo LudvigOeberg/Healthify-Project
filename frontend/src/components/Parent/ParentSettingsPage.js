@@ -20,7 +20,8 @@ const mapDispatchToProps = (dispatch) => ({
 class ParentSettingsPage extends Component {
   constructor() {
     super()
-    this.state = { open: false }
+    this.state = { openDeleteButton: false }
+    this.state = { openEmailButton: false }
   }
 
   componentWillUnmount() {
@@ -29,18 +30,23 @@ class ParentSettingsPage extends Component {
 
   componentDidMount() {}
 
+  changeEmail() {
+    //change email
+    this.setState({ openEmailButton: false })
+  }
   deleteAccount() {
     // delete account from database
     // console.log("delete account")
-    this.setState({ open: false })
+    this.setState({ openDeleteButton: false })
   }
 
   render() {
     const { classes } = this.props
+    const email = this.props.currentUser.email
     const name = this.props.currentUser ? `${this.props.currentUser.name} ${this.props.currentUser.surname}` : null
     return (
       <Container component="main" maxWidth="md">
-        {/* {console.log(this.state.open)} */}
+        {/* {console.log(this.state.openDeleteButton)} */}
         <div className={classes.paper}>
           <Avatar className={classes.purple} src="test.123" alt={name} />
           <Typography component="h1" variant="h5">
@@ -49,13 +55,50 @@ class ParentSettingsPage extends Component {
         </div>
 
         <div className={classes.paper}>
-          <Button type="submit" variant="contained" color="secondary" onClick={() => this.setState({ open: true })}>
-            Delete Account
-          </Button>
+          <Grid className={classes.buttonGroup}>
+            <Button type="submit" variant="contained" color="primary" onClick={() => this.setState({ openEmailButton: true })}>
+              Change Email Address
+            </Button>
+          </Grid>
+          <Grid className={classes.buttonGroup}>
+            <Button type="submit" variant="contained" color="secondary" onClick={() => this.setState({ openDeleteButton: true })}>
+              Delete Account
+            </Button>
+          </Grid>
+
+          {/*change email button popup */}
           <Modal
             className={classes.modalStyle}
             disableAutoFocus
-            open={this.state.open}
+            open={this.state.openEmailButton}
+            // onClose={console.log("closed modal")}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+            <Grid container direction="column" className={classes.emailModal}>
+              <Grid> 
+              <Typography component="h1">
+                Your current email is: {email}
+              </Typography>
+              </Grid>
+              <Grid>
+              <Typography> Enter a new email address </Typography>
+
+              </Grid>
+
+              <Grid container direction="row" className={classes.yesnoButtons}>
+                <Button type="submit" variant="contained" color="secondary" onClick={() => this.changeEmail()}>
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+          </Modal>
+
+          {/*delete button popup */}
+          <Modal
+            className={classes.modalStyle}
+            disableAutoFocus
+            open={this.state.openDeleteButton}
             // onClose={console.log("closed modal")}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
@@ -73,8 +116,7 @@ class ParentSettingsPage extends Component {
                   type="submit"
                   variant="contained"
                   color="secondary"
-                  onClick={() => this.setState({ open: false })}
-                >
+                  onClick={() => this.setState({ openDeleteButton: false })} >
                   No
                 </Button>
               </Grid>
@@ -93,9 +135,26 @@ const styles = (theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  buttonGroup: {
+    width: '30%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '8px'
+  },
+  emailModal: {
+    outline: 'none',
+    width: '40%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    padding: '8px',
+  },
   modalButton: {
     outline: 'none',
-    width: '400px',
+    width: '40%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
