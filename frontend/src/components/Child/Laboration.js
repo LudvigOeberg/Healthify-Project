@@ -59,8 +59,7 @@ class Laboration extends React.Component {
             <Button component={Link} href={"/lab-child"} color="inherit">
               <Grid
                 container
-                direction="row"
-                justify="center"
+
                 alignItems="center"
                 spacing={2}
               >
@@ -88,7 +87,7 @@ class Laboration extends React.Component {
 
 const styles = (theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+  //  marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -110,6 +109,8 @@ const styles = (theme) => ({
     borderWidth: 5,
     borderColor: theme.palette.primary.main,
     borderRadius: 20,
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
   },
   form: {
     width: "100%", // Fix IE 11 issue.

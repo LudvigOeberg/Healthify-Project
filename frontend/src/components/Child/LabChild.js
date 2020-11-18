@@ -62,6 +62,7 @@ class LabChild extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { mealSize } = this.props;
 
     return (
       <Container className={classes.root}>
@@ -103,13 +104,14 @@ class LabChild extends React.Component {
               </Grid>
               <Grid item xs={12}>
                 <Slider
-                  // value={mealSize}
+                  value={mealSize}
                   defaultValue={2}
                   step={1}
                   marks={marks}
                   min={1}
                   max={3}
                 />
+                {/* <MySlider></MySlider> */}
               </Grid>
             </Card>
           </Grid>

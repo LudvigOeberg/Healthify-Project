@@ -29,6 +29,9 @@ export default function MySlider() {
     setValue(newValue)
     // eslint-disable-next-line react/no-this-in-sfc
 
+    // eslint-disable-next-line no-console
+    console.log(value)
+
     if (value == null || value === undefined) {
       // eslint-disable-next-line react/no-this-in-sfc
       this.val = value
