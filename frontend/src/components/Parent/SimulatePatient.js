@@ -101,15 +101,15 @@ const SimulatePatient = (props) => {
             props.onChange("goalweight", 100);
         } 
       };
-    
+
 
     if(disease==="OBESITY"){
     return (
         <Container className={classes.root}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Card variant="outlined" className={classes.card}>
-                        <CardHeader title={showGraph ? "Info om simulering" : "Simulering"} />
+                        <Card variant="outlined" className={showGraph ? classes.card2 : classes.card}>
+                        <CardHeader title={showGraph ? "Observera!" : "Simulering"} />
                           
                             <CardContent hidden={showGraph}>
                                 Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har.
@@ -228,21 +228,17 @@ const SimulatePatient = (props) => {
 
             {/* _____________________________________ */}
                 <Grid item xs={12}>
-                <Paper hidden={!showGraph}>
-                <Grid container spacing={2} justify='center' alignItem='center'>
-                <Grid item xs={12} md={8}>
-                <SimulateChart
+                <Paper className={classes.paper} hidden={!showGraph}>
+                
+                <SimulateChart 
                 disease={disease}
                 weight={weight}
                 intensity={intensity}
                 calorieintake={calorieintake}
                 trainingammount={trainingammount}
                 goalweight={goalweight}
-                bloodsugar={bloodsugar}
-                meal={meal}
                 />
-                </Grid>
-                </Grid>    
+               
                 </Paper>
                 </Grid>
             {/* _____________________________________ */}
@@ -281,9 +277,8 @@ const SimulatePatient = (props) => {
         <Container className={classes.root}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Card variant="outlined" className={classes.card}>
-                            <CardHeader title="Simulering" hidden={showGraph}/>
-                            <CardHeader title="Info om simulering" hidden={!showGraph}/>
+                    <Card variant="outlined" className={showGraph ? classes.card2 : classes.card}>
+                        <CardHeader title={showGraph ? "Observera!" : "Simulering"} />
                             <CardContent hidden={showGraph}>
                                 Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har.
                             </CardContent>
@@ -337,21 +332,14 @@ const SimulatePatient = (props) => {
                 
                 {/* _____________________________________ */}
                 <Grid item xs={12}>
-                <Paper hidden={!showGraph}>
-                <Grid container spacing={2} justify='center' alignItem='center'>
-                <Grid item xs={12} md={8}>
-                <SimulateChart
+                <Paper className={classes.paper} hidden={!showGraph}>
+               
+                <SimulateChart 
                 disease={disease}
-                weight={weight}
-                intensity={intensity}
-                calorieintake={calorieintake}
-                trainingammount={trainingammount}
-                goalweight={goalweight}
                 bloodsugar={bloodsugar}
                 meal={meal}
                 />
-                </Grid>
-                </Grid>    
+                 
                 </Paper>
                 </Grid>
                 {/* _____________________________________ */}
@@ -447,6 +435,16 @@ const styles = makeStyles((theme) => ({
         borderColor: theme.palette.primary.main,
         borderRadius: 20
     },
+    card2: {
+        borderWidth: 5,
+        borderColor: theme.palette.secondary.main,
+        borderRadius: 20
+    },
+    chart:{
+        height: 500,
+        padding: theme.spacing(1),
+    }
+   
    
 }))
 
