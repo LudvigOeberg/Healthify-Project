@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Modal from '@material-ui/core/Modal'
+import TextField from '@material-ui/core/TextField';
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 
@@ -18,11 +19,12 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class ParentSettingsPage extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = { openDeleteButton: false }
     this.state = { openEmailButton: false }
   }
+  
 
   componentWillUnmount() {
     this.props.onUnload()
@@ -34,6 +36,11 @@ class ParentSettingsPage extends Component {
     //change email
     this.setState({ openEmailButton: false })
   }
+
+  submitForm() {
+    console.log("newEmail");
+  }
+
   deleteAccount() {
     // delete account from database
     // console.log("delete account")
@@ -43,6 +50,7 @@ class ParentSettingsPage extends Component {
   render() {
     const { classes } = this.props
     const email = this.props.currentUser.email
+    //const newEmail = ""
     const name = this.props.currentUser ? `${this.props.currentUser.name} ${this.props.currentUser.surname}` : null
     return (
       <Container component="main" maxWidth="md">
@@ -77,18 +85,26 @@ class ParentSettingsPage extends Component {
           >
             <Grid container direction="column" className={classes.emailModal}>
               <Grid> 
-              <Typography component="h1">
+              <Typography component="h1" gutterBottom='true' variant="h5">
                 Your current email is: {email}
               </Typography>
               </Grid>
-              <Grid>
-              <Typography> Enter a new email address </Typography>
-
-              </Grid>
 
               <Grid container direction="row" className={classes.yesnoButtons}>
+              <Typography> Enter a new email address </Typography>
+              <form noValidate>
+              <TextField 
+                required
+                id="email" 
+                label="Email" 
+                variant="outlined" 
+              />
+              </form>
                 <Button type="submit" variant="contained" color="secondary" onClick={() => this.changeEmail()}>
                   Submit
+                </Button>
+                <Button type="submit" variant="contained" color="primary" onClick={() => this.setState({ openEmailButton : false }) } >
+                  Cancel
                 </Button>
               </Grid>
             </Grid>
@@ -102,6 +118,7 @@ class ParentSettingsPage extends Component {
             // onClose={console.log("closed modal")}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
+
           >
             <Grid container direction="column" className={classes.modalButton}>
               <Typography component="h1" variant="h5">
@@ -151,6 +168,8 @@ const styles = (theme) => ({
     alignSelf: 'center',
     backgroundColor: 'white',
     padding: '8px',
+    borderRadius: 10
+
   },
   modalButton: {
     outline: 'none',
@@ -161,6 +180,8 @@ const styles = (theme) => ({
     alignSelf: 'center',
     backgroundColor: 'white',
     padding: '8px',
+    borderRadius: 10
+
   },
   yesnoButtons: {
     justifyContent: 'space-around',
