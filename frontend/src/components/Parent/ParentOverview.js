@@ -102,90 +102,94 @@ const ParentOverview = (props) => {
   const caregivers = [doctor, shrink, nurse]
 
   return (
-    <Grid container className={classes.root} spacing={5} height="100%">
-      <Grid item xs={12} sm={12} md={6}>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h2" variant="h6">
-                {' '}
-                HÄR SKA DET STÅ INFO OM HUR DET GÅR FÖR BARNET I GAMIFICATION-ASPEKTEN
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h1" variant="h5">
-                {' '}
-                GRAF
-              </Typography>
-              <TimeLineChart
-                chartData={input ? reformatForChart(input) : null}
-                label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
-              ></TimeLineChart>
-            </Paper>
+    <div className={classes.main}>
+      <Grid container className={classes.root} spacing={2} height="100%">
+        <Grid item xs={12} sm={12} md={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Paper className={classes.paper} elevation={2}>
+                <Typography component="h2" variant="h6">
+                  {' '}
+                  HÄR SKA DET STÅ INFO OM HUR DET GÅR FÖR BARNET I GAMIFICATION-ASPEKTEN
+                </Typography>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Paper className={classes.paper} elevation={2}>
+                <Typography component="h1" variant="h5">
+                  {' '}
+                  GRAF
+                </Typography>
+                <TimeLineChart
+                  chartData={input ? reformatForChart(input) : null}
+                  label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
+                ></TimeLineChart>
+              </Paper>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      <Grid item xs={12} sm={12} md={6}>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={12} md={6}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h2" variant="h6">
-                {' '}
-                Senaste mätningar
-              </Typography>
-              {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
+        <Grid item xs={12} sm={12} md={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={6}>
+              <Paper className={classes.paper} elevation={2}>
+                <Typography component="h2" variant="h6">
+                  {' '}
+                  Senaste mätningar
+                </Typography>
+                {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
                             PLUS EN LÄNK TILL MONITORCHILDVALUE */}
-              <CustomPaginationActionsTable
-                columns={['time', 'value', 'indicator']}
-                loading={loading}
-                rows={input ? reformat(input, false) : null}
-                titles={colDesc}
-                paginate={false}
-              />
-              <Button variant="contained" color="secondary" href={`/monitor-child/${id}`}>
-                Hantera värden
-              </Button>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h1" variant="h6">
-                {name}
-              </Typography>
-              <Typography variant="subtitle1">{age}</Typography>
-              <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
-              <Avatar className={classes.avatar}>
-                <ChildCareIcon fontSize="large" />
-              </Avatar>
-            </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h1" variant="h6">
-                {' '}
-                Vårdgivare
-              </Typography>
-              {/* Caregivers ska stå här och annan info. Ändra format. */}
-              <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
-            </Paper>
+                <CustomPaginationActionsTable
+                  columns={['time', 'value', 'indicator']}
+                  loading={loading}
+                  rows={input ? reformat(input, false) : null}
+                  titles={colDesc}
+                  paginate={false}
+                />
+                <Button variant="contained" color="secondary" href={`/monitor-child/${id}`}>
+                  Hantera värden
+                </Button>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Paper className={classes.paper} elevation={2}>
+                <Typography component="h1" variant="h6">
+                  {name}
+                </Typography>
+                <Typography variant="subtitle1">{age}</Typography>
+                <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
+                <Avatar className={classes.avatar}>
+                  <ChildCareIcon fontSize="large" />
+                </Avatar>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper} elevation={2}>
+                <Typography component="h1" variant="h6">
+                  {' '}
+                  Vårdgivare
+                </Typography>
+                {/* Caregivers ska stå här och annan info. Ändra format. */}
+                <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
+              </Paper>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </div>
   )
 }
 
 const styles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(6),
+    margin: '0px !important',
     alignItems: 'top',
     display: 'flex',
     padding: theme.spacing(1),
+    maxWidth: '100vw',
   },
   paper: {
+    marginTop: theme.spacing(4),
     height: '100%',
     padding: theme.spacing(1),
   },
