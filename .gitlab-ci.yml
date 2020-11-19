@@ -65,8 +65,6 @@ build-node-image:
   image: docker.io/buildah/buildah
 
   script:
-    - cd frontend
-    - npm install react-scripts@3.0.1 -g
     - export _BUILDAH_STARTED_IN_USERNS=''
     - export BUILDAH_ISOLATION=chroot
     - export STORAGE_DRIVER=vfs
