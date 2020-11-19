@@ -139,7 +139,6 @@ const ParentOverview = (props) => {
                 </Typography>
                 {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
                             PLUS EN LÄNK TILL MONITORCHILDVALUE */}
-<<<<<<< HEAD
               <CustomPaginationActionsTable
                 columns={['time', 'value', 'indicator']}
                 loading={loading}
@@ -176,44 +175,9 @@ const ParentOverview = (props) => {
               {/* Caregivers ska stå här och annan info. Ändra format. */}
               <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
             </Paper>
-=======
-                <CustomPaginationActionsTable
-                  columns={['time', 'value', 'indicator']}
-                  loading={loading}
-                  rows={input ? reformat(input, false) : null}
-                  titles={colDesc}
-                  paginate={false}
-                />
-                <Button variant="contained" color="secondary" href={`/monitor-child/${id}`}>
-                  Hantera värden
-                </Button>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={12} md={6}>
-              <Paper className={classes.paper} elevation={2}>
-                <Typography component="h1" variant="h6">
-                  {name}
-                </Typography>
-                <Typography variant="subtitle1">{age}</Typography>
-                <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
-                <Avatar className={classes.avatar}>
-                  <ChildCareIcon fontSize="large" />
-                </Avatar>
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper} elevation={2}>
-                <Typography component="h1" variant="h6">
-                  {' '}
-                  Vårdgivare
-                </Typography>
-                {/* Caregivers ska stå här och annan info. Ändra format. */}
-                <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
-              </Paper>
-            </Grid>
->>>>>>> 48e25732872c912ee96cb4f7fea9d3ffb2ed5e62
           </Grid>
         </Grid>
+      </Grid>
       </Grid>
     </div>
   )
