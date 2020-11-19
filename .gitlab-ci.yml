@@ -16,6 +16,8 @@ build-frontend:
     paths:
       - frontend/build
       - frontend/node_modules
+      - frontend/package.json
+      - frontend/package-lock.json
   except:
     changes:
       - public/*
@@ -40,7 +42,7 @@ test-frontend:
     - build-frontend
   script:
     - apt-get update -qy
-    - apt-get install -y python3-dev python3-pip
+    - apt-get install -y python3-dev python3-pip python3-venv
     - chmod +x ./testScript.sh
     - ./testScript.sh
 
