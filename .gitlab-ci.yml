@@ -39,6 +39,7 @@ test-frontend:
     - selenium/standalone-chrome
   script:
     - export DEBIAN_FRONTEND=noninteractive
+    - export TZ=Europe/Stockholm
     - apt-get update -qy
     - apt-get install -y python3-dev python3-pip python3-venv
     - apt-get install -y nodejs
