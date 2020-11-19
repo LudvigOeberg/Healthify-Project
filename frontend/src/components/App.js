@@ -25,10 +25,8 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
+import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
-
-
-
 import FooterBar from './FooterBar'
 
 const mapStateToProps = (state) => ({
@@ -164,6 +162,13 @@ class App extends React.Component {
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
                 component={AccessedData}
+              />
+              <RequiredRoute
+                exact
+                path="/settings"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={Integrations}
               />
               {/* Commented out as link from ChildListItem no longer links to /caregiving-team
                here in case we need it */}
