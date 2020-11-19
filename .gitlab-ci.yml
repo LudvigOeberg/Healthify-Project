@@ -10,7 +10,7 @@ stages:
 
 build-frontend:
   stage: build
-  image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy:node-image:latest
+  image: node
   artifacts:
     expire_in: 1 hour
     paths:
@@ -57,24 +57,6 @@ lint-checker:
     - cd frontend
     - npm install lint
     - npm run lint:fix
-
-
-
-.build-node-image:
-  stage: lint
-  image: docker.io/buildah/buildah
-
-  script:
-    - export _BUILDAH_STARTED_IN_USERNS=''
-    - export BUILDAH_ISOLATION=chroot
-    - export STORAGE_DRIVER=vfs
-    - export BUILDAH_FORMAT=docker
-    - echo "${CI_REGISTRY_PASSWORD}"
-    - echo "${CI_REGISTRY_IMAGE}"
-    - echo "${CI_REGISTRY_USER}"
-    - echo "${CI_JOB_TOKEN}"
-    - buildah build-using-dockerfile --tag "node" .
-    - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "node" "docker://${CI_REGISTRY_IMAGE}/node-image:latest"
 
 
 
