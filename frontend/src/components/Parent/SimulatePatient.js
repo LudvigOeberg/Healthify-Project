@@ -9,7 +9,7 @@ import InputSlider from '../InputSlider';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import { FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR, LOAD_WEIGHT, UPDATE_BOOLEAN } from '../../constants/actionTypes';
+import { FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR, LOAD_WEIGHT, UPDATE_BOOLEAN, OPEN_SNACKBAR } from '../../constants/actionTypes';
 import agentEHR from '../../agentEHR'
 import SimulateChart from '../SimulateChart'
 
@@ -31,7 +31,24 @@ const mapDispatchToProps = (dispatch) => ({
         else if (disease==="OBESITY")
           dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit)})
       },
-    onOpen: (key="showGraph",value) => {dispatch({type: UPDATE_BOOLEAN, key, value})}
+    onOpen: (key="showGraph",value, noInputDiet, noInputTraining, meal, bloodsugar) => {
+        dispatch({type: UPDATE_BOOLEAN, key, value})
+        if (value && noInputDiet && !meal)
+            dispatch({type: OPEN_SNACKBAR, message: "Du simulerade enbart träning, mata in värden för kalorier per dag om du vill simulera även kost", color: "success" })
+        else if (value && noInputTraining  && !meal)
+            dispatch({type: OPEN_SNACKBAR, message: "Du simulerade kost, mata in värden för träningstillfällen och intensitet om du vill simulera även träning", color: "success" })
+        else if (value && meal){
+            if (bloodsugar[0].value+meal>10){
+                console.log(bloodsugar+meal)
+                dispatch({type: OPEN_SNACKBAR, message: "Du simulerade måltid, denna måltid kommer göra att ditt barn överstiger sin blodsockergräns", color: "error" })
+            }else if (bloodsugar[0].value+meal-3<3)
+                dispatch({type: OPEN_SNACKBAR, message: "Du simulerade måltid, denna måltid kommer göra att ditt barn går under sin blodsockergräns", color: "error" })
+            else    
+                dispatch({type: OPEN_SNACKBAR, message: "Du simulerade måltid, denna måltid kommer göra att ditt barn håller sig inom gränsvärdena", color: "success" })
+        } else if (value)
+            dispatch({type: OPEN_SNACKBAR, message: "Du simulerade både kost och träning", color: "success" })
+
+}
 })
 
 const SimulatePatient = (props) => {
@@ -55,7 +72,7 @@ const SimulatePatient = (props) => {
         noInputDiet=false
     }
     
-    if(typeof trainingammount !=='number' || !intensity || typeof goalweight!=='number') {
+    if(typeof trainingammount !=='number' || !intensity ) {
         noInputTraining=true
     }else {
         noInputTraining=false}
@@ -81,7 +98,7 @@ const SimulatePatient = (props) => {
     ];
 
     const handleGraph = () => {
-        props.onOpen("showGraph", !showGraph);
+        props.onOpen("showGraph", !showGraph, noInputDiet, noInputTraining, meal, bloodsugar);
       };
     
     
@@ -160,7 +177,7 @@ const SimulatePatient = (props) => {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <InputSlider unit={"st"} step={1} min={0} max={7} id="trainingammount" output={trainingammount} definition='Antal'></InputSlider>
+                                        <InputSlider unit={"st"} step={1} min={1} max={7} id="trainingammount" output={trainingammount} definition='Antal'></InputSlider>
                                     </Grid>
                                     <Grid item xs={6} md={4}>
                                         <FormControl

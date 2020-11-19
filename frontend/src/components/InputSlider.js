@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch) => ({
   };
 
   const handleBlur = () => {
-    if (output < min) {
+    if (output < min && typeof goalweight === 'number') {
       handleOffset(min);
     } else if (output > max) {
       handleOffset(max);

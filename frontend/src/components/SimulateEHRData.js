@@ -4,7 +4,7 @@ const Simulate = {
     bloodsugar: (data, meal)=>{
         const dataObjects=[]
         const today= new Date()
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 5; i++) {
             if(i===0){
                 dataObjects.push({ x: Moment(today.setHours(today.getHours(), today.getMinutes())).format('YYYY-MM-DD HH:mm'), y: data})
             }
