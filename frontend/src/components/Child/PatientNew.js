@@ -1,12 +1,7 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-//import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
-//import Grid from '@material-ui/core/Grid'
-import Slider from '@material-ui/core/Slider'
-import Input from '@material-ui/core/Input'
-import { Button } from '@material-ui/core'
-import { Box, Container, Grid, Paper } from '@material-ui/core'
+import { Box, Container, Grid, Button} from '@material-ui/core'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -18,8 +13,11 @@ import {
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import agent from '../../agent'
-import happyAvatar from '../../Static/rsz_avatar.png'
-import sadAvatar from '../../Static/sad_avatar.jpeg'
+import Slider from '@material-ui/core/Slider'
+import Input from '@material-ui/core/Input'
+import happyAvatar from '../../Static/happy_avatar.png'
+import sadAvatar from '../../Static/sad_avatar.png'
+//import normalAvatar from '../../Static/normal_avatar.png'
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
@@ -144,35 +142,74 @@ class PatientNew extends Component {
         label: '10 mmol/L',
       },
     ]
+    
     const bloodsugar = this.props.bloodsugarValue
     const { classes } = this.props
-    const firstName = this.props.currentUser.name
-    const lastName = this.props.currentUser.surname
-    let Avatar = happyAvatar
+     
+    let Avatar = happyAvatar //There is also a normal avatar to use, if anyone find a good statement when to use it. 
 
-    if (this.props.historicalBloodSugar !== null && this.props.historicalBloodSugar !== undefined) {
-      if (this.props.historicalBloodSugar[0].value < 4 || this.props.historicalBloodSugar[0].value > 8) {
-        Avatar = sadAvatar
-      } else {
-        Avatar = happyAvatar
-      }
-    }
+     if (this.props.historicalBloodSugar !== null && this.props.historicalBloodSugar !== undefined) {
+       if (this.props.historicalBloodSugar[0].value < 4 || this.props.historicalBloodSugar[0].value > 8) {
+         Avatar = sadAvatar
+       } else {
+         Avatar = happyAvatar
+       }
+     }
 
 return (
-    <Container maxWidth="sm" className={classes.paperTop}>
-        <Paper elevation={3}>
-          <Grid container spacing={2} className={classes.topBar}>
-              <Grid item xs={3}>
-
-             </Grid>
-             <Grid item xs={6}>
-
-             </Grid>
-             <Grid item xs={3}>
-
-             </Grid>   
+    <Container maxWidth="" className={classes.backGround} >
+        <Grid item xs={12}>
+            <Box className={classes.avatar} textAlign="center"> 
+                <img  src={Avatar} alt="mood avatar"></img>
+            </Box>  
+        </Grid>
+          <Grid container spacing={5} alignItems="center">
+            <Grid item xs>
+              <Slider
+                id="bloodsugar"
+                value={typeof parseInt(bloodsugar, 10) === 'number' ? parseInt(bloodsugar, 10) : 0}
+                onChange={(ev, value) => this.changeAuthSlider(ev, value)}
+                aria-labelledby="input-slider"
+                defaultValue={10}
+                step={1}
+                valueLabelDisplay="auto"
+                marks={marks}
+                max={10}
+                min={2}
+              />
+            </Grid>
+            {/* Temporary input until the plus-button at the bottom is implemented. */}
+            <Grid item>
+              <Input
+                id="bloodsugar"
+                className={classes.input}
+                value={bloodsugar}
+                margin="dense"
+                onChange={this.changeAuth}
+                onBlur={this.handleBlur}
+                inputProps={{
+                  step: 1,
+                  min: 2,
+                  max: 10,
+                  type: 'number',
+                  'aria-labelledby': 'input-slider',
+                }}
+              />
+              <h5> mmol/L </h5>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                onClick={(ev) => this.submitForm(ev)}
+                disabled={this.props.inProgress}
+              >
+                {' '}
+                Submit
+              </Button>
+            </Grid>
           </Grid>
-        </Paper>
     </Container>
   )
 }
@@ -184,22 +221,17 @@ paper: {
   flexDirection: 'column',
   alignItems: 'center',
 },
-paperTop: {
-  //marginBottom: theme.spacing(8),
-  background: '#004894',
+backGround: {
+  position: 'absolute',
+  padding: '45% 10% 28%',
+  background: 'rgb(118,176,208)',
+  background: 'linear-gradient(0deg, rgba(118,176,208,1) 35%, rgba(106,161,191,1) 36%, rgba(125,180,213,1) 86%)',
+  marginTop: '-3%', //Removes a small white space at the top.
 },
 avatar: {
-  margin: theme.spacing(1),
-  backgroundColor: theme.palette.secondary.main,
+  position: 'relative',
 },
-backGround: {
-  margin: theme.spacing(1),
-  color: '#C4C4C4'
-  //backgroundColor: theme.palette.secondary.main,
-},
-topBar: {
-  padding: theme.spacing(2),
-},
+
 form: {
   width: '100%', // Fix IE 11 issue.
   marginTop: theme.spacing(1),

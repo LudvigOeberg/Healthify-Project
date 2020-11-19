@@ -1,3 +1,4 @@
+/*
 import React, { Component } from 'react'
 
 import { withStyles } from '@material-ui/core/styles'
@@ -96,7 +97,7 @@ class Patient extends Component {
         }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat högt blodsockervärde! Ät något och gör en ny mätning inom en timme.`,
+          message: `Du verkar ha loggat högt blodsockervärde! Kanske dags för lite insulin och gör en ny mätning inom en timme.`,
           color: 'error',
         }
       }
@@ -109,7 +110,7 @@ class Patient extends Component {
         }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat lågt blodsockervärde, Kanske dags för lite insulin och gör en ny mätning inom en timme.`,
+          message: `Du verkar ha loggat lågt blodsockervärde, Ät något och gör en ny mätning inom en timme.`,
           color: 'error',
         }
       }
@@ -325,3 +326,4 @@ function setTimer() {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Patient))
+*/
