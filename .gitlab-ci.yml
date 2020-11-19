@@ -39,7 +39,8 @@ test-frontend:
   dependencies:
     - build-frontend
   script:
-    - apt-get install python3-venv
+    - apt-get update -qy
+    - apt-get install -y python-dev python-pip
     - chmod +x ./testScript.sh
     - ./testScript.sh
 
