@@ -1,8 +1,11 @@
-import { Typography } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles'
 import React from 'react'
 import { Line } from 'react-chartjs-2';
 import Simulate from './SimulateEHRData'
+import { RadioGroup, FormControlLabel, FormLabel, Radio, FormControl } from '@material-ui/core'
+import { connect } from 'react-redux';
+import { FIELD_CHANGE } from '../constants/actionTypes'
 
 /**
  * A chart that displays the simulation
@@ -17,15 +20,50 @@ import Simulate from './SimulateEHRData'
  * @param {bloodsugar} bloodsugar last measures bloodsugar entry in database, when simulating diabetes
  */
 
-const getSettings = (disease) => {
+const mapStateToProps = (state) => ({
+  ...state.common,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onChangeRadio: (value) => dispatch({ type: FIELD_CHANGE, key: 'timeHorizon', value }),
+})
+
+const getSettings = (disease, timeHorizon) => {
   const today = new Date()
-  if (disease === 'OBESITY') {
+  if (disease === 'OBESITY' && timeHorizon === '1month') {
+    return {
+      min: today.setDate(today.getDate()),
+      max: today.setDate(today.getDate()+30),
+      unit: 'day',
+      stepSize: 7,
+      dispFormat: 'DD MMM',
+    }
+  }
+  if (disease === 'OBESITY' && timeHorizon === '3month') {
     return {
       min: today.setDate(today.getDate()),
       max: today.setDate(today.getDate()+91),
       unit: 'day',
       stepSize: 7,
       dispFormat: 'DD MMM',
+    }
+  }
+  if (disease === 'OBESITY' && timeHorizon === '6month') {
+    return {
+      min: today.setDate(today.getDate()),
+      max: today.setDate(today.getDate()+183),
+      unit: 'month',
+      stepSize: 1,
+      dispFormat: 'MMM YY',
+    }
+  }
+  if (disease === 'OBESITY' && timeHorizon === 'year') {
+    return {
+      min: today.setDate(today.getDate()),
+      max: today.setDate(today.getDate()+364),
+      unit: 'month',
+      stepSize: 1,
+      dispFormat: 'MMM YY',
     }
   }
   if (disease === 'DIABETES') {
@@ -41,7 +79,7 @@ const getSettings = (disease) => {
 }
 
 
-export default function SimulateChart(props) {
+function SimulateChart(props) {
     const disease = props.disease ? props.disease : null 
     const intensity = props.intensity ? props.intensity : 0
     const calorieintake = props.calorieintake ? props.calorieintake : 1600
@@ -51,7 +89,14 @@ export default function SimulateChart(props) {
     const weight = props.weight? props.weight[0].weight : 0
     const bloodsugar = props.bloodsugar ? props.bloodsugar[0].value : 0
     const theme=useTheme()
-    const displaySettings = getSettings(disease)
+    const timeHorizon = props.timeHorizon ? props.timeHorizon : "3month"
+    const displaySettings = getSettings(disease, timeHorizon)
+ 
+
+    const changeRadio = (event) => {
+      props.onChangeRadio(event.target.value)
+    }
+    
 
     const obesityData = {
         datasets: goalweight===0 ? 
@@ -190,7 +235,11 @@ export default function SimulateChart(props) {
 
     return (
         <div>
+        <Grid container spacing={2} alignItems='center' justify='center'>
+        <Grid item >
         <Typography component='h2' variant='h5'>{disease==="DIABETES" ? "Blodsocker" : "Vikt"}</Typography>
+        </Grid>
+        <Grid item xs={12}>
         <Line  
         data={disease==="DIABETES" ? diabetesData : obesityData}
         options={{
@@ -233,13 +282,24 @@ export default function SimulateChart(props) {
             ],
           },
         }}
-        
-        
-        
-        
-        
         />
+        </Grid>
+        <Grid item  >
+        <Paper elevation={0} hidden={disease==='DIABETES' ? true : false}>
+        <FormControl component="fieldset" >
+        <FormLabel component="legend">Tidsspann</FormLabel>
+        <RadioGroup row aria-label="horizon" name="horizon" value={timeHorizon} onChange={changeRadio} >
+          <FormControlLabel value="1month" control={<Radio />} label="En månad" />
+          <FormControlLabel value="3month" control={<Radio />} label="Tre månader" />
+          <FormControlLabel value="6month" control={<Radio />} label="Sex månader" />
+          <FormControlLabel value="year" control={<Radio />} label="Ett år" />
+        </RadioGroup>
+        </FormControl>
+        </Paper>
+        </Grid>
+        </Grid>
       </div>
     )
 }
 
+export default connect (mapStateToProps, mapDispatchToProps) (SimulateChart)
