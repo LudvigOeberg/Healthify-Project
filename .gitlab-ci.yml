@@ -38,8 +38,6 @@ test-frontend:
   needs: ["build-frontend"]
   services:
     - selenium/standalone-chrome
-  dependencies:
-    - build-frontend
   script:
     - apt-get update -qy
     - apt-get install -y python3-dev python3-pip python3-venv
