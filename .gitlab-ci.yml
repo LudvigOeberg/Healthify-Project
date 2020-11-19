@@ -34,7 +34,7 @@ build-frontend:
 
 test-frontend:
   stage: test
-  image: tbaltrushaitis/ubuntu-nodejs
+  image: node
   needs: ["build-frontend"]
   services:
     - selenium/standalone-chrome
