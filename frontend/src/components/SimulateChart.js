@@ -89,7 +89,7 @@ function SimulateChart(props) {
     const weight = props.weight? props.weight[0].weight : 0
     const bloodsugar = props.bloodsugar ? props.bloodsugar[0].value : 0
     const theme=useTheme()
-    const timeHorizon = props.timeHorizon ? props.timeHorizon : "3month"
+    const timeHorizon = props.timeHorizon ? props.timeHorizon : "year"
     const displaySettings = getSettings(disease, timeHorizon)
  
 
@@ -236,10 +236,10 @@ function SimulateChart(props) {
     return (
         <div>
         <Grid container spacing={2} alignItems='center' justify='center'>
-        <Grid item >
-        <Typography component='h2' variant='h5'>{disease==="DIABETES" ? "Blodsocker" : "Vikt"}</Typography>
+        <Grid item xs={12} >
+        <Typography component='h2' variant='h5' align='center'>{disease==="DIABETES" ? "Blodsocker" : "Vikt"}</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={8}>
         <Line  
         data={disease==="DIABETES" ? diabetesData : obesityData}
         options={{
