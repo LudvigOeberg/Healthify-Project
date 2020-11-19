@@ -33,10 +33,13 @@ build-frontend:
 
 
 test-frontend:
-  stage: lint
+  stage: test
   image: ubuntu
+  needs: ["build-frontend"]
   services:
     - selenium/standalone-chrome
+  dependencies:
+    - build-frontend
   script:
     - export DEBIAN_FRONTEND=noninteractive
     - export TZ=Europe/Stockholm
