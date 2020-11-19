@@ -35,7 +35,6 @@ build-frontend:
 test-frontend:
   stage: lint
   image: ubuntu
-  needs: ["build-frontend"]
   services:
     - selenium/standalone-chrome
   script:
