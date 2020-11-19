@@ -40,7 +40,7 @@ test-frontend:
   script:
     - apt-get update -qy
     - apt-get install -y python3-dev python3-pip python3-venv
-    - apt install nodejs
+    - apt-get install -y -8 nodejs
     - chmod +x ./testScript.sh
     - ./testScript.sh
 
