@@ -1,7 +1,8 @@
 stages:
-  - test
+  - linter
   - build
   - build-image
+  - test
   - deploy
   - pages
 
@@ -28,21 +29,20 @@ build-frontend:
 
 
 
-.test-frontend:
+test-frontend:
   stage: test
   image: node
   needs: ["build-frontend"]
   dependencies:
     - build-frontend
   script:
-    - echo "Testing App"
-    - CI=true npm test
-    - echo "Test successfully!"
+    - chmod +x ./testScript.sh
+    - ./testScript.sh
 
 
 
 lint-checker:
-  stage: test
+  stage: linter
   image: node
 
   script:
