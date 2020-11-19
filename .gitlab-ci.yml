@@ -10,7 +10,7 @@ stages:
 
 build-frontend:
   stage: build
-  image: node
+  image: gitlab.liu.se:5000/tddc88-company-2-2020/deploy:node-image:latest
   artifacts:
     expire_in: 1 hour
     paths:
@@ -41,9 +41,9 @@ test-frontend:
   dependencies:
     - build-frontend
   script:
-    - apt-get update -qy
-    - apt-get install -y python3-dev python3-pip python3-venv
-    - pip3 install --upgrade setuptools
+    - sudo apt-get update -qy
+    - sudo apt-get install -y python3-dev python3-pip python3-venv
+    - sudo pip3 install --upgrade setuptools
     - chmod +x ./testScript.sh
     - ./testScript.sh
 
@@ -60,7 +60,7 @@ lint-checker:
 
 
 
-build-node-image:
+.build-node-image:
   stage: lint
   image: docker.io/buildah/buildah
 
@@ -75,6 +75,8 @@ build-node-image:
     - echo "${CI_JOB_TOKEN}"
     - buildah build-using-dockerfile --tag "node" .
     - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "node" "docker://${CI_REGISTRY_IMAGE}/node-image:latest"
+
+
 
 build-flask-image:
   stage: build
