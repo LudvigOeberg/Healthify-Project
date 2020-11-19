@@ -6,6 +6,17 @@ import { FormControl, FormHelperText, InputLabel, InputAdornment} from '@materia
 import { connect } from 'react-redux'
 import { FIELD_CHANGE } from '../constants/actionTypes';
 
+/**
+ * A slider with an input box to the right, these two are displaying the same value
+ * @param {unit} unit the unit of the input
+ * @param {step} step the stepsize of both the input box and slider
+ * @param {min} min the min value of the input
+ * @param {max} max the max value of the input
+ * @param {id} id id of the input
+ * @param {input} input the variable that is the input
+ * @param {definition} definition a definition of what the input is
+ *  
+ */
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -17,7 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 })
  function InputSlider(props) {
-  const { unit, step, min, max, id, output, definition} = props;
+  const { unit, step, min, max, id, input, definition} = props;
   //const [value, setValue] = React.useState(output);
   //const onChange = (ev) => props.onChange(id, ev.target.value)
   const handleOffset = (val) => props.onChange(id, val)
@@ -34,9 +45,9 @@ const mapDispatchToProps = (dispatch) => ({
   };
 
   const handleBlur = () => {
-    if (output < min && typeof goalweight === 'number') {
+    if (input < min && typeof goalweight === 'number') {
       handleOffset(min);
-    } else if (output > max) {
+    } else if (input > max) {
       handleOffset(max);
     }
   };
@@ -46,7 +57,7 @@ const mapDispatchToProps = (dispatch) => ({
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={8} md={9}>
           <Slider
-            value={typeof output === 'number' ? output : 0}
+            value={typeof input === 'number' ? input : 0}
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
             step={step}
@@ -59,12 +70,12 @@ const mapDispatchToProps = (dispatch) => ({
             fullWidth
             
           >
-          <InputLabel id={`${unit}-label`} shrink={typeof output === 'number' ? true: false}>{definition}</InputLabel>
+          <InputLabel id={`${unit}-label`} shrink={typeof input === 'number' ? true: false}>{definition}</InputLabel>
           <Input
             endAdornment={<InputAdornment position="end">{unit}</InputAdornment>}
             fullWidth
             id={`${unit}`}
-            value={output}
+            value={input}
             labelId={`${unit}-label`}
             label={`${unit}`}
             onChange={handleInputChange}

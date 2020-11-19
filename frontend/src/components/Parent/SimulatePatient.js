@@ -13,6 +13,10 @@ import { FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR, LOAD_WEIGHT, UPDATE_BOOLEAN,
 import agentEHR from '../../agentEHR'
 import SimulateChart from '../SimulateChart'
 
+/**
+ * Page where a parent can make simulations based on a specific childs values
+ * 
+ */
 
 const mapStateToProps = (state) => ({
     ...state.common,
@@ -156,7 +160,7 @@ const SimulatePatient = (props) => {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <InputSlider unit={"kcal"} step={200} min={0} max={3000} id="calorieintake" output={calorieintake} definition='Kalorier'></InputSlider>
+                                        <InputSlider unit={"kcal"} step={200} min={0} max={3000} id="calorieintake" input={calorieintake} definition='Kalorier'></InputSlider>
                                     </Grid>
                                 </Grid>
                             </AccordionDetails>
@@ -178,7 +182,7 @@ const SimulatePatient = (props) => {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <InputSlider unit={"st"} step={1} min={1} max={7} id="trainingammount" output={trainingammount} definition='Antal'></InputSlider>
+                                        <InputSlider unit={"st"} step={1} min={1} max={7} id="trainingammount" input={trainingammount} definition='Antal'></InputSlider>
                                     </Grid>
                                     <Grid item xs={6} md={4}>
                                         <FormControl

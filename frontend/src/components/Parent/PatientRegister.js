@@ -23,6 +23,11 @@ import {
 } from '../../constants/actionTypes'
 import agent from '../../agent'
 
+/**
+ * Page where a parent can register a child
+ * 
+ */
+
 const mapStateToProps = (state) => ({ ...state.auth, ...state.common })
 
 const mapDispatchToProps = (dispatch) => ({

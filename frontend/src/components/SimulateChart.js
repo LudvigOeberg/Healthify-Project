@@ -4,6 +4,19 @@ import React from 'react'
 import { Line } from 'react-chartjs-2';
 import Simulate from './SimulateEHRData'
 
+/**
+ * A chart that displays the simulation
+ * @param {disease} disease "DIABETES" or "OBESITY", the disease which is being simulated
+ * @param {calorieintake} calorieintake intake of calories per day, when simulating obesity
+ * @param {goalweight} goalweight goalweight for the child, when simulating obesity
+ * @param {trainingammount} trainingammount number of excercise occasions per week, when simulating obesity
+ * @param {intensity} intensity intensity of the excercise occasions, when simulating obesity
+ * @param {weight} weight last measures weight entry in database, when simulating obesity
+ * 
+ * @param {meal} meal size of meal, when simulating diabetes
+ * @param {bloodsugar} bloodsugar last measures bloodsugar entry in database, when simulating diabetes
+ */
+
 const getSettings = (disease) => {
   const today = new Date()
   if (disease === 'OBESITY') {

@@ -1,4 +1,14 @@
 import Moment from 'moment'
+
+/**
+ * Formats the bloodsugar or weight values recieved from agentEHR.
+ * @param {data} data the data from agentEHR
+ * @param {meal} meal size of meal, when simulation diabetes
+ * @param {calorieintake} calorieintake intake of calories per day, when simulating obesity
+ * @param {trainingammount} trainingammount number of excercise occasions per week, when simulating obesity
+ * @param {intensity} intensity intensity of the excercise occasions, when simulating obesity
+ */
+
 Moment.locale('sv')
 const Simulate = {
     bloodsugar: (data, meal)=>{
