@@ -34,6 +34,8 @@ test-frontend:
   stage: test
   image: node
   needs: ["build-frontend"]
+  services:
+    - selenium/standalone-chrome
   dependencies:
     - build-frontend
   script:
