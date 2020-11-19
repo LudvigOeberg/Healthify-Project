@@ -224,7 +224,6 @@ paper: {
 backGround: {
   position: 'absolute',
   padding: '45% 10% 28%',
-  background: 'rgb(118,176,208)',
   background: 'linear-gradient(0deg, rgba(118,176,208,1) 35%, rgba(106,161,191,1) 36%, rgba(125,180,213,1) 86%)',
   marginTop: '-3%', //Removes a small white space at the top.
 },
