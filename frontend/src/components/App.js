@@ -25,14 +25,11 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
-<<<<<<< HEAD
 import SimulatePatient from './Parent/SimulatePatient'
 
 
 
-=======
 import FooterBar from './FooterBar'
->>>>>>> 48e25732872c912ee96cb4f7fea9d3ffb2ed5e62
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
