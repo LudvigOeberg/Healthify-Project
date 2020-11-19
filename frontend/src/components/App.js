@@ -25,10 +25,14 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
+<<<<<<< HEAD
 import SimulatePatient from './Parent/SimulatePatient'
 
 
 
+=======
+import FooterBar from './FooterBar'
+>>>>>>> 48e25732872c912ee96cb4f7fea9d3ffb2ed5e62
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -101,6 +105,10 @@ class App extends React.Component {
         if (currTime >= this.props.currentUser.timer) {
           this.props.setTimerSnackbarOpen(true)
         }
+      }
+      let footer = <Footer />
+      if (this.props.currentUser) {
+        footer = <FooterBar />
       }
 
       if (!window.localStorage.getItem('ehr_dont_bother')) {
@@ -226,7 +234,7 @@ class App extends React.Component {
               <Route path="*" component={NotFound} />
             </Switch>
           </div>
-          <Footer />
+          {footer}
           <MySnackbar />
 
           <div className={classes.snackbar}>
@@ -291,8 +299,8 @@ const styles = (theme) => ({
     minHeight: `100vh`,
   },
   main: {
-    marginTop: 0,
-    marginBottom: 0,
+    marginTop: '64px',
+    marginBottom: '8rem',
   },
 })
 
