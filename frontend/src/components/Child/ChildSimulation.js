@@ -13,11 +13,17 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
-
+import Box from '@material-ui/core/Box'
 import MyDialog from '../MyDialog'
 
-const mapStateToProps = (state) => ({
-  ...state.common,
+/**
+ * Page where the child may run a simulation of how they will feel if they eat something
+ * Right now: Eating something of the portion size "Mellan" will show a good result,
+ * other portion sizes will show a bad result.
+ */
+
+const mapStateToProps = () => ({
+  // ...state.common,
 })
 
 const mapDispatchToProps = () => ({})
@@ -27,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     marginTop: theme.spacing(8),
     alignItems: 'top',
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   },
   card: {
     minWidth: 328,
@@ -81,7 +87,6 @@ const ChildSimulation = () => {
     },
   ]
 
-  // eslint-disable-next-line prefer-const
   let info
 
   const badDialogInfo = [
@@ -152,24 +157,24 @@ const ChildSimulation = () => {
             </Grid>
           </Card>
         </Grid>
-
         <Grid item xs={12}>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel id="demo-simple-select-outlined-label">Måltid</InputLabel>
-            <Select
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
-              value={meal}
-              onChange={handleChange}
-              label="Meal"
-            >
-              <MenuItem value="Måltid">Måltid</MenuItem>
-              <MenuItem value="Snack">Snack</MenuItem>
-              <MenuItem value="Mellanmål">Mellanmål</MenuItem>
-            </Select>
-          </FormControl>
+          <Box textAlign="center">
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="demo-simple-select-outlined-label">Måltid</InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={meal}
+                onChange={handleChange}
+                label="Meal"
+              >
+                <MenuItem value="Måltid">Måltid</MenuItem>
+                <MenuItem value="Snack">Snack</MenuItem>
+                <MenuItem value="Mellanmål">Mellanmål</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
         </Grid>
-
         <Grid item xs={6}>
           <Button component={Link} href="/child-laboration" variant="outlined" color="primary" fullWidth>
             {' '}

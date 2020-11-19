@@ -63,13 +63,12 @@ class Laboration extends React.Component {
             <Button component={Link} href={"/simulate-child"} color="inherit">
               <Grid
                 container
-
                 alignItems="center"
                 spacing={2}
               >
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={6} sm={6}>
                   <Typography
-                    variant="h4"
+                    variant="h6"
                     className={classes.title}
                     color="textSecondary"
                     gutterBottom
@@ -77,8 +76,8 @@ class Laboration extends React.Component {
                     Kost
                   </Typography>{" "}
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <img src={foodAvatar} alt="food avatar"></img>
+                <Grid item xs={6} sm={6}>
+                  <img src={foodAvatar} alt="food avatar" height="100px"></img>
                 </Grid>
               </Grid>
             </Button>

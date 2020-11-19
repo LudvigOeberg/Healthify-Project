@@ -10,6 +10,8 @@ import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import Box from '@material-ui/core/Box'
+import Container from '@material-ui/core/Container'
+import DetailsIcon from '@material-ui/icons/Details'
 
 import sadAvatar from '../Static/sad_avatar.png'
 import happyAvatar from '../Static/happy_avatar.png'
@@ -63,9 +65,7 @@ export default function MyDialog(props) {
   const [open, setOpen] = React.useState(false)
 
   const { buttonLabel } = props
-  // const { title } = props
   const { text } = props
-  // const { pictureLocation } = props
   const { alt } = props
   let avatar
 
@@ -90,11 +90,16 @@ export default function MyDialog(props) {
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
         <DialogContent dividers>
-          <Typography textAlign="center" gutterBottom>
-            {text}
-          </Typography>
+          <Container component="div" style={{ padding: '15px', borderRadius: '30px', border: '1px solid #000' }}>
+            <Typography textAlign="center" gutterBottom>
+              {text}
+            </Typography>
+          </Container>
+          <Box display="flex" justifyContent="center" alignItems="center" height="45px">
+            <DetailsIcon fontSize="large" />
+          </Box>
           <Box display="flex" justifyContent="center" alignItems="center" minHeight="30vh">
-            <img src={avatar} alt={alt}></img>
+            <img src={avatar} alt={alt} height="200px"></img>
           </Box>
         </DialogContent>
         <DialogActions>

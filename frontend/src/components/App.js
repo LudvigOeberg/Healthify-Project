@@ -26,7 +26,6 @@ import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Laboration from './Child/Laboration'
-import LabChild from './Child/LabChild'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
@@ -232,13 +231,6 @@ class App extends React.Component {
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
                 component={Laboration}
-              />
-              <RequiredRoute
-                exact
-                path="/lab-child"
-                requires={['auth', 'child']}
-                user={this.props.currentUser}
-                component={LabChild}
               />
               <RequiredRoute
                 exact
