@@ -133,25 +133,33 @@ const ParentOverview = (props) => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={6}>
               <Paper className={classes.paper} elevation={2}>
+              <Grid container spacing={1} alignItems='center' justify='center'>
+                <Grid item xs={12}>
                 <Typography component="h2" variant="h6">
                   {' '}
                   Senaste mätningar
                 </Typography>
-                {/* HÄR SKA DET STÅ INFO OM DE TRE SENASTE MÄTNINGARNA
-                            PLUS EN LÄNK TILL MONITORCHILDVALUE */}
-              <CustomPaginationActionsTable
+                </Grid>
+                <Grid item xs={12}>
+              <CustomPaginationActionsTable 
                 columns={['time', 'value', 'indicator']}
                 loading={loading}
                 rows={input ? reformat(input, false) : null}
                 titles={colDesc}
                 paginate={false}
               />
-              <Button variant="contained" color="secondary" href={`/monitor-child/${id}`}>
+               </Grid>
+              <Grid item xs={12} md={6}>
+              <Button variant="contained" color="secondary" href={`/monitor-child/${id}`} fullWidth>
                 Hantera värden
               </Button>
-              <Button variant="contained" color="secondary" href={`/simulate-patient/${id}`}>
+              </Grid>
+              <Grid item xs={12} md={6}>
+              <Button variant="contained" color="secondary" href={`/simulate-patient/${id}`} fullWidth>
                 Simulera värden
               </Button>
+              </Grid>
+              </Grid>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
@@ -189,7 +197,7 @@ const styles = makeStyles((theme) => ({
     alignItems: 'top',
     display: 'flex',
     padding: theme.spacing(1),
-    maxWidth: '100vw',
+    maxWidth: '100%',
   },
   paper: {
     marginTop: theme.spacing(4),
@@ -209,6 +217,9 @@ const styles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  main: {
+    width: '100%'
+  }
 }))
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParentOverview)
