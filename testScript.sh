@@ -14,3 +14,5 @@ flask db upgrade
 flask init-db
 
 flask run & serve -s frontend/build & (sleep 15 && cd frontend && npm run jest SmokeTest.js)
+
+wait
