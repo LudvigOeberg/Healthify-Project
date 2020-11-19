@@ -33,7 +33,7 @@ build-frontend:
 
 
 test-frontend:
-  stage: test
+  stage: lint
   image: ubuntu
   needs: ["build-frontend"]
   services:
