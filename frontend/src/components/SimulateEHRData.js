@@ -19,7 +19,7 @@ const Simulate = {
                 dataObjects.push({ x: Moment(today.setHours(today.getHours(), today.getMinutes())).format('YYYY-MM-DD HH:mm'), y: data})
             }
             else
-                dataObjects.push({ x: Moment(today.setHours(today.getHours()+1, today.getMinutes())).format('YYYY-MM-DD HH:mm'), y: data+meal+1-i })
+                dataObjects.push({ x: Moment(today.setHours(today.getHours()+1, today.getMinutes())).format('YYYY-MM-DD HH:mm'), y: data+meal+0.5-i/2 })
         }
         return dataObjects
     },

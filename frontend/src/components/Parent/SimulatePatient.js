@@ -45,7 +45,7 @@ const mapDispatchToProps = (dispatch) => ({
             if (bloodsugar[0].value+meal>10){
                 console.log(bloodsugar+meal)
                 dispatch({type: OPEN_SNACKBAR, message: "Du simulerade måltid, denna måltid kommer göra att ditt barn överstiger sin blodsockergräns", color: "error" })
-            }else if (bloodsugar[0].value+meal-3<3)
+            }else if (bloodsugar[0].value+meal-1.5<3)
                 dispatch({type: OPEN_SNACKBAR, message: "Du simulerade måltid, denna måltid kommer göra att ditt barn går under sin blodsockergräns", color: "error" })
             else    
                 dispatch({type: OPEN_SNACKBAR, message: "Du simulerade måltid, denna måltid kommer göra att ditt barn håller sig inom gränsvärdena", color: "success" })
