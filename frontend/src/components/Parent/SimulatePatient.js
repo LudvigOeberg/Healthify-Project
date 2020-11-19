@@ -1,3 +1,5 @@
+
+
 import React, {useEffect} from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
@@ -59,11 +61,13 @@ const SimulatePatient = (props) => {
     const { id } = props.match.params
     const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
     const classes = styles()
-    const { intensity, calorieintake, trainingammount, goalweight, meal, weight, bloodsugar, showGraph } = props
+    const { intensity, calorieintake, trainingammount, goalweight, meal, showGraph } = props
     const changeIntensity = (ev) => props.onChange("intensity", ev.target.value)
     var noInputTraining
     var noInputDiet
     var noInput
+    const weight = props.weight ? props.weigth : null
+    const bloodsugar = props.bloodsugar ? props.bloodsugar : null
     
     useEffect(() => {
         props.onLoad(id)
@@ -123,7 +127,7 @@ const SimulatePatient = (props) => {
       };
 
 
-    if(disease==="OBESITY"){
+    if(disease==="OBESITY" && weight){
     return (
         <Container className={classes.root}>
                 <Grid container spacing={2}>
@@ -293,7 +297,7 @@ const SimulatePatient = (props) => {
 
     )
     }
-    else if (disease==="DIABETES"){
+    else if (disease==="DIABETES" && bloodsugar){
           return (
         <Container className={classes.root}>
                 <Grid container spacing={2}>
@@ -403,7 +407,14 @@ const SimulatePatient = (props) => {
                 <Card variant="outlined" className={classes.card}>
                     <CardHeader title="Simulering" />
                     <CardContent>
-                        Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har. Men vi hittar inget barn
+                        Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har.
+                        Men vi hittar inga loggade värden för ditt barn. Mata in ett värde för att kunna simulera. 
+                        Med hjälp av knappen nedan kommer du till sidan för att hantera ditt barns värden.
+                    </CardContent>
+                    <CardContent>
+                        <Button  size='large' variant='contained' color='primary' href={`/monitor-child/${id}`}>
+                            Hantera värden
+                        </Button>
                     </CardContent>
                 </Card>
             </Grid>
@@ -470,5 +481,4 @@ const styles = makeStyles((theme) => ({
 }))
 
 export default connect(mapStateToProps, mapDispatchToProps)(SimulatePatient)
-
 
