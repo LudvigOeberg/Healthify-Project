@@ -1,5 +1,9 @@
 stages:
+<<<<<<< HEAD
   - lint
+=======
+  - linter
+>>>>>>> testing script ci/cd
   - build
   - build-image
   - test
@@ -41,6 +45,7 @@ test-frontend:
   dependencies:
     - build-frontend
   script:
+<<<<<<< HEAD
     - export DEBIAN_FRONTEND=noninteractive
     - export TZ=Europe/Stockholm
     - export ehr_user=${K8S_SECRET_EHR_USER%.123}
@@ -55,13 +60,19 @@ test-frontend:
     - npm i -g serve
     - npm i -S serve
     - cd ..
+=======
+>>>>>>> testing script ci/cd
     - chmod +x ./testScript.sh
     - ./testScript.sh
 
 
 
 lint-checker:
+<<<<<<< HEAD
   stage: lint
+=======
+  stage: linter
+>>>>>>> testing script ci/cd
   image: node
 
   script:
