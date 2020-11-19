@@ -12,6 +12,10 @@ import Button from '@material-ui/core/Button'
 import labAvatar from '../../Static/lab_avatar.png'
 import foodAvatar from '../../Static/food_avatar.png'
 
+/**
+ * Page where the child may choose what type of simulation to run.
+ */
+
 /* eslint-disable */
 const mapStateToProps = (state) => ({
   currentUser: state.common.currentUser,
@@ -56,7 +60,7 @@ class Laboration extends React.Component {
             </CardContent>
           </Card>
           <Card className={classes.diet}>
-            <Button component={Link} href={"/lab-child"} color="inherit">
+            <Button component={Link} href={"/simulate-child"} color="inherit">
               <Grid
                 container
 

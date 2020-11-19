@@ -8,8 +8,17 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link'
 import Slider from '@material-ui/core/Slider'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+
 import MyDialog from '../MyDialog'
 // import MySlider from '../MySlider'
+
+/**
+ * Page where the child may run a simulation.
+ */
 
 /* eslint-disable */
 const mapStateToProps = (state) => ({
@@ -36,6 +45,7 @@ const marks = [
 ];
 
 const value = 2;
+let meal = "Måltid";
 let info;
 
 const badDialogInfo = [
@@ -90,7 +100,7 @@ class LabChild extends React.Component {
                   className={classes.diet}
                   gutterBottom
                 >
-                  Måltid
+                  {meal}
                 </Typography>
               </Grid>
               <Grid item xs={8}>
@@ -110,33 +120,79 @@ class LabChild extends React.Component {
                   marks={marks}
                   min={1}
                   max={3}
+                  onChange={handleSliderChange}
                 />
                 {/* <MySlider></MySlider> */}
               </Grid>
             </Card>
           </Grid>
-            <Grid item xs={6}>
-              <Button
-                component={Link}
-                href={"/child-laboration"}
-                variant="outlined"
-                color="primary"
-                fullWidth
->
-                {" "}
-                Tillbaka
-              </Button>{" "}
-            </Grid>
-            <Grid item xs={6}>
-              <MyDialog
-                {...(info = getDialogInfo())}
-                buttonLabel={info[0]}
-                title={info[1]}
-                text={info[2]}
-                pictureLocation={info[3]}
-                alt={info[4]}
-              ></MyDialog>
-            </Grid>
+
+          <Grid item xs={12}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="demo-simple-select-outlined-label">
+                Måltid
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={meal}
+                onChange={handleChange}
+                label="Meal"
+              >
+                <MenuItem value="">
+                  <em>Måltid</em>
+                </MenuItem>
+                <MenuItem value={"snack"}>Snack</MenuItem>
+                <MenuItem value={"mellanmål"}>Mellanmål</MenuItem>
+              </Select>
+            </FormControl>
+            {/* <FormControl
+                  fullWidth
+                  variant="outlined"
+                  required
+                  // error={errors && (errors.disease ? true : !!(false || errors.general))}
+                >
+            <Select
+              labelId="disease-label"
+              label="Sjukdom"
+              value="Måltid"
+              // onChange={this.changeDisease}
+              MenuProps={{
+                disableScrollLock: true,
+              }}
+            >
+              <MenuItem id="diease" value="DIABETES">
+                Diabetes
+              </MenuItem>
+              <MenuItem id="diease" value="OBESITY">
+                Fetma
+              </MenuItem>
+            </Select>
+            </FormControl> */}
+          </Grid>
+
+          <Grid item xs={6}>
+            <Button
+              component={Link}
+              href={"/child-laboration"}
+              variant="outlined"
+              color="primary"
+              fullWidth
+            >
+              {" "}
+              Tillbaka
+            </Button>{" "}
+          </Grid>
+          <Grid item xs={6}>
+            <MyDialog
+              {...(info = getDialogInfo())}
+              buttonLabel={info[0]}
+              title={info[1]}
+              text={info[2]}
+              pictureLocation={info[3]}
+              alt={info[4]}
+            ></MyDialog>
+          </Grid>
         </Grid>
       </Container>
     );
@@ -148,7 +204,7 @@ const styles = (theme) => ({
     display: "flex",
     marginTop: theme.spacing(8),
     alignItems: "top",
-    padding: theme.spacing(1),  
+    padding: theme.spacing(1),
   },
   card: {
     minWidth: 328,

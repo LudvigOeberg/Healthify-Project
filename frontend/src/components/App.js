@@ -27,7 +27,10 @@ import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Laboration from './Child/Laboration'
 import LabChild from './Child/LabChild'
+import Integrations from './Child/Integrations'
+import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
+import ChildSimulation from './Child/ChildSimulation'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -163,6 +166,13 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={AccessedData}
               />
+              <RequiredRoute
+                exact
+                path="/settings"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={Integrations}
+              />
               {/* Commented out as link from ChildListItem no longer links to /caregiving-team
                here in case we need it */}
               {/*
@@ -229,6 +239,20 @@ class App extends React.Component {
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
                 component={LabChild}
+              />
+              <RequiredRoute
+                exact
+                path="/simulate-patient/:id"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={SimulatePatient}
+              />
+              <RequiredRoute
+                exact
+                path="/simulate-child/"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={ChildSimulation}
               />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />

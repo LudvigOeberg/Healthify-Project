@@ -28,7 +28,7 @@ flask init-db
 Only needs to be run once, (or if dependecies are updated or if `venv/` folder is gone).
 ```sh
 python -m venv venv   ### *there may be some problems here
-. venv/Source/activate
+. venv/Scripts/activate
 pip3 install -r ./requirements/dev.txt
 
 export FLASK_DEBUG=1
