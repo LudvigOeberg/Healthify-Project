@@ -39,7 +39,6 @@ const SimulatePatient = (props) => {
     const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
     const classes = styles()
     const { intensity, calorieintake, trainingammount, goalweight, meal, weight, bloodsugar, showGraph } = props
-    const onChange = (ev) => props.onChange(ev.target.id, ev.target.value)
     const changeIntensity = (ev) => props.onChange("intensity", ev.target.value)
     var noInputTraining
     var noInputDiet

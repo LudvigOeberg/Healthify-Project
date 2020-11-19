@@ -23,7 +23,8 @@ const getSettings = (disease) => {
       stepSize: 0.5,
       dispFormat: 'HH:mm',
     }
-}
+  }
+  return null
 }
 
 
