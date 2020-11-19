@@ -163,7 +163,8 @@ const SimulatePatient = (props) => {
                         </Accordion>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                        <Accordion variant="outlined" rounded>
+                        <Accordion variant="outlined" rounded
+                        >
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                             >
@@ -183,8 +184,6 @@ const SimulatePatient = (props) => {
                                         <FormControl
                                             fullWidth
                                             id="intensity"
-                                        
-                                        //error={errors && (errors.gender ? true : !!(false || errors.general))}
                                         >
                                             <InputLabel id="intensity-label" >Intensitet</InputLabel>
                                             <Select
@@ -192,7 +191,9 @@ const SimulatePatient = (props) => {
                                                 label="intensity"
                                                 value={intensity}
                                                 onChange={changeIntensity}
-                                            //error={errors && (errors.gender ? true : !!(false || errors.general))}
+                                                MenuProps={{
+                                                    disableScrollLock: true
+                                                }}
                                             >
                                                 <MenuItem type='number' value={1}>
                                                     Lågintensiv
