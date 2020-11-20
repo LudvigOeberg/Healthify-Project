@@ -19,6 +19,7 @@ import {
   EDIT_CHILD,
   DELETE_CHILD,
   SAVE_TIMER,
+  SAVE_SIMULATION,
 } from '../constants/actionTypes'
 
 const defaultState = {
@@ -126,7 +127,10 @@ export default (state = defaultState, action) => {
       return {
         ...state,
       }
-
+    case SAVE_SIMULATION:
+      return {
+        ...state,
+      }
     case HOME_PAGE_UNLOADED:
     case LOGIN_PAGE_UNLOADED:
     case REGISTER_PAGE_UNLOADED:

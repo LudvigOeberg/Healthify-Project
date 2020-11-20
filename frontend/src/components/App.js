@@ -25,9 +25,11 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
+import Laboration from './Child/Laboration'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
+import ChildSimulation from './Child/ChildSimulation'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -225,13 +227,25 @@ class App extends React.Component {
               />
               <RequiredRoute
                 exact
+                path="/child-laboration"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={Laboration}
+              />
+              <RequiredRoute
+                exact
                 path="/simulate-patient/:id"
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
                 component={SimulatePatient}
               />
-           
-
+              <RequiredRoute
+                exact
+                path="/simulate-child/"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={ChildSimulation}
+              />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
             </Switch>
