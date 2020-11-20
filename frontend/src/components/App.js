@@ -25,6 +25,9 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
+import Integrations from './Child/Integrations'
+import SimulatePatient from './Parent/SimulatePatient'
+import FooterBar from './FooterBar'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -98,6 +101,10 @@ class App extends React.Component {
           this.props.setTimerSnackbarOpen(true)
         }
       }
+      let footer = <Footer />
+      if (this.props.currentUser) {
+        footer = <FooterBar />
+      }
 
       if (!window.localStorage.getItem('ehr_dont_bother')) {
         // Okay with alerts as it is only used in development mode and should not be visible for end user in the final product.
@@ -156,6 +163,13 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={AccessedData}
               />
+              <RequiredRoute
+                exact
+                path="/settings"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={Integrations}
+              />
               {/* Commented out as link from ChildListItem no longer links to /caregiving-team
                here in case we need it */}
               {/*
@@ -209,12 +223,20 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={ParentSettingsPage}
               />
+              <RequiredRoute
+                exact
+                path="/simulate-patient/:id"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={SimulatePatient}
+              />
+           
 
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
             </Switch>
           </div>
-          <Footer />
+          {footer}
           <MySnackbar />
 
           <div className={classes.snackbar}>
@@ -279,8 +301,8 @@ const styles = (theme) => ({
     minHeight: `100vh`,
   },
   main: {
-    marginTop: 0,
-    marginBottom: 0,
+    marginTop: '64px',
+    marginBottom: '8rem',
   },
 })
 

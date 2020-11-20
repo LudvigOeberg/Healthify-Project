@@ -96,7 +96,7 @@ class Patient extends Component {
         }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat högt blodsockervärde! Ät något och gör en ny mätning inom en timme.`,
+          message: `Du verkar ha loggat högt blodsockervärde! Kanske dags för lite insulin och gör en ny mätning inom en timme.`,
           color: 'error',
         }
       }
@@ -109,7 +109,7 @@ class Patient extends Component {
         }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat lågt blodsockervärde, Kanske dags för lite insulin och gör en ny mätning inom en timme.`,
+          message: `Du verkar ha loggat lågt blodsockervärde, Ät något och gör en ny mätning inom en timme.`,
           color: 'error',
         }
       }
@@ -221,7 +221,6 @@ class Patient extends Component {
 
 const styles = (theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -272,7 +271,7 @@ export function getCurrentUTCDate() {
   let minutes = String(today.getUTCMinutes())
   let seconds = String(today.getUTCSeconds())
 
-  --hours // Handles the amount of time before the timer sets off.
+  --minutes // Handles the amount of time before the timer sets off.
 
   if (today.getUTCMonth() < 10) {
     month = `0${String(today.getUTCMonth())}`

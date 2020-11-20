@@ -2,7 +2,7 @@ import Moment from 'moment'
 Moment.locale('sv')
 const Reformat = {
   /**
-   * Formats the bloodsugar values recieved from agentEHR.
+   * Formats the bloodsugar or weight values recieved from agentEHR.
    * @param {data} data the data from agentEHR
    * @param {reverse} reverse if the sorting should be reveresed
    * @param {iso} iso return iso format

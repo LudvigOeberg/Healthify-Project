@@ -135,7 +135,7 @@ const MonitorChildValue = (props) => {
   }
 
   return (
-    <Container>
+    <Container component="main" maxWidth="md">
       <div className={classes.paper}>
         <Typography component="h1" variant="h3">
           Hantera {name}s värden
@@ -213,7 +213,7 @@ const MonitorChildValue = (props) => {
 
 const styles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
