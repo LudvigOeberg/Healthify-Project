@@ -32,12 +32,12 @@ async function getHomePage(url) {
   await driver.wait(webdriver.until.alertIsPresent())
   const alert1 = await driver.switchTo().alert()
   // replace username with the username for openEHR
-  await alert1.sendKeys('lio.se2')
+  await alert1.sendKeys('test')
   await alert1.accept()
   await driver.wait(webdriver.until.alertIsPresent())
   const alert2 = await driver.switchTo().alert()
   // replace pass with password from openEHR
-  await alert2.sendKeys('ehr4lio.se2')
+  await alert2.sendKeys('test')
   await alert2.accept()
 }
 
