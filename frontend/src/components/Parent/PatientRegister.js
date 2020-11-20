@@ -23,6 +23,11 @@ import {
 } from '../../constants/actionTypes'
 import agent from '../../agent'
 
+/**
+ * Page where a parent can register a child
+ *
+ */
+
 const mapStateToProps = (state) => ({ ...state.auth, ...state.common })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -213,6 +218,9 @@ class PatientRegister extends Component {
                 >
                   <InputLabel id="gender-label">Kön</InputLabel>
                   <Select
+                    MenuProps={{
+                      disableScrollLock: true,
+                    }}
                     labelId="gender-label"
                     label="kön"
                     value={gender}
@@ -243,7 +251,15 @@ class PatientRegister extends Component {
                   error={errors && (errors.disease ? true : !!(false || errors.general))}
                 >
                   <InputLabel id="disease-label">Sjukdom</InputLabel>
-                  <Select labelId="disease-label" label="Sjukdom" value={disease} onChange={this.changeDisease}>
+                  <Select
+                    labelId="disease-label"
+                    label="Sjukdom"
+                    value={disease}
+                    onChange={this.changeDisease}
+                    MenuProps={{
+                      disableScrollLock: true,
+                    }}
+                  >
                     <MenuItem id="diease" value="DIABETES">
                       Diabetes
                     </MenuItem>

@@ -275,7 +275,7 @@ export function getCurrentUTCDate() {
   let minutes = String(today.getUTCMinutes())
   let seconds = String(today.getUTCSeconds())
 
-  --hours // Handles the amount of time before the timer sets off.
+  --minutes // Handles the amount of time before the timer sets off.
 
   if (today.getUTCMonth() < 10) {
     month = `0${String(today.getUTCMonth())}`
