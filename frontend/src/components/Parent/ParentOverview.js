@@ -133,59 +133,59 @@ const ParentOverview = (props) => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={6}>
               <Paper className={classes.paper} elevation={2}>
-              <Grid container spacing={1} alignItems='center' justify='center'>
-                <Grid item xs={12}>
-                <Typography component="h2" variant="h6">
-                  {' '}
-                  Senaste mätningar
-                </Typography>
+                <Grid container spacing={1} alignItems="center" justify="center">
+                  <Grid item xs={12}>
+                    <Typography component="h2" variant="h6">
+                      {' '}
+                      Senaste mätningar
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CustomPaginationActionsTable
+                      columns={['time', 'value', 'indicator']}
+                      loading={loading}
+                      rows={input ? reformat(input, false) : null}
+                      titles={colDesc}
+                      paginate={false}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Button variant="contained" color="secondary" href={`/monitor-child/${id}`} fullWidth>
+                      Hantera värden
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Button variant="contained" color="secondary" href={`/simulate-patient/${id}`} fullWidth>
+                      Simulera värden
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-              <CustomPaginationActionsTable 
-                columns={['time', 'value', 'indicator']}
-                loading={loading}
-                rows={input ? reformat(input, false) : null}
-                titles={colDesc}
-                paginate={false}
-              />
-               </Grid>
-              <Grid item xs={12} md={6}>
-              <Button variant="contained" color="secondary" href={`/monitor-child/${id}`} fullWidth>
-                Hantera värden
-              </Button>
-              </Grid>
-              <Grid item xs={12} md={6}>
-              <Button variant="contained" color="secondary" href={`/simulate-patient/${id}`} fullWidth>
-                Simulera värden
-              </Button>
-              </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h1" variant="h6">
-                {name}
-              </Typography>
-              <Typography variant="subtitle1">{age}</Typography>
-              <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
-              <Avatar className={classes.avatar}>
-                <ChildCareIcon fontSize="large" />
-              </Avatar>
-            </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper className={classes.paper} elevation={3}>
-              <Typography component="h1" variant="h6">
-                {' '}
-                Vårdgivare
-              </Typography>
-              {/* Caregivers ska stå här och annan info. Ändra format. */}
-              <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
-            </Paper>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <Paper className={classes.paper} elevation={3}>
+                <Typography component="h1" variant="h6">
+                  {name}
+                </Typography>
+                <Typography variant="subtitle1">{age}</Typography>
+                <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
+                <Avatar className={classes.avatar}>
+                  <ChildCareIcon fontSize="large" />
+                </Avatar>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper} elevation={3}>
+                <Typography component="h1" variant="h6">
+                  {' '}
+                  Vårdgivare
+                </Typography>
+                {/* Caregivers ska stå här och annan info. Ändra format. */}
+                <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
+              </Paper>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
       </Grid>
     </div>
   )
@@ -218,8 +218,8 @@ const styles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   main: {
-    width: '100%'
-  }
+    width: '100%',
+  },
 }))
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParentOverview)
