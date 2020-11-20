@@ -15,6 +15,7 @@ import DetailsIcon from '@material-ui/icons/Details'
 
 import sadAvatar from '../Static/sad_avatar.png'
 import happyAvatar from '../Static/happy_avatar.png'
+import neutralAvatar from '../Static/neutral_avatar.png'
 
 const styles = (theme) => ({
   root: {
@@ -71,8 +72,10 @@ export default function MyDialog(props) {
 
   if (alt === 'sad avatar') {
     avatar = sadAvatar
-  } else {
+  } else if (alt === 'happy avatar') {
     avatar = happyAvatar
+  } else {
+    avatar = neutralAvatar
   }
 
   const handleClickOpen = () => {

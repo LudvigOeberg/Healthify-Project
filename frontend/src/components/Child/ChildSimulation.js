@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-return-assign */
 import React from 'react'
 import { connect } from 'react-redux'
@@ -16,17 +17,25 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Box from '@material-ui/core/Box'
 import MyDialog from '../MyDialog'
 
+import { LOAD_BLOODSUGAR } from '../../constants/actionTypes'
+import agentEHR from '../../agentEHR'
+
 /**
  * Page where the child may run a simulation of how they will feel if they eat something
  * Right now: Eating something of the portion size "Mellan" will show a good result,
  * other portion sizes will show a bad result.
  */
 
-const mapStateToProps = () => ({
-  // ...state.common,
+const mapStateToProps = (state) => ({
+  ...state.common,
+  ...state.ehr,
 })
 
-const mapDispatchToProps = () => ({})
+const mapDispatchToProps = (dispatch) => ({
+  onLoad: (ehrId) => {
+    dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, 0, 1) })
+  },
+})
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,18 +66,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ChildSimulation = () => {
+const ChildSimulation = (props) => {
+  // const bloodsugar = props.ehr.bloodsugar[0].value
+
+  const { bloodsugar } = props
+  //  let bloodsugarValue
+
   const date = getCurrentDate()
 
-  const [meal, setMeal] = React.useState('Måltid')
-
+  const [Meal_type, setMeal] = React.useState('Måltid')
   const handleChange = (event) => {
+    props.onLoad(props.currentUser.ehrid)
+    // eslint-disable-next-line no-console
+    console.log(`bsValue: ${bloodsugar[0].value}`)
     setMeal(event.target.value)
   }
 
-  const [value, setValue] = React.useState(2)
-
+  const [Meal_size, setValue] = React.useState(2)
   const handleSliderChange = (event, newValue) => {
+    props.onLoad(props.currentUser.ehrid)
     setValue(newValue)
   }
 
@@ -105,6 +121,14 @@ const ChildSimulation = () => {
     'happy avatar',
   ]
 
+  const neutralDialogInfo = [
+    'Simulera',
+    'Simulation',
+    'Ditt mående kommer inte att förändras om du äter detta!',
+    '../Static/neutral_avatar.png',
+    'neutral avatar',
+  ]
+
   const classes = useStyles()
 
   function getCurrentDate() {
@@ -114,7 +138,15 @@ const ChildSimulation = () => {
   }
 
   function getDialogInfo() {
-    if (value === 2) {
+    // eslint-disable-next-line no-console
+    console.log(`Meal_type: ${Meal_type}`)
+    if (Meal_size === 1) {
+      if (Meal_type === 'Måltid') {
+        if (bloodsugar === 7) {
+          return neutralDialogInfo
+        }
+      }
+
       return goodDialogInfo
     }
     return badDialogInfo
@@ -136,7 +168,7 @@ const ChildSimulation = () => {
             </Grid>
             <Grid item xs={8}>
               <Typography variant="body1" className={classes.diet} gutterBottom>
-                {meal}
+                {Meal_type}
               </Typography>
             </Grid>
             <Grid item xs={8}>
@@ -146,7 +178,7 @@ const ChildSimulation = () => {
             </Grid>
             <Grid item xs={12}>
               <Slider
-                value={value}
+                value={Meal_size}
                 defaultValue={2}
                 step={1}
                 marks={marks}
@@ -164,9 +196,9 @@ const ChildSimulation = () => {
               <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
-                value={meal}
+                value={Meal_type}
                 onChange={handleChange}
-                label="Meal"
+                label="Meal_size"
               >
                 <MenuItem value="Måltid">Måltid</MenuItem>
                 <MenuItem value="Snack">Snack</MenuItem>
