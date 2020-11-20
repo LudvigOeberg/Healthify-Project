@@ -1,4 +1,3 @@
-/*
 import React, { Component } from 'react'
 
 import { withStyles } from '@material-ui/core/styles'
@@ -28,6 +27,10 @@ const mapStateToProps = (state) => ({
   bloodsugarValue: state.common.bloodsugar,
   historicalBloodSugar: state.ehr.bloodsugar,
 })
+
+/*
+Keeping the old patient site for now. Might be useful in the add-page! 
+*/
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeAuth: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
@@ -326,4 +329,3 @@ function setTimer() {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Patient))
-*/
