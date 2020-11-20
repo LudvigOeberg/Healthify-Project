@@ -2,14 +2,15 @@ import { Avatar, Typography, Grid } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import Modal from '@material-ui/core/Modal'
 import TextField from '@material-ui/core/TextField';
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import {useState} from 'react';
-import { UPDATE_FIELD_AUTH } from '../../constants/actionTypes'
+import { UPDATE_FIELD_AUTH, EDIT_PARENT } from '../../constants/actionTypes'
+import agent from '../../agent'
 
 
 const mapStateToProps = (state) => ({
@@ -21,6 +22,10 @@ const mapDispatchToProps = (dispatch) => ({
   onChangeField: (key, value) => dispatch({ type: UPDATE_FIELD_AUTH, key, value }),
   onLoad: (ehrId) => dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }),
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
+  editParent: (id, email, snackbar) => {
+    const payload = agent.Parent.editParent(id, email)
+    dispatch({ type: EDIT_PARENT, payload, snackbar})
+  }
 })
 
 const ParentSettingsPage = (props) => {
@@ -41,20 +46,8 @@ const ParentSettingsPage = (props) => {
         color: 'success',
         open: true,
       }
-      console.log(snackbar, id , email);
-      //props.editPatient(id, email, snackbar)
+      props.editParent(id, email, snackbar)
   }
-
-    // Used to unload the props from this component. Should be used in views to unload
-  // props, has to be used with the correct action.
-  useEffect(
-    () =>
-      // eslint-disable-next-line implicit-arrow-linebreak
-      function cleanUp() {
-        props.onUnload()
-      },
-    [], // eslint-disable-line react-hooks/exhaustive-deps
-  )
 
     return (
       <Container component="main" maxWidth="md">

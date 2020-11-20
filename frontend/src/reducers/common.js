@@ -17,6 +17,7 @@ import {
   SAVE_PARTY,
   SAVE_BLOODSUGAR,
   EDIT_CHILD,
+  EDIT_PARENT,
   DELETE_CHILD,
   SAVE_TIMER,
   SAVE_SIMULATION,
@@ -54,6 +55,7 @@ export default (state = defaultState, action) => {
         token: action.error ? null : action.payload.user.token,
         currentUser: action.error ? null : action.payload.user,
       }
+    case EDIT_PARENT:
     case DELETE_CHILD:
     case EDIT_CHILD:
       return {
