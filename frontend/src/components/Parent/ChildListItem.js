@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -13,14 +13,45 @@ import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Moment from 'moment'
 import EditIcon from '@material-ui/icons/Edit'
+import { connect } from 'react-redux'
+import {
+  LOAD_MULTIPLE_BLOODSUGARS,
+  LOAD_MULTIPLE_WEIGHTS,
+} from '../../constants/actionTypes'
+import agentEHR from '../../agentEHR'
 /**
  * Displays a ChildListItem
  * @param {const} props- a const with a name, an email and a telephone number to the ChildListItem
  * should look like below
  *
  */
-export default function ChildListItem(props) {
+
+const mapStateToProps = (state) =>({
+  ...state.ehr,
+  ...state.common
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  loadValues: (ehrId, offset, limit, disease) => {
+    if (disease === 'DIABETES')
+      dispatch({ type: LOAD_MULTIPLE_BLOODSUGARS, ehrId, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+    else if (disease === 'OBESITY') 
+      dispatch({ type: LOAD_MULTIPLE_WEIGHTS, ehrId, payload: agentEHR.Query.weight(ehrId, limit) })
+  },
+})
+
+function ChildListItem(props) {
+  const child = props.child
+  const disease = props.partyIn ? props.partyIn.additionalInfo.disease : null
   const classes = useStyles()
+  const weights  = disease==='OBESITY' && props.weights ? props.weights : null
+  const bloodsugars =  disease==='DIABETES' && props.bloodsugars ? props.bloodsugars  : null
+  
+
+  useEffect(() => {
+    props.loadValues(child.ehrid, 0, 1, disease)
+  }, [child.ehrid, disease])
+
   Moment.locale('sv')
   return (
     <Container maxWidth="md">
@@ -29,17 +60,17 @@ export default function ChildListItem(props) {
           <List>
             <ListItem>
               <ListItemAvatar>
-                <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" alt={props.name} />
+                <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" alt={child.name} />
               </ListItemAvatar>
-              <ListItemText primary={`${props.name} ${props.surname}`} />
-              <a href={`/edit-child/${props.ehrid}`}>
+              <ListItemText primary={`${child.name} ${child.surname} `} />
+              <a href={`/edit-child/${child.ehrid}`}>
                 <ListItemIcon>
                   <EditIcon color="primary" />
                 </ListItemIcon>
               </a>
             </ListItem>
             <Divider />
-            <ListItem button component="a" href={`/parent-child-overview/${props.ehrid}`}>
+            <ListItem button component="a" href={`/parent-child-overview/${child.ehrid}`}>
               <ListItemIcon>
                 <AccountBox color="primary" />
               </ListItemIcon>
@@ -49,7 +80,10 @@ export default function ChildListItem(props) {
               <ListItemIcon>
                 <AccessTime color="primary" />
               </ListItemIcon>
-              <ListItemText primary={`Senast inloggad: ${Moment(props.lastSeen).format('YYYY-MM-DD [kl:] hh:mm')}`} />
+              <ListItemText primary={`Senast inloggad: ${Moment(child.lastSeen).format('YYYY-MM-DD [kl:] hh:mm')}`} />
+            </ListItem>
+            <ListItem>
+              {/* <ListItemText primary={`Senast loggade värde: ${disease==='DIABETES' ? bloodsugar[0].value : weight[0].weight}`} /> */}
             </ListItem>
           </List>
         </Paper>
@@ -77,3 +111,5 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }))
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChildListItem)
