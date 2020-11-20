@@ -13,6 +13,6 @@ flask db migrate
 flask db upgrade
 flask init-db
 
-flask run & (serve -s frontend/build) & (sleep 15 && cd frontend && npm run jest SmokeTest.js)
+flask run & (serve -s frontend/build -l 4100) & (sleep 15 && cd frontend && npm run jest SmokeTest.js)
 
 wait
