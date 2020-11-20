@@ -140,12 +140,12 @@ class Patient extends Component {
   render() {
     const marks = [
       {
-        value: 2,
-        label: '5 mmol/L',
+        value: 0,
+        label: '0 mmol/L',
       },
       {
-        value: 10,
-        label: '10 mmol/L',
+        value: 15,
+        label: '15 mmol/L',
       },
     ]
     const bloodsugar = this.props.bloodsugarValue
@@ -182,8 +182,8 @@ class Patient extends Component {
                 step={1}
                 valueLabelDisplay="auto"
                 marks={marks}
-                max={10}
-                min={2}
+                max={15}
+                min={0}
               />
             </Grid>
             <Grid item>
@@ -196,8 +196,8 @@ class Patient extends Component {
                 onBlur={this.handleBlur}
                 inputProps={{
                   step: 1,
-                  min: 2,
-                  max: 10,
+                  min: 0,
+                  max: 15,
                   type: 'number',
                   'aria-labelledby': 'input-slider',
                 }}
