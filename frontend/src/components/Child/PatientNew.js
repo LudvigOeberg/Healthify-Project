@@ -17,7 +17,7 @@ import Slider from '@material-ui/core/Slider'
 import Input from '@material-ui/core/Input'
 import happyAvatar from '../../Static/happy_avatar.png'
 import sadAvatar from '../../Static/sad_avatar.png'
-//import normalAvatar from '../../Static/normal_avatar.png'
+import normalAvatar from '../../Static/normal_avatar.png'
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
@@ -145,14 +145,19 @@ class PatientNew extends Component {
     
     const bloodsugar = this.props.bloodsugarValue
     const { classes } = this.props
+    
      
-    let Avatar = happyAvatar //There is also a normal avatar to use, if anyone find a good statement when to use it. 
+
+    let Avatar = normalAvatar //There is also a normal avatar to use, if anyone find a good statement when to use it. 
 
      if (this.props.historicalBloodSugar !== null && this.props.historicalBloodSugar !== undefined) {
        if (this.props.historicalBloodSugar[0].value < 4 || this.props.historicalBloodSugar[0].value > 8) {
          Avatar = sadAvatar
        } else {
          Avatar = happyAvatar
+       }
+       if (this.props.historicalBloodSugar[0].time < setTimer()) {
+         Avatar = normalAvatar
        }
      }
 
@@ -224,7 +229,7 @@ paper: {
 backGround: {
   position: 'absolute',
   padding: '45% 10% 28%',
-  background: 'linear-gradient(0deg, rgba(118,176,208,1) 35%, rgba(106,161,191,1) 36%, rgba(125,180,213,1) 86%)',
+  background: 'linear-gradient(0deg, rgba(118,176,208,1) 37%, rgba(106,161,191,1) 38%, rgba(125,180,213,1) 86%)',
   marginTop: '-3%', //Removes a small white space at the top.
 },
 avatar: {
