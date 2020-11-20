@@ -1,14 +1,15 @@
 import { Avatar, Typography, Grid } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
-import { withStyles, makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import Modal from '@material-ui/core/Modal'
 import TextField from '@material-ui/core/TextField';
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import {useState} from 'react';
+import { UPDATE_FIELD_AUTH } from '../../constants/actionTypes'
 
 
 const mapStateToProps = (state) => ({
@@ -17,17 +18,43 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  onChangeField: (key, value) => dispatch({ type: UPDATE_FIELD_AUTH, key, value }),
   onLoad: (ehrId) => dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }),
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
 })
 
 const ParentSettingsPage = (props) => {
   const classes = styles()
-  const email = props.currentUser.email
+  const ehrid = props.match.params.id
+  const email = props.email
+  const errors = props.errors ? props.errors : null
+  const currentEmail = props.currentUser.email
   const name = props.currentUser ? `${props.currentUser.name} ${props.currentUser.surname}` : null
   const [emailIsOpen, setEmailIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
+  const onChangeField = (ev) => props.onChangeField(ev.target.id, ev.target.value)
+  const submitForm = (id, email) => (ev) => {
+    ev.preventDefault()
+    setEmailIsOpen(false);
+      const snackbar = {
+        message: `Du ändrade din emailadress`,
+        color: 'success',
+        open: true,
+      }
+      console.log(snackbar, id , email);
+      //props.editPatient(id, email, snackbar)
+  }
 
+    // Used to unload the props from this component. Should be used in views to unload
+  // props, has to be used with the correct action.
+  useEffect(
+    () =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      function cleanUp() {
+        props.onUnload()
+      },
+    [], // eslint-disable-line react-hooks/exhaustive-deps
+  )
 
     return (
       <Container component="main" maxWidth="md">
@@ -63,28 +90,30 @@ const ParentSettingsPage = (props) => {
             <Grid container direction="column" className={classes.emailModal}>
               <Grid container direction="row" className={classes.yesnoButtons}>
                 <Grid>
-                  <Typography variant="h6"> Ange ny e-postadress </Typography>
+                  <Typography> Ange ny e-postadress Din e-post: {currentEmail}</Typography>
                 </Grid>
-              <form noValidate>
+              <form noValidate onSubmit={submitForm(ehrid, email)} >
               <TextField 
                 required
                 id="email" 
+                name="email"
                 label="e-post" 
                 variant="outlined" 
                 autoComplete="email"
-                //helperText={errors && (errors.email || errors.general)}
-                //error={errors && (errors.email ? true : !!(false || errors.general))}
+                helperText={errors && (errors.email || errors.general)}
+                error={errors && (errors.email ? true : !!(false || errors.general))}
                 value={email}
-                //onChange={onChangeField}
-
+                onChange={onChangeField}
               />
-              </form>
-                <Button type="submit" variant="contained" color="secondary" onClick={() => setEmailIsOpen(false)}>
+                
+                <Button type="submit" variant="contained" color="secondary" >
                   Submit
                 </Button>
-                <Button type="submit" variant="contained" color="primary" onClick={() => setEmailIsOpen(false)}>
+                </form>
+                <Button type="button" variant="contained" color="primary" onClick={() => setEmailIsOpen(false)}>
                   Cancel
                 </Button>
+                
               </Grid>
             </Grid>
           </Modal>
@@ -192,4 +221,4 @@ const styles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }))
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ParentSettingsPage))
+export default connect(mapStateToProps, mapDispatchToProps)(ParentSettingsPage)
