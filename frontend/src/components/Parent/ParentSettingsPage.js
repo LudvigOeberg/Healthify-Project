@@ -1,16 +1,19 @@
 import { Avatar, Typography, Grid } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles, makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import Modal from '@material-ui/core/Modal'
 import TextField from '@material-ui/core/TextField';
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
+import {useState} from 'react';
+
 
 const mapStateToProps = (state) => ({
   ...state.common,
+  ...state.auth,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -18,40 +21,14 @@ const mapDispatchToProps = (dispatch) => ({
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
 })
 
-class ParentSettingsPage extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { openDeleteButton: false }
-    this.state = { openEmailButton: false }
-  }
-  
+const ParentSettingsPage = (props) => {
+  const classes = styles()
+  const email = props.currentUser.email
+  const name = props.currentUser ? `${props.currentUser.name} ${props.currentUser.surname}` : null
+  const [emailIsOpen, setEmailIsOpen] = useState(false);
+  const [deleteIsOpen, setDeleteIsOpen] = useState(false);
 
-  componentWillUnmount() {
-    this.props.onUnload()
-  }
 
-  componentDidMount() {}
-
-  changeEmail() {
-    //change email
-    this.setState({ openEmailButton: false })
-  }
-
-  submitForm() {
-    console.log("newEmail");
-  }
-
-  deleteAccount() {
-    // delete account from database
-    // console.log("delete account")
-    this.setState({ openDeleteButton: false })
-  }
-
-  render() {
-    const { classes } = this.props
-    const email = this.props.currentUser.email
-    //const newEmail = ""
-    const name = this.props.currentUser ? `${this.props.currentUser.name} ${this.props.currentUser.surname}` : null
     return (
       <Container component="main" maxWidth="md">
         {/* {console.log(this.state.openDeleteButton)} */}
@@ -64,13 +41,13 @@ class ParentSettingsPage extends Component {
 
         <div className={classes.paper}>
           <Grid className={classes.buttonGroup}>
-            <Button type="submit" variant="contained" color="primary" onClick={() => this.setState({ openEmailButton: true })}>
-              Change Email Address
+            <Button type="submit" variant="contained" color="primary" onClick={() => setEmailIsOpen(true) }>
+              Ändra e-postadress
             </Button>
           </Grid>
           <Grid className={classes.buttonGroup}>
-            <Button type="submit" variant="contained" color="secondary" onClick={() => this.setState({ openDeleteButton: true })}>
-              Delete Account
+            <Button type="submit" variant="contained" color="secondary" onClick={() => setDeleteIsOpen(true)}>
+                Radera konto
             </Button>
           </Grid>
 
@@ -78,32 +55,34 @@ class ParentSettingsPage extends Component {
           <Modal
             className={classes.modalStyle}
             disableAutoFocus
-            open={this.state.openEmailButton}
+            open={emailIsOpen}
             // onClose={console.log("closed modal")}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
           >
             <Grid container direction="column" className={classes.emailModal}>
-              <Grid> 
-              <Typography component="h1" gutterBottom='true' variant="h5">
-                Your current email is: {email}
-              </Typography>
-              </Grid>
-
               <Grid container direction="row" className={classes.yesnoButtons}>
-              <Typography> Enter a new email address </Typography>
+                <Grid>
+                  <Typography variant="h6"> Ange ny e-postadress </Typography>
+                </Grid>
               <form noValidate>
               <TextField 
                 required
                 id="email" 
-                label="Email" 
+                label="e-post" 
                 variant="outlined" 
+                autoComplete="email"
+                //helperText={errors && (errors.email || errors.general)}
+                //error={errors && (errors.email ? true : !!(false || errors.general))}
+                value={email}
+                //onChange={onChangeField}
+
               />
               </form>
-                <Button type="submit" variant="contained" color="secondary" onClick={() => this.changeEmail()}>
+                <Button type="submit" variant="contained" color="secondary" onClick={() => setEmailIsOpen(false)}>
                   Submit
                 </Button>
-                <Button type="submit" variant="contained" color="primary" onClick={() => this.setState({ openEmailButton : false }) } >
+                <Button type="submit" variant="contained" color="primary" onClick={() => setEmailIsOpen(false)}>
                   Cancel
                 </Button>
               </Grid>
@@ -114,7 +93,7 @@ class ParentSettingsPage extends Component {
           <Modal
             className={classes.modalStyle}
             disableAutoFocus
-            open={this.state.openDeleteButton}
+            open={deleteIsOpen}
             // onClose={console.log("closed modal")}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
@@ -122,19 +101,19 @@ class ParentSettingsPage extends Component {
           >
             <Grid container direction="column" className={classes.modalButton}>
               <Typography component="h1" variant="h5">
-                Are you sure you want to delete?
+                  Bekräfta radering av konto
               </Typography>
               <Grid container direction="row" className={classes.yesnoButtons}>
-                <Button type="submit" variant="contained" color="secondary" onClick={() => this.deleteAccount()}>
-                  Yes
+                <Button type="submit" variant="contained" color="secondary" onClick={() => setDeleteIsOpen(false)}>
+                  Ja
                 </Button>
 
                 <Button
                   type="submit"
                   variant="contained"
                   color="secondary"
-                  onClick={() => this.setState({ openDeleteButton: false })} >
-                  No
+                  onClick={() => setDeleteIsOpen(false)} >
+                    Nej
                 </Button>
               </Grid>
             </Grid>
@@ -142,15 +121,18 @@ class ParentSettingsPage extends Component {
         </div>
       </Container>
     )
-  }
 }
 
-const styles = (theme) => ({
+const styles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  emailText: {
+
+    justifyContent: 'center',
   },
   buttonGroup: {
     width: '30%',
@@ -167,7 +149,7 @@ const styles = (theme) => ({
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor: 'white',
-    padding: '8px',
+    padding: '16px',
     borderRadius: 10
 
   },
@@ -184,7 +166,7 @@ const styles = (theme) => ({
 
   },
   yesnoButtons: {
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
   },
   modalStyle: {
     display: 'flex',
@@ -209,5 +191,5 @@ const styles = (theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-})
+}))
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ParentSettingsPage))
