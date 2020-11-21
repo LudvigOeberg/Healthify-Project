@@ -19,6 +19,11 @@ import {
   LOAD_MULTIPLE_WEIGHTS,
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+import TrendingDownIcon from '@material-ui/icons/TrendingDown';
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 /**
  * Displays a ChildListItem
  * @param {const} props- a const with a name, an email and a telephone number to the ChildListItem
@@ -44,12 +49,18 @@ function ChildListItem(props) {
   const child = props.child
   const disease = props.partyIn ? props.partyIn.additionalInfo.disease : null
   const classes = useStyles()
-  const weights  = disease==='OBESITY' && props.weights ? props.weights : null
-  const bloodsugars =  disease==='DIABETES' && props.bloodsugars ? props.bloodsugars  : null
+  const weight  = disease==='OBESITY' && props.weights && props.weights[child.ehrid] && props.weights[child.ehrid].weight[0]? props.weights[child.ehrid].weight[0] : null
+  const bloodsugar =  disease==='DIABETES' && props.bloodsugars && props.bloodsugars[child.ehrid] && props.bloodsugars[child.ehrid].bloodsugar[0] ?props.bloodsugars[child.ehrid].bloodsugar[0]  : null
+  const badBloodsugar = props.bloodsugars && disease==='DIABETES' &&  bloodsugar && (bloodsugar.value<3 || bloodsugar.value>10) ? true : false
+  const badWeight = props.weights && disease==='OBESITY' && weight && props.weights[child.ehrid].weight[1] && props.weights[child.ehrid].weight[1].weight < weight.weight ? true : false
+  const oneOrSameWeight = props.weights && disease==='OBESITY' && weight && props.weights[child.ehrid].weight[1] && props.weights[child.ehrid].weight[1].weight !== weight.weight? false : true
   
 
   useEffect(() => {
-    props.loadValues(child.ehrid, 0, 1, disease)
+    if(disease==='diabetes')
+      props.loadValues(child.ehrid, 0, 1, disease)
+    else
+      props.loadValues(child.ehrid, 0, 2, disease)
   }, [child.ehrid, disease])
 
   Moment.locale('sv')
@@ -57,12 +68,12 @@ function ChildListItem(props) {
     <Container maxWidth="md">
       <div className={classes.paper}>
         <Paper>
-          <List>
+          <List className={classes.card}>
             <ListItem>
               <ListItemAvatar>
                 <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" alt={child.name} />
               </ListItemAvatar>
-              <ListItemText primary={`${child.name} ${child.surname} `} />
+              <ListItemText primary={`${child.name} ${child.surname} `} secondary={disease==='DIABETES' ? 'Diabetes' : 'Fetma'}/>
               <a href={`/edit-child/${child.ehrid}`}>
                 <ListItemIcon>
                   <EditIcon color="primary" />
@@ -76,14 +87,52 @@ function ChildListItem(props) {
               </ListItemIcon>
               <ListItemText primary="Gå till översikt" />
             </ListItem>
-            <ListItem>
+           {/*  <ListItem>
               <ListItemIcon>
                 <AccessTime color="primary" />
               </ListItemIcon>
               <ListItemText primary={`Senast inloggad: ${Moment(child.lastSeen).format('YYYY-MM-DD [kl:] hh:mm')}`} />
-            </ListItem>
-            <ListItem>
-              {/* <ListItemText primary={`Senast loggade värde: ${disease==='DIABETES' ? bloodsugar[0].value : weight[0].weight}`} /> */}
+            </ListItem> */}
+            
+            <ListItem >
+            <Paper hidden={!weight && !bloodsugar} elevation={0}>
+              <ListItemIcon>
+                <Paper hidden={(disease==='DIABETES' && badBloodsugar) || disease==='OBESITY'} elevation={0}>
+                  <ThumbUpAltOutlinedIcon style={{color: "green"}}/>
+                </Paper>
+                <Paper hidden={(disease==='DIABETES' && !badBloodsugar) || disease==='OBESITY'} elevation={0}>
+                  <ThumbDownAltOutlinedIcon style={{color: "red"}}/>
+                </Paper>
+                <Paper hidden={(disease==='OBESITY' && badWeight ) || (disease==='OBESITY' && oneOrSameWeight ) || disease==='DIABETES' } elevation={0}>
+                  <TrendingDownIcon style={{color: "green"}}/>
+                </Paper>
+                <Paper hidden={(disease==='OBESITY' && !oneOrSameWeight) || disease==='DIABETES' } elevation={0}>
+                  <ArrowRightAltIcon style={{color: "gray"}}/>
+                </Paper>
+                <Paper hidden={( disease==='OBESITY' &&  !badWeight)  || (disease==='OBESITY' && oneOrSameWeight ) || disease==='DIABETES' } elevation={0}>
+                  <TrendingUpIcon style={{color: "red"}}/>
+                </Paper>
+              </ListItemIcon>
+              </Paper>
+              <ListItemText 
+              hidden={!bloodsugar} 
+              primary={`${props.bloodsugars && disease==='DIABETES' &&  bloodsugar  ? bloodsugar.value : null }
+              ${props.bloodsugars && disease==='DIABETES' &&  bloodsugar ? bloodsugar.unit : null }
+              `} 
+              secondary={props.bloodsugars && disease==='DIABETES' &&  bloodsugar ? Moment(bloodsugar.time).format('YYYY-MM-DD [kl:] HH:mm') : null}
+
+              />
+              <ListItemText 
+              hidden={bloodsugar || weight} 
+              primary={`${child.name} har inte mätt något värde än `}
+              />
+              <ListItemText 
+              hidden={!weight} 
+              primary={`${props.weights && disease==='OBESITY' && weight ? weight.weight : null }
+              ${props.weights && disease==='OBESITY' && weight  ? weight.unit : null }
+              `} 
+              secondary= {props.weights && disease==='OBESITY' && weight ? Moment(weight.time).format('YYYY-MM-DD [kl:] HH:mm') : null }
+              />
             </ListItem>
           </List>
         </Paper>
@@ -98,6 +147,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyItems: 'flex-start'
   },
   avatar: {
     margin: theme.spacing(1),
@@ -110,6 +160,10 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  card: {
+    width:'100%',
+    minWidth: 300
+  }
 }))
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChildListItem)

@@ -18,7 +18,7 @@ const mapStateToProps =(state) => ({
   const classes = useStyles()
   return (
     <Container>
-      <Grid container direction="row" justify="center" spacing={0} alignItems="center">
+      <Grid container direction="row" justify="center" spacing={0} alignItems="flex-start">
         {children.map((child) => (
           <Grid key>{<ChildListItem child={child.child} partyIn={props.party ? props.party[child.child.ehrid] : null} />}</Grid>
         ))}
