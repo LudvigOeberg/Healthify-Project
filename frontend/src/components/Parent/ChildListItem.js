@@ -60,7 +60,7 @@ function ChildListItem(props) {
       props.loadValues(child.ehrid, 0, 1, disease)
     else
       props.loadValues(child.ehrid, 0, 2, disease)
-  }, [child.ehrid, disease])
+  }, [child.ehrid, disease])// eslint-disable-line
 
   Moment.locale('sv')
   return (
