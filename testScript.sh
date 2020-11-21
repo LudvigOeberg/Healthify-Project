@@ -13,4 +13,7 @@ flask init-db
 
 (echo "BACKEND!" && flask run) & (echo "FRONTEND!" && serve -s frontend/build -l 4100) & (sleep 15 && cd frontend && echo "TESTING!" && npm run jest startpage.js)
 
-echo "Hejsan"
+wait %3
+kill %1
+kill %2
+echo "Done"

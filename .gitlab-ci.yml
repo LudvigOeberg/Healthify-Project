@@ -45,7 +45,6 @@ test-frontend:
     - export TZ=Europe/Stockholm
     - export ehr_user=${K8S_SECRET_EHR_USER%123}
     - export ehr_user_pass=$K8S_SECRET_EHR_USER_PASS
-    - echo $ehr_user
     - apt-get update -qy
     - apt-get install -y python3-dev python3-pip python3-venv
     - apt-get install -y nodejs
