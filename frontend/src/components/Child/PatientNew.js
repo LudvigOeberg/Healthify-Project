@@ -79,7 +79,7 @@ class PatientNew extends Component {
       if (timer !== null) {
         snackbar = {
           open: true,
-          message: `Bra jobbat! Hoppas att du mår bra!`,
+          message: `Bra jobbat, hoppas du mår toppen!`,
           color: 'success',
         }
       }
@@ -94,7 +94,7 @@ class PatientNew extends Component {
         }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat högt blodsockervärde! Ät något och gör en ny mätning inom en timme.`,
+          message: `Åh nej, det ser ut som att ditt blodsocker börjar bli högt. Se till att ta lite insulin snart så du inte börjar må dåligt.`,
           color: 'error',
         }
       }
@@ -107,7 +107,7 @@ class PatientNew extends Component {
         }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat lågt blodsockervärde, Kanske dags för lite insulin och gör en ny mätning inom en timme.`,
+          message: `Åh nej, det ser ut som att ditt blodsocker börjar bli lågt. Se till att äta något snart innan du börjar må dåligt och registrera ett nytt värde därefter. `,
           color: 'error',
         }
       }
