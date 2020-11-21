@@ -6,9 +6,7 @@ const localURL = 'http://localhost:4100/'
 
 beforeEach(() => {
   const options = new chrome.Options()
-  options.addArguments('--test-type')
-  options.addArguments('--start-maximized')
-  options.addArguments('--headless')
+  options.addArguments('--test-type', '--start-maximized', '--headless', 'disable-gpu')
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
