@@ -39,7 +39,7 @@ const Parent = {
     }),
   children: () => requests.get('/parent'),
   editChild: (ehrid, email) => requests.put('/child', { user: { ehrid, email } }),
-  editParent: (ehrid, email) => requests.put('/parent', {user: {ehrid, email } }),
+  editParent: (email) => requests.put('/user', {user: { email } }),
   deleteChild: (ehrid) => requests.del(`/child?ehrid=${ehrid}`),
 }
 
