@@ -36,8 +36,6 @@ test-frontend:
   stage: test
   image: ubuntu
   needs: ["build-frontend"]
-  services:
-    - selenium/standalone-chrome
   dependencies:
     - build-frontend
   script:
