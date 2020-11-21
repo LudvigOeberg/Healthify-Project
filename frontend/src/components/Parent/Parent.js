@@ -36,7 +36,7 @@ class ParentPage extends Component {
     const name = this.props.currentUser ? `${this.props.currentUser.name} ${this.props.currentUser.surname}` : null
     if (children) {
       return (
-        <Container component="main" maxWidth="md">
+        <Container component="main">
           <div className={classes.paper}>
             <Avatar className={classes.purple} src="test.123" alt={name} />
             <Typography component="h1" variant="h5">
@@ -51,7 +51,7 @@ class ParentPage extends Component {
       )
     }
     return (
-      <Container component="main" maxWidth="md">
+      <Container component="main">
         <div className={classes.paper}>
           <Avatar className={classes.purple} src="test.123" alt={name} />
           <Typography component="h1" variant="h5">
