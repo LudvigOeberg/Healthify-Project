@@ -27,6 +27,7 @@ const mapDispatchToProps = dispatch => ({
     const payload = agent.Parent.editParent(email);
     dispatch({ type: EDIT_PARENT, payload, snackbar });
   }
+
 });
 
 const ParentSettingsPage = props => {
@@ -93,7 +94,7 @@ const ParentSettingsPage = props => {
         >
 
           <Grid container direction="column" className={classes.emailModal}>
-            <Grid>
+            <Grid xs={12}>
                 <Typography>
                   {" "}
                   Ange ny e-postadress. Din e-post: {currentEmail}
@@ -116,7 +117,7 @@ const ParentSettingsPage = props => {
                 />
                 
                 <Button type="submit" disabled={props.inProgress} variant="contained" color="secondary">
-                  Submit
+                  Spara
                 </Button>
               </form>
               <Grid className={classes.emailForm}>
@@ -126,7 +127,7 @@ const ParentSettingsPage = props => {
                 color="primary"
                 onClick={() => setEmailIsOpen(false)}
               >
-                Cancel
+                Stäng
               </Button>
               </Grid>
             </Grid>
@@ -152,7 +153,7 @@ const ParentSettingsPage = props => {
                 color="secondary"
                 onClick={() => setDeleteIsOpen(false)}
               >
-                Bekräfta radering
+                Bekräfta
               </Button>
 
               <Button
@@ -161,7 +162,7 @@ const ParentSettingsPage = props => {
                 color="primary"
                 onClick={() => setDeleteIsOpen(false)}
               >
-                Cancel
+                Stäng
               </Button>
             </Grid>
           </Grid>
@@ -187,7 +188,7 @@ const styles = makeStyles(theme => ({
     flexDirection: 'column',
   },
   buttonGroup: {
-    width: "30%",
+    width: "40%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
