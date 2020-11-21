@@ -60,7 +60,7 @@ test-frontend:
     - flask db init; flask db migrate; flask db upgrade; flask init-db
     - cd ..
     - trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
-    - (echo "BACKEND!" && cd backend && flask run) & (echo "FRONTEND!" && serve -s frontend/build -l 4100) & (sleep 15 && wget -qO- localhost:4100; wget -qO- localhost:5000/swagger-ui; cd frontend && echo "TESTING!" && npm run jest startpage.js) &
+    - (echo "BACKEND!" && cd backend && flask run) & (echo "FRONTEND!" && serve -s frontend/build -l 4100) & (sleep 15 && cd frontend && echo "TESTING!" && npm run jest startpage.js) &
     - echo "Done"
 
 
