@@ -54,7 +54,6 @@ const ParentSettingsPage = props => {
 
   return (
     <Container component="main" maxWidth="md">
-      {/* {console.log(this.state.openDeleteButton)} */}
       <div className={classes.paper}>
         <Avatar className={classes.purple} src="test.123" alt={name} />
         <Typography component="h1" variant="h5">
@@ -89,19 +88,17 @@ const ParentSettingsPage = props => {
           className={classes.modalStyle}
           disableAutoFocus
           open={emailIsOpen}
-          // onClose={console.log("closed modal")}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
+
           <Grid container direction="column" className={classes.emailModal}>
-            <Grid container direction="row" className={classes.yesnoButtons}>
-              <Grid>
+            <Grid>
                 <Typography>
                   {" "}
-                  Ange ny e-postadress Din e-post: {currentEmail}
+                  Ange ny e-postadress. Din e-post: {currentEmail}
                 </Typography>
-              </Grid>
-              <form noValidate onSubmit={submitForm(email)}>
+              <form noValidate className={classes.emailForm} onSubmit={submitForm(email)}>
                 <TextField
                   required
                   id="email"
@@ -117,11 +114,12 @@ const ParentSettingsPage = props => {
                   value={email}
                   onChange={onChangeField}
                 />
-
-                <Button type="submit" variant="contained" color="secondary">
+                
+                <Button type="submit" disabled={props.inProgress} variant="contained" color="secondary">
                   Submit
                 </Button>
               </form>
+              <Grid className={classes.emailForm}>
               <Button
                 type="button"
                 variant="contained"
@@ -130,6 +128,7 @@ const ParentSettingsPage = props => {
               >
                 Cancel
               </Button>
+              </Grid>
             </Grid>
           </Grid>
         </Modal>
@@ -139,13 +138,12 @@ const ParentSettingsPage = props => {
           className={classes.modalStyle}
           disableAutoFocus
           open={deleteIsOpen}
-          // onClose={console.log("closed modal")}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
           <Grid container direction="column" className={classes.modalButton}>
-            <Typography component="h1" variant="h5">
-              Bekräfta radering av konto
+            <Typography component="h1" variant="h6">
+            Detta kommer att radera ditt konto och alla kopplade konton. Detta går inte att återställa
             </Typography>
             <Grid container direction="row" className={classes.yesnoButtons}>
               <Button
@@ -154,16 +152,16 @@ const ParentSettingsPage = props => {
                 color="secondary"
                 onClick={() => setDeleteIsOpen(false)}
               >
-                Ja
+                Bekräfta radering
               </Button>
 
               <Button
                 type="submit"
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={() => setDeleteIsOpen(false)}
               >
-                Nej
+                Cancel
               </Button>
             </Grid>
           </Grid>
@@ -183,6 +181,11 @@ const styles = makeStyles(theme => ({
   emailText: {
     justifyContent: "center"
   },
+  emailForm: {
+    display: 'flex',
+    justifyContent: "center",
+    flexDirection: 'column',
+  },
   buttonGroup: {
     width: "30%",
     display: "flex",
@@ -194,9 +197,7 @@ const styles = makeStyles(theme => ({
     outline: "none",
     width: "40%",
     display: "flex",
-    alignItems: "center",
     justifyContent: "center",
-    alignSelf: "center",
     backgroundColor: "white",
     padding: "16px",
     borderRadius: 10
