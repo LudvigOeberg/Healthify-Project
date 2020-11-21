@@ -1,8 +1,6 @@
 export FLASK_APP=backend/autoapp.py
 export FLASK_ENV=development
 export NODE_ENV=development
-export ehr_user=""
-export ehr_user_pass=""
 
 python3 -m venv ./backend/venv
 . ./backend/venv/bin/activate
