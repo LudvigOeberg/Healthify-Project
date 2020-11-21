@@ -18,6 +18,8 @@ import {
   SAVE_BLOODSUGAR,
   EDIT_CHILD,
   DELETE_CHILD,
+  SAVE_TIMER,
+  SAVE_SIMULATION,
 } from '../constants/actionTypes'
 
 const defaultState = {
@@ -119,6 +121,15 @@ export default (state = defaultState, action) => {
         snackbar: {
           open: false,
         },
+      }
+
+    case SAVE_TIMER:
+      return {
+        ...state,
+      }
+    case SAVE_SIMULATION:
+      return {
+        ...state,
       }
     case HOME_PAGE_UNLOADED:
     case LOGIN_PAGE_UNLOADED:

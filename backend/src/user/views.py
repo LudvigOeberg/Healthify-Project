@@ -174,3 +174,21 @@ class ChildResource(MethodResource):
         db.session.delete(child)
         db.session.commit()
         return current_user
+
+@api.resource('/child/timer')
+@doc(tags=["Child"])
+class ChildTimerResource(MethodResource):
+    @jwt_required
+    @doc(description="Add timer to child measurement")
+    def post(self):
+        timer = request.args['timer']
+        if timer == 'null':
+            current_user.timer = None   
+        else:    
+            current_user.timer = dt.datetime.strptime(timer, '%Y-%m-%dT%H:%M:%S')
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            raise InvalidUsage.unknown_error()
+        return timer

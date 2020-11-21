@@ -17,7 +17,7 @@ const LoggedOutView = (props) => {
   if (!props.currentUser) {
     return (
       <div className={classes.root}>
-        <AppBar className={classes.nav} position="static">
+        <AppBar className={classes.nav} position="fixed">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               <Button className={classes.title} component={Link} href="/" color="inherit">
@@ -47,7 +47,7 @@ const LoggedInView = (props) => {
           className={clsx(classes.nav, {
             [classes.appBarShift]: props.drawerOpen,
           })}
-          position="static"
+          position="fixed"
         >
           <Toolbar>
             <IconButton

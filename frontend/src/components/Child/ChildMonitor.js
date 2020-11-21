@@ -1,21 +1,14 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-
-import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
-import PersonIcon from '@material-ui/icons/Person'
+import { Box, Container, Grid, Paper } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 import TimeLineChart from '../TimeLineChart'
-
-import {
-  PATIENT_PAGE_UNLOADED,
-  FIELD_CHANGE,
-  UPDATE_BOOLEAN,
-  LOAD_PARTY,
-  LOAD_BLOODSUGAR,
-} from '../../constants/actionTypes'
+import { PATIENT_PAGE_UNLOADED, FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import CustomPaginationActionsTable from '../TablePagination'
 import Reformat from '../../reformatEHRData'
+import smileChild from '../../Static/big_smile_child.png'
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
@@ -33,7 +26,6 @@ const mapDispatchToProps = (dispatch) => ({
       payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
     })
   },
-  onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
 })
 
 class ChildMonitor extends Component {
@@ -54,65 +46,118 @@ class ChildMonitor extends Component {
     const { classes } = this.props
     const bloodsugarData = this.props.bloodsugar
     return (
-      <Container component="main" maxWidth="sm">
-        <div className={classes.paper}>
-          <div className={classes.circle}>
-            <div className={classes.avatarCircle}>
-              <PersonIcon className={classes.centerIcon} />
-            </div>
-            <div className={classes.statCircle2}>
-              <div className={classes.smallCircle}>
-                <h1 className={classes.centerText}>50 </h1>
-                <h5 className={classes.centerText}>
-                  <br />g
-                </h5>
+      <Container maxWidth="sm">
+        <Paper elevation={3} className={classes.paperTop}>
+          <Grid container spacing={2} className={classes.stats}>
+            <Grid item xs={3} className={classes.grid}>
+              <div className={`${classes.circle} ${classes.circleSm}`}>
+                <div className={classes.textInCircle}>
+                  <div className={classes.textAlign}>
+                    <Typography variant="h6">78</Typography>
+                    <Typography variant="body2">mg/dL</Typography>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className={classes.statCircle1}>
-              <div className={classes.smallCircle}>
-                <h1 className={classes.centerText}>78 </h1>
-                <h5 className={classes.centerText}>
-                  <br />
-                  Mg/DL
-                </h5>
+              <Box textAlign="center">
+                <Typography className={classes.text} variant="body1">
+                  Genomsnitt
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <div className={classes.circleEmoji}>
+                <img className={classes.centerIcon} src={smileChild} alt="smile child"></img>
               </div>
-            </div>
-            <div className={classes.statCircle3}>
-              <div className={classes.smallCircle}>
-                <h1 className={classes.centerText}>± 1 </h1>
+            </Grid>
+            <Grid item xs={3}>
+              <div className={`${classes.circle} ${classes.circleSm}`}>
+                <div className={classes.textInCircle}>
+                  <div className={classes.textAlign}>
+                    <Typography variant="h6">0</Typography>
+                    <Typography variant="h6">0</Typography>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className={classes.statCircle4}>
-              <div className={classes.smallCircle}>
-                <h1 className={classes.centerText}>78 </h1>
-                <h5 className={classes.centerText}>
-                  <br />
-                  Mg/DL
-                </h5>
-              </div>
-            </div>
-            <div className={classes.statCircle5}>
-              <div className={classes.smallCircle}>
-                <h2 className={classes.centerText}>0 </h2>
-                <h2 className={classes.centerText}>
-                  <br />0
-                </h2>
-              </div>
-            </div>
-          </div>
-          <h2>Blodsocker</h2>
-          <TimeLineChart
-            chartData={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false, true) : null}
-            label="Blodsocker (mmol/L)"
-          ></TimeLineChart>
-          <h2>Tidigare mätningar</h2>
-          <CustomPaginationActionsTable
-            paginate
-            titles={['Datum', 'mmol/L']}
-            columns={['x', 'y']}
-            rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
-          />
-        </div>
+              <Box textAlign="center">
+                <Typography className={classes.text} variant="body1">
+                  Hög/Låg
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid justify="space-evenly" alignItems="flex-start" container spacing={2} className={classes.circlesUnder}>
+              <Grid item xs={3}>
+                <div className={`${classes.circle} ${classes.circlesUnder}`}>
+                  <Box boxShadow={2}>
+                    <div className={classes.textInCircle}>
+                      <div className={classes.textAlign}>
+                        <Typography variant="h6">50</Typography>
+                        <Typography variant="body2">g</Typography>
+                      </div>
+                    </div>
+                  </Box>
+                </div>
+
+                <Box textAlign="center">
+                  <Typography className={classes.text} variant="body1">
+                    Kolhydrater
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={3}>
+                <div className={`${classes.circle} ${classes.circleSm}`}>
+                  <div className={classes.textInCircle}>
+                    <div className={classes.textAlign}>
+                      <Typography variant="h6">+- 1</Typography>
+                    </div>
+                  </div>
+                </div>
+                <Box textAlign="center">
+                  <Typography className={classes.text} variant="body1">
+                    Avvikelse
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={3}>
+                <div className={`${classes.circle} ${classes.circlesUnder}`}>
+                  <div className={classes.textInCircle}>
+                    <div className={classes.textAlign}>
+                      <Typography variant="h6">78</Typography>
+                      <Typography variant="body2">mg/dL</Typography>
+                    </div>
+                  </div>
+                </div>
+                <Box textAlign="center">
+                  <Typography className={classes.text} variant="body1">
+                    Genomsnitt
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Paper>
+
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              <Typography variant="h5">Mina mätningar</Typography>
+              <CustomPaginationActionsTable
+                paginate
+                titles={['Datum', 'mmol/L']}
+                columns={['x', 'y']}
+                rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
+              />
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              <Typography variant="h5"> Blodsocker</Typography>
+              <TimeLineChart
+                chartData={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false, true) : null}
+                label="Blodsocker (mmol/L)"
+              ></TimeLineChart>
+            </Paper>
+          </Grid>
+        </Grid>
       </Container>
     )
   }
@@ -120,91 +165,64 @@ class ChildMonitor extends Component {
 
 const styles = (theme) => ({
   circle: {
-    marginTop: '-145vw',
-    width: '200vw',
-    height: '200vw',
-    lineHeight: '500px',
+    width: '100%',
     borderRadius: '50%',
-    backgroundColor: '#17478c',
+    background: '#F2F2F2',
+    paddingTop: '100%',
     position: 'relative',
+    boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
   },
-  smallCircle: {
-    width: '20vw',
-    height: '20vw',
+  circleEmoji: {
+    width: '100%',
     borderRadius: '50%',
-    fontSize: '1rem',
-    lineHeight: '40px',
-    color: theme.palette.text.primary,
-    backgroundColor: '#fff',
+    background: '#C4C4C4',
+    boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
   },
-  statCircle1: {
+  textInCircle: {
     position: 'absolute',
-    bottom: '43vw',
-    left: '55vw',
-  },
-  statCircle2: {
-    position: 'absolute',
-    bottom: '20vw',
-    left: '62vw',
-  },
-  statCircle3: {
-    position: 'absolute',
-    bottom: '4vw',
-    left: '90vw',
-  },
-
-  statCircle4: {
-    position: 'absolute',
-    bottom: '20vw',
-    right: '62vw',
-  },
-
-  statCircle5: {
-    position: 'absolute',
-    bottom: '43vw',
-    right: '55vw',
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    // overflowX: 'hidden',
-  },
-  avatarCircle: {
-    position: 'absolute',
-    width: '40vw',
-    height: '40vw',
-    bottom: '27vw',
-    left: '80vw',
-    borderRadius: '50%',
-    fontSize: '25px',
+    width: '100%',
+    height: '100%',
+    top: '0',
     textAlign: 'center',
-    backgroundColor: theme.palette.text.secondary,
   },
-  centerText: {
-    position: 'absolute',
-    top: '15%',
-    left: '50%',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
+  textAlign: {
+    position: 'relative',
+    width: '100%',
+    top: '7%',
+  },
+  text: {
+    color: '#F2F2F2',
+    fontWeight: '500',
+  },
+  circleSm: {
+    marginTop: '50%',
+  },
+  circlesUnder: {
+    marginTop: '-10%',
+  },
+  stats: {
+    padding: theme.spacing(2),
+  },
+  centerIcon: {
+    width: '100%',
+  },
+  hr: {
+    margin: '0px',
   },
 
-  centerIcon: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    fontSize: '15vw',
-    color: theme.palette.text.disabled,
-  },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  paper: {
+    // Defines the papers below avatar
+    height: '100%',
+    padding: theme.spacing(2),
+  },
+  paperTop: {
+    marginBottom: theme.spacing(2),
+    borderRadius: '0% 0% 30% 30%',
+    background: '#004894',
   },
 })
 

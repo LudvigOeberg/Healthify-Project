@@ -69,6 +69,7 @@ class Child(User):
     id = Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     parents = relationship('Parent', secondary=parents_children, back_populates="children")
     ehrid = Column(db.String)
+    timer = Column(db.DateTime, default=None, nullable=True)
 
     def __init__(self, name, surname, email, password, parent, ehrid, **kwargs):
         super().__init__(name, surname, email, password, **kwargs)

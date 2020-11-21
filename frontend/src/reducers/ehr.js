@@ -1,4 +1,13 @@
-import { LOAD_PARTY, SAVE_PARTY, LOAD_BLOODSUGAR, ASYNC_START, SAVE_BLOODSUGAR, LOGOUT } from '../constants/actionTypes'
+import {
+  LOAD_PARTY,
+  SAVE_PARTY,
+  LOAD_BLOODSUGAR,
+  ASYNC_START,
+  SAVE_BLOODSUGAR,
+  LOGOUT,
+  SAVE_WEIGHT,
+  LOAD_WEIGHT,
+} from '../constants/actionTypes'
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -15,6 +24,12 @@ export default (state = {}, action) => {
               [action.payload.party.additionalInfo.ehrId]: action.payload.party,
             },
       }
+    case LOAD_WEIGHT:
+      return {
+        ...state,
+        inProgress: false,
+        weight: action.error || action.payload === null ? null : action.payload,
+      }
     case LOAD_BLOODSUGAR:
       return {
         ...state,
@@ -23,6 +38,7 @@ export default (state = {}, action) => {
       }
     case SAVE_BLOODSUGAR:
     case SAVE_PARTY:
+    case SAVE_WEIGHT:
       return { ...state, inProgress: false }
     case ASYNC_START:
       if (

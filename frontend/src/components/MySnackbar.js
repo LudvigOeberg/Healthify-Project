@@ -40,7 +40,7 @@ const MySnackbar = (props) => {
 
   return (
     <div className={classes.root}>
-      <Snackbar open={props.open} autoHideDuration={3000} onClose={handleClose}>
+      <Snackbar open={props.open} autoHideDuration={6000} onClose={handleClose}>
         <Alert elevation={6} severity={props.color} variant="filled" onClose={handleClose} color={props.color}>
           {props.message}
         </Alert>
