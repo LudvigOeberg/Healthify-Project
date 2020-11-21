@@ -9,7 +9,7 @@ beforeAll(() => {
   const options = new chrome.Options()
   options.addArguments('--test-type')
   options.addArguments('--start-maximized')
-  options.addArguments('--headless')
+  // options.addArguments('--headless')
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
@@ -32,12 +32,14 @@ async function getHomePage(url) {
   await driver.wait(webdriver.until.alertIsPresent())
   const alert1 = await driver.switchTo().alert()
   // replace username with the username for openEHR
-  await alert1.sendKeys(process.env.ehr_user)
+  // await alert1.sendKeys(process.env.ehr_user)
+  await alert1.sendKeys('lio.se2')
   await alert1.accept()
   await driver.wait(webdriver.until.alertIsPresent())
   const alert2 = await driver.switchTo().alert()
   // replace pass with password from openEHR
-  await alert2.sendKeys(process.env.ehr_user_pass)
+  // await alert2.sendKeys(process.env.ehr_user_pass)
+  await alert2.sendKeys('ehr4lio.se2')
   await alert2.accept()
 }
 
