@@ -21,6 +21,7 @@ import {
   DELETE_CHILD,
   SAVE_TIMER,
   SAVE_SIMULATION,
+  SAVE_WEIGHT
 } from '../constants/actionTypes'
 
 const defaultState = {
@@ -96,6 +97,7 @@ export default (state = defaultState, action) => {
     case UPDATE_BOOLEAN:
       return { ...state, [action.key]: !!action.value }
     case SAVE_PARTY:
+    case SAVE_WEIGHT:
     case SAVE_BLOODSUGAR:
       return {
         ...state,

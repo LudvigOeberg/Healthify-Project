@@ -7,6 +7,8 @@ import {
   LOGOUT,
   SAVE_WEIGHT,
   LOAD_WEIGHT,
+  LOAD_MULTIPLE_WEIGHTS,
+  LOAD_MULTIPLE_BLOODSUGARS
 } from '../constants/actionTypes'
 
 export default (state = {}, action) => {
@@ -29,6 +31,28 @@ export default (state = {}, action) => {
         ...state,
         inProgress: false,
         weight: action.error || action.payload === null ? null : action.payload,
+      }
+    case LOAD_MULTIPLE_WEIGHTS:
+      return {
+        ...state,
+        inProgress: false,
+        weights: {
+          ...state.weights,
+          [action.ehrId]:{
+            weight: action.error || action.payload === null ? null : action.payload,
+          }
+        }
+      }
+    case LOAD_MULTIPLE_BLOODSUGARS:
+      return {
+        ...state,
+        inProgress: false,
+        bloodsugars: {
+          ...state.bloodsugars,
+          [action.ehrId]:{
+            bloodsugar: action.error || action.payload === null ? null : action.payload.resultSet,
+          }
+        }
       }
     case LOAD_BLOODSUGAR:
       return {

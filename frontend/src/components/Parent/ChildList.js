@@ -1,4 +1,5 @@
 import { Container, Grid, Typography } from '@material-ui/core'
+import { connect } from 'react-redux'
 import React from 'react'
 import AddIcon from '@material-ui/icons/Add'
 import { makeStyles } from '@material-ui/core/styles'
@@ -6,15 +7,20 @@ import ChildListItem from './ChildListItem'
 /**
  * Displays a list of childrens
  * @param {ChildListItem} props
- */
-export default function ChildList(props) {
+*/
+
+const mapStateToProps =(state) => ({
+  ...state.ehr
+})
+
+ function ChildList(props) {
   const { children } = props
   const classes = useStyles()
   return (
     <Container>
-      <Grid container direction="row" justify="center" spacing={0} alignItems="center">
+      <Grid container direction="row" justify="center" spacing={0} alignItems="flex-start">
         {children.map((child) => (
-          <Grid key>{ChildListItem(child.child)}</Grid>
+          <Grid key>{<ChildListItem child={child.child} partyIn={props.party ? props.party[child.child.ehrid] : null} />}</Grid>
         ))}
         <Grid item>
           <div className={classes.paper}>
@@ -51,3 +57,5 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }))
+
+export default connect(mapStateToProps)(ChildList)
