@@ -67,6 +67,9 @@ class Patient extends Component {
     super()
     this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
 
+    const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+    console.log(disease)
+
     this.changeAuthSlider = (ev, value) => this.props.onChangeAuth(ev.target.id, value)
     this.submitForm = (ev) => {
       ev.preventDefault()

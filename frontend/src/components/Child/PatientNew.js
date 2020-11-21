@@ -10,6 +10,7 @@ import {
   SAVE_BLOODSUGAR,
   LOAD_BLOODSUGAR,
   SAVE_TIMER,
+  LOAD_WEIGHT,
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import agent from '../../agent'
@@ -21,6 +22,7 @@ import normalAvatar from '../../Static/normal_avatar.png'
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
+  ...state.common,
   currentUser: state.common.currentUser,
   bloodsugarValue: state.common.bloodsugar,
   historicalBloodSugar: state.ehr.bloodsugar,
@@ -47,6 +49,11 @@ const mapDispatchToProps = (dispatch) => ({
         }),
       snackbar,
     }),
+  loadValues: (ehrId, offset, limit, disease) => { //För disease
+    if (disease === 'DIABETES')
+      dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+    else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
+  },
   onUnload: () => dispatch({ type: PATIENT_PAGE_UNLOADED }),
   onLoad: (ehrId) => {
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
@@ -56,10 +63,52 @@ const mapDispatchToProps = (dispatch) => ({
   onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
 })
 
+// const patientN = (props) => {
+//   const { id } = props.match.params
+//   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+//   console.log("SJUKDOM!:" + disease)
+//   const { weight } = props
+//   const colDesc = [
+//     'Datum',
+//     `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
+//     `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
+//   ]
+// }
+
 class PatientNew extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
+
+
+    // const patientN = (props) => {
+    // const { id } = props.match.params
+    //const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+    // console.log("SJUKDOM!:" + disease)
+    // const { weight } = props
+    // const colDesc = [
+    // 'Datum',
+    // `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
+    // `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
+    //   ]
+    // }
+    // console.log("SJUKDOM!:" + this.disease)
+
+    //const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+
+
+    // const { id } = this.props.match.params
+    // const disease = this.props.party ? `${this.props.party[id].additionalInfo.disease}` : null
+    // console.log("SJUKDOM!:" + disease)
+    // const { weight } = this.props
+
+    // console.log("HALLÅ" + this.disease)
+    
+    //const { id } = props.match.params
+    //const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+    //console.log(disease)
+    //console.log("SJUKDOM!:" + disease)
+
 
     this.changeAuthSlider = (ev, value) => this.props.onChangeAuth(ev.target.id, value)
     this.submitForm = (ev) => {
@@ -125,6 +174,9 @@ class PatientNew extends Component {
 
   componentDidMount() {
     this.props.onLoad(this.props.currentUser.ehrid)
+
+    //this.props.loadValues(agentEHR.party.disease)
+    //const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
   }
 
   valuetext(value) {
