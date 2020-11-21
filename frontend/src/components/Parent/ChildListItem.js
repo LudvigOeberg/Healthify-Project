@@ -49,8 +49,8 @@ function ChildListItem(props) {
   const child = props.child
   const disease = props.partyIn ? props.partyIn.additionalInfo.disease : null
   const classes = useStyles()
-  const weight  = disease==='OBESITY' && props.weights && props.weights[child.ehrid] && props.weights[child.ehrid].weight[0]? props.weights[child.ehrid].weight[0] : null
-  const bloodsugar =  disease==='DIABETES' && props.bloodsugars && props.bloodsugars[child.ehrid] && props.bloodsugars[child.ehrid].bloodsugar[0] ?props.bloodsugars[child.ehrid].bloodsugar[0]  : null
+  const weight  = disease==='OBESITY' && props.weights && props.weights[child.ehrid] && props.weights[child.ehrid].weight[0] ? props.weights[child.ehrid].weight[0] : null
+  const bloodsugar =  disease==='DIABETES' && props.bloodsugars && props.bloodsugars[child.ehrid] && props.bloodsugars[child.ehrid].bloodsugar ? props.bloodsugars[child.ehrid].bloodsugar[0]  : null
   const badBloodsugar = props.bloodsugars && disease==='DIABETES' &&  bloodsugar && (bloodsugar.value<3 || bloodsugar.value>10) ? true : false
   const badWeight = props.weights && disease==='OBESITY' && weight && props.weights[child.ehrid].weight[1] && props.weights[child.ehrid].weight[1].weight < weight.weight ? true : false
   const oneOrSameWeight = props.weights && disease==='OBESITY' && weight && props.weights[child.ehrid].weight[1] && props.weights[child.ehrid].weight[1].weight !== weight.weight? false : true
