@@ -13,9 +13,8 @@ flask db upgrade
 flask init-db
 cd ..
 
-(echo "BACKEND!" && cd backend && flask run) & (echo "FRONTEND!" && serve -s frontend/build -l 4100) & (sleep 15 && cd frontend && echo "TESTING!" && npm run jest startpage.js)
+(echo "BACKEND!" && cd backend && flask run) & (echo "FRONTEND!" && serve -s frontend/build -l 4100) & (sleep 15 && cd frontend && echo "TESTING!" && npm run jest startpage.js) &
 
-jobs
-kill %1
-kill %2
+wait %3
 echo "Done"
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
