@@ -45,16 +45,24 @@ test-frontend:
     - export TZ=Europe/Stockholm
     - export ehr_user=${K8S_SECRET_EHR_USER%123}
     - export ehr_user_pass=$K8S_SECRET_EHR_USER_PASS
-    - apt-get update -qy
-    - apt-get install -y python3-dev python3-pip python3-venv
-    - apt-get install -y nodejs
-    - apt-get install -y npm
+    - export FLASK_APP=autoapp.py; export FLASK_ENV=development; export NODE_ENV=development
+    - apt-get update -qy --silent
+    - apt-get install -y python3-dev python3-pip python3-venv --silent
+    - apt-get install -y nodejs --silent
+    - apt-get install -y npm --silent
     - cd frontend
-    - npm i -g serve
-    - npm i -S serve
+    - npm i -g serve --silent
+    - npm i -S serve --silent
+    - cd ../backend
+    - python3 -m venv venv
+    - . ./venv/bin/activate
+    - pip3 install -r ./requirements/dev.txt
+    - flask db init; flask db migrate; flask db upgrade; flask init-db
     - cd ..
-    - chmod +x ./testScript.sh
-    - ./testScript.sh
+    - (echo "BACKEND!" && cd backend && flask run) & (echo "FRONTEND!" && serve -s frontend/build -l 4100) & (sleep 15 && cd frontend && echo "TESTING!" && npm run jest startpage.js) &
+    - wait %3
+    - echo "Done"
+    - trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 
 
