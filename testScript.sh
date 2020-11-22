@@ -12,6 +12,7 @@ apt-get -f install
 cd frontend
 npm i --silent -g serve
 npm i --silent
+npm i chromedriver
 
 cd ../backend
 python3 -m venv venv
