@@ -4,15 +4,17 @@ import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper, ListItemText } from '@material-ui/core'
 import ChildCareIcon from '@material-ui/icons/ChildCare'
 import Moment from 'moment'
-import CustomPaginationActionsTable from '../TablePagination'
+import CustomPaginationActionsTable from '../TableOverview'
 import CaregivingTeam from '../CaregivingTeam'
 import agentEHR from '../../agentEHR'
 import { UPDATE_BOOLEAN, FIELD_CHANGE, LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT } from '../../constants/actionTypes'
 import TimeLineChart from '../TimeLineChart'
 import Reformat from '../../reformatEHRData'
+import profileAvatar from '../../Static/profile_avatar.png'
+
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -51,7 +53,7 @@ const ParentOverview = (props) => {
   const colDesc = [
     'Datum',
     `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
-    `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
+     `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
   ]
   const classes = styles()
   const { bloodsugar } = props
@@ -71,7 +73,7 @@ const ParentOverview = (props) => {
     const dataObjects = []
     for (let i = 0; i < data.length; i++) {
       dataObjects.push({
-        time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
+        time: Moment(data[i].time).format('HH:mm'), y: data[i].value/*new Date(data[i].time.substring(0, 16)).toLocaleString()*/,
         value: disease === 'DIABETES' ? data[i].value : data[i].weight,
         indicator: getIndication(disease === 'DIABETES' ? data[i].value : data[i].weight),
       })
@@ -81,8 +83,8 @@ const ParentOverview = (props) => {
 
   useEffect(() => {
     props.onLoad(id)
-    props.loadValues(id, 0, 3, disease)
-    }, [id, disease]) // eslint-disable-line
+    props.loadValues(id, 0, 5, disease)
+  }, [id, disease]) // eslint-disable-line
 
   const doctor = {
     name: 'Doktor X',
@@ -107,15 +109,68 @@ const ParentOverview = (props) => {
         <Grid item xs={12} sm={12} md={6}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <Paper className={classes.paper} elevation={2}>
-                <Typography component="h2" variant="h6">
-                  {' '}
-                  HÄR SKA DET STÅ INFO OM HUR DET GÅR FÖR BARNET I GAMIFICATION-ASPEKTEN
+              <Paper className={classes.lpaper} elevation={2}>
+                <Grid container spacing={2}>
+
+                  <Grid item xs={3}>
+                    <img  src={profileAvatar} width = "100%"></img>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography component="h1" variant="h5"> {name} </Typography>
+                    <ListItemText secondary={disease==='DIABETES' ? 'Diabetes' : 'Fetma'}/>
+                  </Grid>
+
+                </Grid>
+                
+
+                {/* <Typography component="h1" variant="h6">
+                  {name}
                 </Typography>
+                <Typography variant="subtitle1">{age}</Typography>
+                <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
+                <Avatar className={classes.avatar}>
+                  <ChildCareIcon fontSize="large" />
+                </Avatar> */}
+              </Paper>
+
+              <Grid container spacing={1}>
+                <Grid item xs={6} sm={6}>
+                  <Button className = {classes.button} variant="contained" color="primary" href={`/monitor-child/${id}`} fullWidth>
+                    Hantera värden
+                    </Button>
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                  <Button className = {classes.button} variant="contained" color="primary" href={`/simulate-patient/${id}`} fullWidth>
+                    Simulera värden
+                    </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12} sm={12} md={6}>
+              <Paper className={classes.lpaper} elevation={2}>
+                <Grid container spacing={1} alignItems="center" justify="center">
+                  <ListItemText primary = "Tidigare mätningar" secondary={disease==='DIABETES' ? 'Blodsocker' : 'Vikt'}/>
+                  <Grid item xs={12}>
+                    <CustomPaginationActionsTable
+                      columns={['time', 'value']}
+                      loading={loading}
+                      rows={input ? reformat(input, false) : null}
+                      titles={colDesc}
+                      paginate={false}
+                    />
+                  </Grid>
+                </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Paper className={classes.paper} elevation={2}>
+          </Grid>
+        </Grid>
+
+
+        <Grid item xs={12} sm={12} md={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={6}>
+              <Paper className={classes.rpaper} elevation={2}>
                 <Typography component="h1" variant="h5">
                   {' '}
                   GRAF
@@ -126,47 +181,11 @@ const ParentOverview = (props) => {
                 ></TimeLineChart>
               </Paper>
             </Grid>
-          </Grid>
-        </Grid>
-
-        <Grid item xs={12} sm={12} md={6}>
-          <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={6}>
-              <Paper className={classes.paper} elevation={2}>
-                <Grid container spacing={1} alignItems="center" justify="center">
-                  <Grid item xs={12}>
-                    <Typography component="h2" variant="h6">
-                      {' '}
-                      Senaste mätningar
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CustomPaginationActionsTable
-                      columns={['time', 'value', 'indicator']}
-                      loading={loading}
-                      rows={input ? reformat(input, false) : null}
-                      titles={colDesc}
-                      paginate={false}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Button variant="contained" color="secondary" href={`/monitor-child/${id}`} fullWidth>
-                      Hantera värden
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Button variant="contained" color="secondary" href={`/simulate-patient/${id}`} fullWidth>
-                      Simulera värden
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={12} md={6}>
-              <Paper className={classes.paper} elevation={3}>
-                <Typography component="h1" variant="h6">
-                  {name}
-                </Typography>
+              <Paper className={classes.rpaper} elevation={3}>
+                  <Typography component="h1" variant="h6">
+                    {name}
+                  </Typography>
                 <Typography variant="subtitle1">{age}</Typography>
                 <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
                 <Avatar className={classes.avatar}>
@@ -194,14 +213,19 @@ const ParentOverview = (props) => {
 const styles = makeStyles((theme) => ({
   root: {
     margin: '0px !important',
-    alignItems: 'top',
-    display: 'flex',
+    // display: 'horizontal',
     padding: theme.spacing(1),
     maxWidth: '100%',
   },
-  paper: {
-    marginTop: theme.spacing(4),
+  button: {
+    top : "5px",
+  },
+  rpaper: {
     height: '100%',
+    padding: theme.spacing(1),
+  },
+  lpaper: {
+    // height: '100%',
     padding: theme.spacing(1),
   },
   avatar: {
