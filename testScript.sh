@@ -3,7 +3,7 @@ export TZ=Europe/Stockholm
 export ehr_user=${K8S_SECRET_EHR_USER%123}
 export ehr_user_pass=$K8S_SECRET_EHR_USER_PASS
 export FLASK_APP=autoapp.py; export FLASK_ENV=development; export NODE_ENV=development
-export DISPLAY=:1
+export DISPLAY=":20"
 
 apt-get -qq update -y
 apt-get -qq install -y python3-dev python3-pip python3-venv nodejs npm default-jre curl chromium-chromedriver
