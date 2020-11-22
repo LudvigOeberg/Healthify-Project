@@ -15,7 +15,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  driver.close()
+  driver.quit()
 })
 
 async function connectToEHR() {
