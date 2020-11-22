@@ -33,13 +33,12 @@ test('TestCaseID:51. Check Healthify startpage', async () => {
   expect(true).toBeTruthy();
 })
 
-/*
 test('TestCaseID:51. Check Healthify startpage', async () => {
     await connectToEHR()
     await driver.get(localURL)
     expect(await driver.getTitle()).toEqual('Healthify')
   })
-
+/*
 test('TestCaseID:52. Check if log in button exists', async () => {
     await connectToEHR()
     await driver.get(localURL)
