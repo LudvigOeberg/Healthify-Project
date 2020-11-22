@@ -13,7 +13,7 @@ cd frontend
 npm i --silent -g serve
 npm i --silent
 npm i geckodriver
-export PATH=$PATH:/builds/tddc88-company-2-2020/deploy/frontend/node_modules/geckodriver/bin/geckodriver
+export PATH=$PATH:/builds/tddc88-company-2-2020/deploy/frontend/node_modules/geckodriver
 
 cd ../backend
 python3 -m venv venv
