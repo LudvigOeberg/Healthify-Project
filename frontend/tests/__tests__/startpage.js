@@ -6,7 +6,7 @@ const localURL = 'http://localhost:4100/'
 
 beforeEach(() => {
   const options = new chrome.Options().setChromeBinaryPath('/builds/tddc88-company-2-2020/deploy/frontend/node_modules/chromedriver/lib/chromedriver/chromedriver')
-  options.addArguments('--no-sandbox', '--headless', '--disable-dev-shm-usage', "window-size=1024,768");
+  options.addArguments('--no-sandbox', '--headless', "window-size=1024,768");
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
