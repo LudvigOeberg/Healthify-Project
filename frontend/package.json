@@ -23,6 +23,7 @@
     "chart.js": "^2.9.3",
     "chromedriver": "^85.0.0",
     "clsx": "^1.1.1",
+    "geckodriver": "^1.21.0",
     "history": "^4.6.3",
     "jest-html-reporter": "^3.3.0",
     "marked": "^0.3.6",
