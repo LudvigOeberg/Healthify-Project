@@ -4,9 +4,13 @@ export ehr_user=${K8S_SECRET_EHR_USER%123}
 export ehr_user_pass=$K8S_SECRET_EHR_USER_PASS
 export FLASK_APP=autoapp.py; export FLASK_ENV=development; export NODE_ENV=development
 
-apt-get -qq update -y & (cd frontend && npm i --silent -g serve && npm i --silent)
+apt-get -qq update -y
 apt-get -qq install -y python3-dev python3-pip python3-venv nodejs npm default-jre curl
 apt-get -f install
+
+cd frontend
+npm i --silent -g serve
+npm i --silent
 
 cd ../backend
 python3 -m venv venv
