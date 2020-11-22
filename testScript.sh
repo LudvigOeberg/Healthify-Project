@@ -6,7 +6,7 @@ export FLASK_APP=autoapp.py; export FLASK_ENV=development; export NODE_ENV=devel
 export DISPLAY=:1
 
 apt-get -qq update -y
-apt-get -qq install -y python3-dev python3-pip python3-venv nodejs npm default-jre curl chromium-chromedriver
+apt-get -qq install -y python3-dev python3-pip python3-venv nodejs npm default-jre curl chromium-chromedriver google-chrome-stable
 apt-get -f install
 
 cd frontend
