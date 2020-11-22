@@ -1,15 +1,13 @@
 let driver
 //const webdriver = require('selenium-webdriver')
 //const chrome = require('selenium-webdriver/chrome')
-let chrome = require('selenium-webdriver/chrome');
 let {Builder} = require('selenium-webdriver');
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 
 beforeEach(() => {
   driver = new Builder()
-      .forBrowser('chrome')
-      .setChromeOptions(new chrome.Options().headless())
+      .forBrowser('firefox')
       .build();
   //const options = new chrome.Options()
   //options.addArguments('--no-sandbox', '--headless', '--disable-dev-shm-usage', "window-size=1024,768", '--remote-debugging-port=9222');
