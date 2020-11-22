@@ -5,7 +5,7 @@ const chrome = require('selenium-webdriver/chrome')
 const localURL = 'http://localhost:4100/'
 
 beforeEach(() => {
-  const options = new chrome.Options().setChromeBinaryPath('../../node_modules/chromedriver/lib/chromedriver')
+  const options = new chrome.Options().setChromeBinaryPath('/builds/tddc88-company-2-2020/deploy/frontend/node_modules/chromedriver/lib/chromedriver/chromedriver')
   options.addArguments('--no-sandbox', '--headless');
   options.addArguments('--disable-dev-shm-usage');
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
