@@ -38,6 +38,8 @@ test-frontend:
   needs: ["build-frontend"]
   dependencies:
     - build-frontend
+  services:
+    - selenium/standalone-chrome:latest
   script:
     - chmod +x ./testScript.sh && ./testScript.sh
 
