@@ -27,5 +27,8 @@ wait %3
 curl -L localhost:5000/swagger-ui
 curl -L localhost:4100
 jobs
+kill %1
+kill %2
+kill %3
 #trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 echo "Done"
