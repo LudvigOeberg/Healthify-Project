@@ -22,7 +22,7 @@ pip3 install -r ./requirements/dev.txt
 flask db init; flask db migrate; flask db upgrade; flask init-db
 
 cd ..
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 (echo "BACKEND!" && cd backend && flask run) & (echo "FRONTEND!" && serve -s frontend/build -l 4100) & (sleep 15 && cd frontend && echo "TESTING!" && npm run jest startpage.js && curl -L localhost:5000/swagger-ui && curl -L localhost:4100) &
-
+wait %3
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 echo "Done"
