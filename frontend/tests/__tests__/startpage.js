@@ -4,6 +4,11 @@ const {Builder} = require('selenium-webdriver')
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 
+var driver = new Builder()
+  .forBrowser('chrome')
+  .setChromeOptions(
+    new chrome.Options().headless())
+  .build();
 
 async function connectToEHR() {
   await driver.get(localURL)
@@ -24,12 +29,6 @@ test('TestCaseID:51. Check Healthify startpage', async () => {
 })
 
 test('TestCaseID:51. Check Healthify startpage', async () => {
-    let driver = new Builder()
-      .forBrowser('chrome')
-      .setChromeOptions(
-        new chrome.Options().headless())
-      .build();
-      
     await connectToEHR()
     await driver.get(localURL)
     expect(await driver.getTitle()).toEqual('Healthify')
