@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-
 import { withStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
-import Grid from '@material-ui/core/Grid'
-import Slider from '@material-ui/core/Slider'
+import { Box, Container, Grid, Button } from '@material-ui/core'
 import Input from '@material-ui/core/Input'
-import { Button } from '@material-ui/core'
+import Slider from '@material-ui/core/Slider'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -18,8 +15,9 @@ import {
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import agent from '../../agent'
-import happyAvatar from '../../Static/rsz_avatar.png'
-import sadAvatar from '../../Static/sad_avatar.jpeg'
+import happyAvatar from '../../Static/happy_avatar.png'
+import sadAvatar from '../../Static/sad_avatar.png'
+import normalAvatar from '../../Static/normal_avatar.png'
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
@@ -27,10 +25,6 @@ const mapStateToProps = (state) => ({
   bloodsugarValue: state.common.bloodsugar,
   historicalBloodSugar: state.ehr.bloodsugar,
 })
-
-/*
-Keeping the old patient site for now. Might be useful in the add-page! 
-*/
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeAuth: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
@@ -62,7 +56,7 @@ const mapDispatchToProps = (dispatch) => ({
   onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
 })
 
-class Patient extends Component {
+class PatientNew extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
@@ -85,7 +79,7 @@ class Patient extends Component {
       if (timer !== null) {
         snackbar = {
           open: true,
-          message: `Bra jobbat! Hoppas att du mår bra!`,
+          message: `Bra jobbat, hoppas du mår toppen!`,
           color: 'success',
         }
       }
@@ -100,7 +94,7 @@ class Patient extends Component {
         }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat högt blodsockervärde! Kanske dags för lite insulin och gör en ny mätning inom en timme.`,
+          message: `Åh nej, det ser ut som att ditt blodsocker börjar bli högt. Se till att ta lite insulin snart så du inte börjar må dåligt.`,
           color: 'error',
         }
       }
@@ -113,7 +107,7 @@ class Patient extends Component {
         }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat lågt blodsockervärde, Ät något och gör en ny mätning inom en timme.`,
+          message: `Åh nej, det ser ut som att ditt blodsocker börjar bli lågt. Se till att äta något snart innan du börjar må dåligt och registrera ett nytt värde därefter. `,
           color: 'error',
         }
       }
@@ -148,11 +142,11 @@ class Patient extends Component {
         label: '15 mmol/L',
       },
     ]
+
     const bloodsugar = this.props.bloodsugarValue
     const { classes } = this.props
-    const firstName = this.props.currentUser.name
-    const lastName = this.props.currentUser.surname
-    let Avatar = happyAvatar
+
+    let Avatar = normalAvatar // There is also a normal avatar to use, if anyone find a good statement when to use it.
 
     if (this.props.historicalBloodSugar !== null && this.props.historicalBloodSugar !== undefined) {
       if (this.props.historicalBloodSugar[0].value < 4 || this.props.historicalBloodSugar[0].value > 8) {
@@ -160,64 +154,65 @@ class Patient extends Component {
       } else {
         Avatar = happyAvatar
       }
+      if (this.props.historicalBloodSugar[0].time < setTimer()) {
+        Avatar = normalAvatar
+      }
     }
+
     return (
-      <Container component="main" maxWidth="md">
-        <div className={classes.paper}>
-          <h1>Välkommen!</h1>
-          <img src={Avatar} alt="logged in users avatar"></img>
-          <h1>
-            {' '}
-            {firstName} {lastName}{' '}
-          </h1>
-          <h2> Var vänlig skriv in ditt blodsockervärde </h2>
-          <Grid container spacing={5} alignItems="center">
-            <Grid item xs>
-              <Slider
-                id="bloodsugar"
-                value={typeof parseInt(bloodsugar, 10) === 'number' ? parseInt(bloodsugar, 10) : 0}
-                onChange={(ev, value) => this.changeAuthSlider(ev, value)}
-                aria-labelledby="input-slider"
-                defaultValue={10}
-                step={1}
-                valueLabelDisplay="auto"
-                marks={marks}
-                max={15}
-                min={0}
-              />
-            </Grid>
-            <Grid item>
-              <Input
-                id="bloodsugar"
-                className={classes.input}
-                value={bloodsugar}
-                margin="dense"
-                onChange={this.changeAuth}
-                onBlur={this.handleBlur}
-                inputProps={{
-                  step: 1,
-                  min: 0,
-                  max: 15,
-                  type: 'number',
-                  'aria-labelledby': 'input-slider',
-                }}
-              />
-              <h5> mmol/L </h5>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.button}
-                onClick={(ev) => this.submitForm(ev)}
-                disabled={this.props.inProgress}
-              >
-                {' '}
-                Submit
-              </Button>
-            </Grid>
+      <Container maxWidth="" className={classes.backGround}>
+        <Grid item xs={12}>
+          <Box className={classes.avatar} textAlign="center">
+            <img src={Avatar} alt="mood avatar"></img>
+          </Box>
+        </Grid>
+        <Grid container spacing={5} alignItems="center">
+          <Grid item xs>
+            <Slider
+              id="bloodsugar"
+              value={typeof parseInt(bloodsugar, 10) === 'number' ? parseInt(bloodsugar, 10) : 0}
+              onChange={(ev, value) => this.changeAuthSlider(ev, value)}
+              aria-labelledby="input-slider"
+              defaultValue={10}
+              step={1}
+              valueLabelDisplay="auto"
+              marks={marks}
+              max={15}
+              min={0}
+            />
           </Grid>
-        </div>
+          {/* Temporary input until the plus-button at the bottom is implemented. */}
+          <Grid item>
+            <Input
+              id="bloodsugar"
+              className={classes.input}
+              value={bloodsugar}
+              margin="dense"
+              onChange={this.changeAuth}
+              onBlur={this.handleBlur}
+              inputProps={{
+                step: 1,
+                min: 0,
+                max: 15,
+                type: 'number',
+                'aria-labelledby': 'input-slider',
+              }}
+            />
+            <h5> mmol/L </h5>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+              onClick={(ev) => this.submitForm(ev)}
+              disabled={this.props.inProgress}
+            >
+              {' '}
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
       </Container>
     )
   }
@@ -229,10 +224,16 @@ const styles = (theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+  backGround: {
+    position: 'absolute',
+    padding: '45% 10% 28%',
+    background: 'linear-gradient(0deg, rgba(118,176,208,1) 37%, rgba(106,161,191,1) 38%, rgba(125,180,213,1) 86%)',
+    marginTop: '-3%', // Removes a small white space at the top.
   },
+  avatar: {
+    position: 'relative',
+  },
+
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
@@ -275,7 +276,7 @@ export function getCurrentUTCDate() {
   let minutes = String(today.getUTCMinutes())
   let seconds = String(today.getUTCSeconds())
 
-  --minutes // Handles the amount of time before the timer sets off.
+  --hours // Handles the amount of time before the timer sets off.
 
   if (today.getUTCMonth() < 10) {
     month = `0${String(today.getUTCMonth())}`
@@ -328,4 +329,4 @@ function setTimer() {
   return dateInfo
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Patient))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PatientNew))

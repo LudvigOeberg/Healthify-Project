@@ -98,7 +98,8 @@ const useStyles = makeStyles((theme) => ({
 const ChildSimulation = (props) => {
   const { id } = props.match.params
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-  const { bloodsugar } = props
+  // const { bloodsugar } = props
+  const bloodsugar = 7
   // const { weight } = props
   // const bloodsugar = props.ehr.bloodsugar[0].value
   // const [count, setCount] = useState(0)
@@ -181,6 +182,9 @@ const ChildSimulation = (props) => {
     'neutral avatar',
   ]
 
+  const lowBloodsugarValue = 3
+  const highBloodsugarValue = 10
+
   const classes = useStyles()
 
   function getCurrentDate() {
@@ -190,19 +194,46 @@ const ChildSimulation = (props) => {
   }
 
   function getDialogInfo() {
-    // eslint-disable-next-line no-console
-    // console.log(`Meal_type: ${Meal_type}`)
-    if (Meal_size === 1) {
-      if (Meal_type === 'Måltid') {
-        if (bloodsugar === 7) {
-          return neutralDialogInfo
-        }
+    if (bloodsugar < lowBloodsugarValue) {
+      if (Meal_type === 'Snack') {
+        return badDialogInfo
       }
-
+      if (Meal_type === 'Mellanmål') {
+        return goodDialogInfo
+      }
+      if (Meal_type === 'Måltid') {
+        return goodDialogInfo
+      }
+    }
+    if (bloodsugar > highBloodsugarValue) {
+      if (Meal_type === 'Snack') {
+        return neutralDialogInfo
+      }
+      return badDialogInfo
+    }
+    if (Meal_type === 'Snack') {
       return goodDialogInfo
+    }
+    if (Meal_type === 'Mellanmål') {
+      return neutralDialogInfo
     }
     return badDialogInfo
   }
+
+  // eslint-disable-next-line no-console
+  // console.log(`Meal_type: ${Meal_type}`)
+  //   if (Meal_size === 1) {
+  //     if (Meal_type === 'Måltid') {
+  //       if (bloodsugar === 7) {
+  //         return neutralDialogInfo
+  //       }
+  //     }
+
+  //     return goodDialogInfo
+  //   }
+  //   return badDialogInfo
+  // }
+
   return (
     <Container className={classes.root}>
       {/* {(window.onload = props.onLoad(props.currentUser.ehrid))} */}

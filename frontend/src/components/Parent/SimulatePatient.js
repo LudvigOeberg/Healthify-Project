@@ -75,7 +75,6 @@ const mapDispatchToProps = (dispatch) => ({
       })
     else if (value && meal) {
       if (bloodsugar[0].value + meal > 10) {
-        console.log(bloodsugar + meal)
         dispatch({
           type: OPEN_SNACKBAR,
           message: 'Du simulerade måltid, denna måltid kommer göra att ditt barn överstiger sin blodsockergräns',
@@ -107,7 +106,7 @@ const SimulatePatient = (props) => {
   let noInputTraining
   let noInputDiet
   let noInput
-  const weight = props.weight ? props.weigth : null
+  const weight = props.weight ? props.weight : null
   const bloodsugar = props.bloodsugar ? props.bloodsugar : null
 
   useEffect(() => {
