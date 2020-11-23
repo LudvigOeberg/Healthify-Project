@@ -1,24 +1,18 @@
 let driver
 const webdriver = require('selenium-webdriver')
-//const chrome = require('selenium-webdriver/chrome')
-
+const chrome = require('selenium-webdriver/chrome')
+// const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 
-
 beforeEach(() => {
-  var chromeCapabilities = webdriver.Capabilities.chrome();
-  //setting chrome options to start the browser fully maximized
-  let chromeOptions = { 'args': ['--headless'] };
-  chromeCapabilities.set('chromeOptions', chromeOptions);
-  driver = new webdriver.Builder().withCapabilities(chromeCapabilities).build();
-
-  //const options = new chrome.Options()
-  //options.addArguments();
-  //driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
+  const options = new chrome.Options()
+  options.setBinary('/builds/tddc88-company-2-2020/deploy/frontend/node_modules/chromedriver/lib/chromedriver/chromedriver')
+  driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
+  
 })
 
 afterEach(() => {
-  driver.quit()
+  driver.close()
 })
 
 async function connectToEHR() {
