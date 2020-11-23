@@ -1,7 +1,7 @@
 let driver
 //const webdriver = require('selenium-webdriver')
 //const chrome = require('selenium-webdriver/chrome')
-let {Builder} = require('selenium-webdriver');
+let webdriver = require('selenium-webdriver');
 require('selenium-webdriver/chrome')
 require('selenium-webdriver/firefox')
 require('chromedriver')
@@ -10,7 +10,20 @@ require('geckodriver')
 const localURL = 'http://localhost:4100/'
 
 beforeEach(async () => {
-  driver = await new Builder().forBrowser('firefox').build();
+  require("chromedriver");
+  let capabilities = webdriver.Capabilities;
+  capabilities = webdriver.Capabilities.chrome();
+  capabilities.set("chromeOptions", {
+    args: [
+      "--headless",
+      "--no-sandbox",
+      "--disable-gpu",
+      "--window-size=1980,1200"
+    ]
+  });
+  driver = await new webdriver.Builder()
+    .withCapabilities(capabilities)
+    .build();
   //const options = new chrome.Options()
   //options.addArguments('--no-sandbox', '--headless', '--disable-dev-shm-usage', "window-size=1024,768", '--remote-debugging-port=9222');
   //driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
