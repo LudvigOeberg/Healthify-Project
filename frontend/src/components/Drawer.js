@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { makeStyles } from '@material-ui/core/styles'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import AccountCircle from '@material-ui/icons/AccountCircle'
+import TimelineIcon from '@material-ui/icons/Timeline'
 import Settings from '@material-ui/icons/Settings'
 import Add from '@material-ui/icons/Add'
 import InsertChart from '@material-ui/icons/InsertChart'
@@ -166,6 +167,18 @@ const PersistantDrawer = (props) => {
             href="/accessed-data"
             text="Delad data"
             avatarComponent={<GroupIcon />}
+            location={props.location}
+          />
+          <ListItemLink
+            href="/simulate-child"
+            text="Laboratoriet"
+            avatarComponent={<TimelineIcon />}
+            location={props.location}
+          />
+          <ListItemLink
+            href="/settings"
+            text="Inställningar"
+            avatarComponent={<Settings />}
             location={props.location}
           />
         </List>

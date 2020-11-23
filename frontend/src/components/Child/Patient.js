@@ -1,12 +1,7 @@
 import React, { Component } from 'react'
-
 import { withStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
-import Grid from '@material-ui/core/Grid'
-import Slider from '@material-ui/core/Slider'
-import Input from '@material-ui/core/Input'
-import { Button } from '@material-ui/core'
+import { Box, Container, Grid, Button} from '@material-ui/core'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -18,8 +13,11 @@ import {
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import agent from '../../agent'
-import happyAvatar from '../../Static/rsz_avatar.png'
-import sadAvatar from '../../Static/sad_avatar.jpeg'
+import Slider from '@material-ui/core/Slider'
+import Input from '@material-ui/core/Input'
+import happyAvatar from '../../Static/happy_avatar.png'
+import sadAvatar from '../../Static/sad_avatar.png'
+import normalAvatar from '../../Static/normal_avatar.png'
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
@@ -58,7 +56,7 @@ const mapDispatchToProps = (dispatch) => ({
   onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
 })
 
-class Patient extends Component {
+class PatientNew extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
@@ -81,7 +79,7 @@ class Patient extends Component {
       if (timer !== null) {
         snackbar = {
           open: true,
-          message: `Bra jobbat! Hoppas att du mår bra!`,
+          message: `Bra jobbat, hoppas du mår toppen!`,
           color: 'success',
         }
       }
@@ -96,7 +94,7 @@ class Patient extends Component {
         }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat högt blodsockervärde! Kanske dags för lite insulin och gör en ny mätning inom en timme.`,
+          message: `Åh nej, det ser ut som att ditt blodsocker börjar bli högt. Se till att ta lite insulin snart så du inte börjar må dåligt.`,
           color: 'error',
         }
       }
@@ -109,7 +107,7 @@ class Patient extends Component {
         }
         snackbar = {
           open: true,
-          message: `Du verkar ha loggat lågt blodsockervärde, Ät något och gör en ny mätning inom en timme.`,
+          message: `Åh nej, det ser ut som att ditt blodsocker börjar bli lågt. Se till att äta något snart innan du börjar må dåligt och registrera ett nytt värde därefter. `,
           color: 'error',
         }
       }
@@ -136,37 +134,40 @@ class Patient extends Component {
   render() {
     const marks = [
       {
-        value: 2,
-        label: '5 mmol/L',
+        value: 0,
+        label: '0 mmol/L',
       },
       {
-        value: 10,
-        label: '10 mmol/L',
+        value: 15,
+        label: '15 mmol/L',
       },
     ]
+    
     const bloodsugar = this.props.bloodsugarValue
     const { classes } = this.props
-    const firstName = this.props.currentUser.name
-    const lastName = this.props.currentUser.surname
-    let Avatar = happyAvatar
+    
+     
 
-    if (this.props.historicalBloodSugar !== null && this.props.historicalBloodSugar !== undefined) {
-      if (this.props.historicalBloodSugar[0].value < 4 || this.props.historicalBloodSugar[0].value > 8) {
-        Avatar = sadAvatar
-      } else {
-        Avatar = happyAvatar
-      }
-    }
-    return (
-      <Container component="main" maxWidth="md">
-        <div className={classes.paper}>
-          <h1>Välkommen!</h1>
-          <img src={Avatar} alt="logged in users avatar"></img>
-          <h1>
-            {' '}
-            {firstName} {lastName}{' '}
-          </h1>
-          <h2> Var vänlig skriv in ditt blodsockervärde </h2>
+    let Avatar = normalAvatar //There is also a normal avatar to use, if anyone find a good statement when to use it. 
+
+     if (this.props.historicalBloodSugar !== null && this.props.historicalBloodSugar !== undefined) {
+       if (this.props.historicalBloodSugar[0].value < 4 || this.props.historicalBloodSugar[0].value > 8) {
+         Avatar = sadAvatar
+       } else {
+         Avatar = happyAvatar
+       }
+       if (this.props.historicalBloodSugar[0].time < setTimer()) {
+         Avatar = normalAvatar
+       }
+     }
+
+return (
+    <Container maxWidth="" className={classes.backGround} >
+        <Grid item xs={12}>
+            <Box className={classes.avatar} textAlign="center"> 
+                <img  src={Avatar} alt="mood avatar"></img>
+            </Box>  
+        </Grid>
           <Grid container spacing={5} alignItems="center">
             <Grid item xs>
               <Slider
@@ -178,10 +179,11 @@ class Patient extends Component {
                 step={1}
                 valueLabelDisplay="auto"
                 marks={marks}
-                max={10}
-                min={2}
+                max={15}
+                min={0}
               />
             </Grid>
+            {/* Temporary input until the plus-button at the bottom is implemented. */}
             <Grid item>
               <Input
                 id="bloodsugar"
@@ -192,8 +194,8 @@ class Patient extends Component {
                 onBlur={this.handleBlur}
                 inputProps={{
                   step: 1,
-                  min: 2,
-                  max: 10,
+                  min: 0,
+                  max: 15,
                   type: 'number',
                   'aria-labelledby': 'input-slider',
                 }}
@@ -213,115 +215,122 @@ class Patient extends Component {
               </Button>
             </Grid>
           </Grid>
-        </div>
-      </Container>
-    )
-  }
+    </Container>
+  )
+}
 }
 
 const styles = (theme) => ({
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+paper: {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+},
+backGround: {
+  position: 'absolute',
+  padding: '45% 10% 28%',
+  background: 'linear-gradient(0deg, rgba(118,176,208,1) 37%, rgba(106,161,191,1) 38%, rgba(125,180,213,1) 86%)',
+  marginTop: '-3%', //Removes a small white space at the top.
+},
+avatar: {
+  position: 'relative',
+},
+
+form: {
+  width: '100%', // Fix IE 11 issue.
+  marginTop: theme.spacing(1),
+},
+submit: {
+  margin: theme.spacing(3, 0, 2),
+},
 })
 
+
 export function getCurrentDate() {
-  const today = new Date()
-  let month = String(today.getMonth())
-  let day = String(today.getDate())
-  let hours = String(today.getHours())
-  let minutes = String(today.getMinutes())
-
-  if (today.getMonth() < 10) {
-    month = `0${String(today.getMonth())}`
+    const today = new Date()
+    let month = String(today.getMonth())
+    let day = String(today.getDate())
+    let hours = String(today.getHours())
+    let minutes = String(today.getMinutes())
+  
+    if (today.getMonth() < 10) {
+      month = `0${String(today.getMonth())}`
+    }
+    if (today.getDate() < 10) {
+      day = `0${String(today.getDate())}`
+    }
+    if (today.getHours() < 10) {
+      hours = `0${String(today.getDate())}`
+    }
+    if (today.getMinutes() < 10) {
+      minutes = `0${String(today.getDate())}`
+    }
+  
+    const dateInfo = { year: String(today.getFullYear()), month, day, hours, minutes }
+    return dateInfo
   }
-  if (today.getDate() < 10) {
-    day = `0${String(today.getDate())}`
+  
+  export function getCurrentUTCDate() {
+    const today = new Date()
+    const year = String(today.getUTCFullYear())
+    let month = String(today.getUTCMonth())
+    let day = String(today.getUTCDate())
+    let hours = String(today.getUTCHours())
+    let minutes = String(today.getUTCMinutes())
+    let seconds = String(today.getUTCSeconds())
+  
+    --hours // Handles the amount of time before the timer sets off.
+  
+    if (today.getUTCMonth() < 10) {
+      month = `0${String(today.getUTCMonth())}`
+    }
+    if (today.getUTCDate() < 10) {
+      day = `0${String(today.getUTCDate())}`
+    }
+    if (today.getUTCHours() < 10) {
+      hours = `0${String(today.getUTCHours())}`
+    }
+    if (today.getUTCMinutes() < 10) {
+      minutes = `0${String(today.getUTCMinutes())}`
+    }
+    if (today.getUTCSeconds() < 10) {
+      seconds = `0${String(today.getUTCSeconds())}`
+    }
+    ++month // UTC uses month 0-11 in JS.
+  
+    const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+    return dateInfo
   }
-  if (today.getHours() < 10) {
-    hours = `0${String(today.getDate())}`
+  
+  function setTimer() {
+    const today = new Date()
+    const year = String(today.getUTCFullYear())
+    let month = String(today.getUTCMonth())
+    let day = String(today.getUTCDate())
+    let hours = String(today.getUTCHours())
+    let minutes = String(today.getUTCMinutes())
+    let seconds = String(today.getUTCSeconds())
+  
+    if (today.getUTCMonth() < 10) {
+      month = `0${String(today.getUTCMonth())}`
+    }
+    if (today.getUTCDate() < 10) {
+      day = `0${String(today.getUTCDate())}`
+    }
+    if (today.getUTCHours() < 10) {
+      hours = `0${String(today.getUTCHours())}`
+    }
+    if (today.getUTCMinutes() < 10) {
+      minutes = `0${String(today.getUTCMinutes())}`
+    }
+    if (today.getUTCSeconds() < 10) {
+      seconds = `0${String(today.getUTCSeconds())}`
+    }
+    ++month // UTC uses month 0-11 in JS.
+  
+    const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+    return dateInfo
   }
-  if (today.getMinutes() < 10) {
-    minutes = `0${String(today.getDate())}`
-  }
-
-  const dateInfo = { year: String(today.getFullYear()), month, day, hours, minutes }
-  return dateInfo
-}
-
-export function getCurrentUTCDate() {
-  const today = new Date()
-  const year = String(today.getUTCFullYear())
-  let month = String(today.getUTCMonth())
-  let day = String(today.getUTCDate())
-  let hours = String(today.getUTCHours())
-  let minutes = String(today.getUTCMinutes())
-  let seconds = String(today.getUTCSeconds())
-
-  --minutes // Handles the amount of time before the timer sets off.
-
-  if (today.getUTCMonth() < 10) {
-    month = `0${String(today.getUTCMonth())}`
-  }
-  if (today.getUTCDate() < 10) {
-    day = `0${String(today.getUTCDate())}`
-  }
-  if (today.getUTCHours() < 10) {
-    hours = `0${String(today.getUTCHours())}`
-  }
-  if (today.getUTCMinutes() < 10) {
-    minutes = `0${String(today.getUTCMinutes())}`
-  }
-  if (today.getUTCSeconds() < 10) {
-    seconds = `0${String(today.getUTCSeconds())}`
-  }
-  ++month // UTC uses month 0-11 in JS.
-
-  const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
-  return dateInfo
-}
-
-function setTimer() {
-  const today = new Date()
-  const year = String(today.getUTCFullYear())
-  let month = String(today.getUTCMonth())
-  let day = String(today.getUTCDate())
-  let hours = String(today.getUTCHours())
-  let minutes = String(today.getUTCMinutes())
-  let seconds = String(today.getUTCSeconds())
-
-  if (today.getUTCMonth() < 10) {
-    month = `0${String(today.getUTCMonth())}`
-  }
-  if (today.getUTCDate() < 10) {
-    day = `0${String(today.getUTCDate())}`
-  }
-  if (today.getUTCHours() < 10) {
-    hours = `0${String(today.getUTCHours())}`
-  }
-  if (today.getUTCMinutes() < 10) {
-    minutes = `0${String(today.getUTCMinutes())}`
-  }
-  if (today.getUTCSeconds() < 10) {
-    seconds = `0${String(today.getUTCSeconds())}`
-  }
-  ++month // UTC uses month 0-11 in JS.
-
-  const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
-  return dateInfo
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Patient))
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PatientNew))
+  
