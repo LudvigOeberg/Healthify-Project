@@ -1,13 +1,19 @@
 let driver
 const webdriver = require('selenium-webdriver')
-const chrome = require('selenium-webdriver/chrome')
+//const chrome = require('selenium-webdriver/chrome')
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 
+
+
 beforeEach(() => {
-  const options = new chrome.Options()
-  options.setBinary('/builds/tddc88-company-2-2020/deploy/frontend/node_modules/chromedriver/lib/chromedriver/chromedriver')
-  driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
+  var browser_name = new webdriver.Builder();
+  //withCapabilities(webdriver.Capabilities.chrome()).build();
+  withCapabilities(webdriver.Capabilities.firefox()).build();
+  browser.get("www.google.com");
+  //const options = new chrome.Options()
+  //options.setBinary('/builds/tddc88-company-2-2020/deploy/frontend/node_modules/chromedriver/lib/chromedriver/chromedriver')
+  //driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
   
 })
 
