@@ -22,7 +22,7 @@ const mapStateToProps =(state) => ({
         {children.map((child) => (
           <Grid key>{<ChildListItem child={child.child} partyIn={props.party ? props.party[child.child.ehrid] : null} />}</Grid>
         ))}
-        <Grid item>
+        <Grid item xs={12}>
           <div className={classes.paper}>
             <a href="/register-patient">
               <AddIcon color="primary" style={{ fontSize: 100 }} />
