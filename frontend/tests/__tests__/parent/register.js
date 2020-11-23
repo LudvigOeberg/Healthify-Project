@@ -13,9 +13,9 @@ beforeAll(() => {
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
-// afterEach(() => {
-//   driver.close()
-// })
+afterAll(() => {
+  driver.close()
+})
 
 function User() {
   const randomInt = Math.floor(Math.random() * Math.floor(1000000))
@@ -64,7 +64,6 @@ test('TestCaseID:31. Registration with a new email', async () => {
 
 test('TestCaseID:32. Registration with an already registered email', async () => {
   const user = new User()
-  // await connectToEHR();
   expect(await driver.getTitle()).toEqual('Healthify')
   await register(driver, user)
   await logout(driver)
@@ -72,8 +71,6 @@ test('TestCaseID:32. Registration with an already registered email', async () =>
 })
 
 test('TestCaseID:33. Registration with a new email with invalid data', async () => {
-  // const user = new User()
-  // await connectToEHR();
   await driver.get(localURL)
   await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click()
   await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()

@@ -12,9 +12,9 @@ beforeAll(() => {
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
-// afterEach(() => {
-//   driver.close()
-// })
+afterAll(() => {
+  driver.close()
+})
 
 async function connectToEHR() {
   await driver.get(localURL)
@@ -32,7 +32,6 @@ async function connectToEHR() {
 
 test('TestCaseID:51. Check Healthify startpage', async () => {
   await connectToEHR()
-  await driver.get(localURL)
   expect(await driver.getTitle()).toEqual('Healthify')
 })
 

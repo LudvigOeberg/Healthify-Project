@@ -12,9 +12,9 @@ beforeAll(() => {
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
-// afterAll(() => {
-//   driver.close()
-// })
+afterAll(() => {
+  driver.close()
+})
 
 function User(user) {
   const randomInt = Math.floor(Math.random() * Math.floor(1000000))
@@ -86,13 +86,12 @@ async function registerPatient(driver, patient) {
   await driver.findElement(webdriver.By.id('email')).sendKeys(patient.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(patient.passw)
   await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
-  await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys('2010-01-01T00:00:00Z')
+  await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys('25092011')
   await driver.findElement(webdriver.By.css("div[aria-labelledby='gender-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='FEMALE']")).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
-  await driver.sleep(10000)
-  // await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
+  await driver.findElement(webdriver.By.css('#main > main > div > form > button')).sendKeys(webdriver.Key.ENTER)
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
 }
 

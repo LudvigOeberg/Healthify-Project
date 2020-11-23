@@ -13,16 +13,14 @@ beforeAll(() => {
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
+afterAll(() => {
+  driver.close()
+})
+
 function User() {
   const randomInt = Math.floor(Math.random() * Math.floor(1000000))
   this.email = `${randomInt}epost@test.se`
   this.passw = 'passw'
-}
-
-async function logut(driver) {
-  await driver.findElement(webdriver.By.xpath("//span[text()='Logga ut']")).click()
-  await driver.wait(webdriver.until.urlIs(`${localURL}login`))
-  expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
 }
 
 async function login(driver, userPath, user) {
@@ -68,8 +66,7 @@ async function registerPatient(driver, patient) {
   await driver.findElement(webdriver.By.css("li[data-value='FEMALE']")).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
-  await driver.sleep(10000)
-  // await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
+  await driver.findElement(webdriver.By.css('#main > main > div > form > button')).sendKeys(webdriver.Key.ENTER)
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
 }
 

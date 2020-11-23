@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 let driver
 const webdriver = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
@@ -12,9 +13,9 @@ beforeAll(() => {
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
-// afterEach(() => {
-//   driver.close();
-// });
+afterAll(() => {
+  driver.close()
+})
 
 async function connectToEHR() {
   await driver.get(localURL)
@@ -87,7 +88,7 @@ test('TestCaseID:256. Check if Healthify text is a link to the profile page', as
   // await connectToEHR()
   await register(driver, user)
   await driver.findElement(webdriver.By.xpath("//span[text()='Healthify']")).click()
-  let url = await driver.getCurrentUrl()
+  const url = await driver.getCurrentUrl()
   expect(url).toEqual(`${localURL}parent`)
   await logut(driver)
 })
@@ -139,7 +140,7 @@ test('TestCaseID:252. Check profile link to the profile page', async () => {
   expect(present).toEqual(true)
 
   await driver.findElement(webdriver.By.xpath("//span[.='Min profil']")).click()
-  let url = await driver.getCurrentUrl()
+  const url = await driver.getCurrentUrl()
   expect(url).toEqual(`${localURL}parent`)
   await logut(driver)
 })
@@ -165,7 +166,7 @@ test('TestCaseID:253. Check settings link to the settings page', async () => {
   expect(present).toEqual(true)
 
   await driver.findElement(webdriver.By.xpath("//span[.='Inställningar']")).click()
-  let url = await driver.getCurrentUrl()
+  const url = await driver.getCurrentUrl()
   expect(url).toEqual(`${localURL}parent-settings`)
   await logut(driver)
 })
@@ -191,7 +192,7 @@ test('TestCaseID:254. Check child registration link to child registration page',
   expect(present).toEqual(true)
 
   await driver.findElement(webdriver.By.xpath("//span[.='Registrering av barn']")).click()
-  let url = await driver.getCurrentUrl()
+  const url = await driver.getCurrentUrl()
   expect(url).toEqual(`${localURL}register-patient`)
   await logut(driver)
 })

@@ -12,9 +12,9 @@ beforeAll(() => {
   // options.addArguments('--headless')
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
-// afterEach(() => {
-//   driver.close()
-// })
+afterAll(() => {
+  driver.close()
+})
 
 async function connectToEHR() {
   await driver.get(localURL)
@@ -80,5 +80,5 @@ test('TestCaseID:141. Check if a parent is redirected to /parent after a sucessf
   await register(driver, user)
   await logout(driver)
   await login(driver, 'parent', user)
-  expect(await driver.getCurrentUrl()).toEqual(localURL + "parent")
+  expect(await driver.getCurrentUrl()).toEqual(`${localURL}parent`)
 })

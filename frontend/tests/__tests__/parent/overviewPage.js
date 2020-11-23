@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 let driver
 const webdriver = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
@@ -12,9 +13,9 @@ beforeAll(() => {
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
-// afterEach(() => {
-//   driver.close()
-// })
+afterAll(() => {
+  driver.close()
+})
 
 async function connectToEHR() {
   await driver.get(localURL)
@@ -68,8 +69,7 @@ async function registerPatient(driver, patient) {
   await driver.findElement(webdriver.By.css("li[data-value='FEMALE']")).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
-  await driver.sleep(10000)
-  // await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
+  await driver.findElement(webdriver.By.css('#main > main > div > form > button')).sendKeys(webdriver.Key.ENTER)
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
 }
 

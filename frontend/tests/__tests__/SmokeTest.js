@@ -7,9 +7,9 @@ const localURL = 'http://localhost:4100/'
 beforeAll(() => {
   jest.setTimeout(30000)
   const options = new chrome.Options()
+  // options.addArguments('--headless')
   options.addArguments('--test-type')
   options.addArguments('--start-maximized')
-  // options.addArguments('--headless')
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
@@ -92,8 +92,7 @@ async function registerPatient(driver, patient) {
   await driver.findElement(webdriver.By.css("li[data-value='MALE']")).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
-  await driver.sleep(10000)
-  // await driver.findElement(webdriver.By.xpath('//*[@id="main"]/main/div/form/button/span[1]')).click()
+  await driver.findElement(webdriver.By.css('#main > main > div > form > button')).sendKeys(webdriver.Key.ENTER)
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`))
 }
 describe('General Smoke Test', () => {
