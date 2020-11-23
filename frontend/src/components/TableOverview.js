@@ -9,6 +9,8 @@ import Paper from '@material-ui/core/Paper'
 import { Typography, ListItemIcon } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete';
+import Moment from 'moment'
+
 /**
  * Displays a table with a set of given values
  * @param {const} props- an array of objects with rows and cols, array with column titles and a
@@ -18,13 +20,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
  *
  *  Author: Martin Dagermo
  */
-
-const useStyles1 = makeStyles((theme) => ({
-  root: {
-    flexShrink: 0,
-    marginLeft: theme.spacing(2.5),
-  },
-}))
 
 const useStyles2 = makeStyles((theme) => ({
   table: {
@@ -36,13 +31,40 @@ const useStyles2 = makeStyles((theme) => ({
   },
 }))
 
+const reformat = (data) => {
+    const dataObjects = []
+    var newData = []
+    let sameDay;
+    for (let i = 0; i < data.length > 6 ? 7 : data.length; i++) {
+        sameDay = true
+        while (sameDay & data.length > 0) {
+
+            if (Moment().subtract(i, 'day').format('YYYY-MM-DD') == Moment(data[0].time).format('YYYY-MM-DD')) {
+                newData.push({
+                    time: Moment(data[0].time).format('HH:mm'),
+                    value: data[0].value,
+                })
+                data.shift()
+            } else {
+                sameDay = false;
+            }
+        }
+    dataObjects.push({
+    section: i == 0 ? "Idag" : i == 1 ? "Igår" : Moment().subtract(i, 'day').format('DD/MM'),
+    rows: newData,
+    })
+    newData = [];
+    }
+    return dataObjects
+}
+
 export default function CustomPaginationActionsTable({ loading = false, ...props }) {
   const classes = useStyles2()
-  const { paginate } = props
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(paginate ? 5 : -1)
+  console.log(props)
   const { rows } = props
-  if (loading) {
+  const rowsdivided = rows ? reformat(rows) : "hej";
+  
+    if (loading) {
     return (
       <TableContainer className={classes.paper}>
         <Typography component="h4" variant="subtitle1">
@@ -61,38 +83,34 @@ export default function CustomPaginationActionsTable({ loading = false, ...props
     )
   }
 
-  const { titles } = props
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-  }
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(0)
-  }
   return (
-      <Table className={classes.table}>
-        <Typography component="h1" variant="h5"> Idag </Typography>
-          {rows.map((row) => (
-            <TableRow>
-              {props.columns.map((data) => (
-                <TableCell>{row[data]}</TableCell>
-              ))}
-                <TableCell align="right">
-                    <ListItemIcon>
-                    <a href={`/edit-child/`}>
-                    <EditIcon color = "primary"/>
-                    </a>
-                    <a href={`/edit-child/`}>
-                    <DeleteIcon color = "primary"/>
-                    </a>
-                    </ListItemIcon>
-                </TableCell>
-            </TableRow>
-          ))}
-        
-      </Table>
+    
+      <Table className={classes.table} >
+        {rowsdivided.map((rowdiv) => (
+            <>
+             <Typography component="h1" variant="h5"> {rowdiv.section} </Typography>
+             {rowdiv.rows.map((row) => (
+                <TableRow hover>
+                    {props.columns.map((data) => (
+                        <TableCell>{row[data]}</TableCell>
+                    ))}
+                        <TableCell align="right">
+                            <ListItemIcon>
+                            <a href={`/edit-child/`}>
+                            <EditIcon color = "primary"/>
+                            </a>
+                            <a href={`/edit-child/`}>
+                            <DeleteIcon color = "primary"/>
+                            </a>
+                            </ListItemIcon>
+                        </TableCell>
+                    </TableRow>
+                ))}
+            <p></p>
+            </>
+        ))}
+    </Table>    
   )
 }

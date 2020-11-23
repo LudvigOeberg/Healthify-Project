@@ -34,27 +34,10 @@ const mapDispatchToProps = (dispatch) => ({
   },
 })
 
-// Checks if given bloodsugar levels are considered low, high or good.
-// getIndication & reformat are dublicated in MonitorChildValue
-const getIndication = (data) => {
-  if (data > 0 && data < 4) {
-    return 'Lågt'
-  }
-  if (data > 9) {
-    return 'Högt'
-  }
-
-  return 'Stabilt'
-}
 
 const ParentOverview = (props) => {
   const { id } = props.match.params
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-  const colDesc = [
-    'Datum',
-    `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
-     `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
-  ]
   const classes = styles()
   const { bloodsugar } = props
   const { weight } = props
@@ -73,9 +56,8 @@ const ParentOverview = (props) => {
     const dataObjects = []
     for (let i = 0; i < data.length; i++) {
       dataObjects.push({
-        time: Moment(data[i].time).format('HH:mm'), y: data[i].value/*new Date(data[i].time.substring(0, 16)).toLocaleString()*/,
-        value: disease === 'DIABETES' ? data[i].value : data[i].weight,
-        indicator: getIndication(disease === 'DIABETES' ? data[i].value : data[i].weight),
+        time: Moment(data[i].time).format('YYYY-MM-DD HH:mm'),/*new Date(data[i].time.substring(0, 16)).toLocaleString()*/
+        value: disease === 'DIABETES' ? data[i].value + " mmol/L" : data[i].weight + " kg",
       })
     }
     return dataObjects
@@ -121,16 +103,7 @@ const ParentOverview = (props) => {
                   </Grid>
 
                 </Grid>
-                
-
-                {/* <Typography component="h1" variant="h6">
-                  {name}
-                </Typography>
-                <Typography variant="subtitle1">{age}</Typography>
-                <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
-                <Avatar className={classes.avatar}>
-                  <ChildCareIcon fontSize="large" />
-                </Avatar> */}
+              
               </Paper>
 
               <Grid container spacing={1}>
@@ -156,7 +129,6 @@ const ParentOverview = (props) => {
                       columns={['time', 'value']}
                       loading={loading}
                       rows={input ? reformat(input, false) : null}
-                      titles={colDesc}
                       paginate={false}
                     />
                   </Grid>
@@ -179,18 +151,6 @@ const ParentOverview = (props) => {
                   chartData={input ? reformatForChart(input) : null}
                   label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
                 ></TimeLineChart>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={12} md={6}>
-              <Paper className={classes.rpaper} elevation={3}>
-                  <Typography component="h1" variant="h6">
-                    {name}
-                  </Typography>
-                <Typography variant="subtitle1">{age}</Typography>
-                <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
-                <Avatar className={classes.avatar}>
-                  <ChildCareIcon fontSize="large" />
-                </Avatar>
               </Paper>
             </Grid>
             <Grid item xs={12}>
