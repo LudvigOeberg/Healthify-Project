@@ -30,6 +30,7 @@ import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
 import ChildSimulation from './Child/ChildSimulation'
+import PatientNew from './Child/PatientNew'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -163,7 +164,7 @@ class App extends React.Component {
                 path="/accessed-data"
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
-                component={AccessedData}
+                component={PatientNew}
               />
               <RequiredRoute
                 exact

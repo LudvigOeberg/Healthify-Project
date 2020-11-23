@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import { Box, Container, Grid, Button} from '@material-ui/core'
+import { Box, Container, Grid, Button, Typography} from '@material-ui/core'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -10,6 +10,7 @@ import {
   SAVE_BLOODSUGAR,
   LOAD_BLOODSUGAR,
   SAVE_TIMER,
+  LOAD_WEIGHT, 
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import agent from '../../agent'
@@ -18,6 +19,7 @@ import Input from '@material-ui/core/Input'
 import happyAvatar from '../../Static/happy_avatar.png'
 import sadAvatar from '../../Static/sad_avatar.png'
 import normalAvatar from '../../Static/normal_avatar.png'
+
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
@@ -54,6 +56,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, 0, 20) })
   },
   onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
+
+  loadValues: (ehrId, offset, limit, disease) => {
+    if (disease === 'DIABETES')
+      dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+    else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
+  },
 })
 
 // const patientN = (props) => {
@@ -96,13 +104,17 @@ const mapDispatchToProps = (dispatch) => ({
     //console.log("SJUKDOM!:" + disease)
 
 
-class PatientNew extends Component {
+class Patient extends Component {
   constructor() {
     super()
     this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
 
+    const sjukdom = (props) => {
+    const { id } = props.match.params
     const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-    console.log(disease)
+    }
+    //console.log(disease)
+    //const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
 
     this.changeAuthSlider = (ev, value) => this.props.onChangeAuth(ev.target.id, value)
     this.submitForm = (ev) => {
@@ -211,6 +223,8 @@ return (
                 <img  src={Avatar} alt="mood avatar"></img>
             </Box>  
         </Grid>
+        <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
+         
           <Grid container spacing={5} alignItems="center">
             <Grid item xs>
               <Slider
@@ -375,5 +389,5 @@ export function getCurrentDate() {
     return dateInfo
   }
   
-  export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PatientNew))
+  export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Patient))
   
