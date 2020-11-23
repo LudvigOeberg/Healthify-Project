@@ -106,7 +106,7 @@ const SimulatePatient = (props) => {
   let noInputTraining
   let noInputDiet
   let noInput
-  const weight = props.weight ? props.weight : null
+  const weight = props.weight ? props.weight[0] : null
   const bloodsugar = props.bloodsugar ? props.bloodsugar : null
 
   useEffect(() => {
