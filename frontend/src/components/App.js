@@ -25,11 +25,11 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
-import Laboration from './Child/Laboration'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
 import ChildSimulation from './Child/ChildSimulation'
+import ChildLaboration from './Child/ChildLaboration'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -230,7 +230,7 @@ class App extends React.Component {
                 path="/child-laboration"
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
-                component={Laboration}
+                component={ChildLaboration}
               />
               <RequiredRoute
                 exact
