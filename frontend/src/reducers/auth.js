@@ -8,6 +8,7 @@ import {
   UPDATE_AUTH_BOOLEAN,
   REGISTER_CHILD,
   EDIT_CHILD,
+  EDIT_PARENT
 } from '../constants/actionTypes'
 
 export default (state = {}, action) => {
@@ -15,6 +16,7 @@ export default (state = {}, action) => {
     case LOGIN:
     case REGISTER:
     case EDIT_CHILD:
+    case EDIT_PARENT:
     case REGISTER_CHILD:
       return {
         ...state,
@@ -29,7 +31,8 @@ export default (state = {}, action) => {
         action.subtype === LOGIN ||
         action.subtype === REGISTER ||
         action.subtype === REGISTER_CHILD ||
-        action.subtype === EDIT_CHILD
+        action.subtype === EDIT_CHILD ||
+        action.subtype === EDIT_PARENT
       ) {
         return { ...state, inProgress: true }
       }

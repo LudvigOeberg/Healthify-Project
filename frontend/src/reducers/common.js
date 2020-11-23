@@ -17,9 +17,12 @@ import {
   SAVE_PARTY,
   SAVE_BLOODSUGAR,
   EDIT_CHILD,
+  EDIT_PARENT,
   DELETE_CHILD,
+  DELETE_PARENT,
   SAVE_TIMER,
   SAVE_SIMULATION,
+  SAVE_WEIGHT,
 } from '../constants/actionTypes'
 
 const defaultState = {
@@ -54,6 +57,23 @@ export default (state = defaultState, action) => {
         token: action.error ? null : action.payload.user.token,
         currentUser: action.error ? null : action.payload.user,
       }
+
+    case DELETE_PARENT:
+      return {
+        ...state,
+        currentUser: action.error ? state.currentUser : null,
+        redirectTo: action.error ? null : '/',
+        token: null,
+        inProgress: false,
+        snackbar: action.error
+          ? {
+              open: true,
+              message: 'Något gick fel',
+              color: 'warning',
+            }
+          : action.snackbar,
+      }
+    case EDIT_PARENT:
     case DELETE_CHILD:
     case EDIT_CHILD:
       return {
@@ -94,6 +114,7 @@ export default (state = defaultState, action) => {
     case UPDATE_BOOLEAN:
       return { ...state, [action.key]: !!action.value }
     case SAVE_PARTY:
+    case SAVE_WEIGHT:
     case SAVE_BLOODSUGAR:
       return {
         ...state,
