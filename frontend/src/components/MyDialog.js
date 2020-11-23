@@ -13,9 +13,9 @@ import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container'
 import DetailsIcon from '@material-ui/icons/Details'
 
-import sadAvatar from '../Static/sad_avatar.png'
-import happyAvatar from '../Static/happy_avatar.png'
-import neutralAvatar from '../Static/neutral_avatar.png'
+import sadAvatar from '../Static/sad_avatar_face.png'
+import happyAvatar from '../Static/happy_avatar_face.png'
+import neutralAvatar from '../Static/neutral_avatar_face.png'
 
 const styles = (theme) => ({
   root: {
