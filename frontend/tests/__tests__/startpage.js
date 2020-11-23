@@ -1,24 +1,9 @@
-let driver
+
 const webdriver = require('selenium-webdriver')
-//const chrome = require('selenium-webdriver/chrome')
+const chrome = require('selenium-webdriver/chrome')
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 
-
-
-beforeEach(() => {
-  var browser_name = new webdriver.Builder();
-  withCapabilities(webdriver.Capabilities.chrome()).build();
-  browser.get("www.google.com");
-  //const options = new chrome.Options()
-  //options.setBinary('/builds/tddc88-company-2-2020/deploy/frontend/node_modules/chromedriver/lib/chromedriver/chromedriver')
-  //driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
-  browser.quit()
-})
-
-afterEach(() => {
-  driver.close()
-})
 
 async function connectToEHR() {
   await driver.get(localURL)
@@ -39,6 +24,12 @@ test('TestCaseID:51. Check Healthify startpage', async () => {
 })
 
 test('TestCaseID:51. Check Healthify startpage', async () => {
+    let driver = new Builder()
+      .forBrowser('chrome')
+      .setChromeOptions(
+        new chrome.Options().headless())
+      .build();
+      
     await connectToEHR()
     await driver.get(localURL)
     expect(await driver.getTitle()).toEqual('Healthify')
