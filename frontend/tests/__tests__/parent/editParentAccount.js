@@ -55,6 +55,12 @@ async function register(driver, user) {
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 10000, 'Timed out after 5 sec', 100)
 }
 
+async function logut(driver) {
+  await driver.findElement(webdriver.By.xpath("//span[text()='Logga ut']")).click()
+  await driver.wait(webdriver.until.urlIs(`${localURL}login`))
+  expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
+}
+
 async function editParent(driver, user) {
   await driver
     .findElement(
@@ -64,28 +70,55 @@ async function editParent(driver, user) {
     )
     .click()
   await driver.findElement(webdriver.By.xpath('//a[2]')).click()
+  await driver.findElement(webdriver.By.id('changeEmail')).click()
+  await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
+  await driver.findElement(webdriver.By.xpath('/html/body/div[2]/div[3]/div/form/button[1]')).click()
+}
+
+async function deleteParentAccount(driver) {
   await driver
     .findElement(
       webdriver.By.xpath(
-        "//button[@class='MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary']",
+        "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-6 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
       ),
     )
     .click()
-  await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
-  await driver.findElement(webdriver.By.xpath('/html/body/div[2]/div[3]/div/form/button[1]')).click()
-  // await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 1000, 'Timed out after 5 sec', 100)
+  await driver.findElement(webdriver.By.xpath('//a[2]')).click()
+  await driver.findElement(webdriver.By.id('deleteAccount')).click()
+  await driver.findElement(webdriver.By.id('comfirmDelete')).click()
 }
-
-describe('Edit Parent Account', () => {
+describe('TestID:32 Edit Parent Account', () => {
   test('TestCaseID: 32.1.1. Edit parent account with a valid Email', async () => {
     const parent = new User('parent')
     await getHomePage(localURL)
     await register(driver, parent)
-    parent.email = 'good@mail.com'
     await editParent(driver, parent)
-    const success = await driver
+    const msg1 = await driver
       .wait(webdriver.until.elementLocated(webdriver.By.xpath("//div[@class='MuiAlert-message']")), 10000)
       .getText()
-    expect(success).toEqual('Du ändrade din emailadress')
+    expect(msg1).toEqual('Du ändrade din emailadress')
+    await logut(driver)
+  })
+
+  test('TestCaseID: 32.1.2. Edit parent account with an invalid Email', async () => {
+    const parent = new User('parent')
+    await register(driver, parent)
+    parent.email = '@mail.com'
+    await editParent(driver, parent).catch(async () => {
+      const msg2 = await driver.findElement(webdriver.By.xpath("//p[@id='email-helper-text']"), 10000).getText()
+      expect(msg2).toEqual('Not a valid email address')
+    })
+  })
+
+  test('TestCaseID: 32.1.3. Deleting a parent account', async () => {
+    const parent = new User('parent')
+    await driver.get(localURL)
+    await logut(driver)
+    await register(driver, parent)
+    await deleteParentAccount(driver)
+    const msg3 = await driver
+      .wait(webdriver.until.elementLocated(webdriver.By.xpath("//div[@class='MuiAlert-message']")), 10000)
+      .getText()
+    expect(msg3).toContain('Du tog bort kontot')
   })
 })
