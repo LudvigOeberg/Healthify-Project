@@ -43,6 +43,18 @@ class AccountResource(MethodResource):
         user.update(**kwargs)
         return user
 
+    @jwt_required
+    @doc(description="Delete parent")
+    def delete(self):
+        if current_user.type == 'parent':
+            current_user.children = []
+            db.session.delete(current_user)
+            db.session.commit()
+            return 200
+        else:
+            raise InvalidUsage.unknown_error()
+
+
     @use_kwargs(login_schema)
     @doc(description="Login user")
     def post(self, email, password, **kwargs):
@@ -76,6 +88,7 @@ class AccountListResource(MethodResource):
             db.session.rollback()
             raise InvalidUsage.user_already_registered()
         return user
+
 
 
 @api.resource('/parent')
