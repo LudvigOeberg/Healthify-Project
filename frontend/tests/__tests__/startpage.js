@@ -10,7 +10,7 @@ require('geckodriver')
 const localURL = 'http://localhost:4100/'
 
 beforeEach(async () => {
-  driver = await new Builder().forBrowser('chrome').build();
+  driver = await new Builder().forBrowser('firefox').build();
   //const options = new chrome.Options()
   //options.addArguments('--no-sandbox', '--headless', '--disable-dev-shm-usage', "window-size=1024,768", '--remote-debugging-port=9222');
   //driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
