@@ -9,7 +9,7 @@ const styles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   main: {
-    marginTop: theme.spacing(12),
+    marginTop: theme.spacing(6),
     display: 'flex',
     flexDirection: 'column',
   },
