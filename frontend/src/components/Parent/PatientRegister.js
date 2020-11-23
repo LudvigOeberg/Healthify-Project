@@ -8,6 +8,7 @@ import {
   InputLabel,
   FormControl,
   FormHelperText,
+  Paper,
 } from '@material-ui/core'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -22,6 +23,8 @@ import {
   UPDATE_AUTH_BOOLEAN,
 } from '../../constants/actionTypes'
 import agent from '../../agent'
+import InputSlider from '../InputSlider'
+import InputStepper from '../InputStepper'
 
 /**
  * Page where a parent can register a child
@@ -98,6 +101,8 @@ class PatientRegister extends Component {
     const { dateofbirth } = this.props
     const errors = this.props.errors ? this.props.errors : null
     const { disease } = this.props
+    const {trainingammount, SU_LO, SU_HI} = this.props
+  
 
     return (
       <Container component="main" maxWidth="xs">
@@ -270,6 +275,51 @@ class PatientRegister extends Component {
                   <FormHelperText>{errors && (errors.disease || errors.general)}</FormHelperText>
                 </FormControl>
               </Grid>
+              <Typography></Typography>
+              <Grid item xs={12}>
+                <Paper className={classes.additional} variant="outlined" hidden={disease!=="DIABETES"}>
+                  
+                  <Grid container spacing={1} justify="flex-start" alignItems="flex-end">
+                    <Grid item>
+                      <InputLabel required shrink={trainingammount || SU_HI || SU_LO}>Diabetes info</InputLabel>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <InputStepper
+                    unit="st"
+                    step={1}
+                    min={1}
+                    max={20}
+                    id="trainingammount"
+                    input={trainingammount}
+                    definition="Antal mätningar/dag"
+                    
+                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                    <InputStepper
+                      unit="mmol/L"
+                      step={0.1}
+                      min={0}
+                      max={15}
+                      id="SU_LO"
+                      input={SU_LO}
+                      definition="Lägsta blodsockernivå"
+                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                    <InputStepper
+                      unit="mmol/L"
+                      step={0.1}
+                      min={0}
+                      max={15}
+                      id="SU_HI"
+                      input={SU_HI}
+                      definition="Högsta blodsockernivå"
+                    />
+                    </Grid>
+                    </Grid>
+                </Paper>
+              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -306,8 +356,9 @@ const styles = (theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  accordion: {
+  additional: {
     backgroundColor: '#fafafa',
+    padding: 10
   },
 })
 
