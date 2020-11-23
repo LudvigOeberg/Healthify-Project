@@ -1,7 +1,7 @@
- import React, { useEffect } from 'react'
+import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import { Box, Container, Grid, Button, Typography} from '@material-ui/core'
+import { Box, Container, Grid, Button} from '@material-ui/core'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -10,22 +10,16 @@ import {
   SAVE_BLOODSUGAR,
   LOAD_BLOODSUGAR,
   SAVE_TIMER,
-  LOAD_WEIGHT, 
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import agent from '../../agent'
-//import Slider from '@material-ui/core/Slider'
-//import Input from '@material-ui/core/Input'
-//import happyAvatar from '../../Static/happy_avatar.png'
-//import sadAvatar from '../../Static/sad_avatar.png'
+import Slider from '@material-ui/core/Slider'
+import Input from '@material-ui/core/Input'
+import happyAvatar from '../../Static/happy_avatar.png'
+import sadAvatar from '../../Static/sad_avatar.png'
 import normalAvatar from '../../Static/normal_avatar.png'
-import Moment from 'moment'
-import Reformat from '../../reformatEHRData'
-import { makeStyles } from '@material-ui/core/styles'
-
 
 const mapStateToProps = (state) => ({
-  ...state.common,
   ...state.ehr,
   currentUser: state.common.currentUser,
   bloodsugarValue: state.common.bloodsugar,
@@ -60,79 +54,112 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, 0, 20) })
   },
   onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
-
-  loadValues: (ehrId, offset, limit, disease) => {
-    if (disease === 'DIABETES')
-      dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
-    else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
-  },
 })
 
-const getIndication = (data) => {
-  if (data > 0 && data < 4) {
-    return 'Lågt'
-  }
-  if (data > 9) {
-    return 'Högt'
-  }
+class Patient extends Component {
+  constructor() {
+    super()
+    this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
 
-  return 'Stabilt'
-}
+    this.changeAuthSlider = (ev, value) => this.props.onChangeAuth(ev.target.id, value)
+    this.submitForm = (ev) => {
+      ev.preventDefault()
 
+      const bloodsugar = this.props.bloodsugarValue
+      let { timer } = this.props.currentUser
 
+      // These are implemented as encouraging that depends on if it's a
+      // measurement that's new or if it's taken after a bad one.
+      let snackbar = {
+        open: true,
+        // message: `Du loggade värdet: ${bloodsugar} mmol/L.` Keeping it just in cause.
+        message: `Ditt värde på ${bloodsugar} mmol/L ser jättebra ut! -Att hålla koll på ditt blodsockervärde är ett bra sätt att hålla en bra hälsa. `,
+        color: 'success',
+      }
+      if (timer !== null) {
+        snackbar = {
+          open: true,
+          message: `Bra jobbat, hoppas du mår toppen!`,
+          color: 'success',
+        }
+      }
 
-const Patient = (props) => {
+      // IF'statements that gives a feedback on a bad value.
+      if (bloodsugar > 8) {
+        // Change the 8 to whatever the upper max-level should be. Same with the 4 below.
+        if (timer === null) {
+          timer = setTimer()
+        } else {
+          timer = this.props.currentUser.timer
+        }
+        snackbar = {
+          open: true,
+          message: `Åh nej, det ser ut som att ditt blodsocker börjar bli högt. Se till att ta lite insulin snart så du inte börjar må dåligt.`,
+          color: 'error',
+        }
+      }
+      if (bloodsugar < 4) {
+        if (this.props.currentUser.timer === null) {
+          // If and If else= The timer does not reset until a good value is entered. Can be removed.
+          timer = setTimer()
+        } else {
+          timer = this.props.currentUser.timer
+        }
+        snackbar = {
+          open: true,
+          message: `Åh nej, det ser ut som att ditt blodsocker börjar bli lågt. Se till att äta något snart innan du börjar må dåligt och registrera ett nytt värde därefter. `,
+          color: 'error',
+        }
+      }
+      if (bloodsugar >= 4 && bloodsugar <= 8) {
+        timer = null
+      }
 
-  const { id } = props.match.params
-  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-  const colDesc = [
-    'Datum',
-    `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
-    `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
-  ]
-  const classes = styles()
-  const { bloodsugar } = props
-  const { weight } = props
-  const loading = props.inProgress
-  const age = props.party ? `${Moment().diff(props.party[id].dateOfBirth, 'years')} år` : null
-  const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
-  const input = bloodsugar || weight
-  
-  
-  const reformatForChart = (data) => {
-    if (bloodsugar) return Reformat.bloodsugar(data, false, true)
-    if (weight) return Reformat.weight(data, false, true)
-    return null
-  }
-
-  const reformat = (data) => {
-    const dataObjects = []
-    for (let i = 0; i < data.length; i++) {
-      dataObjects.push({
-        time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
-        value: disease === 'DIABETES' ? data[i].value : data[i].weight,
-        indicator: getIndication(disease === 'DIABETES' ? data[i].value : data[i].weight),
-      })
+      this.props.onSubmit(this.props.currentUser.ehrid, bloodsugar, snackbar, timer)
     }
-    return dataObjects
   }
 
-  
+  componentWillUnmount() {
+    this.props.onUnload()
+  }
 
-  // componentWillUnmount() {
-  //   this.props.onUnload()
-  // }
+  componentDidMount() {
+    this.props.onLoad(this.props.currentUser.ehrid)
+  }
 
-  // componentDidMount() {
-  //   this.props.onLoad(this.props.currentUser.ehrid)
-  // }
+  valuetext(value) {
+    return `${value} mmol/L`
+  }
 
-  let Avatar = normalAvatar 
+  render() {
+    const marks = [
+      {
+        value: 0,
+        label: '0 mmol/L',
+      },
+      {
+        value: 15,
+        label: '15 mmol/L',
+      },
+    ]
+    
+    const bloodsugar = this.props.bloodsugarValue
+    const { classes } = this.props
+    
+     
 
-  useEffect(() => {
-    props.onLoad(id)
-    props.loadValues(id, 0, 3, disease)
-    }, [id, disease]) // eslint-disable-line
+    let Avatar = normalAvatar //There is also a normal avatar to use, if anyone find a good statement when to use it. 
+
+     if (this.props.historicalBloodSugar !== null && this.props.historicalBloodSugar !== undefined) {
+       if (this.props.historicalBloodSugar[0].value < 4 || this.props.historicalBloodSugar[0].value > 8) {
+         Avatar = sadAvatar
+       } else {
+         Avatar = happyAvatar
+       }
+       if (this.props.historicalBloodSugar[0].time < setTimer()) {
+         Avatar = normalAvatar
+       }
+     }
 
 return (
     <Container maxWidth="" className={classes.backGround} >
@@ -141,13 +168,59 @@ return (
                 <img  src={Avatar} alt="mood avatar"></img>
             </Box>  
         </Grid>
-        <Typography variant="subtitle1">{disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}</Typography>
+          <Grid container spacing={5} alignItems="center">
+            <Grid item xs>
+              <Slider
+                id="bloodsugar"
+                value={typeof parseInt(bloodsugar, 10) === 'number' ? parseInt(bloodsugar, 10) : 0}
+                onChange={(ev, value) => this.changeAuthSlider(ev, value)}
+                aria-labelledby="input-slider"
+                defaultValue={10}
+                step={1}
+                valueLabelDisplay="auto"
+                marks={marks}
+                max={15}
+                min={0}
+              />
+            </Grid>
+            {/* Temporary input until the plus-button at the bottom is implemented. */}
+            <Grid item>
+              <Input
+                id="bloodsugar"
+                className={classes.input}
+                value={bloodsugar}
+                margin="dense"
+                onChange={this.changeAuth}
+                onBlur={this.handleBlur}
+                inputProps={{
+                  step: 1,
+                  min: 0,
+                  max: 15,
+                  type: 'number',
+                  'aria-labelledby': 'input-slider',
+                }}
+              />
+              <h5> mmol/L </h5>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                onClick={(ev) => this.submitForm(ev)}
+                disabled={this.props.inProgress}
+              >
+                {' '}
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
     </Container>
   )
 }
+}
 
-
-const styles = makeStyles((theme) => ({
+const styles = (theme) => ({
 paper: {
   display: 'flex',
   flexDirection: 'column',
@@ -170,7 +243,7 @@ form: {
 submit: {
   margin: theme.spacing(3, 0, 2),
 },
-}))
+})
 
 
 export function getCurrentDate() {
@@ -260,4 +333,3 @@ export function getCurrentDate() {
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Patient))
-  
