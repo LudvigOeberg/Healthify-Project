@@ -8,7 +8,7 @@ beforeAll(() => {
   const options = new chrome.Options()
   options.addArguments('--test-type')
   options.addArguments('--start-maximized')
-  options.addArguments('--headless')
+  // options.addArguments('--headless')
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
@@ -31,12 +31,12 @@ async function getHomePage(url) {
   await driver.wait(webdriver.until.alertIsPresent())
   const alert1 = await driver.switchTo().alert()
   // replace username with the username for openEHR
-  await alert1.sendKeys('username')
+  await alert1.sendKeys(process.env.ehr_user)
   await alert1.accept()
   await driver.wait(webdriver.until.alertIsPresent())
   const alert2 = await driver.switchTo().alert()
   // replace pass with password from openEHR
-  await alert2.sendKeys('pass')
+  await alert2.sendKeys(process.env.ehr_user_pass)
   await alert2.accept()
 }
 
@@ -75,24 +75,25 @@ async function registerPatient(driver, patient) {
   await driver
     .findElement(
       webdriver.By.xpath(
-        "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-2 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
+        "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-5 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
       ),
     )
     .click()
-  await driver.findElement(webdriver.By.xpath("//a[@href='/register-patient']")).click()
+  await driver.findElement(webdriver.By.xpath('//a[3]')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
   await driver.findElement(webdriver.By.id('email')).sendKeys(patient.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(patient.passw)
   await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
-  await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys(patient.dateOfBirth)
+  await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys('2010-01-01T00:00:00Z')
   await driver.findElement(webdriver.By.css("div[aria-labelledby='gender-label']")).click()
-  await driver.findElement(webdriver.By.css("li[data-value='MALE']")).click()
+  await driver.findElement(webdriver.By.css("li[data-value='FEMALE']")).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
-  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
-  await driver.wait(webdriver.until.urlIs(`${localURL}parent`))
+  await driver.sleep(10000)
+  // await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
+  await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
 }
 
 // Test Cases

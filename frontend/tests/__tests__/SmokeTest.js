@@ -13,9 +13,9 @@ beforeAll(() => {
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
-// afterAll(() => {
-//   driver.close()
-// })
+afterAll(() => {
+  driver.close()
+})
 
 function User(user) {
   const randomInt = Math.floor(Math.random() * Math.floor(1000000))
@@ -32,14 +32,14 @@ async function getHomePage(url) {
   await driver.wait(webdriver.until.alertIsPresent())
   const alert1 = await driver.switchTo().alert()
   // replace username with the username for openEHR
-  // await alert1.sendKeys(process.env.ehr_user)
-  await alert1.sendKeys('lio.se2')
+  await alert1.sendKeys(process.env.ehr_user)
+  // await alert1.sendKeys('user')
   await alert1.accept()
   await driver.wait(webdriver.until.alertIsPresent())
   const alert2 = await driver.switchTo().alert()
   // replace pass with password from openEHR
-  // await alert2.sendKeys(process.env.ehr_user_pass)
-  await alert2.sendKeys('ehr4lio.se2')
+  await alert2.sendKeys(process.env.ehr_user_pass)
+  // await alert2.sendKeys('user')
   await alert2.accept()
 }
 
@@ -76,11 +76,11 @@ async function registerPatient(driver, patient) {
   await driver
     .findElement(
       webdriver.By.xpath(
-        "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-2 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
+        "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-5 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
       ),
     )
     .click()
-  await driver.findElement(webdriver.By.xpath("//a[@href='/register-patient']")).click()
+  await driver.findElement(webdriver.By.xpath('//a[3]')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
@@ -92,7 +92,8 @@ async function registerPatient(driver, patient) {
   await driver.findElement(webdriver.By.css("li[data-value='MALE']")).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
-  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
+  await driver.sleep(10000)
+  // await driver.findElement(webdriver.By.xpath('//*[@id="main"]/main/div/form/button/span[1]')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`))
 }
 describe('General Smoke Test', () => {
