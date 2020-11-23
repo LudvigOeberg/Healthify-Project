@@ -56,7 +56,7 @@ function ChildListItem(props) {
   
 
   useEffect(() => {
-    if(disease==='DIABETES')
+    if(disease==='DIABETESG')
       props.loadValues(child.ehrid, 0, 1, disease)
     else
       props.loadValues(child.ehrid, 0, 2, disease)
