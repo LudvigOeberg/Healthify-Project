@@ -2,6 +2,7 @@
 /* eslint-disable no-return-assign */
 // import React, { useState, useEffect } from 'react'
 import React, { useEffect } from 'react'
+// import React from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
@@ -33,32 +34,13 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // onLoad: (ehrId) => {
-  //   dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, 0, 1) })
-  // },
   onLoad: (ehrId) => {
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
   },
   loadValues: (ehrId, offset, limit, disease) => {
-    // eslint-disable-next-line no-console
-    console.log('loadValues')
-    // eslint-disable-next-line no-console
-    console.log(`disease ${disease}`)
-    if (disease === 'DIABETES') {
-      // eslint-disable-next-line no-console
-      console.log('diabetes')
-      dispatch({
-        type: LOAD_BLOODSUGAR,
-        payload: agentEHR.Query.bloodsugar(ehrId, offset, limit),
-      })
-    } else if (disease === 'OBESITY') {
-      // eslint-disable-next-line no-console
-      console.log('obesity')
-      dispatch({
-        type: LOAD_WEIGHT,
-        payload: agentEHR.Query.weight(ehrId, limit),
-      })
-    }
+    if (disease === 'DIABETES')
+      dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+    else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
   },
 })
 
@@ -91,47 +73,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-// eslint-disable-next-line prefer-const
-// let bloodsugar = null
-
-// eslint-disable-next-line no-unused-vars
 const ChildSimulation = (props) => {
-  const { id } = props.match.params
+  const id = props.currentUser.ehrid
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-  // const { bloodsugar } = props
-  const bloodsugar = 7
-  // const { weight } = props
-  // const bloodsugar = props.ehr.bloodsugar[0].value
-  // const [count, setCount] = useState(0)
-  // const [bloodsugar, setBloodsugar] = useState(props.bloogsugar.bloodsugar[0].value)
 
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    // Update the document title using the browser API
-    // document.title = `You clicked ${count} times`
-    props.onLoad(id)
-    props.loadValues(id, 0, 3, disease)
-    }, [id, disease]) // eslint-disable-line
-  
+  let { bloodsugar } = props
 
-  // const { bloodsugar } = props
-  //  let bloodsugarValue
-  const date = getCurrentDate()
-
-  const handleLoad = () => {
-    // eslint-disable-next-line no-console
-    console.log(bloodsugar)
-    if (bloodsugar === null) {
-      // props.onLoad(props.currentUser.ehrid)
-      // bloodsugar = props.ehr.bloodsugar.bloodsugar[0].value
-    }
+  if (bloodsugar !== undefined) {
+    bloodsugar = bloodsugar[0].value
   }
+
+  // eslint-disable-next-line no-console
+  console.log(bloodsugar)
+
+  // eslint-disable-next-line no-console
+  console.log(disease)
+
+  useEffect(() => {
+    props.onLoad(id)
+    props.loadValues(id, 0, 1, disease)
+    }, [id, disease]) // eslint-disable-line
+
+  const date = getCurrentDate()
 
   const [Meal_type, setMeal] = React.useState('Måltid')
   const handleChange = (event) => {
     props.onLoad(props.currentUser.ehrid)
-    // eslint-disable-next-line no-console
-    // console.log(`bsValue: ${bloodsugar[0].value}`)
     setMeal(event.target.value)
   }
 
@@ -182,7 +149,7 @@ const ChildSimulation = (props) => {
     'neutral avatar',
   ]
 
-  const lowBloodsugarValue = 3
+  const lowBloodsugarValue = 4
   const highBloodsugarValue = 10
 
   const classes = useStyles()
@@ -194,6 +161,8 @@ const ChildSimulation = (props) => {
   }
 
   function getDialogInfo() {
+    // eslint-disable-next-line no-console
+    console.log(`in getDialogInfo - bloodsugar: ${bloodsugar}`)
     if (bloodsugar < lowBloodsugarValue) {
       if (Meal_type === 'Snack') {
         return badDialogInfo
@@ -220,24 +189,11 @@ const ChildSimulation = (props) => {
     return badDialogInfo
   }
 
-  // eslint-disable-next-line no-console
-  // console.log(`Meal_type: ${Meal_type}`)
-  //   if (Meal_size === 1) {
-  //     if (Meal_type === 'Måltid') {
-  //       if (bloodsugar === 7) {
-  //         return neutralDialogInfo
-  //       }
-  //     }
-
-  //     return goodDialogInfo
-  //   }
-  //   return badDialogInfo
-  // }
-
   return (
     <Container className={classes.root}>
       {/* {(window.onload = props.onLoad(props.currentUser.ehrid))} */}
-      {handleLoad()}
+      {/* {Example()} */}
+      {/* {handleLoad()} */}
       {/* {(window.onload = setBloodsugar())} */}
       <Grid container spacing={3}>
         <Grid item xs={12}>
