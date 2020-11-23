@@ -57,7 +57,7 @@ const ParentSettingsPage = props => {
 
   const onChangeField = ev =>
     props.onChangeField(ev.target.id, ev.target.value);
-  const submitForm = (email) => ev => {
+  const submitForm = (em) => ev => {
     ev.preventDefault();
     setEmailIsOpen(false);
     const snackbar = {
@@ -65,7 +65,7 @@ const ParentSettingsPage = props => {
       color: "success",
       open: true
     };
-    props.editParent(email, snackbar);
+    props.editParent(em, snackbar);
   };
 
   return (
