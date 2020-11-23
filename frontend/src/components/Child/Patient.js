@@ -234,6 +234,7 @@ const styles = (theme) => ({
     padding: '10% 10% 10%',
     background: 'linear-gradient(0deg, rgba(118,176,208,1) 37%, rgba(106,161,191,1) 38%, rgba(125,180,213,1) 86%)',
     marginTop: '-3%', // Removes a small white space at the top.
+    minHeight: '100vh',
   },
   avatar: {
     position: 'relative',

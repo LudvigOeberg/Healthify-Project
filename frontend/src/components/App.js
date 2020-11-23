@@ -253,8 +253,13 @@ class App extends React.Component {
           {footer}
           <MySnackbar />
 
-          <div className={classes.snackbar}>
-            <Snackbar open={this.props.timerSnackbarOpen} autoHideDuration={5000} onClose={handleClose}>
+          <div className={classes.snackbarDiv}>
+            <Snackbar
+              className={classes.snackbar}
+              open={this.props.timerSnackbarOpen}
+              autoHideDuration={5000}
+              onClose={handleClose}
+            >
               <Alert
                 elevation={6}
                 severity={timerSnackbar.color}
@@ -304,7 +309,11 @@ const RequiredRoute = ({ requires, user, component, path, exact, ...rest }) => {
 
 const styles = (theme) => ({
   snackbar: {
+    bottom: '5rem',
+  },
+  snackbarDiv: {
     width: '100%',
+    zIndex: 20000,
     '& > * + *': {
       marginTop: theme.spacing(4),
     },
