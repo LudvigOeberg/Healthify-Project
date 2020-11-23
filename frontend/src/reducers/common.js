@@ -19,9 +19,10 @@ import {
   EDIT_CHILD,
   EDIT_PARENT,
   DELETE_CHILD,
+  DELETE_PARENT,
   SAVE_TIMER,
   SAVE_SIMULATION,
-  SAVE_WEIGHT
+  SAVE_WEIGHT,
 } from '../constants/actionTypes'
 
 const defaultState = {
@@ -55,6 +56,22 @@ export default (state = defaultState, action) => {
         redirectTo: action.error ? null : `/${action.payload.user.type}`,
         token: action.error ? null : action.payload.user.token,
         currentUser: action.error ? null : action.payload.user,
+      }
+
+    case DELETE_PARENT:
+      return {
+        ...state,
+        currentUser: action.error ? state.currentUser : null,
+        redirectTo: action.error ? null : '/',
+        token: null,
+        inProgress: false,
+        snackbar: action.error
+          ? {
+              open: true,
+              message: 'Något gick fel',
+              color: 'warning',
+            }
+          : action.snackbar,
       }
     case EDIT_PARENT:
     case DELETE_CHILD:

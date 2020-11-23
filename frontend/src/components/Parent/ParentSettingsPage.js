@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import { PAGE_UNLOADED, LOAD_PARTY } from "../../constants/actionTypes";
 import agentEHR from "../../agentEHR";
 import { useState } from "react";
-import { UPDATE_FIELD_AUTH, EDIT_PARENT } from "../../constants/actionTypes";
+import { UPDATE_FIELD_AUTH, EDIT_PARENT, DELETE_PARENT } from "../../constants/actionTypes";
 import agent from "../../agent";
 
 const mapStateToProps = state => ({
@@ -26,6 +26,10 @@ const mapDispatchToProps = dispatch => ({
   editParent: (email, snackbar) => {
     const payload = agent.Parent.editParent(email);
     dispatch({ type: EDIT_PARENT, payload, snackbar });
+  },
+  deleteParent: (snackbar) => {
+    const payload = agent.Parent.deleteParent()
+    dispatch({ type: DELETE_PARENT, payload, snackbar })
   }
 
 });
@@ -40,6 +44,17 @@ const ParentSettingsPage = props => {
     : null;
   const [emailIsOpen, setEmailIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
+
+  const deleteParent = () => {
+    setDeleteIsOpen(false);
+    const snackbar = {
+      message: `Du tog bort kontot för ${name}`,
+      color: 'success',
+      open: true,
+    }
+    props.deleteParent(snackbar)
+  };
+
   const onChangeField = ev =>
     props.onChangeField(ev.target.id, ev.target.value);
   const submitForm = (email) => ev => {
@@ -151,7 +166,7 @@ const ParentSettingsPage = props => {
                 type="submit"
                 variant="contained"
                 color="secondary"
-                onClick={() => setDeleteIsOpen(false)}
+                onClick={() => deleteParent()}
               >
                 Bekräfta
               </Button>
