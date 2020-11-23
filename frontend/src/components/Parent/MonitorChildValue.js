@@ -56,6 +56,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
   },
   loadValues: (ehrId, offset, limit, disease) => {
+    console.log(disease)
     if (disease === 'DIABETES')
       dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
     else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
