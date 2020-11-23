@@ -1,6 +1,6 @@
-
 const webdriver = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
+const {Builder, By, Key, until} = require('..');
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 
