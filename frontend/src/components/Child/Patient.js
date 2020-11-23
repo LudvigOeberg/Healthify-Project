@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { Box, Container, Grid, Button } from '@material-ui/core'
-import Input from '@material-ui/core/Input'
 import Slider from '@material-ui/core/Slider'
+import Input from '@material-ui/core/Input'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -51,7 +51,10 @@ const mapDispatchToProps = (dispatch) => ({
   onLoad: (ehrId) => {
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
 
-    dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, 0, 20) })
+    dispatch({
+      type: LOAD_BLOODSUGAR,
+      payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
+    })
   },
   onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
 })
@@ -161,58 +164,60 @@ class PatientNew extends Component {
 
     return (
       <Container maxWidth="" className={classes.backGround}>
-        <Grid item xs={12}>
-          <Box className={classes.avatar} textAlign="center">
-            <img src={Avatar} alt="mood avatar"></img>
-          </Box>
-        </Grid>
-        <Grid container spacing={5} alignItems="center">
-          <Grid item xs>
-            <Slider
-              id="bloodsugar"
-              value={typeof parseInt(bloodsugar, 10) === 'number' ? parseInt(bloodsugar, 10) : 0}
-              onChange={(ev, value) => this.changeAuthSlider(ev, value)}
-              aria-labelledby="input-slider"
-              defaultValue={10}
-              step={1}
-              valueLabelDisplay="auto"
-              marks={marks}
-              max={15}
-              min={0}
-            />
+        <Container maxWidth="sm">
+          <Grid item xs={12}>
+            <Box className={classes.avatar} textAlign="center">
+              <img src={Avatar} alt="mood avatar"></img>
+            </Box>
           </Grid>
-          {/* Temporary input until the plus-button at the bottom is implemented. */}
-          <Grid item>
-            <Input
-              id="bloodsugar"
-              className={classes.input}
-              value={bloodsugar}
-              margin="dense"
-              onChange={this.changeAuth}
-              onBlur={this.handleBlur}
-              inputProps={{
-                step: 1,
-                min: 0,
-                max: 15,
-                type: 'number',
-                'aria-labelledby': 'input-slider',
-              }}
-            />
-            <h5> mmol/L </h5>
+          <Grid container spacing={5} alignItems="center">
+            <Grid item xs>
+              <Slider
+                id="bloodsugar"
+                value={typeof parseInt(bloodsugar, 10) === 'number' ? parseInt(bloodsugar, 10) : 0}
+                onChange={(ev, value) => this.changeAuthSlider(ev, value)}
+                aria-labelledby="input-slider"
+                defaultValue={10}
+                step={1}
+                valueLabelDisplay="auto"
+                marks={marks}
+                max={15}
+                min={0}
+              />
+            </Grid>
+            {/* Temporary input until the plus-button at the bottom is implemented. */}
+            <Grid item>
+              <Input
+                id="bloodsugar"
+                className={classes.input}
+                value={bloodsugar}
+                margin="dense"
+                onChange={this.changeAuth}
+                onBlur={this.handleBlur}
+                inputProps={{
+                  step: 1,
+                  min: 0,
+                  max: 15,
+                  type: 'number',
+                  'aria-labelledby': 'input-slider',
+                }}
+              />
+              <h5> mmol/L </h5>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                onClick={(ev) => this.submitForm(ev)}
+                disabled={this.props.inProgress}
+              >
+                {' '}
+                Submit
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.button}
-              onClick={(ev) => this.submitForm(ev)}
-              disabled={this.props.inProgress}
-            >
-              {' '}
-              Submit
-            </Button>
-          </Grid>
-        </Grid>
+        </Container>
       </Container>
     )
   }
@@ -226,7 +231,7 @@ const styles = (theme) => ({
   },
   backGround: {
     position: 'absolute',
-    padding: '45% 10% 28%',
+    padding: '10% 10% 10%',
     background: 'linear-gradient(0deg, rgba(118,176,208,1) 37%, rgba(106,161,191,1) 38%, rgba(125,180,213,1) 86%)',
     marginTop: '-3%', // Removes a small white space at the top.
   },
@@ -263,7 +268,13 @@ export function getCurrentDate() {
     minutes = `0${String(today.getDate())}`
   }
 
-  const dateInfo = { year: String(today.getFullYear()), month, day, hours, minutes }
+  const dateInfo = {
+    year: String(today.getFullYear()),
+    month,
+    day,
+    hours,
+    minutes,
+  }
   return dateInfo
 }
 

@@ -1,8 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-return-assign */
-// import React, { useState, useEffect } from 'react'
 import React, { useEffect } from 'react'
-// import React from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
@@ -17,15 +15,14 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import Box from '@material-ui/core/Box'
-import MyDialog from '../MyDialog'
 
+import MyDialog from '../MyDialog'
 import { LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 
 /**
- * Page where the child may run a simulation of how they will feel if they eat something
- * Right now: Eating something of the portion size "Mellan" will show a good result,
- * other portion sizes will show a bad result.
+ * Page where the child may run a simulation of how they will feel if they eat something.
+ * Right now: Bases the simulation of the type of meal and the latest recorded bloodsugar value (not the meal size).
  */
 
 const mapStateToProps = (state) => ({
@@ -39,8 +36,15 @@ const mapDispatchToProps = (dispatch) => ({
   },
   loadValues: (ehrId, offset, limit, disease) => {
     if (disease === 'DIABETES')
-      dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
-    else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
+      dispatch({
+        type: LOAD_BLOODSUGAR,
+        payload: agentEHR.Query.bloodsugar(ehrId, offset, limit),
+      })
+    else if (disease === 'OBESITY')
+      dispatch({
+        type: LOAD_WEIGHT,
+        payload: agentEHR.Query.weight(ehrId, limit),
+      })
   },
 })
 
@@ -76,7 +80,6 @@ const useStyles = makeStyles((theme) => ({
 const ChildSimulation = (props) => {
   const id = props.currentUser.ehrid
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-
   let { bloodsugar } = props
 
   if (bloodsugar !== undefined) {
@@ -92,7 +95,7 @@ const ChildSimulation = (props) => {
   useEffect(() => {
     props.onLoad(id)
     props.loadValues(id, 0, 1, disease)
-    }, [id, disease]) // eslint-disable-line
+  }, [id, disease]); // eslint-disable-line
 
   const date = getCurrentDate()
 
@@ -191,10 +194,6 @@ const ChildSimulation = (props) => {
 
   return (
     <Container className={classes.root}>
-      {/* {(window.onload = props.onLoad(props.currentUser.ehrid))} */}
-      {/* {Example()} */}
-      {/* {handleLoad()} */}
-      {/* {(window.onload = setBloodsugar())} */}
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Card className={classes.card}>
