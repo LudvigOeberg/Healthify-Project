@@ -86,12 +86,6 @@ const ChildSimulation = (props) => {
     bloodsugar = bloodsugar[0].value
   }
 
-  // eslint-disable-next-line no-console
-  console.log(bloodsugar)
-
-  // eslint-disable-next-line no-console
-  console.log(disease)
-
   useEffect(() => {
     props.onLoad(id)
     props.loadValues(id, 0, 1, disease)
@@ -164,8 +158,6 @@ const ChildSimulation = (props) => {
   }
 
   function getDialogInfo() {
-    // eslint-disable-next-line no-console
-    console.log(`in getDialogInfo - bloodsugar: ${bloodsugar}`)
     if (bloodsugar < lowBloodsugarValue) {
       if (Meal_type === 'Snack') {
         return badDialogInfo
