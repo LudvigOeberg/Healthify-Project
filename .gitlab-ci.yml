@@ -132,7 +132,7 @@ build-app-image:
 
 
 
-deploy-app:
+.deploy-app:
   environment: 'production'
   needs: ["build-app-image", "build-flask-image"]
   dependencies: []
