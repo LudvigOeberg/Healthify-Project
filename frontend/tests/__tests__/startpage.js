@@ -1,6 +1,6 @@
 let driver
 const webdriver = require('selenium-webdriver')
-const chrome = require('selenium-webdriver/chrome')
+//const chrome = require('selenium-webdriver/chrome')
 
 const localURL = 'http://localhost:4100/'
 
@@ -8,9 +8,7 @@ const localURL = 'http://localhost:4100/'
 beforeEach(() => {
   var chromeCapabilities = webdriver.Capabilities.chrome();
   //setting chrome options to start the browser fully maximized
-  var chromeOptions = {
-      'args': ['--test-type', '--start-maximized', '--headless']
-  };
+  let chromeOptions = { 'args': ['--headless'] };
   chromeCapabilities.set('chromeOptions', chromeOptions);
   driver = new webdriver.Builder().withCapabilities(chromeCapabilities).build();
 
