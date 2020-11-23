@@ -1,31 +1,21 @@
 let driver
-//const webdriver = require('selenium-webdriver')
-//const chrome = require('selenium-webdriver/chrome')
-let webdriver = require('selenium-webdriver');
-require('selenium-webdriver/chrome')
-require('selenium-webdriver/firefox')
-require('chromedriver')
-require('geckodriver')
-// const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
+const webdriver = require('selenium-webdriver')
+const chrome = require('selenium-webdriver/chrome')
+
 const localURL = 'http://localhost:4100/'
 
-beforeEach(async () => {
-  require("chromedriver");
-  let capabilities = webdriver.Capabilities;
-  capabilities = webdriver.Capabilities.chrome();
-  capabilities.set("chromeOptions", {
-    args: [
-      "--headless",
-      "--no-sandbox",
-      "--disable-gpu",
-      "--window-size=1980,1200"
-    ]
-  });
-  driver = await new webdriver.Builder()
-    .withCapabilities(capabilities)
-    .build();
+
+beforeEach(() => {
+  var chromeCapabilities = webdriver.Capabilities.chrome();
+  //setting chrome options to start the browser fully maximized
+  var chromeOptions = {
+      'args': ['--test-type', '--start-maximized', '--headless']
+  };
+  chromeCapabilities.set('chromeOptions', chromeOptions);
+  driver = new webdriver.Builder().withCapabilities(chromeCapabilities).build();
+
   //const options = new chrome.Options()
-  //options.addArguments('--no-sandbox', '--headless', '--disable-dev-shm-usage', "window-size=1024,768", '--remote-debugging-port=9222');
+  //options.addArguments();
   //driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
