@@ -90,22 +90,32 @@ const MonitorChildValue = (props) => {
     props.loadValues(id, 0, 20, disease)
   }, [id, disease]) // eslint-disable-line
 
-  const validate = (val) => val < 100 && val > 0
+const validate = (val) => {
+  if (disease === 'DIABETES') {
+    return val <= 10 && val > 0
+  } else {
+   return val <= 100 && val >= 40
+  }
+}
 
   const submitForm = (ev) => {
     ev.preventDefault()
-    // const color = validate(props.childValue) ? 'success' : 'error'
-    // const message = validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!'
-    // props.onOpenSnackbar(message, color)
-    const measurementChild = props.childValue
+
+    
+    const measurementChild = props.childValue 
+    
     const snackbar = {
       open: true,
       message: validate(props.childValue)
         ? `Du loggade värdet: ${props.childValue} ${disease === 'DIABETES' ? 'mmol/L' : 'kg'}`
-        : 'Fel format!',
-      color: validate(props.childValue) ? 'success' : 'error',
-    }
-    props.onSubmit(id, measurementChild, snackbar, disease)
+        : `${disease === 'DIABETES' ? 'Blodsocker måste vara mellan 1-10 mmol/L' : 'Vikt måste vara mellan 40-100kg'}`,
+      
+      
+        color: validate(props.childValue) ? 'success' : 'error',
+  
+  }
+      props.onSubmit(id, measurementChild, snackbar, disease)
+      
   }
   const changeField = (ev) => {
     props.onChangeField(ev.target.id, ev.target.value)
@@ -113,6 +123,7 @@ const MonitorChildValue = (props) => {
 
   // getIndication & reformat are dublicated in ParentOverview.
   const getIndication = (data) => {
+    if (disease === 'DIABETES') {
     if (data > 0 && data < 4) {
       return 'Lågt'
     }
@@ -121,7 +132,22 @@ const MonitorChildValue = (props) => {
     }
 
     return 'Stabilt'
+
+  } else {
+    if (data < 50) {
+      return 'Undervikt'
+    }
+    if (data > 49 && data < 60 ) {
+      return 'Lagom'
+    }
+    if (data > 59) {
+      return 'Övervikt'
+    }
   }
+}
+
+
+
   const reformat = (data) => {
     const dataObjects = []
     for (let i = 0; i < data.length; i++) {
