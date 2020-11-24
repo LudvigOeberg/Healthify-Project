@@ -18,7 +18,7 @@ beforeAll(() => {
 
 
 afterAll(() => {
-  driver.close()
+  driver.quit()
 })
 
 async function connectToEHR() {
@@ -39,7 +39,7 @@ test('TestCaseID:51. Check Healthify startpage', async () => {
   await connectToEHR()
   expect(await driver.getTitle()).toEqual('Healthify')
 })
-
+/*
 test('TestCaseID:52. Check if log in button exists', async () => {
   // await connectToEHR()
   await driver.get(localURL)
@@ -79,3 +79,4 @@ test('TestCaseID:55. Check registration button functionallity', async () => {
   await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click()
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}register`)
 })
+*/
