@@ -120,11 +120,6 @@ deploy-app:
   script:
     - kubectl delete pods -l app=healthapp
     - kubectl delete pods -l app=flask
-    - kubectl apply -f yaml/app-deployment.yaml
-    - kubectl apply -f yaml/app-service.yaml
-    - kubectl apply -f yaml/flask-deployment.yaml
-    - kubectl apply -f yaml/flask-service.yaml
-    - kubectl apply -f yaml/app-ingress.yaml
 
 
 
