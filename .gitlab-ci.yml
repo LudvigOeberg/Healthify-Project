@@ -50,7 +50,7 @@ test-frontend:
     - apt-get install -y nodejs
     - apt-get install -y npm
     - apt-get install -y default-jre
-    - apt-get install -y chromium-browser
+    - apt-get install -y google-chrome-stable
     - cd frontend
     - npm i -g serve
     - npm i -S serve
