@@ -16,7 +16,7 @@ beforeAll(() => {
 
 
 afterAll(() => {
-  driver.close()
+  driver.quit()
 })
 
 function User(user) {
