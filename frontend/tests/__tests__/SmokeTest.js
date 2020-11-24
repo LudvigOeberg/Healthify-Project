@@ -8,9 +8,8 @@ beforeAll(() => {
   jest.setTimeout(30000)
   const options = new chrome.Options()
   options.addArguments('--headless')
-  options.addArguments('--test-type')
-  options.addArguments('--start-maximized')
-  options.addArgument('--remote-debugging-port=9222')
+  options.addArguments('--no-sandbox')
+  options.addArguments('--disable-dev-shm-usage')
 
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
