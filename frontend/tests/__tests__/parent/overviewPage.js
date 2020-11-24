@@ -73,7 +73,7 @@ async function registerPatient(driver, patient) {
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
 }
 
-test('TestCaseID:182. Enter overview page', async () => {
+test('TestCaseID:18.1.1. Enter overview page', async () => {
   const user = new User()
   await connectToEHR()
   await register(driver, user)

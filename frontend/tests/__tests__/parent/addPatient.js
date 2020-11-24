@@ -92,7 +92,7 @@ async function logut(driver) {
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
 }
 
-test('TestCaseID:541. Register a new Patient', async () => {
+test('TestCaseID:22.1.1. Register a new Patient', async () => {
   const user = new User()
   await connectToEHR()
   await register(driver, user)
@@ -101,7 +101,7 @@ test('TestCaseID:541. Register a new Patient', async () => {
   await logut(driver)
 })
 
-test('TestCaseID:542. Register same Patient to same parent twice', async () => {
+test('TestCaseID:22.1.2. Register same Patient to same parent twice', async () => {
   const user = new User()
   // await connectToEHR()
   await register(driver, user)
@@ -114,7 +114,7 @@ test('TestCaseID:542. Register same Patient to same parent twice', async () => {
   })
 })
 
-test('TestCaseID:543. Register two new Patient', async () => {
+test('TestCaseID:22.1.3. Register two new Patient', async () => {
   const user = new User()
   // await connectToEHR()
   await register(driver, user)
