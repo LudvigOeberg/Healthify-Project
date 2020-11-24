@@ -114,7 +114,7 @@ const AddVal = (props) => {
     const measurementChild = props.childValue;
 
     const HIGH_VAL = disease === "DIABETES" ? measurementChild > 8 : measurementChild > 70
-    const LOW_VAL = disease === "DIABETES" ? measurementChild < 4 : measurementChild < 5
+    const LOW_VAL = disease === "DIABETES" ? measurementChild < 4 : measurementChild < 0
 
 
     let snackbar = {
@@ -158,9 +158,6 @@ const AddVal = (props) => {
       color: validate(props.childValue) ? "error" : "error",
     };
   }
-
-
-
     props.onSubmit(id, measurementChild, snackbar, disease, timer);
   };
 
@@ -182,7 +179,6 @@ const AddVal = (props) => {
       label: disease === "DIABETES" ? "15 mmol/L" : "100 kg",
     },
   ];
-
 
   return (
     <Container component="main" maxWidth="md">
@@ -239,7 +235,6 @@ const AddVal = (props) => {
               <Button
                 variant="contained"
                 color="secondary"
-                //className={classes.button}
                 onClick={(ev) => submitForm(ev)}
                 disabled={props.inProgress || open}
                 className={classes.submit}
