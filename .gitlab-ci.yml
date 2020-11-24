@@ -49,6 +49,9 @@ test-frontend:
     - apt-get install -y python3-dev python3-pip python3-venv
     - apt-get install -y nodejs
     - apt-get install -y npm
+    - apt-get install default-jre
+    - apt-get -f install
+    - apt-get install chromium-browser
     - cd frontend
     - npm i -g serve
     - npm i -S serve
