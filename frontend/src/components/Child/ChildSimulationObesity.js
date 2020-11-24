@@ -122,7 +122,7 @@ const ChildSimulationObesity = (props) => {
 
   let info
 
-  const dialogInfo = [
+  const goodDialogInfo = [
     'Simulera',
     'Simulation',
     'Fortsätter du så här kommer det att ta REPLACE att nå ditt mål!',
@@ -130,32 +130,13 @@ const ChildSimulationObesity = (props) => {
     'training avatar',
   ]
 
-  //   const badDialogInfo = [
-  //     'Simulera',
-  //     'Simulation',
-  //     'Du kommer att må sämre om du äter detta.',
-  //     '../Static/sad_avatar.png',
-  //     'sad avatar',
-  //   ]
-
-  //   const goodDialogInfo = [
-  //     'Simulera',
-  //     'Simulation',
-  //     'Du kommer att må bättre om du äter detta!',
-  //     '../Static/happy_avatar.png',
-  //     'happy avatar',
-  //   ]
-
-  //   const neutralDialogInfo = [
-  //     'Simulera',
-  //     'Simulation',
-  //     'Ditt mående kommer inte att förändras om du äter detta!',
-  //     '../Static/neutral_avatar.png',
-  //     'neutral avatar',
-  //   ]
-
-  //   const lowBloodsugarValue = 4
-  //   const highBloodsugarValue = 10
+  const encouragingDialogInfo = [
+    'Simulera',
+    'Simulation',
+    'Om du tränar så här lite kommer det ta lång tid att nu ditt mål, försök att träna mer så är inget omöjligt!',
+    '',
+    'running avatar',
+  ]
 
   const classes = useStyles()
 
@@ -165,32 +146,24 @@ const ChildSimulationObesity = (props) => {
     return todaysDate
   }
 
+  // This shall be the function that calculates
+  // the number of weeks it will take for the person
+  // to reach their goal.
+  function getWeeksNumber() {
+    const w = -3
+    return w
+  }
+
+  function getWeeks() {
+    const w = getWeeksNumber()
+    return `${w} veckor`
+  }
+
   function getDialogInfo() {
-    return dialogInfo
-    // if (bloodsugar < lowBloodsugarValue) {
-    //   if (Meal_type === 'Snack') {
-    //     return badDialogInfo
-    //   }
-    //   if (Meal_type === 'Mellanmål') {
-    //     return goodDialogInfo
-    //   }
-    //   if (Meal_type === 'Måltid') {
-    //     return goodDialogInfo
-    //   }
-    // }
-    // if (bloodsugar > highBloodsugarValue) {
-    //   if (Meal_type === 'Snack') {
-    //     return neutralDialogInfo
-    //   }
-    //   return badDialogInfo
-    // }
-    // if (Meal_type === 'Snack') {
-    //   return goodDialogInfo
-    // }
-    // if (Meal_type === 'Mellanmål') {
-    //   return neutralDialogInfo
-    // }
-    // return badDialogInfo
+    if (getWeeksNumber() > 0) {
+      return goodDialogInfo
+    }
+    return encouragingDialogInfo
   }
 
   return (
@@ -263,6 +236,7 @@ const ChildSimulationObesity = (props) => {
             text={info[2]}
             pictureLocation={info[3]}
             alt={info[4]}
+            weeks={getWeeks()}
           ></MyDialog>
         </Grid>
       </Grid>

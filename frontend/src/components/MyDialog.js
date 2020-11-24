@@ -17,6 +17,7 @@ import sadAvatar from '../Static/sad_avatar_face.png'
 import happyAvatar from '../Static/happy_avatar_face.png'
 import neutralAvatar from '../Static/neutral_avatar_face.png'
 import trainingAvatar from '../Static/workout_avatar_weights.png'
+import runningAvatar from '../Static/workout_avatar_run.png'
 
 const styles = (theme) => ({
   root: {
@@ -67,8 +68,11 @@ export default function MyDialog(props) {
   const [open, setOpen] = React.useState(false)
 
   const { buttonLabel } = props
-  const { text } = props
+  // eslint-disable-next-line prefer-const
+  let { text } = props
   const { alt } = props
+  // eslint-disable-next-line no-unused-vars
+  const { weeks } = props
   let avatar
 
   if (alt === 'sad avatar') {
@@ -77,18 +81,10 @@ export default function MyDialog(props) {
     avatar = happyAvatar
   } else if (alt === 'neutral avatar') {
     avatar = neutralAvatar
+  } else if (alt === 'running avatar') {
+    avatar = runningAvatar
   } else {
     avatar = trainingAvatar
-  }
-
-  if (avatar === trainingAvatar) {
-    // eslint-disable-next-line no-console
-    console.log('in if statement')
-    // eslint-disable-next-line prettier/prettier
-    // const str = document.getElementById("bubbleText").innerHTML
-    // const res = str.replace('REPLACE', 'hih')
-    // // eslint-disable-next-line prettier/prettier
-    // document.getElementById("bubbleText").innerHTML = res
   }
 
   const handleClickOpen = () => {
@@ -96,6 +92,27 @@ export default function MyDialog(props) {
   }
   const handleClose = () => {
     setOpen(false)
+  }
+
+  function getFirstPart() {
+    if (avatar === trainingAvatar) {
+      return text.substr(0, 39)
+    }
+    return text
+  }
+
+  // eslint-disable-next-line consistent-return
+  function getSecondPart() {
+    if (avatar === trainingAvatar) {
+      return text.substr(46, 17)
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  function getWeeks() {
+    if (avatar === trainingAvatar) {
+      return <b>{weeks}</b>
+    }
   }
 
   return (
@@ -106,9 +123,18 @@ export default function MyDialog(props) {
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
         <DialogContent dividers>
-          <Container component="div" style={{ padding: '15px', borderRadius: '30px', border: '1px solid #000' }}>
+          <Container
+            component="div"
+            style={{
+              padding: '15px',
+              borderRadius: '30px',
+              border: '1px solid #000',
+            }}
+          >
             <Typography textAlign="center" id="bubbleText" gutterBottom>
-              {text}
+              {getFirstPart()}
+              {getWeeks()}
+              {getSecondPart()}
             </Typography>
           </Container>
           <Box display="flex" justifyContent="center" alignItems="center" height="45px">
