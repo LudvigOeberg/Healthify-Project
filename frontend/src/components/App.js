@@ -28,8 +28,9 @@ import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
-import ChildSimulation from './Child/ChildSimulation'
 import ChildLaboration from './Child/ChildLaboration'
+import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
+import ChildSimulationObesity from './Child/ChildSimulationObesity'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -241,10 +242,17 @@ class App extends React.Component {
               />
               <RequiredRoute
                 exact
-                path="/simulate-child/"
+                path="/simulate-child-diabetes/"
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
-                component={ChildSimulation}
+                component={ChildSimulationDiabetes}
+              />
+              <RequiredRoute
+                exact
+                path="/simulate-child-Obesity/"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={ChildSimulationObesity}
               />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />

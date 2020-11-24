@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ChildSimulation = (props) => {
+const ChildSimulationDiabetes = (props) => {
   const id = props.currentUser.ehrid
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
   let { bloodsugar } = props
@@ -261,4 +261,4 @@ const ChildSimulation = (props) => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChildSimulation)
+export default connect(mapStateToProps, mapDispatchToProps)(ChildSimulationDiabetes)

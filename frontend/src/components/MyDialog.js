@@ -16,6 +16,7 @@ import DetailsIcon from '@material-ui/icons/Details'
 import sadAvatar from '../Static/sad_avatar_face.png'
 import happyAvatar from '../Static/happy_avatar_face.png'
 import neutralAvatar from '../Static/neutral_avatar_face.png'
+import trainingAvatar from '../Static/workout_avatar_weights.png'
 
 const styles = (theme) => ({
   root: {
@@ -74,8 +75,20 @@ export default function MyDialog(props) {
     avatar = sadAvatar
   } else if (alt === 'happy avatar') {
     avatar = happyAvatar
-  } else {
+  } else if (alt === 'neutral avatar') {
     avatar = neutralAvatar
+  } else {
+    avatar = trainingAvatar
+  }
+
+  if (avatar === trainingAvatar) {
+    // eslint-disable-next-line no-console
+    console.log('in if statement')
+    // eslint-disable-next-line prettier/prettier
+    // const str = document.getElementById("bubbleText").innerHTML
+    // const res = str.replace('REPLACE', 'hih')
+    // // eslint-disable-next-line prettier/prettier
+    // document.getElementById("bubbleText").innerHTML = res
   }
 
   const handleClickOpen = () => {
@@ -94,7 +107,7 @@ export default function MyDialog(props) {
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
         <DialogContent dividers>
           <Container component="div" style={{ padding: '15px', borderRadius: '30px', border: '1px solid #000' }}>
-            <Typography textAlign="center" gutterBottom>
+            <Typography textAlign="center" id="bubbleText" gutterBottom>
               {text}
             </Typography>
           </Container>

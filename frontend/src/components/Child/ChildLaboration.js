@@ -85,8 +85,8 @@ const ChildLaboration = (props) => {
 
   const classes = useStyles()
 
-  const training = [trainingAvatar, 'training avatar', '/simulate-child', 'TRÄNING']
-  const food = [foodAvatar, 'food avatar', '/child', 'KOST']
+  const training = [trainingAvatar, 'training avatar', '/simulate-child-obesity', 'TRÄNING']
+  const food = [foodAvatar, 'food avatar', '/simulate-child-diabetes', 'KOST']
 
   function getCardContent() {
     if (disease === 'DIABETES') {
