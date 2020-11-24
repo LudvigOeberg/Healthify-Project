@@ -11,7 +11,7 @@ beforeEach(async () => {
   options.addArguments('--headless')
   options.addArguments('--test-type')
   options.addArguments('--start-maximized')
-  options.addArgument('--remote-debugging-port=9222')
+  options.addArguments('--remote-debugging-port=9222')
 
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 });
