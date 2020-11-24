@@ -173,7 +173,7 @@ const ChildSimulationObesity = (props) => {
           <Card className={classes.card}>
             <Grid item xs={8}>
               <Typography variant="h4" className={classes.title} color="textSecondary" gutterBottom>
-                Obesity
+                Obesity - This will be updated
               </Typography>
             </Grid>
             <Grid item xs={8}>
@@ -188,7 +188,7 @@ const ChildSimulationObesity = (props) => {
             </Grid>
             <Grid item xs={8}>
               <Typography variant="subtitle1" className={classes.eatText} gutterBottom>
-                Hur mycket vill du äta?
+                The look of this page is just temporary and will be updated to meet the req&apos;s and UX
               </Typography>
             </Grid>
             <Grid item xs={12}>
