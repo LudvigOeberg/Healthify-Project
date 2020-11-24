@@ -85,22 +85,6 @@ const AddVal2 = (props) => {
   const disease = props.party
     ? `${props.party[id].additionalInfo.disease}`
     : null;
-  const name = props.party
-    ? `${props.party[id].firstNames} ${props.party[id].lastNames}`
-    : null;
-  const loading = props.inProgress;
-  const colDesc = [
-    "Datum",
-    `Värde ${disease === "DIABETES" ? "(mmol/L)" : "(vikt i kg)"}`,
-    `${disease === "DIABETES" ? "Blodsocker" : "Viktklass"}`,
-  ];
-  const input = bloodsugar || weight;
-
-  const reformatForChart = (data) => {
-    if (bloodsugar) return Reformat.bloodsugar(data, false, true);
-    if (weight) return Reformat.weight(data, false, true);
-    return null;
-  };
 
   useEffect(() => {
     props.onLoad(id);
@@ -131,31 +115,10 @@ const AddVal2 = (props) => {
     props.onChangeField(ev.target.id, ev.target.value);
   };
 
-  // getIndication & reformat are dublicated in ParentOverview.
-  const getIndication = (data) => {
-    if (data > 0 && data < 4) {
-      return "Lågt";
-    }
-    if (data > 9) {
-      return "Högt";
-    }
+  const changeAuthSlider = (ev, value) => {
+    props.onChangeField(ev.target.id, value);
+  }
 
-    return "Stabilt";
-  };
-  const reformat = (data) => {
-    const dataObjects = [];
-    for (let i = 0; i < data.length; i++) {
-      dataObjects.push({
-        time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
-        value: disease === "DIABETES" ? data[i].value : data[i].weight,
-        indicator: getIndication(
-          disease === "DIABETES" ? data[i].value : data[i].weight
-        ),
-      });
-    }
-    return dataObjects;
-  };
-  //------- Ny kod här mellan----------------
   const marks = [
     {
       value: 0,
@@ -166,44 +129,12 @@ const AddVal2 = (props) => {
       label: disease === "DIABETES" ? "15 mmol/L" : "150 kg",
     },
   ];
-  const changeAuth = (ev) => props.onChangeAuth(ev.target.id, ev.target.value)
-  const changeAuthSlider = (ev, value) =>
-    props.onChangeField(ev.target.id, value);
 
-  //------------------------------------------
+
   return (
     <Container component="main" maxWidth="md">
       <div className={classes.paper}>
-        <Typography component="h1" variant="h3">
-          Hantera {name}s värden
-        </Typography>
-        <p></p>
         <Grid container spacing={5}>
-          <Grid item xs={12} sm={12} md={6}>
-            <Typography component="h1" variant="h5">
-              Tabell
-            </Typography>
-            <CustomPaginationActionsTable
-              //   columns={['x', 'y']}
-              columns={["time", "value", "indicator"]}
-              loading={loading}
-              rows={input ? reformat(input, false) : null}
-              // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
-              titles={colDesc}
-              paginate
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={6}>
-            <Typography component="h1" variant="h5">
-              Graf
-            </Typography>
-            <TimeLineChart
-              chartData={input ? reformatForChart(input) : null}
-              label={
-                disease === "DIABETES" ? "Blodsocker (mmol/L)" : "Vikt (kg)"
-              }
-            ></TimeLineChart>
-          </Grid>
           <Grid item xs={12} align="center">
             <Avatar className={classes.avatar}>
               <AddIcon />
@@ -242,7 +173,6 @@ const AddVal2 = (props) => {
                 value={childValue}
                 margin="dense"
                 onChange={changeField}
-                //onBlur={handleBlur}
                 inputProps={{
                   step: 1,
                   min: 0,
@@ -251,7 +181,6 @@ const AddVal2 = (props) => {
                   'aria-labelledby': 'input-slider',
                 }}
               />
-              <h5> mmol/L </h5>
             </Grid>
             <Grid item>
               <Button
