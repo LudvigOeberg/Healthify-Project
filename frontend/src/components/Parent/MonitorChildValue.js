@@ -30,12 +30,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
-  onSubmit: (ehrId, measurement, snackbar, disease) =>
+  onSubmit: (ehrId, measurement, snackbar, disease) => 
     // eslint-disable-next-line implicit-arrow-linebreak
     dispatch({
+      // eslint-disable-next-line no-nested-ternary
       type: disease === "DIABETES" ? SAVE_BLOODSUGAR : SAVE_WEIGHT,
       payload:
-        disease === "DIABETES"
+      (disease === "DIABETES")
           ? agentEHR.Composition.saveBloodSugar(ehrId, measurement).then(() => {
               dispatch({
                 type: LOAD_BLOODSUGAR,
@@ -77,6 +78,8 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
+
+
 const MonitorChildValue = (props) => {
   const { id } = props.match.params;
   const classes = styles();
@@ -117,7 +120,6 @@ const MonitorChildValue = (props) => {
     }
   };
 
-
   const submitForm = (ev) => {
   ev.preventDefault();
 
@@ -137,13 +139,14 @@ const MonitorChildValue = (props) => {
       color: validate(props.childValue) ? "success" : "error",
     };
 
-
     if (validate(props.childValue)) {
       props.onSubmit(id, measurementChild, snackbar, disease);
     } else {
       props.onSubmit(id, null, snackbar, disease);
     }
+    return null;
   };
+
   const changeField = (ev) => {
     props.onChangeField(ev.target.id, ev.target.value);
   };
