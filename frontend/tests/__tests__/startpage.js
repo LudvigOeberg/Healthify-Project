@@ -5,7 +5,7 @@ const chrome = require('selenium-webdriver/chrome')
 const localURL = 'http://localhost:4100/'
 
 
-beforeAll(() => {
+beforeEach(async () => {
   jest.setTimeout(30000)
   const options = new chrome.Options()
   options.addArguments('--headless')
@@ -14,12 +14,12 @@ beforeAll(() => {
   options.addArgument('--remote-debugging-port=9222')
 
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
-})
+});
 
 
-afterAll(() => {
-  driver.quit()
-})
+afterEach(async () => {
+  await driver.quit()
+});
 
 async function connectToEHR() {
   await driver.get(localURL)
