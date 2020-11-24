@@ -51,7 +51,7 @@ test-frontend:
     - apt-get install -y npm
     - apt-get install default-jre
     - apt-get -f install
-    - apt-get install chromium-browser
+    - curl https://intoli.com/install-google-chrome.sh | bash
     - cd frontend
     - npm i -g serve
     - npm i -S serve
