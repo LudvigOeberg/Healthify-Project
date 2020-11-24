@@ -15,20 +15,23 @@ import {
   SAVE_BLOODSUGAR,
   LOAD_WEIGHT,
   SAVE_WEIGHT,
+  SAVE_TIMER,
 } from "../../constants/actionTypes";
 import agentEHR from "../../agentEHR";
 import Slider from "@material-ui/core/Slider";
 import Input from '@material-ui/core/Input'
+import agent from "../../agent";
 
 const mapStateToProps = (state) => ({
   ...state.common,
   ...state.ehr,
+  currentUser: state.common.currentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeAuth: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
   onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
-  onSubmit: (ehrId, measurement, snackbar, disease) =>
+  onSubmit: (ehrId, measurement, snackbar, disease, timer) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     dispatch({
       type: disease === "DIABETES" ? SAVE_BLOODSUGAR : SAVE_WEIGHT,
@@ -38,6 +41,12 @@ const mapDispatchToProps = (dispatch) => ({
               dispatch({
                 type: LOAD_BLOODSUGAR,
                 payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
+              });
+            })
+            .then(() => {
+              dispatch({
+                type: SAVE_TIMER,
+                payload: agent.Child.timer(timer),
               });
             })
           : agentEHR.Demograhics.newMeasurment(null, measurement, ehrId).then(
@@ -90,11 +99,25 @@ const AddVal = (props) => {
 
   const submitForm = (ev) => {
     ev.preventDefault();
-    // const color = validate(props.childValue) ? 'success' : 'error'
-    // const message = validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!'
-    // props.onOpenSnackbar(message, color)
+
+    let { timer } = props.currentUser;
+    function start_timer(){
+      if (disease === "DIABETES"){
+      if (timer === null) {
+        timer = setTimer();
+      } else {
+        timer = props.currentUser.timer;
+      }
+    }
+    }
+
     const measurementChild = props.childValue;
-    const snackbar = {
+
+    const HIGH_VAL = disease === "DIABETES" ? measurementChild > 8 : measurementChild > 70
+    const LOW_VAL = disease === "DIABETES" ? measurementChild < 4 : measurementChild < 5
+
+
+    let snackbar = {
       open: true,
       message: validate(props.childValue)
         ? `Ditt värde på ${props.childValue} ${
@@ -103,7 +126,42 @@ const AddVal = (props) => {
         : "Fel format!",
       color: validate(props.childValue) ? "success" : "error",
     };
-    props.onSubmit(id, measurementChild, snackbar, disease);
+
+    if (disease === "DIABETES" && timer !== null) {
+      snackbar = {
+        open: true,
+        message: `Bra jobbat, hoppas du mår toppen!`,
+        color: "success",
+      };
+    }
+    
+    if (HIGH_VAL){
+    start_timer();
+    snackbar = {
+      open: true,
+      message: validate(props.childValue)
+        ? `Åh nej, det ser ut som att ${disease === "DIABETES" ? "ditt blodsocker börjar bli högt. Se till att ta lite insulin snart så du inte börjar må dåligt." 
+        : "din vikt börjar gå upp. Försök röra på dig mer och äta hälsosammare."} `
+        : "Fel format!",
+      color: validate(props.childValue) ? "error" : "error",
+    };
+  }
+
+  if (LOW_VAL){
+    start_timer();
+    snackbar = {
+      open: true,
+      message: validate(props.childValue)
+        ? `Åh nej, det ser ut som att ${disease === "DIABETES" ? "ditt blodsocker börjar bli lågt. Se till att äta något snart innan du börjar må dåligt och registrera ett nytt värde därefter." 
+        : "din vikt gått ner. Försök att äta mer."} `
+        : "Fel format!",
+      color: validate(props.childValue) ? "error" : "error",
+    };
+  }
+
+
+
+    props.onSubmit(id, measurementChild, snackbar, disease, timer);
   };
 
   const changeField = (ev) => {
@@ -120,8 +178,8 @@ const AddVal = (props) => {
       label: disease === "DIABETES" ? "0 mmol/L" : "0 kg",
     },
     {
-      value: disease === "DIABETES" ? 15 : 150,
-      label: disease === "DIABETES" ? "15 mmol/L" : "150 kg",
+      value: disease === "DIABETES" ? 15 : 100,
+      label: disease === "DIABETES" ? "15 mmol/L" : "100 kg",
     },
   ];
 
@@ -157,7 +215,7 @@ const AddVal = (props) => {
                 step={disease === "DIABETES" ? 0.1 : 1}
                 valueLabelDisplay="auto"
                 marks={marks}
-                max={disease === "DIABETES" ? 15 : 150}
+                max={disease === "DIABETES" ? 15 : 100}
                 min={0}
               />
             </Grid>
@@ -224,6 +282,36 @@ export function getCurrentDate() {
     today.getMinutes()
   )}`;
   return todaysDate;
+}
+
+function setTimer() {
+  const today = new Date();
+  const year = String(today.getUTCFullYear());
+  let month = String(today.getUTCMonth());
+  let day = String(today.getUTCDate());
+  let hours = String(today.getUTCHours());
+  let minutes = String(today.getUTCMinutes());
+  let seconds = String(today.getUTCSeconds());
+
+  if (today.getUTCMonth() < 10) {
+    month = `0${String(today.getUTCMonth())}`;
+  }
+  if (today.getUTCDate() < 10) {
+    day = `0${String(today.getUTCDate())}`;
+  }
+  if (today.getUTCHours() < 10) {
+    hours = `0${String(today.getUTCHours())}`;
+  }
+  if (today.getUTCMinutes() < 10) {
+    minutes = `0${String(today.getUTCMinutes())}`;
+  }
+  if (today.getUTCSeconds() < 10) {
+    seconds = `0${String(today.getUTCSeconds())}`;
+  }
+  ++month; // UTC uses month 0-11 in JS.
+
+  const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  return dateInfo;
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddVal);

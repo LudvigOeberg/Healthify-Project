@@ -23,7 +23,6 @@ import agent from "../../agent";
 const mapStateToProps = (state) => ({
   ...state.common,
   ...state.ehr,
-  historicalBloodSugar: state.ehr.bloodsugar,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -87,15 +86,13 @@ const Patient = (props) => {
     ? `${props.party[id].firstNames} ${props.party[id].lastNames}`
     : null;
   const loading = props.inProgress;
-  //----------------------------------------------
+ 
 
 
-  //---------------Avataren----------------------
   let Avatar = normalAvatar;
-//if (disease === "DIABETES"){
+
   if (
-    disease === "DIABETES" ? bloodsugar : weight !== null &&
-    disease === "DIABETES" ? bloodsugar : weight !== undefined
+    disease === "DIABETES" ? bloodsugar : weight !== null && disease === "DIABETES" ? bloodsugar : weight !== undefined
   ) {
     if (
       (disease === "DIABETES" ? bloodsugar[0].value : weight[0].value) < 4 ||
@@ -109,8 +106,7 @@ const Patient = (props) => {
       Avatar = normalAvatar;
     }
   }
-//}
-  //-----------------------------------------------
+
 
   useEffect(() => {
     props.onLoad(id);
