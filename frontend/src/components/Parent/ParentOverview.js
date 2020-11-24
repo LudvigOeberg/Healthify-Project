@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Paper, ListItemText } from '@material-ui/core'
-import ChildCareIcon from '@material-ui/icons/ChildCare'
 import Moment from 'moment'
 import CustomPaginationActionsTable from '../TableOverview'
 import CaregivingTeam from '../CaregivingTeam'
@@ -42,7 +40,6 @@ const ParentOverview = (props) => {
   const { bloodsugar } = props
   const { weight } = props
   const loading = props.inProgress
-  const age = props.party ? `${Moment().diff(props.party[id].dateOfBirth, 'years')} år` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
   const input = bloodsugar || weight
 
@@ -65,33 +62,24 @@ const ParentOverview = (props) => {
 
   useEffect(() => {
     props.onLoad(id)
-    props.loadValues(id, 0, 5, disease)
+    props.loadValues(id, 0, 11, disease)
   }, [id, disease]) // eslint-disable-line
 
   const doctor = {
     name: 'Doktor X',
+    org: 'Region Östergötland',
     mail: 'Dr.x@gmail.com',
     telephone: '070-XXX XX XX',
   }
-  const shrink = {
-    name: 'Psykolog Y',
-    mail: 'P.Y@gmail.com',
-    telephone: '070-YYY YY YY',
-  }
-  const nurse = {
-    name: 'Sjuksköterska Z',
-    mail: 'S.Z@gmail.com',
-    telephone: '070-ZZZ ZZ ZZ',
-  }
-  const caregivers = [doctor, shrink, nurse]
+  const caregivers = [doctor]
 
   return (
     <div className={classes.main}>
       <Grid container className={classes.root} spacing={2} height="100%">
-        <Grid item xs={12} sm={12} md={6}>
+        <Grid item xs={12} sm={6} md={3}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <Paper className={classes.lpaper} elevation={2}>
+            <Grid item xs={12}>
+              <Paper className={classes.paper} elevation={2}>
                 <Grid container spacing={2}>
 
                   <Grid item xs={3}>
@@ -101,9 +89,7 @@ const ParentOverview = (props) => {
                     <Typography component="h1" variant="h5"> {name} </Typography>
                     <ListItemText secondary={disease==='DIABETES' ? 'Diabetes' : 'Fetma'}/>
                   </Grid>
-
                 </Grid>
-              
               </Paper>
 
               <Grid container spacing={1}>
@@ -118,10 +104,8 @@ const ParentOverview = (props) => {
                     </Button>
                 </Grid>
               </Grid>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={6}>
-              <Paper className={classes.lpaper} elevation={2}>
+              <Grid item xs={12} sm={12}>
+              <Paper className={classes.paper} elevation={2}>
                 <Grid container spacing={1} alignItems="center" justify="center">
                   <ListItemText primary = "Tidigare mätningar" secondary={disease==='DIABETES' ? 'Blodsocker' : 'Vikt'}/>
                   <Grid item xs={12}>
@@ -134,26 +118,40 @@ const ParentOverview = (props) => {
                   </Grid>
                 </Grid>
               </Paper>
+              </Grid>
             </Grid>
+
+
+
+
           </Grid>
+          
         </Grid>
 
 
         <Grid item xs={12} sm={12} md={6}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={6}>
-              <Paper className={classes.rpaper} elevation={2}>
+            <Grid item xs={12}>
+              <Paper className={classes.paper} elevation={2}>
                 <Typography component="h1" variant="h5">
                   {' '}
-                  GRAF
+                  Blodsocker
                 </Typography>
+                <ListItemText secondary="Idag"/>
+                <p></p>
                 <TimeLineChart
                   chartData={input ? reformatForChart(input) : null}
                   label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
+                  currSettings = 'day'
+                  hideRadio = {true}
                 ></TimeLineChart>
               </Paper>
             </Grid>
-            <Grid item xs={12}>
+            
+            
+          </Grid>
+        </Grid>
+        <Grid item xs={12} sm = {3}>
               <Paper className={classes.paper} elevation={3}>
                 <Typography component="h1" variant="h6">
                   {' '}
@@ -163,8 +161,6 @@ const ParentOverview = (props) => {
                 <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
               </Paper>
             </Grid>
-          </Grid>
-        </Grid>
       </Grid>
     </div>
   )
@@ -179,14 +175,13 @@ const styles = makeStyles((theme) => ({
   },
   button: {
     top : "5px",
+    marginBottom: "5px",
   },
-  rpaper: {
-    height: '100%',
-    padding: theme.spacing(1),
-  },
-  lpaper: {
+
+  paper: {
     // height: '100%',
     padding: theme.spacing(1),
+    marginTop: theme.spacing(1),
   },
   avatar: {
     margin: theme.spacing(1),

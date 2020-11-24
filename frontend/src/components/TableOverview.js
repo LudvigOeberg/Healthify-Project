@@ -6,10 +6,11 @@ import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import { Typography, ListItemIcon } from '@material-ui/core'
+import { Typography, ListItemIcon, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete';
 import Moment from 'moment'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 /**
  * Displays a table with a set of given values
@@ -23,12 +24,27 @@ import Moment from 'moment'
 
 const useStyles2 = makeStyles((theme) => ({
   table: {
-    minWidth: 100,
+    minWidth: "100%",
+    width: 'auto',
   },
   paper: {
     margin: theme.spacing(1),
     width: 'auto',
   },
+  root: {
+    maxWidth: "100%",
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+  accordion: {
+    boxShadow: 'none',
+    '&.MuiAccordion-root:before': {
+      display: 'none',
+    },
+  },
+  
 }))
 
 const reformat = (data) => {
@@ -49,20 +65,22 @@ const reformat = (data) => {
                 sameDay = false;
             }
         }
-    dataObjects.push({
-    section: i == 0 ? "Idag" : i == 1 ? "Igår" : Moment().subtract(i, 'day').format('DD/MM'),
-    rows: newData,
+    if (newData.length) {
+      dataObjects.push({
+      section: i == 0 ? "Idag" : i == 1 ? "Igår" : Moment().subtract(i, 'day').format('DD/MM'),
+      rows: newData,
     })
-    newData = [];
-    }
+  }
+  newData = [];
+}
     return dataObjects
 }
 
 export default function CustomPaginationActionsTable({ loading = false, ...props }) {
   const classes = useStyles2()
-  console.log(props)
   const { rows } = props
-  const rowsdivided = rows ? reformat(rows) : "hej";
+  const rowsdivided = rows ? reformat(rows) : null;
+  const lrows = rows ? rowsdivided.length : null;
   
     if (loading) {
     return (
@@ -87,9 +105,50 @@ export default function CustomPaginationActionsTable({ loading = false, ...props
 
   return (
     
+    <Grid container className={classes.root} spacing={2} height="100%">
+      <Grid item xs={12}>
       <Table className={classes.table} >
-        {rowsdivided.map((rowdiv) => (
+        {rowsdivided.slice(0,lrows > 1 ? 2 : lrows).map((rowdiv) => (
             <>
+            <p></p>
+             <Typography component="h1" variant="h5"> {rowdiv.section} </Typography>
+             {rowdiv.rows.map((row) => (
+                <TableRow hover>
+                    {props.columns.map((data) => (
+                        <TableCell>{row[data]}</TableCell>
+                    ))}
+                        {/* <TableCell align="right">
+                            <ListItemIcon>
+                            <a href={`/edit-child/`}>
+                            <EditIcon color = "primary"/>
+                            </a>
+                            <a href={`/edit-child/`}>
+                            <DeleteIcon color = "primary"/>
+                            </a>
+                            </ListItemIcon>
+                        </TableCell> */}
+                    </TableRow>
+                ))}
+            </>
+        ))}
+        </Table>
+        </Grid>
+        <Grid item xs={12}>
+
+        <Table className={classes.table} >
+        <Accordion className={classes.accordion}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          //aria-controls="panel1a-content"
+          //id="panel1a-header"
+        >
+          <Typography className={classes.heading}>Tidigare mätningar</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+        <Table className={classes.table} >
+        {(lrows > 1 ? rowsdivided.slice(2,lrows) : rowsdivided.slice(0,0)).map((rowdiv) => (
+            <>
+            <p></p>
              <Typography component="h1" variant="h5"> {rowdiv.section} </Typography>
              {rowdiv.rows.map((row) => (
                 <TableRow hover>
@@ -111,6 +170,11 @@ export default function CustomPaginationActionsTable({ loading = false, ...props
             <p></p>
             </>
         ))}
-    </Table>    
+        </Table>
+        </AccordionDetails>
+      </Accordion>
+</Table>    
+</Grid>
+</Grid>
   )
 }
