@@ -2,12 +2,10 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import { Grid } from "@material-ui/core";
 import {
   OPEN_SNACKBAR,
@@ -18,10 +16,7 @@ import {
   LOAD_WEIGHT,
   SAVE_WEIGHT,
 } from "../../constants/actionTypes";
-import CustomPaginationActionsTable from "../TablePagination";
-import TimeLineChart from "../TimeLineChart";
 import agentEHR from "../../agentEHR";
-import Reformat from "../../reformatEHRData";
 import Slider from "@material-ui/core/Slider";
 import Input from '@material-ui/core/Input'
 
@@ -75,7 +70,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const AddVal2 = (props) => {
+const AddVal = (props) => {
   const id = props.currentUser.ehrid;
   const classes = styles();
   const { childValue } = props;
@@ -102,9 +97,9 @@ const AddVal2 = (props) => {
     const snackbar = {
       open: true,
       message: validate(props.childValue)
-        ? `Du loggade värdet: ${props.childValue} ${
+        ? `Ditt värde på ${props.childValue} ${
             disease === "DIABETES" ? "mmol/L" : "kg"
-          }`
+          } jättebra ut! -Att hålla koll på ditt ${disease === "DIABETES" ? "blodsockervärde" : "vikt"} är ett bra sätt att hålla en bra hälsa.`
         : "Fel format!",
       color: validate(props.childValue) ? "success" : "error",
     };
@@ -231,4 +226,4 @@ export function getCurrentDate() {
   return todaysDate;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddVal2);
+export default connect(mapStateToProps, mapDispatchToProps)(AddVal);

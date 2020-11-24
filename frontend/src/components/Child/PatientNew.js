@@ -1,35 +1,33 @@
-import React, { useEffect } from "react";
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Box, Container } from "@material-ui/core";
-import Moment from "moment";
-import agentEHR from "../../agentEHR";
+import { Box, Container, Grid, Button } from "@material-ui/core";
 import {
-  UPDATE_BOOLEAN,
+  PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
+  UPDATE_BOOLEAN,
   LOAD_PARTY,
-  LOAD_WEIGHT,
   SAVE_BLOODSUGAR,
   LOAD_BLOODSUGAR,
   SAVE_TIMER,
-  PATIENT_PAGE_UNLOADED,
 } from "../../constants/actionTypes";
-import normalAvatar from "../../Static/normal_avatar.png";
+import agentEHR from "../../agentEHR";
+import agent from "../../agent";
+import Slider from "@material-ui/core/Slider";
+import Input from "@material-ui/core/Input";
 import happyAvatar from "../../Static/happy_avatar.png";
 import sadAvatar from "../../Static/sad_avatar.png";
-import agent from "../../agent";
+import normalAvatar from "../../Static/normal_avatar.png";
 
 const mapStateToProps = (state) => ({
-  ...state.common,
   ...state.ehr,
   currentUser: state.common.currentUser,
+  bloodsugarValue: state.common.bloodsugar,
   historicalBloodSugar: state.ehr.bloodsugar,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeAuth: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
-  //onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
   onSubmit: (ehrId, bloodsugar, snackbar, timer) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     dispatch({
@@ -58,97 +56,247 @@ const mapDispatchToProps = (dispatch) => ({
       payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
     });
   },
-  loadValues: (ehrId, offset, limit, disease) => {
-    if (disease === "DIABETES")
-      dispatch({
-        type: LOAD_BLOODSUGAR,
-        payload: agentEHR.Query.bloodsugar(ehrId, offset, limit),
-      });
-    else if (disease === "OBESITY")
-      dispatch({
-        type: LOAD_WEIGHT,
-        payload: agentEHR.Query.weight(ehrId, limit),
-      });
+  onOpenSnackbar: (value) =>
+    dispatch({ type: UPDATE_BOOLEAN, key: "snackbarOpen", value }),
+});
+
+class PatientNew extends Component {
+  constructor() {
+    super();
+    this.changeAuth = (ev) =>
+      this.props.onChangeAuth(ev.target.id, ev.target.value);
+
+    this.changeAuthSlider = (ev, value) =>
+      this.props.onChangeAuth(ev.target.id, value);
+    this.submitForm = (ev) => {
+      ev.preventDefault();
+
+      const bloodsugar = this.props.bloodsugarValue;
+      let { timer } = this.props.currentUser;
+
+      // These are implemented as encouraging that depends on if it's a
+      // measurement that's new or if it's taken after a bad one.
+      let snackbar = {
+        open: true,
+        // message: `Du loggade värdet: ${bloodsugar} mmol/L.` Keeping it just in cause.
+        message: `Ditt värde på ${bloodsugar} mmol/L ser jättebra ut! -Att hålla koll på ditt blodsockervärde är ett bra sätt att hålla en bra hälsa. `,
+        color: "success",
+      };
+      if (timer !== null) {
+        snackbar = {
+          open: true,
+          message: `Bra jobbat, hoppas du mår toppen!`,
+          color: "success",
+        };
+      }
+
+      // IF'statements that gives a feedback on a bad value.
+      if (bloodsugar > 8) {
+        // Change the 8 to whatever the upper max-level should be. Same with the 4 below.
+        if (timer === null) {
+          timer = setTimer();
+        } else {
+          timer = this.props.currentUser.timer;
+        }
+        snackbar = {
+          open: true,
+          message: `Åh nej, det ser ut som att ditt blodsocker börjar bli högt. Se till att ta lite insulin snart så du inte börjar må dåligt.`,
+          color: "error",
+        };
+      }
+      if (bloodsugar < 4) {
+        if (this.props.currentUser.timer === null) {
+          // If and If else= The timer does not reset until a good value is entered. Can be removed.
+          timer = setTimer();
+        } else {
+          timer = this.props.currentUser.timer;
+        }
+        snackbar = {
+          open: true,
+          message: `Åh nej, det ser ut som att ditt blodsocker börjar bli lågt. Se till att äta något snart innan du börjar må dåligt och registrera ett nytt värde därefter. `,
+          color: "error",
+        };
+      }
+      if (bloodsugar >= 4 && bloodsugar <= 8) {
+        timer = null;
+      }
+
+      this.props.onSubmit(
+        this.props.currentUser.ehrid,
+        bloodsugar,
+        snackbar,
+        timer
+      );
+    };
+  }
+
+  componentWillUnmount() {
+    this.props.onUnload();
+  }
+
+  componentDidMount() {
+    this.props.onLoad(this.props.currentUser.ehrid);
+  }
+
+  valuetext(value) {
+    return `${value} mmol/L`;
+  }
+
+  render() {
+    const marks = [
+      {
+        value: 0,
+        label: "0 mmol/L",
+      },
+      {
+        value: 15,
+        label: "15 mmol/L",
+      },
+    ];
+
+    const bloodsugar = this.props.bloodsugarValue;
+    const { classes } = this.props;
+
+    let Avatar = normalAvatar; //There is also a normal avatar to use, if anyone find a good statement when to use it.
+
+    if (
+      this.props.historicalBloodSugar !== null &&
+      this.props.historicalBloodSugar !== undefined
+    ) {
+      if (
+        this.props.historicalBloodSugar[0].value < 4 ||
+        this.props.historicalBloodSugar[0].value > 8
+      ) {
+        Avatar = sadAvatar;
+      } else {
+        Avatar = happyAvatar;
+      }
+      if (this.props.historicalBloodSugar[0].time < setTimer()) {
+        Avatar = normalAvatar;
+      }
+    }
+
+    return (
+      <Container maxWidth="" className={classes.backGround}>
+        <Container maxWidth="sm">
+          <Grid item xs={12}>
+            <Box className={classes.avatar} textAlign="center">
+              <img src={Avatar} alt="mood avatar"></img>
+            </Box>
+          </Grid>
+          <Grid container spacing={5} alignItems="center">
+            <Grid item xs>
+              <Slider
+                id="bloodsugar"
+                value={
+                  typeof parseInt(bloodsugar, 10) === "number"
+                    ? parseInt(bloodsugar, 10)
+                    : 0
+                }
+                onChange={(ev, value) => this.changeAuthSlider(ev, value)}
+                aria-labelledby="input-slider"
+                defaultValue={10}
+                step={1}
+                valueLabelDisplay="auto"
+                marks={marks}
+                max={15}
+                min={0}
+              />
+            </Grid>
+            {/* Temporary input until the plus-button at the bottom is implemented. */}
+            <Grid item>
+              <Input
+                id="bloodsugar"
+                className={classes.input}
+                value={bloodsugar}
+                margin="dense"
+                onChange={this.changeAuth}
+                onBlur={this.handleBlur}
+                inputProps={{
+                  step: 1,
+                  min: 0,
+                  max: 15,
+                  type: "number",
+                  "aria-labelledby": "input-slider",
+                }}
+              />
+              <h5> mmol/L </h5>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                onClick={(ev) => this.submitForm(ev)}
+                disabled={this.props.inProgress}
+              >
+                {" "}
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
+        </Container>
+      </Container>
+    );
+  }
+}
+
+const styles = (theme) => ({
+  paper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  backGround: {
+    position: "absolute",
+    padding: "10% 10% 10%",
+    background:
+      "linear-gradient(0deg, rgba(118,176,208,1) 37%, rgba(106,161,191,1) 38%, rgba(125,180,213,1) 86%)",
+    marginTop: "-3%", //Removes a small white space at the top.
+    minHeight: "100vh"
+  },
+  avatar: {
+    position: "relative",
+  },
+
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
   },
 });
 
-const PatientNew = (props) => {
-  const id = props.currentUser.ehrid;
-  const disease = props.party
-    ? `${props.party[id].additionalInfo.disease}`
-    : null;
-  const colDesc = [
-    "Datum",
-    `Värde ${disease === "DIABETES" ? "(mmol/L)" : "(vikt i kg)"}`,
-    `${disease === "DIABETES" ? "Blodsocker" : "Viktklass"}`,
-  ];
-  const classes = styles();
-  const { bloodsugar } = props;
-  const { weight } = props;
-  const age = props.party
-    ? `${Moment().diff(props.party[id].dateOfBirth, "years")} år`
-    : null;
-  const name = props.party
-    ? `${props.party[id].firstNames} ${props.party[id].lastNames}`
-    : null;
-  const loading = props.inProgress;
-  //----------------------------------------------
+export function getCurrentDate() {
+  const today = new Date();
+  let month = String(today.getMonth());
+  let day = String(today.getDate());
+  let hours = String(today.getHours());
+  let minutes = String(today.getMinutes());
 
-
-  //---------------Avataren----------------------
-  let Avatar = normalAvatar;
-
-  if (
-    props.historicalBloodSugar !== null &&
-    props.historicalBloodSugar !== undefined
-  ) {
-    if (
-      props.historicalBloodSugar[0].value < 4 ||
-      props.historicalBloodSugar[0].value > 8
-    ) {
-      Avatar = sadAvatar;
-    } else {
-      Avatar = happyAvatar;
-    }
-    if (props.historicalBloodSugar[0].time < setTimer()) {
-      Avatar = normalAvatar;
-    }
+  if (today.getMonth() < 10) {
+    month = `0${String(today.getMonth())}`;
   }
-  //-----------------------------------------------
+  if (today.getDate() < 10) {
+    day = `0${String(today.getDate())}`;
+  }
+  if (today.getHours() < 10) {
+    hours = `0${String(today.getDate())}`;
+  }
+  if (today.getMinutes() < 10) {
+    minutes = `0${String(today.getDate())}`;
+  }
 
-  useEffect(() => {
-    props.onLoad(id);
-    props.loadValues(id, 0, 3, disease);
-  }, [id, disease]); // eslint-disable-line
-
-  return (
-    <Container maxWidth="" className={classes.backGround} >
-      <Grid container className={classes.root} spacing={2} height="100%">
-        <Grid item xs={12}>
-          <Box textAlign="center">
-             <Typography component="h1" variant="h5">
-              {name},{age},{disease === "DIABETES" ? "Diabetes" : "Fetma"}
-            </Typography>
-            <img className={classes.avatar} src={Avatar} alt="mood avatar"></img>
-          </Box>
-        </Grid>
-      </Grid>
-    </Container>
-  );
-};
-
-const styles = makeStyles((theme) => ({
-  backGround: {
-    position: 'absolute',
-    padding: '38% 10% 40%',
-    background: 'linear-gradient(0deg, rgba(118,176,208,1) 40%, rgba(106,161,191,1) 41%, rgba(125,180,213,1) 86%)',
-    marginTop: '-3%', //Removes a small white space at the top.
-    width: "100%",
-  },
-  avatar: {
-    position: 'relative',
-  },
-}));
+  const dateInfo = {
+    year: String(today.getFullYear()),
+    month,
+    day,
+    hours,
+    minutes,
+  };
+  return dateInfo;
+}
 
 export function getCurrentUTCDate() {
   const today = new Date();
@@ -212,4 +360,7 @@ function setTimer() {
   return dateInfo;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PatientNew);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(PatientNew));
