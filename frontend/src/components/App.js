@@ -30,7 +30,7 @@ import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
 import ChildSimulation from './Child/ChildSimulation'
-import PatientNew from './Child/PatientNew'
+import PatientNew from './Child/AddVal2'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
