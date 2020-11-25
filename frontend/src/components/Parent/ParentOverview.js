@@ -120,12 +120,7 @@ const ParentOverview = (props) => {
               </Paper>
               </Grid>
             </Grid>
-
-
-
-
-          </Grid>
-          
+          </Grid>   
         </Grid>
 
 
@@ -147,8 +142,6 @@ const ParentOverview = (props) => {
                 ></TimeLineChart>
               </Paper>
             </Grid>
-            
-            
           </Grid>
         </Grid>
         <Grid item xs={12} sm = {3}>

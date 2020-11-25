@@ -1,14 +1,9 @@
 import React from 'react'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableRow from '@material-ui/core/TableRow'
-import Paper from '@material-ui/core/Paper'
-import { Typography, ListItemIcon, Accordion, AccordionSummary, AccordionDetails, Grid } from '@material-ui/core'
-import EditIcon from '@material-ui/icons/Edit'
-import DeleteIcon from '@material-ui/icons/Delete';
 import Moment from 'moment'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -117,16 +112,6 @@ export default function CustomPaginationActionsTable({ loading = false, ...props
                     {props.columns.map((data) => (
                         <TableCell>{row[data]}</TableCell>
                     ))}
-                        {/* <TableCell align="right">
-                            <ListItemIcon>
-                            <a href={`/edit-child/`}>
-                            <EditIcon color = "primary"/>
-                            </a>
-                            <a href={`/edit-child/`}>
-                            <DeleteIcon color = "primary"/>
-                            </a>
-                            </ListItemIcon>
-                        </TableCell> */}
                     </TableRow>
                 ))}
             </>
@@ -139,8 +124,6 @@ export default function CustomPaginationActionsTable({ loading = false, ...props
         <Accordion className={classes.accordion}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          //aria-controls="panel1a-content"
-          //id="panel1a-header"
         >
           <Typography className={classes.heading}>Tidigare mätningar</Typography>
         </AccordionSummary>
@@ -155,16 +138,6 @@ export default function CustomPaginationActionsTable({ loading = false, ...props
                     {props.columns.map((data) => (
                         <TableCell>{row[data]}</TableCell>
                     ))}
-                        <TableCell align="right">
-                            <ListItemIcon>
-                            <a href={`/edit-child/`}>
-                            <EditIcon color = "primary"/>
-                            </a>
-                            <a href={`/edit-child/`}>
-                            <DeleteIcon color = "primary"/>
-                            </a>
-                            </ListItemIcon>
-                        </TableCell>
                     </TableRow>
                 ))}
             <p></p>
