@@ -91,6 +91,10 @@ class RegisterUserSchema(Schema):
     class Meta:
         strict = True
 
+class DiabetesInfoSchema(Schema):
+    measurements= fields.Int(required=True)
+    SU_LO= fields.Float(required=True)
+    SU_HI= fields.Float(required=True)    
 
 class RegisterChildSchema(Schema):
     name = fields.Str(validate=validate.Length(min=1), required=True)
@@ -104,6 +108,7 @@ class RegisterChildSchema(Schema):
     token = fields.Str(dump_only=True)
     createdAt = fields.DateTime(attribute='created_at', dump_only=True)
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
+    diseaseInfo = fields.Nested(DiabetesInfoSchema())
     type = fields.Str(dump_only=True)
 
     @pre_load

@@ -23,7 +23,7 @@ import {
   UPDATE_AUTH_BOOLEAN,
 } from '../../constants/actionTypes'
 import agent from '../../agent'
-import InputSlider from '../InputSlider'
+
 import InputStepper from '../InputStepper'
 
 /**
@@ -35,7 +35,7 @@ const mapStateToProps = (state) => ({ ...state.auth, ...state.common })
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeFieldAuth: (key, value) => dispatch({ type: UPDATE_FIELD_AUTH, key, value }),
-  onSubmit: (name, surname, email, password, confirmPassword, dateofbirth, gender, disease, snackbar) => {
+  onSubmit: (name, surname, email, password, confirmPassword, dateofbirth, gender, disease, diseaseInfo, snackbar) => {
     const payload = agent.Parent.registerChild(
       name,
       surname,
@@ -45,6 +45,7 @@ const mapDispatchToProps = (dispatch) => ({
       dateofbirth,
       gender,
       disease,
+      diseaseInfo,
     )
     dispatch({ type: REGISTER_CHILD, payload, snackbar })
   },
@@ -63,14 +64,20 @@ class PatientRegister extends Component {
     this.changeAuthBoolean = (ev) => {
       this.props.onChangeBooleanAuth(ev.target.id, ev.target.checked)
     }
-    this.submitForm = (name, surname, email, password, confirmPassword, disease, dateofbirth, gender) => (ev) => {
+    this.submitForm = (name, surname, email, password, confirmPassword, disease, dateofbirth, gender, measurements, SU_LO, SU_HI) => (ev) => {
       ev.preventDefault()
       const snackbar = {
         message: `Du registrerade barnet ${name} ${surname} 
-                    som lider av ${disease === 'diabetes' ? 'diabetes' : 'fetma'}`,
+                    som lider av ${disease === 'DIABETES' ? 'diabetes' : 'fetma'}`,
         color: 'success',
         open: true,
       }
+      const diseaseInfo = disease==="DIABETES" ? 
+      {
+        measurements: measurements,
+        SU_LO: SU_LO,
+        SU_HI: SU_HI
+      } : null
 
       this.props.onSubmit(
         name,
@@ -81,6 +88,7 @@ class PatientRegister extends Component {
         `${dateofbirth}T00:00:00.000Z`,
         gender,
         disease,
+        diseaseInfo,
         snackbar,
       )
     }
@@ -101,7 +109,7 @@ class PatientRegister extends Component {
     const { dateofbirth } = this.props
     const errors = this.props.errors ? this.props.errors : null
     const { disease } = this.props
-    const {trainingammount, SU_LO, SU_HI} = this.props
+    const {measurements, SU_LO, SU_HI} = this.props
   
 
     return (
@@ -116,7 +124,7 @@ class PatientRegister extends Component {
           <form
             className={classes.form}
             noValidate
-            onSubmit={this.submitForm(name, surname, email, password, confirmPassword, disease, dateofbirth, gender)}
+            onSubmit={this.submitForm(name, surname, email, password, confirmPassword, disease, dateofbirth, gender, measurements, SU_LO, SU_HI)}
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -265,10 +273,10 @@ class PatientRegister extends Component {
                       disableScrollLock: true,
                     }}
                   >
-                    <MenuItem id="diease" value="DIABETES">
+                    <MenuItem id="disease" value="DIABETES">
                       Diabetes
                     </MenuItem>
-                    <MenuItem id="diease" value="OBESITY">
+                    <MenuItem id="disease" value="OBESITY">
                       Fetma
                     </MenuItem>
                   </Select>
@@ -277,26 +285,29 @@ class PatientRegister extends Component {
               </Grid>
               <Typography></Typography>
               <Grid item xs={12}>
-                <Paper className={classes.additional} variant="outlined" hidden={disease!=="DIABETES"}>
+                <Paper className={classes.additional} variant="outlined" style={{borderColor: errors && errors.diseaseInfo ? 'red' : 'lightgray'}} hidden={disease!=="DIABETES"} error={errors && (errors.disease ? true : !!(false || errors.general))}>
                   
                   <Grid container spacing={1} justify="flex-start" alignItems="flex-end">
                     <Grid item>
-                      <InputLabel required shrink={trainingammount || SU_HI || SU_LO}>Diabetes info</InputLabel>
+                      <InputLabel error={errors && (errors.diseaseInfo ? true : !!(false || errors.general))} required shrink={measurements || SU_HI || SU_LO}>Diabetes info</InputLabel>
                     </Grid>
                     <Grid item xs={12}>
                     <InputStepper
+            
+                    error={errors && errors.diseaseInfo && errors.diseaseInfo.measurements ? errors.diseaseInfo.measurements : null}
                     unit="st"
                     step={1}
                     min={1}
                     max={20}
-                    id="trainingammount"
-                    input={trainingammount}
+                    id="measurements"
+                    input={measurements}
                     definition="Antal mätningar/dag"
                     
                     />
                     </Grid>
                     <Grid item xs={12}>
                     <InputStepper
+                      error={errors && errors.diseaseInfo && errors.diseaseInfo.SU_LO ? errors.diseaseInfo.SU_LO : null}
                       unit="mmol/L"
                       step={0.1}
                       min={0}
@@ -308,6 +319,7 @@ class PatientRegister extends Component {
                     </Grid>
                     <Grid item xs={12}>
                     <InputStepper
+                      error={errors && errors.diseaseInfo && errors.diseaseInfo.SU_HI ? errors.diseaseInfo.SU_HI : null}
                       unit="mmol/L"
                       step={0.1}
                       min={0}
@@ -316,6 +328,8 @@ class PatientRegister extends Component {
                       input={SU_HI}
                       definition="Högsta blodsockernivå"
                     />
+                    </Grid>
+                    <Grid item xs={12}>
                     </Grid>
                     </Grid>
                 </Paper>

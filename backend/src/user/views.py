@@ -110,7 +110,8 @@ class ParentResource(MethodResource):
     @use_kwargs(register_child_schema)
     @marshal_with(child_schema)
     @doc(description="Register a child to current logged in parent")
-    def post(self, name, surname, email, password, confirmPassword, dateofbirth, gender, disease, **kwargs):
+    def post(self, name, surname, email, password, confirmPassword, dateofbirth, gender, disease, diseaseInfo, **kwargs):
+      
         if (password != confirmPassword): 
             raise InvalidUsage.password_dont_match()
         if not current_user: 
@@ -130,9 +131,14 @@ class ParentResource(MethodResource):
                     {
                     "key": "disease",
                     "value": disease
+                    },
+                    {
+                    "key": "measurements",
+                    "value": diseaseInfo["measurements"]
                     }
                 ]
                 }
+            print("hej")
             party = requests.post(apiurl + '/demographics/party', json=body, auth=HTTPBasicAuth(current_app.config['EHR_USER'], current_app.config['EHR_USER_PASS']))
             print(party)
             print(party.status_code)

@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 })
 function InputStepper(props) {
-  const { unit, step, min, max, id, input, definition } = props
+  const { unit, step, min, max, id, input, definition, error } = props
   // const [value, setValue] = React.useState(output);
   // const onChange = (ev) => props.onChange(id, ev.target.value)
   const handleOffset = (val) => props.onChange(id, val)
@@ -49,7 +49,7 @@ function InputStepper(props) {
     <div>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12}>
-          <FormControl fullWidth>
+          <FormControl fullWidth error={error}>
             <InputLabel id={`${unit}-label`} shrink={typeof input === 'number'}>
               {definition}
             </InputLabel>
@@ -70,7 +70,7 @@ function InputStepper(props) {
                 'aria-labelledby': 'input-slider',
               }}
             />
-            <FormHelperText id={`${unit}`}>{`I heltal mellan ${min} och ${max} `}</FormHelperText>
+            <FormHelperText id={`${unit}`}>{error ? error : `I heltal mellan ${min} och ${max} `}</FormHelperText>
           </FormControl>
         </Grid>
       </Grid>
