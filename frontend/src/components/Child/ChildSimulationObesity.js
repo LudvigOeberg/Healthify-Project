@@ -10,11 +10,7 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link'
 import Slider from '@material-ui/core/Slider'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Box from '@material-ui/core/Box'
+import Input from '@material-ui/core/Input'
 
 import MyDialog from '../MyDialog'
 import { LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT } from '../../constants/actionTypes'
@@ -75,6 +71,13 @@ const useStyles = makeStyles((theme) => ({
   title: {
     color: theme.palette.text.primary,
   },
+  input: {
+    width: '48px',
+    fontSize: '3em',
+  },
+  numberText: {
+    color: theme.palette.text.disabled,
+  },
 }))
 
 const ChildSimulationObesity = (props) => {
@@ -93,32 +96,23 @@ const ChildSimulationObesity = (props) => {
 
   const date = getCurrentDate()
 
-  const [Meal_type, setMeal] = React.useState('Måltid')
-  const handleChange = (event) => {
-    props.onLoad(props.currentUser.ehrid)
-    setMeal(event.target.value)
-  }
-
-  const [Meal_size, setValue] = React.useState(2)
+  const [workouts, setValue] = React.useState(2)
   const handleSliderChange = (event, newValue) => {
     props.onLoad(props.currentUser.ehrid)
     setValue(newValue)
   }
 
-  const marks = [
-    {
-      value: 1,
-      label: 'Lite',
-    },
-    {
-      value: 2,
-      label: 'Mellan',
-    },
-    {
-      value: 3,
-      label: 'Mycket',
-    },
-  ]
+  const handleInputChange = (event) => {
+    setValue(event.target.value === '' ? '' : Number(event.target.value))
+  }
+
+  const handleBlur = () => {
+    if (workouts < 0) {
+      setValue(0)
+    } else if (workouts > 100) {
+      setValue(100)
+    }
+  }
 
   let info
 
@@ -151,6 +145,10 @@ const ChildSimulationObesity = (props) => {
   // to reach their goal.
   function getWeeksNumber() {
     const w = -3
+    // let w
+
+    // w = (400 * workouts) /
+
     return w
   }
 
@@ -171,56 +169,44 @@ const ChildSimulationObesity = (props) => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Card className={classes.card}>
-            <Grid item xs={8}>
+            <Grid item xs={12}>
               <Typography variant="h4" className={classes.title} color="textSecondary" gutterBottom>
-                Obesity - This will be updated
+                Ny simulering
               </Typography>
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12}>
               <Typography variant="overline" display="block" gutterBottom>
                 {date}
               </Typography>
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12}>
               <Typography variant="body1" className={classes.diet} gutterBottom>
-                {Meal_type}
-              </Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <Typography variant="subtitle1" className={classes.eatText} gutterBottom>
-                The look of this page is just temporary and will be updated to meet the req&apos;s and UX
+                Träning
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Slider
-                value={Meal_size}
-                defaultValue={2}
-                step={1}
-                marks={marks}
-                min={1}
-                max={3}
-                onChange={handleSliderChange}
-              />
+              <Typography variant="subtitle1" className={classes.eatText} gutterBottom>
+                Antal träningspass per vecka
+              </Typography>
+            </Grid>
+            <Grid container xs={12} spacing={5} alignItems="center">
+              <Grid item xs={9}>
+                <Slider value={workouts} defaultValue={2} step={1} min={1} max={7} onChange={handleSliderChange} />
+              </Grid>
+              <Grid item xs={3}>
+                <Input
+                  className={classes.input}
+                  value={workouts}
+                  margin="dense"
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                />
+                <Typography variant="body2" className={classes.numberText} gutterBottom>
+                  stycken
+                </Typography>
+              </Grid>
             </Grid>
           </Card>
-        </Grid>
-        <Grid item xs={12}>
-          <Box textAlign="center">
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="demo-simple-select-outlined-label">Måltid</InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={Meal_type}
-                onChange={handleChange}
-                label="Meal_size"
-              >
-                <MenuItem value="Måltid">Måltid</MenuItem>
-                <MenuItem value="Snack">Snack</MenuItem>
-                <MenuItem value="Mellanmål">Mellanmål</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
         </Grid>
         <Grid item xs={6}>
           <Button component={Link} href="/child-laboration" variant="outlined" color="primary" fullWidth>
