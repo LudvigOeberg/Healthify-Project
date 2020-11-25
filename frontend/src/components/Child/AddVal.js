@@ -20,7 +20,6 @@ import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 import agent from "../../agent";
 
-
 const mapStateToProps = (state) => ({
   ...state.common,
   ...state.ehr,
@@ -99,7 +98,7 @@ const AddVal = (props) => {
     ev.preventDefault();
 
     let { timer } = props.currentUser;
-    function start_timer() {
+    function startTimer() {
       if (disease === "DIABETES") {
         if (timer === null) {
           timer = setTimer();
@@ -136,7 +135,7 @@ const AddVal = (props) => {
     }
 
     if (HIGH_VAL) {
-      start_timer();
+      startTimer();
       snackbar = {
         open: true,
         message: validate(props.childValue)
@@ -151,7 +150,7 @@ const AddVal = (props) => {
     }
 
     if (LOW_VAL) {
-      start_timer();
+      startTimer();
       snackbar = {
         open: true,
         message: validate(props.childValue)
@@ -192,8 +191,10 @@ const AddVal = (props) => {
         <Grid item xs={12} container spacing={5}>
           <Grid item xs={12} align="center">
             <Typography component="h1" variant="h5">
-              Skriv in {" "}
-              {disease === "DIABETES" ? "ditt blodsockervärde" : "din uppmätta vikt"}
+              Skriv in{" "}
+              {disease === "DIABETES"
+                ? "ditt blodsockervärde"
+                : "din uppmätta vikt"}
             </Typography>
             <form
               className={classes.form}
@@ -235,8 +236,8 @@ const AddVal = (props) => {
           </Grid>
         </Grid>
         <Grid item>
-          <Button 
-            id="addButton weight/bloodsugar" 
+          <Button
+            id="addButton weight/bloodsugar"
             variant="contained"
             color="secondary"
             onClick={(ev) => submitForm(ev)}
