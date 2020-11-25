@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -21,6 +19,7 @@ import agentEHR from "../../agentEHR";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 import agent from "../../agent";
+
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -284,7 +283,7 @@ export function getCurrentDate() {
   return todaysDate;
 }
 
-function setTimer() {
+export function setTimer() {
   const today = new Date();
   const year = String(today.getUTCFullYear());
   let month = String(today.getUTCMonth());

@@ -30,7 +30,6 @@ import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
 import ChildSimulation from './Child/ChildSimulation'
-import PatientNew from './Child/AddVal'
 import AddVal from './Child/AddVal'
 
 const mapStateToProps = (state) => ({

@@ -21,10 +21,6 @@ const mapDispatchToProps = (dispatch) => ({
   onLoad: (ehrId) => {
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) });
   },
-
-  onLoad: (ehrId) => {
-    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) });
-  },
   loadValues: (ehrId, offset, limit, disease) => {
     if (disease === "DIABETES")
       dispatch({
@@ -47,9 +43,6 @@ const ChildMonitor = (props) => {
   const { weight } = props;
   const disease = props.party
     ? `${props.party[id].additionalInfo.disease}`
-    : null;
-  const name = props.party
-    ? `${props.party[id].firstNames} ${props.party[id].lastNames}`
     : null;
   const loading = props.inProgress;
   const colDesc = [
