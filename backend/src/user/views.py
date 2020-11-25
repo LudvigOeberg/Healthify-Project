@@ -135,6 +135,14 @@ class ParentResource(MethodResource):
                     {
                     "key": "measurements",
                     "value": diseaseInfo["measurements"]
+                    },
+                    {
+                    "key": "SU_LO",
+                    "value": diseaseInfo["SU_LO"]
+                    },
+                    {
+                    "key": "SU_HI",
+                    "value": diseaseInfo["SU_HI"]
                     }
                 ]
                 }
