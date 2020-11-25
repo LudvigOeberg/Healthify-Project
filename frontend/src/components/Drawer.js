@@ -170,7 +170,7 @@ const PersistantDrawer = (props) => {
             location={props.location}
           />
           <ListItemLink
-            href="/simulate-child"
+            href="/child-laboration"
             text="Laboratoriet"
             avatarComponent={<TimelineIcon />}
             location={props.location}

@@ -13,8 +13,11 @@ import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container'
 import DetailsIcon from '@material-ui/icons/Details'
 
-import sadAvatar from '../Static/sad_avatar.png'
-import happyAvatar from '../Static/happy_avatar.png'
+import sadAvatar from '../Static/sad_avatar_face.png'
+import happyAvatar from '../Static/happy_avatar_face.png'
+import neutralAvatar from '../Static/neutral_avatar_face.png'
+import trainingAvatar from '../Static/workout_avatar_weights.png'
+import runningAvatar from '../Static/workout_avatar_run.png'
 
 const styles = (theme) => ({
   root: {
@@ -65,14 +68,23 @@ export default function MyDialog(props) {
   const [open, setOpen] = React.useState(false)
 
   const { buttonLabel } = props
-  const { text } = props
+  // eslint-disable-next-line prefer-const
+  let { text } = props
   const { alt } = props
+  // eslint-disable-next-line no-unused-vars
+  const { weeks } = props
   let avatar
 
   if (alt === 'sad avatar') {
     avatar = sadAvatar
-  } else {
+  } else if (alt === 'happy avatar') {
     avatar = happyAvatar
+  } else if (alt === 'neutral avatar') {
+    avatar = neutralAvatar
+  } else if (alt === 'running avatar') {
+    avatar = runningAvatar
+  } else {
+    avatar = trainingAvatar
   }
 
   const handleClickOpen = () => {
@@ -82,17 +94,47 @@ export default function MyDialog(props) {
     setOpen(false)
   }
 
+  function getFirstPart() {
+    if (avatar === trainingAvatar) {
+      return text.substr(0, 39)
+    }
+    return text
+  }
+
+  // eslint-disable-next-line consistent-return
+  function getSecondPart() {
+    if (avatar === trainingAvatar) {
+      return text.substr(46, 17)
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  function getWeeks() {
+    if (avatar === trainingAvatar) {
+      return <b>{weeks}</b>
+    }
+  }
+
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen} fullWidth>
+      <Button id="openDialogButton" variant="contained" color="primary" onClick={handleClickOpen} fullWidth>
         {buttonLabel}
         <ArrowForwardIosIcon />
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
         <DialogContent dividers>
-          <Container component="div" style={{ padding: '15px', borderRadius: '30px', border: '1px solid #000' }}>
-            <Typography textAlign="center" gutterBottom>
-              {text}
+          <Container
+            component="div"
+            style={{
+              padding: '15px',
+              borderRadius: '30px',
+              border: '1px solid #000',
+            }}
+          >
+            <Typography textAlign="center" id="bubbleText" gutterBottom>
+              {getFirstPart()}
+              {getWeeks()}
+              {getSecondPart()}
             </Typography>
           </Container>
           <Box display="flex" justifyContent="center" alignItems="center" height="45px">
@@ -103,7 +145,7 @@ export default function MyDialog(props) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
+          <Button id="dialobOkButton" autoFocus onClick={handleClose} color="primary">
             Okej
           </Button>
         </DialogActions>

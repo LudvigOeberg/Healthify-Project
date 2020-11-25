@@ -449,7 +449,14 @@ const SimulatePatient = (props) => {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Button id="back" type="submit" fullWidth variant="outlined" color="primary" href={`/parent-child-overview/${id}`}>
+          <Button
+            id="back"
+            type="submit"
+            fullWidth
+            variant="outlined"
+            color="primary"
+            href={`/parent-child-overview/${id}`}
+          >
             Tillbaka
           </Button>
         </Grid>

@@ -8,7 +8,7 @@ import {
   UPDATE_AUTH_BOOLEAN,
   REGISTER_CHILD,
   EDIT_CHILD,
-  EDIT_PARENT
+  EDIT_PARENT,
 } from '../constants/actionTypes'
 
 export default (state = {}, action) => {
