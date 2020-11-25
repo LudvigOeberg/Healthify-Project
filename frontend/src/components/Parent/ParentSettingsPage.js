@@ -72,12 +72,24 @@ const ParentSettingsPage = (props) => {
 
       <div className={classes.paper}>
         <Grid className={classes.buttonGroup}>
-          <Button type="submit" variant="contained" color="primary" onClick={() => setEmailIsOpen(true)}>
+          <Button
+            id="changeEmail"
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={() => setEmailIsOpen(true)}
+          >
             Ändra e-postadress
           </Button>
         </Grid>
         <Grid className={classes.buttonGroup}>
-          <Button type="submit" variant="contained" color="secondary" onClick={() => setDeleteIsOpen(true)}>
+          <Button
+            id="deleteAccount"
+            type="submit"
+            variant="contained"
+            color="secondary"
+            onClick={() => setDeleteIsOpen(true)}
+          >
             Radera konto
           </Button>
         </Grid>
@@ -106,15 +118,21 @@ const ParentSettingsPage = (props) => {
                   value={email}
                   onChange={onChangeField}
                 />
-
-                <Button type="submit" disabled={props.inProgress} variant="contained" color="secondary">
+                
+                <Button id="saveEmailChange" type="submit" disabled={props.inProgress} variant="contained" color="secondary">
                   Spara
                 </Button>
               </form>
               <Grid className={classes.emailForm}>
-                <Button type="button" variant="contained" color="primary" onClick={() => setEmailIsOpen(false)}>
-                  Stäng
-                </Button>
+              <Button
+                id="closeEmailChange"
+                type="button"
+                variant="contained"
+                color="primary"
+                onClick={() => setEmailIsOpen(false)}
+              >
+                Stäng
+              </Button>
               </Grid>
             </Grid>
           </Grid>
@@ -133,11 +151,23 @@ const ParentSettingsPage = (props) => {
               Detta kommer att radera ditt konto och alla kopplade konton. Detta går inte att återställa
             </Typography>
             <Grid container direction="row" className={classes.yesnoButtons}>
-              <Button type="submit" variant="contained" color="secondary" onClick={() => deleteParent()}>
+              <Button
+                id="comfirmDelete"
+                type="submit"
+                variant="contained"
+                color="secondary"
+                onClick={() => deleteParent()}
+              >
                 Bekräfta
               </Button>
 
-              <Button type="submit" variant="contained" color="primary" onClick={() => setDeleteIsOpen(false)}>
+              <Button
+                id="closeDelete"
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={() => setDeleteIsOpen(false)}
+              >
                 Stäng
               </Button>
             </Grid>

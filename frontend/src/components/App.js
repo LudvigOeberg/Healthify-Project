@@ -31,6 +31,7 @@ import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
 import ChildSimulation from './Child/ChildSimulation'
 import ParentRewardPage from './Parent/ParentRewardPage'
+import AddVal from './Child/AddVal'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -172,6 +173,13 @@ class App extends React.Component {
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
                 component={Integrations}
+              />
+              <RequiredRoute
+                exact
+                path="/add"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={AddVal}
               />
               {/* Commented out as link from ChildListItem no longer links to /caregiving-team
                here in case we need it */}
