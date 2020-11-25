@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Box, Container } from '@material-ui/core'
+import { Grid, Box, Container, Typography } from '@material-ui/core'
 import agentEHR from '../../agentEHR'
 import {
   FIELD_CHANGE,
@@ -55,6 +55,8 @@ const Patient = (props) => {
 
   let Avatar = normalAvatar
 
+  const lastWeight = props.weight ? props.weight[1] : null
+
   if (
     (disease === 'DIABETES' ? bloodsugar !== null : weight !== null) &&
     (disease === 'DIABETES' ? bloodsugar !== null : weight !== undefined)
@@ -78,6 +80,69 @@ const Patient = (props) => {
     props.loadValues(id, 0, 20, disease)
   }, [id, disease]); // eslint-disable-line
 
+  // eslint-disable-next-line consistent-return
+  function getMeasurementValue() {
+    if (disease === 'DIABETES') {
+      if (bloodsugar !== null) {
+        return bloodsugar[0].value
+      }
+    }
+    if (disease === 'OBESITY') {
+      if (weight !== null) {
+        return weight.weight
+      }
+    }
+  }
+
+  function getMeasurementUnit() {
+    if (disease === 'DIABETES') {
+      return 'mmol/L'
+    }
+    return 'kg'
+  }
+
+  // eslint-disable-next-line consistent-return
+  function getMeasurementTime() {
+    const t = new Date()
+
+    if (disease === 'DIABETES') {
+      if (bloodsugar !== null) {
+        const n = new Date(bloodsugar[0].time)
+        const difference = t.getTime() - n.getTime()
+        const diffHours = Math.floor(difference / (1000 * 3600))
+
+        return `${diffHours}h`
+      }
+    }
+    if (disease === 'OBESITY') {
+      if (weight !== null) {
+        const n = new Date(weight.time)
+        const difference = t.getTime() - n.getTime()
+        const diffDays = Math.floor(difference / (1000 * 3600 * 24))
+
+        return `${diffDays} dagar`
+      }
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  function paintBubbleBorder() {
+    if (disease === 'DIABETES') {
+      if (bloodsugar !== null) {
+        if (bloodsugar[0].value > 8 || bloodsugar[0].value < 4) {
+          document.getElementById('bubble').style.border = '1px solid red'
+        }
+      }
+    }
+    if (disease === 'OBESITY') {
+      if (weight !== null) {
+        if (weight.weight > lastWeight.weight) {
+          document.getElementById('bubble').style.border = '1px solid red'
+        }
+      }
+    }
+  }
+
   return (
     <Container maxWidth="" className={classes.backGround}>
       <Grid container className={classes.root} spacing={2} height="100%">
@@ -86,12 +151,22 @@ const Patient = (props) => {
             <img id="currentMood" className={classes.avatar} src={Avatar} alt="mood avatar"></img>
           </Box>
         </Grid>
+        <Grid item xs={12}>
+          <div id="bubble" className={classes.bubble}>
+            {paintBubbleBorder()}
+            <Typography variant="h4">{getMeasurementValue()}</Typography>
+            <Typography variant="h6">{getMeasurementUnit()}</Typography>
+            <Typography className={classes.disabled} variant="body1">
+              Mättes - {getMeasurementTime()}
+            </Typography>
+          </div>
+        </Grid>
       </Grid>
     </Container>
   )
 }
 
-const styles = makeStyles(() => ({
+const styles = makeStyles((theme) => ({
   backGround: {
     position: 'absolute',
     padding: '38% 10% 40%',
@@ -101,6 +176,22 @@ const styles = makeStyles(() => ({
   },
   avatar: {
     position: 'relative',
+  },
+  bubble: {
+    width: '50%',
+    height: '150px',
+    borderRadius: '50%',
+    background: '#F2F2F2',
+    // paddingTop: '100%',
+    position: 'absolute',
+    left: '-35px',
+    bottom: '40px',
+    boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
+    textAlign: 'center',
+    border: '1px solid green',
+  },
+  disabled: {
+    color: theme.palette.text.disabled,
   },
 }))
 
