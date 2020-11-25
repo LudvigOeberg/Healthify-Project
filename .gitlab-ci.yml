@@ -1,9 +1,13 @@
 stages:
 <<<<<<< HEAD
+<<<<<<< HEAD
   - lint
 =======
   - linter
 >>>>>>> testing script ci/cd
+=======
+  - linter
+>>>>>>> master
   - build
   - build-image
   - test
@@ -46,6 +50,7 @@ build-frontend:
     - build-frontend
   script:
 <<<<<<< HEAD
+<<<<<<< HEAD
     - export DEBIAN_FRONTEND=noninteractive
     - export TZ=Europe/Stockholm
     - export ehr_user=${K8S_SECRET_EHR_USER%.123}
@@ -62,6 +67,8 @@ build-frontend:
     - cd ..
 =======
 >>>>>>> testing script ci/cd
+=======
+>>>>>>> master
     - chmod +x ./testScript.sh
     - ./testScript.sh
 
@@ -69,10 +76,14 @@ build-frontend:
 
 lint-checker:
 <<<<<<< HEAD
+<<<<<<< HEAD
   stage: lint
 =======
   stage: linter
 >>>>>>> testing script ci/cd
+=======
+  stage: linter
+>>>>>>> master
   image: node
 
   script:

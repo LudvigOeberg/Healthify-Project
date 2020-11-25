@@ -9,6 +9,7 @@ python3 -m venv ./backend/venv
 pip3 install -r ./backend/requirements/dev.txt
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 flask db init
 flask db migrate
 flask db upgrade
@@ -18,10 +19,16 @@ flask init-db
 
 wait
 =======
+=======
+>>>>>>> master
 #flask db init
 #flask db migrate
 #flask db upgrade
 #flask init-db
 
+<<<<<<< HEAD
 flask run & serve -s frontend/build & (sleep 15 && cd frontend && npm run jest)
 >>>>>>> testing script ci/cd
+=======
+flask run & serve -s frontend/build & (sleep 15 && cd frontend && npm run jest)
+>>>>>>> master
