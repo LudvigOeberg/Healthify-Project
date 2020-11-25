@@ -191,7 +191,7 @@ const ChildMonitor = (props) => {
               Tabell
             </Typography>
             <CustomPaginationActionsTable
-              //   columns={['x', 'y']}
+              id="childTable"
               columns={["time", "value", "indicator"]}
               loading={loading}
               rows={input ? reformat(input, false) : null}
@@ -207,6 +207,7 @@ const ChildMonitor = (props) => {
               Graf
             </Typography>
             <TimeLineChart
+              id="childGraph"
               chartData={input ? reformatForChart(input) : null}
               label={
                 disease === "DIABETES" ? "Blodsocker (mmol/L)" : "Vikt (kg)"
