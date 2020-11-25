@@ -110,7 +110,6 @@ const AddVal = (props) => {
     }
 
     const measurementChild = props.childValue;
-
     const HIGH_VAL =
       disease === "DIABETES" ? measurementChild > 8 : measurementChild > 70;
     const LOW_VAL =

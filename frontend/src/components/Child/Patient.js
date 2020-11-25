@@ -15,6 +15,8 @@ import happyAvatar from "../../Static/happy_avatar.png";
 import sadAvatar from "../../Static/sad_avatar.png";
 import { setTimer } from './AddVal'
 
+
+
 const mapStateToProps = (state) => ({
   ...state.common,
   ...state.ehr,
@@ -52,27 +54,27 @@ const Patient = (props) => {
     : null;
   
   const classes = styles();
-  const { bloodsugar } = props;
-  const { weight } = props;
+  const weight = props.weight ? props.weight[0] : null
+  const bloodsugar = props.bloodsugar ? props.bloodsugar : null
 
   let Avatar = normalAvatar;
 
+
   if (
-    disease === "DIABETES" ? bloodsugar : weight !== null && disease === "DIABETES" ? bloodsugar : weight !== undefined
+    (disease === "DIABETES" ? bloodsugar !==null: weight !==null) && (disease === "DIABETES" ? bloodsugar!==null : weight !==undefined) 
   ) {
     if (
-      (disease === "DIABETES" ? bloodsugar[0].value : weight[0].value) < 4 ||
-      (disease === "DIABETES" ? bloodsugar[0].value : weight[0].value) > 8
+      (disease === "DIABETES" ? bloodsugar[0].value < 4 : weight.weight < 0)  ||
+      (disease === "DIABETES" ? bloodsugar[0].value > 8 : weight.weight > 70) 
     ) {
       Avatar = sadAvatar;
     } else {
       Avatar = happyAvatar;
     }
-    if ((disease === "DIABETES" ? bloodsugar[0].time : weight[0].time) < setTimer()) { //Might not work
-      Avatar = normalAvatar;
-    }
+     if ((disease === "DIABETES" ? bloodsugar[0].time : weight.time) < setTimer()) { //Might not work
+       Avatar = normalAvatar;
+     }
   }
-
 
   useEffect(() => {
     props.onLoad(id);

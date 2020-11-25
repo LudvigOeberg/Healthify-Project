@@ -80,6 +80,7 @@ const ParentSettingsPage = props => {
       <div className={classes.paper}>
         <Grid className={classes.buttonGroup}>
           <Button
+            id="changeEmail"
             type="submit"
             variant="contained"
             color="primary"
@@ -90,6 +91,7 @@ const ParentSettingsPage = props => {
         </Grid>
         <Grid className={classes.buttonGroup}>
           <Button
+            id="deleteAccount"
             type="submit"
             variant="contained"
             color="secondary"
@@ -131,12 +133,13 @@ const ParentSettingsPage = props => {
                   onChange={onChangeField}
                 />
                 
-                <Button type="submit" disabled={props.inProgress} variant="contained" color="secondary">
+                <Button id="saveEmailChange" type="submit" disabled={props.inProgress} variant="contained" color="secondary">
                   Spara
                 </Button>
               </form>
               <Grid className={classes.emailForm}>
               <Button
+                id="closeEmailChange"
                 type="button"
                 variant="contained"
                 color="primary"
@@ -163,6 +166,7 @@ const ParentSettingsPage = props => {
             </Typography>
             <Grid container direction="row" className={classes.yesnoButtons}>
               <Button
+                id="comfirmDelete"
                 type="submit"
                 variant="contained"
                 color="secondary"
@@ -172,6 +176,7 @@ const ParentSettingsPage = props => {
               </Button>
 
               <Button
+                id="closeDelete"
                 type="submit"
                 variant="contained"
                 color="primary"

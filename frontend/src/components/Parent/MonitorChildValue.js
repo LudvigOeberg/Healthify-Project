@@ -233,6 +233,7 @@ const MonitorChildValue = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                   <Button
+                    id="addValueToChild"
                     type="submit"
                     variant="contained"
                     color="primary"
