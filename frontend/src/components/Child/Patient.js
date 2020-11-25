@@ -1,7 +1,9 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import { Box, Container, Grid, Button } from "@material-ui/core";
+import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import { connect } from 'react-redux'
+import { Box, Container, Grid, Button } from '@material-ui/core'
+import Slider from '@material-ui/core/Slider'
+import Input from '@material-ui/core/Input'
 import {
   PATIENT_PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -10,21 +12,19 @@ import {
   SAVE_BLOODSUGAR,
   LOAD_BLOODSUGAR,
   SAVE_TIMER,
-} from "../../constants/actionTypes";
-import agentEHR from "../../agentEHR";
-import agent from "../../agent";
-import Slider from "@material-ui/core/Slider";
-import Input from "@material-ui/core/Input";
-import happyAvatar from "../../Static/happy_avatar.png";
-import sadAvatar from "../../Static/sad_avatar.png";
-import normalAvatar from "../../Static/normal_avatar.png";
+} from '../../constants/actionTypes'
+import agentEHR from '../../agentEHR'
+import agent from '../../agent'
+import happyAvatar from '../../Static/happy_avatar.png'
+import sadAvatar from '../../Static/sad_avatar.png'
+import normalAvatar from '../../Static/normal_avatar.png'
 
 const mapStateToProps = (state) => ({
   ...state.ehr,
   currentUser: state.common.currentUser,
   bloodsugarValue: state.common.bloodsugar,
   historicalBloodSugar: state.ehr.bloodsugar,
-});
+})
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeAuth: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
@@ -37,42 +37,39 @@ const mapDispatchToProps = (dispatch) => ({
           dispatch({
             type: LOAD_BLOODSUGAR,
             payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
-          });
+          })
         })
         .then(() => {
           dispatch({
             type: SAVE_TIMER,
             payload: agent.Child.timer(timer),
-          });
+          })
         }),
       snackbar,
     }),
   onUnload: () => dispatch({ type: PATIENT_PAGE_UNLOADED }),
   onLoad: (ehrId) => {
-    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) });
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
 
     dispatch({
       type: LOAD_BLOODSUGAR,
       payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
-    });
+    })
   },
-  onOpenSnackbar: (value) =>
-    dispatch({ type: UPDATE_BOOLEAN, key: "snackbarOpen", value }),
-});
+  onOpenSnackbar: (value) => dispatch({ type: UPDATE_BOOLEAN, key: 'snackbarOpen', value }),
+})
 
 class PatientNew extends Component {
   constructor() {
-    super();
-    this.changeAuth = (ev) =>
-      this.props.onChangeAuth(ev.target.id, ev.target.value);
+    super()
+    this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
 
-    this.changeAuthSlider = (ev, value) =>
-      this.props.onChangeAuth(ev.target.id, value);
+    this.changeAuthSlider = (ev, value) => this.props.onChangeAuth(ev.target.id, value)
     this.submitForm = (ev) => {
-      ev.preventDefault();
+      ev.preventDefault()
 
-      const bloodsugar = this.props.bloodsugarValue;
-      let { timer } = this.props.currentUser;
+      const bloodsugar = this.props.bloodsugarValue
+      let { timer } = this.props.currentUser
 
       // These are implemented as encouraging that depends on if it's a
       // measurement that's new or if it's taken after a bad one.
@@ -80,99 +77,88 @@ class PatientNew extends Component {
         open: true,
         // message: `Du loggade värdet: ${bloodsugar} mmol/L.` Keeping it just in cause.
         message: `Ditt värde på ${bloodsugar} mmol/L ser jättebra ut! -Att hålla koll på ditt blodsockervärde är ett bra sätt att hålla en bra hälsa. `,
-        color: "success",
-      };
+        color: 'success',
+      }
       if (timer !== null) {
         snackbar = {
           open: true,
           message: `Bra jobbat, hoppas du mår toppen!`,
-          color: "success",
-        };
+          color: 'success',
+        }
       }
 
       // IF'statements that gives a feedback on a bad value.
       if (bloodsugar > 8) {
         // Change the 8 to whatever the upper max-level should be. Same with the 4 below.
         if (timer === null) {
-          timer = setTimer();
+          timer = setTimer()
         } else {
-          timer = this.props.currentUser.timer;
+          timer = this.props.currentUser.timer
         }
         snackbar = {
           open: true,
           message: `Åh nej, det ser ut som att ditt blodsocker börjar bli högt. Se till att ta lite insulin snart så du inte börjar må dåligt.`,
-          color: "error",
-        };
+          color: 'error',
+        }
       }
       if (bloodsugar < 4) {
         if (this.props.currentUser.timer === null) {
           // If and If else= The timer does not reset until a good value is entered. Can be removed.
-          timer = setTimer();
+          timer = setTimer()
         } else {
-          timer = this.props.currentUser.timer;
+          timer = this.props.currentUser.timer
         }
         snackbar = {
           open: true,
           message: `Åh nej, det ser ut som att ditt blodsocker börjar bli lågt. Se till att äta något snart innan du börjar må dåligt och registrera ett nytt värde därefter. `,
-          color: "error",
-        };
+          color: 'error',
+        }
       }
       if (bloodsugar >= 4 && bloodsugar <= 8) {
-        timer = null;
+        timer = null
       }
 
-      this.props.onSubmit(
-        this.props.currentUser.ehrid,
-        bloodsugar,
-        snackbar,
-        timer
-      );
-    };
+      this.props.onSubmit(this.props.currentUser.ehrid, bloodsugar, snackbar, timer)
+    }
   }
 
   componentWillUnmount() {
-    this.props.onUnload();
+    this.props.onUnload()
   }
 
   componentDidMount() {
-    this.props.onLoad(this.props.currentUser.ehrid);
+    this.props.onLoad(this.props.currentUser.ehrid)
   }
 
   valuetext(value) {
-    return `${value} mmol/L`;
+    return `${value} mmol/L`
   }
 
   render() {
     const marks = [
       {
         value: 0,
-        label: "0 mmol/L",
+        label: '0 mmol/L',
       },
       {
         value: 15,
-        label: "15 mmol/L",
+        label: '15 mmol/L',
       },
-    ];
+    ]
 
-    const bloodsugar = this.props.bloodsugarValue;
-    const { classes } = this.props;
+    const bloodsugar = this.props.bloodsugarValue
+    const { classes } = this.props
 
-    let Avatar = normalAvatar; //There is also a normal avatar to use, if anyone find a good statement when to use it.
+    let Avatar = normalAvatar // There is also a normal avatar to use, if anyone find a good statement when to use it.
 
-    if (
-      this.props.historicalBloodSugar !== null &&
-      this.props.historicalBloodSugar !== undefined
-    ) {
-      if (
-        this.props.historicalBloodSugar[0].value < 4 ||
-        this.props.historicalBloodSugar[0].value > 8
-      ) {
-        Avatar = sadAvatar;
+    if (this.props.historicalBloodSugar !== null && this.props.historicalBloodSugar !== undefined) {
+      if (this.props.historicalBloodSugar[0].value < 4 || this.props.historicalBloodSugar[0].value > 8) {
+        Avatar = sadAvatar
       } else {
-        Avatar = happyAvatar;
+        Avatar = happyAvatar
       }
       if (this.props.historicalBloodSugar[0].time < setTimer()) {
-        Avatar = normalAvatar;
+        Avatar = normalAvatar
       }
     }
 
@@ -188,11 +174,7 @@ class PatientNew extends Component {
             <Grid item xs>
               <Slider
                 id="bloodsugar"
-                value={
-                  typeof parseInt(bloodsugar, 10) === "number"
-                    ? parseInt(bloodsugar, 10)
-                    : 0
-                }
+                value={typeof parseInt(bloodsugar, 10) === 'number' ? parseInt(bloodsugar, 10) : 0}
                 onChange={(ev, value) => this.changeAuthSlider(ev, value)}
                 aria-labelledby="input-slider"
                 defaultValue={10}
@@ -216,8 +198,8 @@ class PatientNew extends Component {
                   step: 1,
                   min: 0,
                   max: 15,
-                  type: "number",
-                  "aria-labelledby": "input-slider",
+                  type: 'number',
+                  'aria-labelledby': 'input-slider',
                 }}
               />
               <h5> mmol/L </h5>
@@ -230,62 +212,61 @@ class PatientNew extends Component {
                 onClick={(ev) => this.submitForm(ev)}
                 disabled={this.props.inProgress}
               >
-                {" "}
+                {' '}
                 Submit
               </Button>
             </Grid>
           </Grid>
         </Container>
       </Container>
-    );
+    )
   }
 }
 
 const styles = (theme) => ({
   paper: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   backGround: {
-    position: "absolute",
-    padding: "10% 10% 10%",
-    background:
-      "linear-gradient(0deg, rgba(118,176,208,1) 37%, rgba(106,161,191,1) 38%, rgba(125,180,213,1) 86%)",
-    marginTop: "-3%", //Removes a small white space at the top.
-    minHeight: "100vh"
+    position: 'absolute',
+    padding: '10% 10% 10%',
+    background: 'linear-gradient(0deg, rgba(118,176,208,1) 37%, rgba(106,161,191,1) 38%, rgba(125,180,213,1) 86%)',
+    marginTop: '-3%', // Removes a small white space at the top.
+    minHeight: '100vh',
   },
   avatar: {
-    position: "relative",
+    position: 'relative',
   },
 
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-});
+})
 
 export function getCurrentDate() {
-  const today = new Date();
-  let month = String(today.getMonth());
-  let day = String(today.getDate());
-  let hours = String(today.getHours());
-  let minutes = String(today.getMinutes());
+  const today = new Date()
+  let month = String(today.getMonth())
+  let day = String(today.getDate())
+  let hours = String(today.getHours())
+  let minutes = String(today.getMinutes())
 
   if (today.getMonth() < 10) {
-    month = `0${String(today.getMonth())}`;
+    month = `0${String(today.getMonth())}`
   }
   if (today.getDate() < 10) {
-    day = `0${String(today.getDate())}`;
+    day = `0${String(today.getDate())}`
   }
   if (today.getHours() < 10) {
-    hours = `0${String(today.getDate())}`;
+    hours = `0${String(today.getDate())}`
   }
   if (today.getMinutes() < 10) {
-    minutes = `0${String(today.getDate())}`;
+    minutes = `0${String(today.getDate())}`
   }
 
   const dateInfo = {
@@ -294,73 +275,70 @@ export function getCurrentDate() {
     day,
     hours,
     minutes,
-  };
-  return dateInfo;
+  }
+  return dateInfo
 }
 
 export function getCurrentUTCDate() {
-  const today = new Date();
-  const year = String(today.getUTCFullYear());
-  let month = String(today.getUTCMonth());
-  let day = String(today.getUTCDate());
-  let hours = String(today.getUTCHours());
-  let minutes = String(today.getUTCMinutes());
-  let seconds = String(today.getUTCSeconds());
+  const today = new Date()
+  const year = String(today.getUTCFullYear())
+  let month = String(today.getUTCMonth())
+  let day = String(today.getUTCDate())
+  let hours = String(today.getUTCHours())
+  let minutes = String(today.getUTCMinutes())
+  let seconds = String(today.getUTCSeconds())
 
-  --hours; // Handles the amount of time before the timer sets off.
+  --hours // Handles the amount of time before the timer sets off.
 
   if (today.getUTCMonth() < 10) {
-    month = `0${String(today.getUTCMonth())}`;
+    month = `0${String(today.getUTCMonth())}`
   }
   if (today.getUTCDate() < 10) {
-    day = `0${String(today.getUTCDate())}`;
+    day = `0${String(today.getUTCDate())}`
   }
   if (today.getUTCHours() < 10) {
-    hours = `0${String(today.getUTCHours())}`;
+    hours = `0${String(today.getUTCHours())}`
   }
   if (today.getUTCMinutes() < 10) {
-    minutes = `0${String(today.getUTCMinutes())}`;
+    minutes = `0${String(today.getUTCMinutes())}`
   }
   if (today.getUTCSeconds() < 10) {
-    seconds = `0${String(today.getUTCSeconds())}`;
+    seconds = `0${String(today.getUTCSeconds())}`
   }
-  ++month; // UTC uses month 0-11 in JS.
+  ++month // UTC uses month 0-11 in JS.
 
-  const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-  return dateInfo;
+  const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+  return dateInfo
 }
 
 function setTimer() {
-  const today = new Date();
-  const year = String(today.getUTCFullYear());
-  let month = String(today.getUTCMonth());
-  let day = String(today.getUTCDate());
-  let hours = String(today.getUTCHours());
-  let minutes = String(today.getUTCMinutes());
-  let seconds = String(today.getUTCSeconds());
+  const today = new Date()
+  const year = String(today.getUTCFullYear())
+  let month = String(today.getUTCMonth())
+  let day = String(today.getUTCDate())
+  let hours = String(today.getUTCHours())
+  let minutes = String(today.getUTCMinutes())
+  let seconds = String(today.getUTCSeconds())
 
   if (today.getUTCMonth() < 10) {
-    month = `0${String(today.getUTCMonth())}`;
+    month = `0${String(today.getUTCMonth())}`
   }
   if (today.getUTCDate() < 10) {
-    day = `0${String(today.getUTCDate())}`;
+    day = `0${String(today.getUTCDate())}`
   }
   if (today.getUTCHours() < 10) {
-    hours = `0${String(today.getUTCHours())}`;
+    hours = `0${String(today.getUTCHours())}`
   }
   if (today.getUTCMinutes() < 10) {
-    minutes = `0${String(today.getUTCMinutes())}`;
+    minutes = `0${String(today.getUTCMinutes())}`
   }
   if (today.getUTCSeconds() < 10) {
-    seconds = `0${String(today.getUTCSeconds())}`;
+    seconds = `0${String(today.getUTCSeconds())}`
   }
-  ++month; // UTC uses month 0-11 in JS.
+  ++month // UTC uses month 0-11 in JS.
 
-  const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-  return dateInfo;
+  const dateInfo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+  return dateInfo
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(PatientNew));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PatientNew))

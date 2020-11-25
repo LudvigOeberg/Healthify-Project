@@ -30,6 +30,7 @@ import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
 import ChildSimulation from './Child/ChildSimulation'
+import ParentRewardPage from './Parent/ParentRewardPage'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -246,6 +247,13 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={ChildSimulation}
               />
+              <RequiredRoute
+                exact
+                path="/parent-reward"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={ParentRewardPage}
+              />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
             </Switch>
@@ -254,7 +262,12 @@ class App extends React.Component {
           <MySnackbar />
 
           <div className={classes.snackbarDiv}>
-            <Snackbar className={classes.snackbar} open={this.props.timerSnackbarOpen} autoHideDuration={5000} onClose={handleClose}>
+            <Snackbar
+              className={classes.snackbar}
+              open={this.props.timerSnackbarOpen}
+              autoHideDuration={5000}
+              onClose={handleClose}
+            >
               <Alert
                 elevation={6}
                 severity={timerSnackbar.color}
@@ -304,13 +317,13 @@ const RequiredRoute = ({ requires, user, component, path, exact, ...rest }) => {
 
 const styles = (theme) => ({
   snackbar: {
-    bottom: "5rem",
+    bottom: '5rem',
   },
   snackbarDiv: {
     width: '100%',
     zIndex: 20000,
     '& > * + *': {
-      marginTop: theme.spacing(4)
+      marginTop: theme.spacing(4),
     },
   },
   root: {
