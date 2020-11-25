@@ -145,7 +145,7 @@ export default function MyDialog(props) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button id="okButton" autoFocus onClick={handleClose} color="primary">
+          <Button id="dialobOkButton" autoFocus onClick={handleClose} color="primary">
             Okej
           </Button>
         </DialogActions>

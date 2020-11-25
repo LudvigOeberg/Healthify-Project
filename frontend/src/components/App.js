@@ -24,7 +24,7 @@ import MonitorChildValue from './Parent/MonitorChildValue'
 import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
-// import ParentSettingsPage from './Parent/ParentSettingsPage'
+import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
@@ -227,13 +227,13 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={PatientEdit}
               />
-              {/* <RequiredRoute
+              <RequiredRoute
                 exact
                 path="/parent-settings"
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
                 component={ParentSettingsPage}
-              /> */}
+              />
               <RequiredRoute
                 exact
                 path="/child-laboration"

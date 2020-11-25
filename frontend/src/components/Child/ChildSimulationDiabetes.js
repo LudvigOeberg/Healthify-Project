@@ -213,7 +213,7 @@ const ChildSimulationDiabetes = (props) => {
         </Grid>
         <Grid item xs={6}>
           <Button
-            id="backButton"
+            id="diabetesSimulationBackButton"
             component={Link}
             href="/child-laboration"
             variant="outlined"

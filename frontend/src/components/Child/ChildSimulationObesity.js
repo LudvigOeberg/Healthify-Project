@@ -17,8 +17,8 @@ import { LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT } from '../../constants/action
 import agentEHR from '../../agentEHR'
 
 /**
- * Page where the child may run a simulation of how they will feel if they eat something.
- * Right now: Bases the simulation of the type of meal and the latest recorded bloodsugar value (not the meal size).
+ * Page where the child may run a simulation of how long it will take to reach their goal weight if they do a certain amount of workouts per week.
+ * Right now: Bases the simulation on
  */
 
 const mapStateToProps = (state) => ({
@@ -83,11 +83,7 @@ const useStyles = makeStyles((theme) => ({
 const ChildSimulationObesity = (props) => {
   const id = props.currentUser.ehrid
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-  let { bloodsugar } = props
-
-  if (bloodsugar !== undefined) {
-    bloodsugar = bloodsugar[0].value
-  }
+  const { weight } = props
 
   useEffect(() => {
     props.onLoad(id)
@@ -140,15 +136,17 @@ const ChildSimulationObesity = (props) => {
     return todaysDate
   }
 
-  // This shall be the function that calculates
+  // This is the function that calculates
   // the number of weeks it will take for the person
-  // to reach their goal.
+  // to reach their goal weight.
   function getWeeksNumber() {
-    const w = -3
-    // let w
+    let currentWeight
+    if (weight !== undefined) {
+      currentWeight = weight[0].weight
+    }
+    const weightGoal = 0.7 * currentWeight
 
-    // w = (400 * workouts) /
-
+    const w = Math.floor((currentWeight - weightGoal) / workouts) * 2
     return w
   }
 
@@ -209,7 +207,14 @@ const ChildSimulationObesity = (props) => {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Button component={Link} href="/child-laboration" variant="outlined" color="primary" fullWidth>
+          <Button
+            id="obesitySimulationBackButton"
+            component={Link}
+            href="/child-laboration"
+            variant="outlined"
+            color="primary"
+            fullWidth
+          >
             {' '}
             Tillbaka
           </Button>{' '}
