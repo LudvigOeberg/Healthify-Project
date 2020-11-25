@@ -102,6 +102,7 @@ const PatientEdit = (props) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Button
+                id="saveChildChanges"
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -114,6 +115,7 @@ const PatientEdit = (props) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Button
+                id="deleteChild"
                 fullWidth
                 variant="contained"
                 color="secondary"

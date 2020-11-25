@@ -24,13 +24,14 @@ import MonitorChildValue from './Parent/MonitorChildValue'
 import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
-import ParentSettingsPage from './Parent/ParentSettingsPage'
+// import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
 import ChildLaboration from './Child/ChildLaboration'
 import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
 import ChildSimulationObesity from './Child/ChildSimulationObesity'
+import AddVal from './Child/AddVal'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -173,6 +174,13 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={Integrations}
               />
+              <RequiredRoute
+                exact
+                path="/add"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={AddVal}
+              />
               {/* Commented out as link from ChildListItem no longer links to /caregiving-team
                here in case we need it */}
               {/*
@@ -219,13 +227,13 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={PatientEdit}
               />
-              <RequiredRoute
+              {/* <RequiredRoute
                 exact
                 path="/parent-settings"
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
                 component={ParentSettingsPage}
-              />
+              /> */}
               <RequiredRoute
                 exact
                 path="/child-laboration"
