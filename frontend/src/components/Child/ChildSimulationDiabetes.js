@@ -10,11 +10,6 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link'
 import Slider from '@material-ui/core/Slider'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Box from '@material-ui/core/Box'
 
 import MyDialog from '../MyDialog'
 import { LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT } from '../../constants/actionTypes'
@@ -22,7 +17,7 @@ import agentEHR from '../../agentEHR'
 
 /**
  * Page where the child may run a simulation of how they will feel if they eat something.
- * Right now: Bases the simulation of the type of meal and the latest recorded bloodsugar value (not the meal size).
+ * Right now: Bases the simulation of the size of the meal and the latest recorded bloodsugar value.
  */
 
 const mapStateToProps = (state) => ({
@@ -93,12 +88,6 @@ const ChildSimulationDiabetes = (props) => {
 
   const date = getCurrentDate()
 
-  const [Meal_type, setMeal] = React.useState('Måltid')
-  const handleChange = (event) => {
-    props.onLoad(props.currentUser.ehrid)
-    setMeal(event.target.value)
-  }
-
   const [Meal_size, setValue] = React.useState(2)
   const handleSliderChange = (event, newValue) => {
     props.onLoad(props.currentUser.ehrid)
@@ -159,26 +148,26 @@ const ChildSimulationDiabetes = (props) => {
 
   function getDialogInfo() {
     if (bloodsugar < lowBloodsugarValue) {
-      if (Meal_type === 'Snack') {
+      if (Meal_size === 1) {
         return badDialogInfo
       }
-      if (Meal_type === 'Mellanmål') {
+      if (Meal_size === 2) {
         return goodDialogInfo
       }
-      if (Meal_type === 'Måltid') {
+      if (Meal_size === 3) {
         return goodDialogInfo
       }
     }
     if (bloodsugar > highBloodsugarValue) {
-      if (Meal_type === 'Snack') {
+      if (Meal_size === 1) {
         return neutralDialogInfo
       }
       return badDialogInfo
     }
-    if (Meal_type === 'Snack') {
+    if (Meal_size === 1) {
       return goodDialogInfo
     }
-    if (Meal_type === 'Mellanmål') {
+    if (Meal_size === 2) {
       return neutralDialogInfo
     }
     return badDialogInfo
@@ -189,7 +178,7 @@ const ChildSimulationDiabetes = (props) => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Card className={classes.card}>
-            <Grid item xs={8}>
+            <Grid item xs={12}>
               <Typography variant="h4" className={classes.title} color="textSecondary" gutterBottom>
                 Ny simulering
               </Typography>
@@ -201,7 +190,7 @@ const ChildSimulationDiabetes = (props) => {
             </Grid>
             <Grid item xs={8}>
               <Typography variant="body1" className={classes.diet} gutterBottom>
-                {Meal_type}
+                Måltid
               </Typography>
             </Grid>
             <Grid item xs={8}>
@@ -222,26 +211,15 @@ const ChildSimulationDiabetes = (props) => {
             </Grid>
           </Card>
         </Grid>
-        <Grid item xs={12}>
-          <Box textAlign="center">
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="demo-simple-select-outlined-label">Måltid</InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={Meal_type}
-                onChange={handleChange}
-                label="Meal_size"
-              >
-                <MenuItem value="Måltid">Måltid</MenuItem>
-                <MenuItem value="Snack">Snack</MenuItem>
-                <MenuItem value="Mellanmål">Mellanmål</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </Grid>
         <Grid item xs={6}>
-          <Button component={Link} href="/child-laboration" variant="outlined" color="primary" fullWidth>
+          <Button
+            id="backButton"
+            component={Link}
+            href="/child-laboration"
+            variant="outlined"
+            color="primary"
+            fullWidth
+          >
             {' '}
             Tillbaka
           </Button>{' '}

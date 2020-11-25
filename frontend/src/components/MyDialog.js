@@ -117,7 +117,7 @@ export default function MyDialog(props) {
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen} fullWidth>
+      <Button id="openDialogButton" variant="contained" color="primary" onClick={handleClickOpen} fullWidth>
         {buttonLabel}
         <ArrowForwardIosIcon />
       </Button>
@@ -145,7 +145,7 @@ export default function MyDialog(props) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
+          <Button id="okButton" autoFocus onClick={handleClose} color="primary">
             Okej
           </Button>
         </DialogActions>
