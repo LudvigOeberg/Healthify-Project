@@ -35,6 +35,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: disease === 'DIABETES' ? SAVE_BLOODSUGAR : SAVE_WEIGHT,
       payload:
+        // eslint-disable-next-line no-nested-ternary
         disease === 'DIABETES'
           ? agentEHR.Composition.saveBloodSugar(ehrId, measurement).then(() => {
               dispatch({
@@ -42,11 +43,16 @@ const mapDispatchToProps = (dispatch) => ({
                 payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
               })
             })
-          : agentEHR.Demograhics.newMeasurment(null, measurement, ehrId).then(() => {
+          : measurement !== null
+          ? agentEHR.Demograhics.newMeasurment(null, measurement, ehrId).then(() => {
               dispatch({
                 type: LOAD_WEIGHT,
                 payload: agentEHR.Query.weight(ehrId, 20),
               })
+            })
+          : dispatch({
+              type: LOAD_WEIGHT,
+              payload: agentEHR.Query.weight(ehrId, 20),
             }),
 
       snackbar,
@@ -56,10 +62,16 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
   },
   loadValues: (ehrId, offset, limit, disease) => {
-    console.log(disease)
     if (disease === 'DIABETES')
-      dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
-    else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
+      dispatch({
+        type: LOAD_BLOODSUGAR,
+        payload: agentEHR.Query.bloodsugar(ehrId, offset, limit),
+      })
+    else if (disease === 'OBESITY')
+      dispatch({
+        type: LOAD_WEIGHT,
+        payload: agentEHR.Query.weight(ehrId, limit),
+      })
   },
 })
 
@@ -89,40 +101,66 @@ const MonitorChildValue = (props) => {
   useEffect(() => {
     props.onLoad(id)
     props.loadValues(id, 0, 20, disease)
-  }, [id, disease]) // eslint-disable-line
+  }, [id, disease]); // eslint-disable-line
 
-  const validate = (val) => val < 100 && val > 0
+  const validate = (val) => {
+    if (disease === 'DIABETES') {
+      return val <= 10 && val > 0
+    }
+    return val <= 100 && val >= 40
+  }
 
   const submitForm = (ev) => {
     ev.preventDefault()
-    // const color = validate(props.childValue) ? 'success' : 'error'
-    // const message = validate(props.childValue) ? `Du loggade värdet: ${props.childValue} mmol/L` : 'Fel format!'
-    // props.onOpenSnackbar(message, color)
+
     const measurementChild = props.childValue
+
     const snackbar = {
       open: true,
       message: validate(props.childValue)
         ? `Du loggade värdet: ${props.childValue} ${disease === 'DIABETES' ? 'mmol/L' : 'kg'}`
-        : 'Fel format!',
+        : `${disease === 'DIABETES' ? 'Fel format eller ogiltigt blodsockervärde' : 'Fel format eller ogiltig vikt'}`,
       color: validate(props.childValue) ? 'success' : 'error',
     }
-    props.onSubmit(id, measurementChild, snackbar, disease)
+
+    if (validate(props.childValue)) {
+      props.onSubmit(id, measurementChild, snackbar, disease)
+    } else {
+      props.onSubmit(id, null, snackbar, disease)
+    }
+    return null
   }
+
   const changeField = (ev) => {
     props.onChangeField(ev.target.id, ev.target.value)
   }
 
   // getIndication & reformat are dublicated in ParentOverview.
   const getIndication = (data) => {
-    if (data > 0 && data < 4) {
-      return 'Lågt'
-    }
-    if (data > 9) {
-      return 'Högt'
+    if (disease === 'DIABETES') {
+      if (data > 0 && data < 4) {
+        return 'Lågt'
+      }
+      if (data > 9) {
+        return 'Högt'
+      }
+      return 'Stabilt'
     }
 
-    return 'Stabilt'
+    if (disease === 'OBESITY') {
+      if (data < 50) {
+        return 'Undervikt'
+      }
+      if (data > 49 && data < 60) {
+        return 'Lagom'
+      }
+      if (data > 59) {
+        return 'Övervikt'
+      }
+    }
+    return 'Out of bound'
   }
+
   const reformat = (data) => {
     const dataObjects = []
     for (let i = 0; i < data.length; i++) {
@@ -173,6 +211,7 @@ const MonitorChildValue = (props) => {
             <Typography component="h1" variant="h5">
               Skriv in ditt barns {disease === 'DIABETES' ? 'blodsockervärde' : 'uppmätta vikt'}
             </Typography>
+            <Typography>{disease === 'DIABETES' ? 'mellan 1-10 mmol/L.' : 'mellan 40-100kg'}</Typography>
             <form className={classes.form} noValidate onSubmit={(ev) => submitForm(ev)} autoComplete="off">
               <Grid container spacing={0}>
                 <Grid item xs={12}>
