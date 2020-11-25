@@ -56,7 +56,7 @@ function ChildListItem(props) {
   
 
   useEffect(() => {
-    if(disease==='diabetes')
+    if(disease==='DIABETES')
       props.loadValues(child.ehrid, 0, 1, disease)
     else
       props.loadValues(child.ehrid, 0, 2, disease)
@@ -64,7 +64,7 @@ function ChildListItem(props) {
 
   Moment.locale('sv')
   return (
-    <Container maxWidth="md">
+    <Container>
       <div className={classes.paper}>
         <Paper>
           <List className={classes.card}>

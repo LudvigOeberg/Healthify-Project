@@ -85,7 +85,7 @@ function SimulateChart(props) {
   const goalweight = props.goalweight ? props.goalweight : 0
   const trainingammount = props.trainingammount ? props.trainingammount : 0
   const meal = props.meal ? props.meal : 0
-  const weight = props.weight ? props.weight[0].weight : 0
+  const weight = props.weight ? props.weight.weight : 0
   const bloodsugar = props.bloodsugar ? props.bloodsugar[0].value : 0
   const theme = useTheme()
   const timeHorizon = props.timeHorizon ? props.timeHorizon : 'year'

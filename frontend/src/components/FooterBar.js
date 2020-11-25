@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 'auto',
     display: 'flex',
     width: '100%',
+    zIndex: 10001,
   },
 
   avatar: {
