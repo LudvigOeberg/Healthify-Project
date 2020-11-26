@@ -288,10 +288,10 @@ function SimulateChart(props) {
             <FormControl component="fieldset">
               <FormLabel component="legend">Tidsspann</FormLabel>
               <RadioGroup row aria-label="horizon" name="horizon" value={timeHorizon} onChange={changeRadio}>
-                <FormControlLabel value="1month" control={<Radio />} label="En månad" />
-                <FormControlLabel value="3month" control={<Radio />} label="Tre månader" />
-                <FormControlLabel value="6month" control={<Radio />} label="Sex månader" />
-                <FormControlLabel value="year" control={<Radio />} label="Ett år" />
+                <FormControlLabel id="chartOneMonth" value="1month" control={<Radio />} label="En månad" />
+                <FormControlLabel id="chartThreeMonts" value="3month" control={<Radio />} label="Tre månader" />
+                <FormControlLabel id="chartSixMonths" value="6month" control={<Radio />} label="Sex månader" />
+                <FormControlLabel id="chartOneYear" value="year" control={<Radio />} label="Ett år" />
               </RadioGroup>
             </FormControl>
           </Paper>

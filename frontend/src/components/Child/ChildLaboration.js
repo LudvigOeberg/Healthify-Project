@@ -113,7 +113,7 @@ const ChildLaboration = (props) => {
           </CardContent>
         </Card>
         <Card className={classes.diet}>
-          <Button component={Link} href={cardContent[2]} color="inherit">
+          <Button id="childSimulationPageButton" component={Link} href={cardContent[2]} color="inherit">
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={6} sm={6}>
                 <Typography variant="h6" className={classes.title} color="textSecondary" gutterBottom>

@@ -105,27 +105,31 @@ const PersistantDrawer = (props) => {
           classes={{
             paper: classes.drawerPaper,
           }}
+          id="openParentDrawerButton"
         >
           <div className={classes.drawerHeader}>
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton id="closeParentDrawerButton" onClick={handleDrawerClose}>
               <ChevronLeftIcon />
             </IconButton>
           </div>
           <Divider />
           <List>
             <ListItemLink
+              id="parentProfileDrawerLink"
               href="/parent"
               text="Min profil"
               avatarComponent={<AccountCircle />}
               location={props.location}
             />
             <ListItemLink
+              id="parentSettingsDrawerLink"
               href="/parent-settings"
               text="Inställningar"
               avatarComponent={<Settings />}
               location={props.location}
             />
             <ListItemLink
+              id="registerPatientDrawerLink"
               href="/register-patient"
               text="Registrering av barn"
               avatarComponent={<Add />}
@@ -148,9 +152,10 @@ const PersistantDrawer = (props) => {
         classes={{
           paper: classes.drawerPaper,
         }}
+        id="openChildDrawerButton"
       >
         <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton id="closeChildDrawerButton" onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
@@ -158,24 +163,28 @@ const PersistantDrawer = (props) => {
         <List>
           <ListItemLink href="/child" text="Min profil" avatarComponent={<AccountCircle />} location={props.location} />
           <ListItemLink
+            id="childStatisticsDrawerLink"
             href="/child-monitor"
             text="Statistik"
             avatarComponent={<InsertChart />}
             location={props.location}
           />
           <ListItemLink
+            id="sharedDataDrawerLink"
             href="/accessed-data"
             text="Delad data"
             avatarComponent={<GroupIcon />}
             location={props.location}
           />
           <ListItemLink
+            id="childLabDrawerLink"
             href="/child-laboration"
             text="Laboratoriet"
             avatarComponent={<TimelineIcon />}
             location={props.location}
           />
           <ListItemLink
+            id="childSettingsDrawerLink"
             href="/settings"
             text="Inställningar"
             avatarComponent={<Settings />}
