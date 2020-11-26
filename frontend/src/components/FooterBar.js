@@ -43,13 +43,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FooterBar() {
   const classes = useStyles()
-  const child = false
 
   return (
     <footer className={classes.footer}>
       <Grid container className={classes.root} height="100%">
         <Grid item xs={3} className={classes.borderRight}>
-          <a href={child ? '/patient' : '/parent'}>
+          <a id="homeFooterLink" href="/child">
             <Tooltip title="Hem" aria-label="home">
               <Paper className={classes.paper} square>
                 <SvgIcon width="22" height="12" viewBox="0 0 22 12">
@@ -65,12 +64,13 @@ export default function FooterBar() {
         </Grid>
 
         <Grid item xs={3} className={classes.borderRight}>
-          <a href="/parent">
-            <Tooltip title="Blixt" aria-label="lightning">
+          {/* Här ska reward sidan in */}
+          <a id="rewardFooterLink" href="/child">
+            <Tooltip title="Pokal" aria-label="trophy">
               <Paper className={classes.paper} square>
-                <SvgIcon width="22" height="12" viewBox="0 0 22 12">
+                <SvgIcon width="22" height="10" viewBox="2 5 22 12">
                   <path
-                    d="M4.50212 17.7745V11.799H0.712043C0.184851 11.799 -0.171359 11.2217 0.0851129 10.7454L5.32854 0.396535C5.65625 -0.281843 6.66789 -0.0364719 6.66789 0.728507V6.77617H10.287C10.8142 6.77617 11.1561 7.33908 10.9282 7.81538L5.85573 18.0921C5.51376 18.7849 4.50212 18.5395 4.50212 17.7745Z"
+                    d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM7 10.82C5.84 10.4 5 9.3 5 8V7h2v3.82zM19 8c0 1.3-.84 2.4-2 2.82V7h2v1z"
                     fill="black"
                     fillOpacity="0.6"
                   />
@@ -81,7 +81,7 @@ export default function FooterBar() {
         </Grid>
 
         <Grid item xs={3} className={classes.borderRight}>
-          <a href="/monitor-child/">
+          <a id="statisticsFooterLink" href="/child-monitor/">
             <Tooltip title="Simulera" aria-label="simulation">
               <Paper className={classes.paper} square>
                 <SvgIcon width="22" height="12" viewBox="0 0 22 12">
@@ -97,7 +97,7 @@ export default function FooterBar() {
         </Grid>
 
         <Grid item xs={3}>
-          <a href="/parent">
+          <a id="laborationFooterLink" href="/child-laboration">
             <Tooltip title="Labb" aria-label="lab">
               <Paper className={classes.paper} square>
                 <SvgIcon width="22" height="12" viewBox="0 0 22 12">
@@ -113,7 +113,7 @@ export default function FooterBar() {
         </Grid>
       </Grid>
 
-      <a href="/add">
+      <a id="addFooterLink" href="/add">
         <Tooltip title="Lägg till" aria-label="add">
           <Fab color="primary" className={classes.avatar}>
             <AddIcon fontSize="medium" />

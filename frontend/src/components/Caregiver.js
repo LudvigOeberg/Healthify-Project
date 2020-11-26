@@ -36,13 +36,13 @@ export default function Caregiver(props) {
               <ListItemText primary={props.name} />
             </ListItem>
             <Divider />
-            <ListItem button component="a" href={`mailto:${props.mail}`}>
+            <ListItem id="mailToCaregiverButton" button component="a" href={`mailto:${props.mail}`}>
               <ListItemIcon>
                 <MailIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary={props.mail} />
             </ListItem>
-            <ListItem button component="a" href={`tel:${props.telephone}`}>
+            <ListItem id="callToCaregiverButton" button component="a" href={`tel:${props.telephone}`}>
               <ListItemIcon>
                 <PhoneIcon color="primary" />
               </ListItemIcon>

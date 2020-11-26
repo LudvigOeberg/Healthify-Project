@@ -98,14 +98,19 @@ function ChildListItem(props) {
                 primary={`${child.name} ${child.surname} `}
                 secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}
               />
-              <a href={`/edit-child/${child.ehrid}`}>
+              <a id="parentsEditChildButton" href={`/edit-child/${child.ehrid}`}>
                 <ListItemIcon>
                   <EditIcon color="primary" />
                 </ListItemIcon>
               </a>
             </ListItem>
             <Divider />
-            <ListItem button component="a" href={`/parent-child-overview/${child.ehrid}`}>
+            <ListItem
+              id="parentsChildOverviewButton"
+              button
+              component="a"
+              href={`/parent-child-overview/${child.ehrid}`}
+            >
               <ListItemIcon>
                 <AccountBox color="primary" />
               </ListItemIcon>

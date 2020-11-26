@@ -65,7 +65,7 @@ class AccessedData extends Component {
                 </ListItemIcon>
                 <ListItemText primary="Tillgång sedan 27 mars 2020" />
               </ListItem>
-              <ListItem button component="a" href="callto:0701234567">
+              <ListItem id="childCallParentButton" button component="a" href="callto:0701234567">
                 <ListItemIcon>
                   <PhoneIcon color="primary" />
                 </ListItemIcon>
