@@ -426,7 +426,7 @@ const SimulatePatient = (props) => {
                             
                           ></Slider>
                         </Grid>
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} md={6}>
                           <Paper variant='outlined'>
                             <Grid container spacing={2} style={{padding: 10}} justify='center' alignItems='center'>
                               <Grid item xs={6} >
@@ -449,6 +449,19 @@ const SimulatePatient = (props) => {
                                 </Grid>
                                 <Grid item xs={12}>
                                 <Typography  variant='body2' style={{color:'gray'}} align='center'>mmol/mol</Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                <Paper elevation={0} hidden={avgBloodSugar}>
+                                <Typography variant='body2' 
+                                  align='center'
+                                  >Här får du en indikation om HbA1c värdet</Typography>
+                                </Paper>
+                                <Paper elevation={0} hidden={!avgBloodSugar}>
+                                  <Typography variant='body2' 
+                                  style={{color: avgBloodSugar*6<27 || avgBloodSugar*6>52 ? 'red' : 'green' }} 
+                                  align='center'
+                                  >{avgBloodSugar*6<27 || avgBloodSugar*6>52 ? 'Detta är ett dåligt värde' : 'Detta är ett bra värde'}</Typography>
+                                </Paper>
                                 </Grid>
                                 </Grid>
                               </Grid>
