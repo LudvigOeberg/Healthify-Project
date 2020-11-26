@@ -313,6 +313,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
+              id="goBackObesity"
               type="submit"
               fullWidth
               variant="outlined"
@@ -326,6 +327,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
+              id="simulateObesity"
               type="submit"
               fullWidth
               variant="contained"
@@ -401,6 +403,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
+              id="goBackDiabetes"
               type="submit"
               fullWidth
               variant="outlined"
@@ -414,6 +417,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
+              id="simulateDiabetes"
               type="submit"
               fullWidth
               variant="contained"
@@ -440,14 +444,21 @@ const SimulatePatient = (props) => {
               nedan kommer du till sidan för att hantera ditt barns värden.
             </CardContent>
             <CardContent>
-              <Button size="large" variant="contained" color="primary" href={`/monitor-child/${id}`}>
+              <Button id="handleValues" size="large" variant="contained" color="primary" href={`/monitor-child/${id}`}>
                 Hantera värden
               </Button>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Button type="submit" fullWidth variant="outlined" color="primary" href={`/parent-child-overview/${id}`}>
+          <Button
+            id="back"
+            type="submit"
+            fullWidth
+            variant="outlined"
+            color="primary"
+            href={`/parent-child-overview/${id}`}
+          >
             Tillbaka
           </Button>
         </Grid>

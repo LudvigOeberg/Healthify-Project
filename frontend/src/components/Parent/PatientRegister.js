@@ -336,6 +336,7 @@ class PatientRegister extends Component {
               </Grid>
             </Grid>
             <Button
+              id="registerChild"
               type="submit"
               fullWidth
               variant="contained"
