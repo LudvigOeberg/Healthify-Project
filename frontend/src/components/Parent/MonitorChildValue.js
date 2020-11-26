@@ -83,6 +83,8 @@ const MonitorChildValue = (props) => {
   const { bloodsugar } = props
   const { weight } = props
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null
+  const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
   const loading = props.inProgress
   const colDesc = [
@@ -138,10 +140,10 @@ const MonitorChildValue = (props) => {
   // getIndication & reformat are dublicated in ParentOverview.
   const getIndication = (data) => {
     if (disease === 'DIABETES') {
-      if (data > 0 && data < 4) {
+      if (data > 0 && data < SU_LO) {
         return 'Lågt'
       }
-      if (data > 9) {
+      if (data > SU_HI) {
         return 'Högt'
       }
       return 'Stabilt'

@@ -128,6 +128,14 @@ const ChildSimulationObesity = (props) => {
     'running avatar',
   ]
 
+  const noMeasurementDialogInfo = [
+    'Simulera',
+    'Simulation',
+    'Du måste ange ett mätvärde för att kunna genomföra en simulering!',
+    '',
+    'running avatar',
+  ]
+
   const classes = useStyles()
 
   function getCurrentDate() {
@@ -140,10 +148,16 @@ const ChildSimulationObesity = (props) => {
   // the number of weeks it will take for the person
   // to reach their goal weight.
   function getWeeksNumber() {
-    let currentWeight
+    let currentWeight = -1
     if (weight !== undefined) {
-      currentWeight = weight[0].weight
+      if (weight[0] !== undefined) {
+        currentWeight = weight[0].weight
+      }
     }
+    if (currentWeight < 1) {
+      return -101
+    }
+
     const weightGoal = 0.7 * currentWeight
 
     const w = Math.floor((currentWeight - weightGoal) / workouts) * 2
@@ -158,6 +172,9 @@ const ChildSimulationObesity = (props) => {
   function getDialogInfo() {
     if (getWeeksNumber() > 0) {
       return goodDialogInfo
+    }
+    if (getWeeksNumber() < -100) {
+      return noMeasurementDialogInfo
     }
     return encouragingDialogInfo
   }

@@ -83,15 +83,20 @@ const Patient = (props) => {
   // eslint-disable-next-line consistent-return
   function getMeasurementValue() {
     if (disease === 'DIABETES') {
-      if (bloodsugar !== null) {
-        return bloodsugar[0].value
+      if (bloodsugar !== undefined) {
+        if (bloodsugar !== null) {
+          return bloodsugar[0].value
+        }
       }
     }
     if (disease === 'OBESITY') {
-      if (weight !== null) {
-        return weight.weight
+      if (weight !== undefined) {
+        if (weight !== null) {
+          return weight.weight
+        }
       }
     }
+    return `Ø`
   }
 
   function getMeasurementUnit() {
@@ -106,21 +111,25 @@ const Patient = (props) => {
     const t = new Date()
 
     if (disease === 'DIABETES') {
-      if (bloodsugar !== null) {
-        const n = new Date(bloodsugar[0].time)
-        const difference = t.getTime() - n.getTime()
-        const diffHours = Math.floor(difference / (1000 * 3600))
+      if (bloodsugar !== undefined) {
+        if (bloodsugar !== null) {
+          const n = new Date(bloodsugar[0].time)
+          const difference = t.getTime() - n.getTime()
+          const diffHours = Math.floor(difference / (1000 * 3600))
 
-        return `${diffHours}h`
+          return `${diffHours}h`
+        }
       }
     }
     if (disease === 'OBESITY') {
-      if (weight !== null) {
-        const n = new Date(weight.time)
-        const difference = t.getTime() - n.getTime()
-        const diffDays = Math.floor(difference / (1000 * 3600 * 24))
+      if (weight !== undefined) {
+        if (weight !== null) {
+          const n = new Date(weight.time)
+          const difference = t.getTime() - n.getTime()
+          const diffDays = Math.floor(difference / (1000 * 3600 * 24))
 
-        return `${diffDays} dagar`
+          return `${diffDays} dagar`
+        }
       }
     }
   }
@@ -128,16 +137,22 @@ const Patient = (props) => {
   // eslint-disable-next-line consistent-return
   function paintBubbleBorder() {
     if (disease === 'DIABETES') {
-      if (bloodsugar !== null) {
-        if (bloodsugar[0].value > 8 || bloodsugar[0].value < 4) {
-          document.getElementById('bubble').style.border = '1px solid red'
+      if (bloodsugar !== undefined) {
+        if (bloodsugar !== null) {
+          if (bloodsugar[0].value > 8 || bloodsugar[0].value < 4) {
+            document.getElementById('bubble').style.border = '1px solid red'
+          }
         }
       }
     }
     if (disease === 'OBESITY') {
-      if (weight !== null) {
-        if (weight.weight > lastWeight.weight) {
-          document.getElementById('bubble').style.border = '1px solid red'
+      if (weight !== undefined) {
+        if (weight !== null) {
+          if (lastWeight !== undefined) {
+            if (weight.weight > lastWeight.weight) {
+              document.getElementById('bubble').style.border = '1px solid red'
+            }
+          }
         }
       }
     }
@@ -169,7 +184,7 @@ const Patient = (props) => {
 const styles = makeStyles((theme) => ({
   backGround: {
     position: 'absolute',
-    padding: '38% 10% 40%',
+    padding: '42% 10% 40%',
     background: 'linear-gradient(0deg, rgba(118,176,208,1) 40%, rgba(106,161,191,1) 41%, rgba(125,180,213,1) 86%)',
     marginTop: '-3%', // Removes a small white space at the top.
     width: '100%',
@@ -185,7 +200,7 @@ const styles = makeStyles((theme) => ({
     // paddingTop: '100%',
     position: 'absolute',
     left: '-35px',
-    bottom: '40px',
+    bottom: '8vh',
     boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
     textAlign: 'center',
     border: '1px solid green',
