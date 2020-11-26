@@ -26,7 +26,7 @@ function ChildList(props) {
         ))}
         <Grid item xs={12}>
           <div className={classes.paper}>
-            <a href="/register-patient">
+            <a id="parentAddChildLink" href="/register-patient">
               <AddIcon color="primary" style={{ fontSize: 100 }} />
             </a>
             <Typography fontSize="50" color="primary">

@@ -189,7 +189,7 @@ const ChildSimulationObesity = (props) => {
             </Grid>
             <Grid container xs={12} spacing={5} alignItems="center">
               <Grid item xs={9}>
-                <Slider value={workouts} defaultValue={2} step={1} min={1} max={7} onChange={handleSliderChange} />
+                <Slider id="childWorkoutSlider" value={workouts} defaultValue={2} step={1} min={1} max={7} onChange={handleSliderChange} />
               </Grid>
               <Grid item xs={3}>
                 <Input
@@ -208,7 +208,7 @@ const ChildSimulationObesity = (props) => {
         </Grid>
         <Grid item xs={6}>
           <Button
-            id="obesitySimulationBackButton"
+            id="childObesitySimulationBackButton"
             component={Link}
             href="/child-laboration"
             variant="outlined"

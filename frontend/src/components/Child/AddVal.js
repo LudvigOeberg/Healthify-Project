@@ -120,6 +120,7 @@ const AddVal = (props) => {
     }
 
     if (disease === 'DIABETES' && timer !== null) {
+      timer = null
       snackbar = {
         open: true,
         message: `Bra jobbat, hoppas du mår toppen!`,
@@ -211,9 +212,9 @@ const AddVal = (props) => {
               margin="dense"
               onChange={changeField}
               inputProps={{
-                step: 1,
-                min: 0,
-                max: 15,
+                step: disease === 'DIABETES' ? 0.1 : 1,
+                min: disease === 'DIABETES' ? 0.1 : 1,
+                max: disease === 'DIABETES' ? 15 : 100,
                 type: 'number',
                 'aria-labelledby': 'input-slider',
               }}

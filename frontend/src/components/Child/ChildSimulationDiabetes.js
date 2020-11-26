@@ -200,6 +200,7 @@ const ChildSimulationDiabetes = (props) => {
             </Grid>
             <Grid item xs={12}>
               <Slider
+                id="childSimluteSlider"
                 value={Meal_size}
                 defaultValue={2}
                 step={1}
@@ -213,7 +214,7 @@ const ChildSimulationDiabetes = (props) => {
         </Grid>
         <Grid item xs={6}>
           <Button
-            id="diabetesSimulationBackButton"
+            id="childDiabetesSimulationBackButton"
             component={Link}
             href="/child-laboration"
             variant="outlined"
