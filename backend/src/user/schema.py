@@ -142,6 +142,7 @@ class ChildSchema(Schema):
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
     type = fields.Str(dump_only=True)
     timer = fields.DateTime(dump_only=True)
+    #reward = fields.
 
     @pre_load
     def make_user(self, data, **kwargs):

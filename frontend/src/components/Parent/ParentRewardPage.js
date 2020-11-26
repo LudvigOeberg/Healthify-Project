@@ -17,17 +17,18 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import EmojiEventsIcon from "@material-ui/icons/EmojiEvents";
-import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+//import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Divider } from "@material-ui/core";
 import RedeemIcon from "@material-ui/icons/Redeem";
-
+import RewardCardList from './RewardCardList';
 import agentEHR from "../../agentEHR";
 
 import {
   PAGE_UNLOADED,
   LOAD_PARTY,
-  UPDATE_FIELD_AUTH,
+  FIELD_CHANGE,
+  SUBMIT_GOAL
 } from "../../constants/actionTypes";
 
 const mapStateToProps = (state) => ({
@@ -37,11 +38,20 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onChange: (key, value) =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key, value }),
+    dispatch({ type: FIELD_CHANGE, key, value }),
   onLoad: (ehrId) =>
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }),
+    
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
-});
+
+  submitGoal: (key, value, nameOf, description, reward, numberOfDays) => {
+    
+    dispatch({ type: SUBMIT_GOAL, key, value})
+  }
+  
+  })
+
+
 
 const ParentRewardPage = (props) => {
   
@@ -50,13 +60,20 @@ const ParentRewardPage = (props) => {
   const {nameOf, description, reward, numberOfDays} = props
   
   const classes = styles();
-  const challengeName = "Biobiljett placeholder :)";
-  const challengeDesc =
-    "Logga ditt blodsocker 3 dagar i rad för att få reward!";
+
     
-  const sendForm = (ev) => {
-    props.onChange(ev.target.id, ev.target.value)
-    console.log(props.reward);
+
+    // Ska spara
+const handleForm = (ev) => {
+  props.onChange(ev.target.id, ev.target.value)
+}
+
+
+    // Skapa och skicka till rewardcard 
+  const sendForm = () => (ev) => {
+ //   ev.preventDefault()
+    console.log('rewardy: ' + nameOf, description, reward, numberOfDays);
+    props.submitGoal(nameOf, description, reward, numberOfDays)
   }
 
   return (
@@ -84,15 +101,11 @@ const ParentRewardPage = (props) => {
               Lägg Till Ny Utmaning
             </Button>
             <Grid> Pågående</Grid>
-            <Card elevation={3} className={classes.innerCard}>
-              <CardHeader
-                title={challengeName}
-                titleTypographyProps={{ variant: "h5" }}
-                avatar={<MonetizationOnIcon></MonetizationOnIcon>}
-              ></CardHeader>
-              <CardContent>{challengeDesc}</CardContent>
-            </Card>
+          <Grid>
 
+          <RewardCardList></RewardCardList>
+
+          </Grid>
             <Grid>
               <List subheader={"Avklarade"}>
                 <ListItem>
@@ -138,14 +151,14 @@ const ParentRewardPage = (props) => {
 
           <CardContent>
             <FormControl fullWidth className={classes.inputs}>
-              <InputLabel>Namn på utmaningen</InputLabel>
+              <InputLabel>Namn på Utmaning</InputLabel>
               <Input
                 fullWidth
                 value={nameOf}
                 id="nameOf"
                 margin="dense"
                 labelId="goalweight-label"
-                onChange={sendForm}
+                onChange={handleForm}
               />
             </FormControl>
 
@@ -157,7 +170,7 @@ const ParentRewardPage = (props) => {
                 id="description"
                 margin="dense"
                 labelId="description-label"
-                onChange={sendForm}
+                onChange={handleForm}
               />
             </FormControl>
             <FormControl fullWidth className={classes.inputs}>
@@ -168,7 +181,7 @@ const ParentRewardPage = (props) => {
                 id="reward"
                 margin="dense"
                 labelId="reward-label"
-                onChange={sendForm}
+                onChange={handleForm}
               />
             </FormControl>
 
@@ -180,7 +193,7 @@ const ParentRewardPage = (props) => {
                 id="numberOfDays"
                 margin="dense"
                 labelId="day-label"
-                onChange={sendForm}
+                onChange={handleForm}
               />
             </FormControl>
           </CardContent>

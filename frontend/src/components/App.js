@@ -32,6 +32,7 @@ import ChildLaboration from './Child/ChildLaboration'
 import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
 import ChildSimulationObesity from './Child/ChildSimulationObesity'
 import AddVal from './Child/AddVal'
+import ParentRewardPage from './Parent/ParentRewardPage'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
