@@ -77,7 +77,7 @@ class PatientRegister extends Component {
         measurements: measurements,
         SU_LO: SU_LO,
         SU_HI: SU_HI
-      } : null
+      } : "Väntar på analysts"
 
       this.props.onSubmit(
         name,

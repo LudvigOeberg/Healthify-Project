@@ -92,9 +92,9 @@ class RegisterUserSchema(Schema):
         strict = True
 
 class DiabetesInfoSchema(Schema):
-    measurements= fields.Int(required=True)
-    SU_LO= fields.Float(required=True)
-    SU_HI= fields.Float(required=True)    
+    measurements= fields.Int(validate=validate.Range(min=1, max=20), required=True)
+    SU_LO= fields.Float(validate=validate.Range(min=0, max=15), required=True)
+    SU_HI= fields.Float(validate=validate.Range(min=0, max=15), required=True)    
 
 class RegisterChildSchema(Schema):
     name = fields.Str(validate=validate.Length(min=1), required=True)
@@ -114,6 +114,11 @@ class RegisterChildSchema(Schema):
     @pre_load
     def make_user(self, data, **kwargs):
         data = data.get('user')
+        if data.get('disease')=="OBESITY":
+            self.declared_fields.update({'diseaseInfo': fields.Str()})
+            self.load_fields.update({'diseaseInfo': fields.Str()})
+            self.fields.update({'diseaseInfo': fields.Str()})
+            self.dump_fields.update({'diseaseInfo': fields.Str()})
         return data
 
     def handle_error(self, exc, data, **kwargs):
