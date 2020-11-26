@@ -155,7 +155,7 @@ const getIndication = (data) => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Button
-                      id="toChildValues"
+                      id="toChildValuesButton"
                       variant="contained"
                       color="secondary"
                       href={`/monitor-child/${id}`}
@@ -166,7 +166,7 @@ const getIndication = (data) => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Button
-                      id="toSimulatePage"
+                      id="toSimulatePageButton"
                       variant="contained"
                       color="secondary"
                       href={`/simulate-patient/${id}`}

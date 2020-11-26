@@ -73,7 +73,7 @@ const ParentSettingsPage = (props) => {
       <div className={classes.paper}>
         <Grid className={classes.buttonGroup}>
           <Button
-            id="changeEmail"
+            id="parentsChangeEmailButton"
             type="submit"
             variant="contained"
             color="primary"
@@ -84,7 +84,7 @@ const ParentSettingsPage = (props) => {
         </Grid>
         <Grid className={classes.buttonGroup}>
           <Button
-            id="deleteAccount"
+            id="parentsDeleteAccountButton"
             type="submit"
             variant="contained"
             color="secondary"
@@ -108,7 +108,7 @@ const ParentSettingsPage = (props) => {
               <form noValidate className={classes.emailForm} onSubmit={submitForm(email)}>
                 <TextField
                   required
-                  id="email"
+                  id="parentsEditEmailButton"
                   name="email"
                   label="e-post"
                   variant="outlined"
@@ -120,7 +120,7 @@ const ParentSettingsPage = (props) => {
                 />
 
                 <Button
-                  id="saveEmailChange"
+                  id="parentsSaveEmailChangeButton"
                   type="submit"
                   disabled={props.inProgress}
                   variant="contained"
@@ -131,7 +131,7 @@ const ParentSettingsPage = (props) => {
               </form>
               <Grid className={classes.emailForm}>
                 <Button
-                  id="closeEmailChange"
+                  id="parentsCloseEmailChangeButton"
                   type="button"
                   variant="contained"
                   color="primary"
@@ -158,7 +158,7 @@ const ParentSettingsPage = (props) => {
             </Typography>
             <Grid container direction="row" className={classes.yesnoButtons}>
               <Button
-                id="comfirmDelete"
+                id="parentsComfirmDeleteButton"
                 type="submit"
                 variant="contained"
                 color="secondary"
@@ -168,7 +168,7 @@ const ParentSettingsPage = (props) => {
               </Button>
 
               <Button
-                id="closeDelete"
+                id="parentsCloseDeleteButton"
                 type="submit"
                 variant="contained"
                 color="primary"

@@ -48,7 +48,7 @@ export default function FooterBar() {
     <footer className={classes.footer}>
       <Grid container className={classes.root} height="100%">
         <Grid item xs={3} className={classes.borderRight}>
-          <a href='/child'>
+          <a id="homeFooterLink" href='/child'>
             <Tooltip title="Hem" aria-label="home">
               <Paper className={classes.paper} square>
                 <SvgIcon width="22" height="12" viewBox="0 0 22 12">
@@ -65,7 +65,7 @@ export default function FooterBar() {
 
         <Grid item xs={3} className={classes.borderRight}>
           {/* Här ska reward sidan in */}
-          <a href="/child">
+          <a id="rewardFooterLink" href="/child">
             <Tooltip title="Pokal" aria-label="trophy">
               <Paper className={classes.paper} square>
                 <SvgIcon width="22" height="10" viewBox="2 5 22 12">
@@ -81,7 +81,7 @@ export default function FooterBar() {
         </Grid>
 
         <Grid item xs={3} className={classes.borderRight}>
-          <a href="/child-monitor/">
+          <a id="statisticsFooterLink" href="/child-monitor/">
             <Tooltip title="Simulera" aria-label="simulation">
               <Paper className={classes.paper} square>
                 <SvgIcon width="22" height="12" viewBox="0 0 22 12">
@@ -97,7 +97,7 @@ export default function FooterBar() {
         </Grid>
 
         <Grid item xs={3}>
-          <a href="/child-laboration">
+          <a id="laborationFooterLink" href="/child-laboration">
             <Tooltip title="Labb" aria-label="lab">
               <Paper className={classes.paper} square>
                 <SvgIcon width="22" height="12" viewBox="0 0 22 12">
@@ -113,7 +113,7 @@ export default function FooterBar() {
         </Grid>
       </Grid>
 
-      <a href="/add">
+      <a id="addFooterLink" href="/add">
         <Tooltip title="Lägg till" aria-label="add">
           <Fab color="primary" className={classes.avatar}>
             <AddIcon fontSize="medium" />
