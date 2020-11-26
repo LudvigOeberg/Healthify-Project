@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FooterBar() {
   const classes = useStyles()
-  const child = false
 
   return (
     <footer className={classes.footer}>
