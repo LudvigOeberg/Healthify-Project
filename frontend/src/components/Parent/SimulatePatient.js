@@ -169,8 +169,13 @@ const SimulatePatient = (props) => {
   }
 
   const handleAccordionChange = (value) => (event, newExpanded) => {
-    if(newExpanded)
+    if(newExpanded){
       props.onChange('AccordionOpen', value)
+      if(value==='HbA1c')
+        props.onChange('meal', "")
+      else if(value==='Meal')
+        props.onChange('avgBloodSugar', "")
+    }
     else 
       props.onChange('AccordionOpen', 'None')
   }
@@ -386,7 +391,7 @@ const SimulatePatient = (props) => {
                         </Grid>
                         <Grid item xs={11}>
                           <Slider
-                            value={meal}
+                            value={typeof meal==='number' ? meal : 0}
                             onChange={handleSliderChange('meal')}
                             step={1}
                             min={1}
@@ -411,7 +416,7 @@ const SimulatePatient = (props) => {
                         </Grid>
                         <Grid item xs={11}>
                           <Slider
-                            value={avgBloodSugar}
+                            value={typeof avgBloodSugar==='number' ? avgBloodSugar : 0}
                             valueLabelDisplay='auto'
                             onChange={handleSliderChange('avgBloodSugar')}
                             step={0.1}
