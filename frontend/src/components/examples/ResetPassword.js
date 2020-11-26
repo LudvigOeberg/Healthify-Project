@@ -41,7 +41,7 @@ class ResetPassword extends Component {
               autoFocus
             />
 
-            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+            <Button id="resetLoginButton" type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
               Logga In
             </Button>
           </form>
