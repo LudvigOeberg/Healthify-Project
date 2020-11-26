@@ -1,56 +1,160 @@
-import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core/styles'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Box, Container, Grid, Paper } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
 import TimeLineChart from '../TimeLineChart'
-import { PATIENT_PAGE_UNLOADED, FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR } from '../../constants/actionTypes'
+import { FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR, LOAD_WEIGHT } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import CustomPaginationActionsTable from '../TablePagination'
 import Reformat from '../../reformatEHRData'
 import smileChild from '../../Static/big_smile_child.png'
 
 const mapStateToProps = (state) => ({
+  ...state.common,
   ...state.ehr,
-  currentUser: state.common.currentUser,
-  bloodsugarValue: state.common.bloodsugar,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeAuth: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
-  onUnload: () => dispatch({ type: PATIENT_PAGE_UNLOADED }),
   onLoad: (ehrId) => {
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
-    dispatch({
-      type: LOAD_BLOODSUGAR,
-      payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
-    })
+  },
+  loadValues: (ehrId, offset, limit, disease) => {
+    if (disease === 'DIABETES')
+      dispatch({
+        type: LOAD_BLOODSUGAR,
+        payload: agentEHR.Query.bloodsugar(ehrId, offset, limit),
+      })
+    else if (disease === 'OBESITY')
+      dispatch({
+        type: LOAD_WEIGHT,
+        payload: agentEHR.Query.weight(ehrId, limit),
+      })
   },
 })
 
-class ChildMonitor extends Component {
-  constructor() {
-    super()
-    this.changeAuth = (ev) => this.props.onChangeAuth(ev.target.id, ev.target.value)
+const ChildMonitor = (props) => {
+  const id = props.currentUser.ehrid
+  const classes = styles()
+  const { bloodsugar } = props
+  const { weight } = props
+  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const loading = props.inProgress
+  const colDesc = [
+    'Datum',
+    `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
+    `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
+  ]
+  const input = bloodsugar || weight
+
+  const reformatForChart = (data) => {
+    if (bloodsugar) return Reformat.bloodsugar(data, false, true)
+    if (weight) return Reformat.weight(data, false, true)
+    return null
   }
 
-  componentDidMount() {
-    this.props.onLoad(this.props.currentUser.ehrid)
+  const reformat = (data) => {
+    const dataObjects = []
+    for (let i = 0; i < data.length; i++) {
+      dataObjects.push({
+        time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
+        value: disease === 'DIABETES' ? data[i].value : data[i].weight,
+        indicator: getIndication(disease === 'DIABETES' ? data[i].value : data[i].weight),
+      })
+    }
+    return dataObjects
+  }
+  const getIndication = (data) => {
+    if (data > 0 && data < 4) {
+      return 'Lågt'
+    }
+    if (data > 9) {
+      return 'Högt'
+    }
+
+    return 'Stabilt'
   }
 
-  componentWillUnmount() {
-    this.props.onUnload()
-  }
+  useEffect(() => {
+    props.onLoad(id)
+    props.loadValues(id, 0, 20, disease)
+  }, [id, disease]); // eslint-disable-line
 
-  render() {
-    const { classes } = this.props
-    const bloodsugarData = this.props.bloodsugar
-    return (
-      <Container maxWidth="sm">
-        <Paper elevation={3} className={classes.paperTop}>
-          <Grid container spacing={2} className={classes.stats}>
-            <Grid item xs={3} className={classes.grid}>
+  return (
+    <Container maxWidth="sm">
+      <Paper elevation={3} className={classes.paperTop}>
+        <Grid container spacing={2} className={classes.stats}>
+          <Grid item xs={3} className={classes.grid}>
+            <div className={`${classes.circle} ${classes.circleSm}`}>
+              <div className={classes.textInCircle}>
+                <div className={classes.textAlign}>
+                  <Typography variant="h6">78</Typography>
+                  <Typography variant="body2">mg/dL</Typography>
+                </div>
+              </div>
+            </div>
+            <Box textAlign="center">
+              <Typography className={classes.text} variant="body1">
+                Genomsnitt
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <div className={classes.circleEmoji}>
+              <img className={classes.centerIcon} src={smileChild} alt="smile child"></img>
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className={`${classes.circle} ${classes.circleSm}`}>
+              <div className={classes.textInCircle}>
+                <div className={classes.textAlign}>
+                  <Typography variant="h6">0</Typography>
+                  <Typography variant="h6">0</Typography>
+                </div>
+              </div>
+            </div>
+            <Box textAlign="center">
+              <Typography className={classes.text} variant="body1">
+                Hög/Låg
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid justify="space-evenly" alignItems="flex-start" container spacing={2} className={classes.circlesUnder}>
+            <Grid item xs={3}>
+              <div className={`${classes.circle} ${classes.circlesUnder}`}>
+                <Box boxShadow={2}>
+                  <div className={classes.textInCircle}>
+                    <div className={classes.textAlign}>
+                      <Typography variant="h6">50</Typography>
+                      <Typography variant="body2">g</Typography>
+                    </div>
+                  </div>
+                </Box>
+              </div>
+
+              <Box textAlign="center">
+                <Typography className={classes.text} variant="body1">
+                  Kolhydrater
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={3}>
               <div className={`${classes.circle} ${classes.circleSm}`}>
+                <div className={classes.textInCircle}>
+                  <div className={classes.textAlign}>
+                    <Typography variant="h6">+- 1</Typography>
+                  </div>
+                </div>
+              </div>
+              <Box textAlign="center">
+                <Typography className={classes.text} variant="body1">
+                  Avvikelse
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={3}>
+              <div className={`${classes.circle} ${classes.circlesUnder}`}>
                 <div className={classes.textInCircle}>
                   <div className={classes.textAlign}>
                     <Typography variant="h6">78</Typography>
@@ -64,106 +168,44 @@ class ChildMonitor extends Component {
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs={6}>
-              <div className={classes.circleEmoji}>
-                <img className={classes.centerIcon} src={smileChild} alt="smile child"></img>
-              </div>
-            </Grid>
-            <Grid item xs={3}>
-              <div className={`${classes.circle} ${classes.circleSm}`}>
-                <div className={classes.textInCircle}>
-                  <div className={classes.textAlign}>
-                    <Typography variant="h6">0</Typography>
-                    <Typography variant="h6">0</Typography>
-                  </div>
-                </div>
-              </div>
-              <Box textAlign="center">
-                <Typography className={classes.text} variant="body1">
-                  Hög/Låg
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid justify="space-evenly" alignItems="flex-start" container spacing={2} className={classes.circlesUnder}>
-              <Grid item xs={3}>
-                <div className={`${classes.circle} ${classes.circlesUnder}`}>
-                  <Box boxShadow={2}>
-                    <div className={classes.textInCircle}>
-                      <div className={classes.textAlign}>
-                        <Typography variant="h6">50</Typography>
-                        <Typography variant="body2">g</Typography>
-                      </div>
-                    </div>
-                  </Box>
-                </div>
-
-                <Box textAlign="center">
-                  <Typography className={classes.text} variant="body1">
-                    Kolhydrater
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <div className={`${classes.circle} ${classes.circleSm}`}>
-                  <div className={classes.textInCircle}>
-                    <div className={classes.textAlign}>
-                      <Typography variant="h6">+- 1</Typography>
-                    </div>
-                  </div>
-                </div>
-                <Box textAlign="center">
-                  <Typography className={classes.text} variant="body1">
-                    Avvikelse
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <div className={`${classes.circle} ${classes.circlesUnder}`}>
-                  <div className={classes.textInCircle}>
-                    <div className={classes.textAlign}>
-                      <Typography variant="h6">78</Typography>
-                      <Typography variant="body2">mg/dL</Typography>
-                    </div>
-                  </div>
-                </div>
-                <Box textAlign="center">
-                  <Typography className={classes.text} variant="body1">
-                    Genomsnitt
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Paper>
-
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Paper className={classes.paper}>
-              <Typography variant="h5">Mina mätningar</Typography>
-              <CustomPaginationActionsTable
-                paginate
-                titles={['Datum', 'mmol/L']}
-                columns={['x', 'y']}
-                rows={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false) : null}
-              />
-            </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper className={classes.paper}>
-              <Typography variant="h5"> Blodsocker</Typography>
-              <TimeLineChart
-                chartData={bloodsugarData ? Reformat.bloodsugar(bloodsugarData, false, true) : null}
-                label="Blodsocker (mmol/L)"
-              ></TimeLineChart>
-            </Paper>
           </Grid>
         </Grid>
-      </Container>
-    )
-  }
+      </Paper>
+      <Grid container spacing={5}>
+        <Grid item xs={12} sm={12} md={12}>
+          <Paper className={classes.paper}>
+            <Typography component="h1" variant="h5">
+              Tabell
+            </Typography>
+            <CustomPaginationActionsTable
+              id="childTable"
+              columns={['time', 'value', 'indicator']}
+              loading={loading}
+              rows={input ? reformat(input, false) : null}
+              // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
+              titles={colDesc}
+              paginate
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <Paper className={classes.paper}>
+            <Typography component="h1" variant="h5">
+              Graf
+            </Typography>
+            <TimeLineChart
+              id="childGraph"
+              chartData={input ? reformatForChart(input) : null}
+              label={disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}
+            ></TimeLineChart>
+          </Paper>
+        </Grid>
+      </Grid>
+    </Container>
+  )
 }
 
-const styles = (theme) => ({
+const styles = makeStyles((theme) => ({
   circle: {
     width: '100%',
     borderRadius: '50%',
@@ -224,6 +266,6 @@ const styles = (theme) => ({
     borderRadius: '0% 0% 30% 30%',
     background: '#004894',
   },
-})
+}))
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ChildMonitor))
+export default connect(mapStateToProps, mapDispatchToProps)(ChildMonitor)
