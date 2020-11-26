@@ -109,7 +109,7 @@ const ParentSettingsPage = (props) => {
               <form noValidate className={classes.emailForm} onSubmit={submitForm(email)}>
                 <TextField
                   required
-                  id="email"
+                  id="parentsEditEmail"
                   name="email"
                   label="e-post"
                   variant="outlined"
@@ -121,7 +121,7 @@ const ParentSettingsPage = (props) => {
                 />
 
                 <Button
-                  id="saveEmailChange"
+                  id="parentsSaveEmailChange"
                   type="submit"
                   disabled={props.inProgress}
                   variant="contained"
@@ -132,7 +132,7 @@ const ParentSettingsPage = (props) => {
               </form>
               <Grid className={classes.emailForm}>
                 <Button
-                  id="closeEmailChange"
+                  id="parentsCloseEmailChange"
                   type="button"
                   variant="contained"
                   color="primary"

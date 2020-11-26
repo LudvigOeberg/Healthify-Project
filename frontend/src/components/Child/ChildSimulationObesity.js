@@ -208,7 +208,7 @@ const ChildSimulationObesity = (props) => {
         </Grid>
         <Grid item xs={6}>
           <Button
-            id="obesitySimulationBackButton"
+            id="childObesitySimulationBackButton"
             component={Link}
             href="/child-laboration"
             variant="outlined"

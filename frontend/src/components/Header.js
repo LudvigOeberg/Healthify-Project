@@ -20,14 +20,14 @@ const LoggedOutView = (props) => {
         <AppBar className={classes.nav} position="fixed">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              <Button className={classes.title} component={Link} href="/" color="inherit">
+              <Button id="healthifyHeaderButton" className={classes.title} component={Link} href="/" color="inherit">
                 {props.appName}
               </Button>
             </Typography>
-            <Button component={Link} href="/login" color="inherit">
+            <Button id="loginHeaderButton" component={Link} href="/login" color="inherit">
               Logga in
             </Button>
-            <Button component={Link} href="/register" color="inherit">
+            <Button id="registerHeaderButton" component={Link} href="/register" color="inherit">
               Registrera dig
             </Button>
           </Toolbar>
@@ -56,15 +56,16 @@ const LoggedInView = (props) => {
               edge="start"
               color="inherit"
               aria-label="menu"
+              id="openDrawerButton"
             >
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              <Button component={Link} href={`/${props.currentUser.type}`} color="inherit">
+              <Button id="healthifyIconButton" component={Link} href={`/${props.currentUser.type}`} color="inherit">
                 {props.appName}
               </Button>
             </Typography>
-            <Button component={Link} onClick={props.logout} color="inherit">
+            <Button id="logoutHeaderButton" component={Link} onClick={props.logout} color="inherit">
               Logga ut
             </Button>
           </Toolbar>
