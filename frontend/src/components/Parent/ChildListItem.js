@@ -44,6 +44,8 @@ const mapDispatchToProps = (dispatch) => ({
 function ChildListItem(props) {
   const { child } = props
   const disease = props.partyIn ? props.partyIn.additionalInfo.disease : null
+  const SU_LO = props.partyIn ? props.partyIn.additionalInfo.SU_LO : null
+  const SU_HI = props.partyIn ? props.partyIn.additionalInfo.SU_HI : null
   const classes = useStyles()
   const weight =
     disease === 'OBESITY' && props.weights && props.weights[child.ehrid] && props.weights[child.ehrid].weight[0]
@@ -60,7 +62,7 @@ function ChildListItem(props) {
     props.bloodsugars &&
     disease === 'DIABETES' &&
     bloodsugar &&
-    (bloodsugar.value < 3 || bloodsugar.value > 10)
+    (bloodsugar.value < SU_LO || bloodsugar.value > SU_HI)
   )
   const badWeight = !!(
     props.weights &&
