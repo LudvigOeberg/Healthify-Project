@@ -6,10 +6,16 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import Modal from '@material-ui/core/Modal'
 import TextField from '@material-ui/core/TextField'
+<<<<<<< HEAD
 
 import { PAGE_UNLOADED, LOAD_PARTY, UPDATE_FIELD_AUTH, EDIT_PARENT, DELETE_PARENT } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 
+=======
+import { PAGE_UNLOADED, LOAD_PARTY, UPDATE_FIELD_AUTH, EDIT_PARENT, DELETE_PARENT } from '../../constants/actionTypes'
+import agentEHR from '../../agentEHR'
+
+>>>>>>> c0259a9ec53df66184a687b6edc8ab57077856a7
 import agent from '../../agent'
 
 const mapStateToProps = (state) => ({
