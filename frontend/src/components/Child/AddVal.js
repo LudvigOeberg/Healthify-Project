@@ -120,6 +120,7 @@ const AddVal = (props) => {
     }
 
     if (disease === 'DIABETES' && timer !== null) {
+      timer = null
       snackbar = {
         open: true,
         message: `Bra jobbat, hoppas du mår toppen!`,
