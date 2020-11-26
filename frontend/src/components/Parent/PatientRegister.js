@@ -64,7 +64,7 @@ class PatientRegister extends Component {
     this.changeAuthBoolean = (ev) => {
       this.props.onChangeBooleanAuth(ev.target.id, ev.target.checked)
     }
-    this.submitForm = (name, surname, email, password, confirmPassword, disease, dateofbirth, gender, measurements, SU_LO, SU_HI) => (ev) => {
+    this.submitForm = (name, surname, email, password, confirmPassword, disease, dateofbirth, gender, measurements, SU_LO, SU_HI, goalweight) => (ev) => {
       ev.preventDefault()
       const snackbar = {
         message: `Du registrerade barnet ${name} ${surname} 
@@ -77,7 +77,10 @@ class PatientRegister extends Component {
         measurements: measurements,
         SU_LO: SU_LO,
         SU_HI: SU_HI
-      } : "Väntar på analysts"
+      } : 
+      {
+        goalweight: goalweight
+      }
 
       this.props.onSubmit(
         name,
@@ -109,7 +112,7 @@ class PatientRegister extends Component {
     const { dateofbirth } = this.props
     const errors = this.props.errors ? this.props.errors : null
     const { disease } = this.props
-    const {measurements, SU_LO, SU_HI} = this.props
+    const {measurements, SU_LO, SU_HI, goalweight} = this.props
   
 
     return (
@@ -124,7 +127,7 @@ class PatientRegister extends Component {
           <form
             className={classes.form}
             noValidate
-            onSubmit={this.submitForm(name, surname, email, password, confirmPassword, disease, dateofbirth, gender, measurements, SU_LO, SU_HI)}
+            onSubmit={this.submitForm(name, surname, email, password, confirmPassword, disease, dateofbirth, gender, measurements, SU_LO, SU_HI, goalweight)}
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -330,6 +333,25 @@ class PatientRegister extends Component {
                     />
                     </Grid>
                     <Grid item xs={12}>
+                    </Grid>
+                    </Grid>
+                </Paper>
+                <Paper className={classes.additional} variant="outlined" style={{borderColor: errors && errors.diseaseInfo ? 'red' : 'lightgray'}} hidden={disease!=="OBESITY"} >
+                  <Grid container spacing={1} justify="flex-start" alignItems="flex-end">
+                    <Grid item>
+                      <InputLabel error={errors && (errors.diseaseInfo ? true : !!(false || errors.general))} required shrink={goalweight}>Vikt info</InputLabel>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <InputStepper
+                    error={errors && errors.diseaseInfo && errors.diseaseInfo.goalweight ? errors.diseaseInfo.goalweight : null}
+                    unit="kg"
+                    step={1}
+                    min={40}
+                    max={60}
+                    id="goalweight"
+                    input={goalweight}
+                    definition="Målvikt"
+                    />
                     </Grid>
                     </Grid>
                 </Paper>
