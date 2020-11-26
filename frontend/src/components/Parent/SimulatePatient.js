@@ -16,6 +16,7 @@ import {
   Input,
   FormHelperText,
   InputAdornment,
+  Divider,
 } from '@material-ui/core'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
@@ -103,13 +104,14 @@ const SimulatePatient = (props) => {
   const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null
   const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null
   const classes = styles()
-  const { intensity, calorieintake, trainingammount, goalweight, meal, showGraph } = props
+  const { intensity, calorieintake, trainingammount, goalweight, meal, showGraph, avgBloodSugar } = props
   const changeIntensity = (ev) => props.onChange('intensity', ev.target.value)
   let noInputTraining
   let noInputDiet
   let noInput
   const weight = props.weight ? props.weight[0] : null
   const bloodsugar = props.bloodsugar ? props.bloodsugar : null
+  const {AccordionOpen} = props
 
   useEffect(() => {
     props.onLoad(id)
@@ -150,8 +152,8 @@ const SimulatePatient = (props) => {
     props.onOpen('showGraph', !showGraph, noInputDiet, noInputTraining, meal, bloodsugar)
   }
 
-  const handleSliderChange = (event, newValue) => {
-    props.onChange('meal', newValue)
+  const handleSliderChange = (key) => (event, newValue) => {
+    props.onChange(key, newValue)
   }
 
   const handleGoalweight = (event) => {
@@ -164,6 +166,13 @@ const SimulatePatient = (props) => {
     } else if (goalweight > 100) {
       props.onChange('goalweight', 100)
     }
+  }
+
+  const handleAccordionChange = (value) => (event, newExpanded) => {
+    if(newExpanded)
+      props.onChange('AccordionOpen', value)
+    else 
+      props.onChange('AccordionOpen', 'None')
   }
 
   if (disease === 'OBESITY' && weight) {
@@ -364,27 +373,81 @@ const SimulatePatient = (props) => {
                   <Typography variant="h5">Ny Simulering</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Accordion variant="outlined" rounded>
+                  <Accordion variant="outlined" rounded expanded={AccordionOpen==='Meal'} onChange={handleAccordionChange('Meal')}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h6">Måltid</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <Grid container spacing={2} justify="center" alignItems="center">
                         <Grid item xs={12}>
-                          <Typography id="training-slider" gutterBottom>
+                          <Typography id="meal-slider" gutterBottom>
                             Hur mycket vill du äta?
                           </Typography>
                         </Grid>
                         <Grid item xs={11}>
                           <Slider
                             value={meal}
-                            onChange={handleSliderChange}
+                            onChange={handleSliderChange('meal')}
                             step={1}
                             min={1}
                             max={3}
                             // valueLabelDisplay="auto"
                             marks={marks}
                           ></Slider>
+                        </Grid>
+                      </Grid>
+                    </AccordionDetails>
+                  </Accordion>
+                  <Accordion variant="outlined" rounded expanded={AccordionOpen==='HbA1c'} onChange={handleAccordionChange('HbA1c')}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography variant="h6">HbA1c</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Grid container spacing={2} justify="center" alignItems="center">
+                        <Grid item xs={12}>
+                          <Typography id="HbA1c-slider" gutterBottom>
+                            Genomsnittligt blodsocker tre månader framåt
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={11}>
+                          <Slider
+                            value={avgBloodSugar}
+                            valueLabelDisplay='auto'
+                            onChange={handleSliderChange('avgBloodSugar')}
+                            step={0.1}
+                            min={1}
+                            max={15}
+                            
+                          ></Slider>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                          <Paper variant='outlined'>
+                            <Grid container spacing={2} style={{padding: 10}} justify='center' alignItems='center'>
+                              <Grid item xs={6} >
+                                <Grid container spacing={0} alignItems='flex-end'>
+                                  <Grid item xs={12}>
+                                  <Typography variant='h5' align='right'>Simulerat</Typography>
+                                  </Grid>
+                                  <Grid item xs={12}>
+                                  <Typography variant='h5'align='right'>HbA1c:</Typography>
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+                              <Grid item xs={6}>
+                                <Grid container spacing={0} justify='center'>
+                                <Grid item xs={12}>
+                                <Typography variant='subtitle1' align='center'>{avgBloodSugar ? Math.round(avgBloodSugar*6*100)/100: "Välj ett värde ovan"}</Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                <Divider variant='middle'/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                <Typography  variant='body2' style={{color:'gray'}} align='center'>mmol/mol</Typography>
+                                </Grid>
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                          </Paper>
                         </Grid>
                       </Grid>
                     </AccordionDetails>
@@ -416,6 +479,7 @@ const SimulatePatient = (props) => {
             </Button>
           </Grid>
           <Grid item xs={6}>
+            <Paper elevation={0} hidden={AccordionOpen==='HbA1c'}>
             <Button
               id="simulateDiabetes"
               type="submit"
@@ -427,6 +491,7 @@ const SimulatePatient = (props) => {
             >
               Simulera
             </Button>
+            </Paper>
           </Grid>
         </Grid>
       </Container>
