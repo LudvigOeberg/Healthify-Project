@@ -87,6 +87,8 @@ function SimulateChart(props) {
   const meal = props.meal ? props.meal : 0
   const weight = props.weight ? props.weight.weight : 0
   const bloodsugar = props.bloodsugar ? props.bloodsugar[0].value : 0
+  const SU_LO = props.SU_LO ? props.SU_LO : null
+  const SU_HI = props.SU_HI ? props.SU_HI : null
   const theme = useTheme()
   const timeHorizon = props.timeHorizon ? props.timeHorizon : 'year'
   const displaySettings = getSettings(disease, timeHorizon)
@@ -204,7 +206,7 @@ function SimulateChart(props) {
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: Simulate.constant(10),
+        data: SU_HI ? Simulate.constant(SU_HI): null,
       },
       {
         label: 'Lågt blodsocker',
@@ -224,7 +226,7 @@ function SimulateChart(props) {
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: Simulate.constant(3),
+        data: SU_LO ? Simulate.constant(SU_LO) : null
       },
     ],
   }

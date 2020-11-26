@@ -100,6 +100,8 @@ const mapDispatchToProps = (dispatch) => ({
 const SimulatePatient = (props) => {
   const { id } = props.match.params
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null
+  const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null
   const classes = styles()
   const { intensity, calorieintake, trainingammount, goalweight, meal, showGraph } = props
   const changeIntensity = (ev) => props.onChange('intensity', ev.target.value)
@@ -394,7 +396,7 @@ const SimulatePatient = (props) => {
             {/* _____________________________________ */}
             <Grid item xs={12}>
               <Paper className={classes.paper} hidden={!showGraph}>
-                <SimulateChart disease={disease} bloodsugar={bloodsugar} meal={meal} />
+                <SimulateChart disease={disease} bloodsugar={bloodsugar} meal={meal} SU_LO={SU_LO} SU_HI={SU_HI} />
               </Paper>
             </Grid>
             {/* _____________________________________ */}
