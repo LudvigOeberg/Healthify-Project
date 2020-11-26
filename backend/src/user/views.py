@@ -153,7 +153,13 @@ class ParentResource(MethodResource):
                     "value": diseaseInfo["SU_HI"]
                     }
                 )
-            print("hej")
+            if disease=='OBESITY':
+                body['partyAdditionalInfo'].append(
+                    {
+                    "key": "goalweight",
+                    "value": diseaseInfo["goalweight"]
+                    }
+                )
             party = requests.post(apiurl + '/demographics/party', json=body, auth=HTTPBasicAuth(current_app.config['EHR_USER'], current_app.config['EHR_USER_PASS']))
             print(party)
             print(party.status_code)
