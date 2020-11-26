@@ -90,6 +90,7 @@ const Login = (props) => {
           <FormControlLabel
             control={<Checkbox onChange={props.changeRememberMe} color="primary" />}
             label="Kom ihåg mig"
+            id="rememberMeFormControl"
           />
           <Button
             type="submit"
@@ -98,17 +99,18 @@ const Login = (props) => {
             color="primary"
             disabled={props.inProgress}
             className={classes.submit}
+            id="loginButton"
           >
             Logga In
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="/forgottenpassword" variant="body2">
+              <Link id="forgotPasswordLink" href="/forgottenpassword" variant="body2">
                 Glömt ditt lösenord?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/register" variant="body2">
+              <Link id="registerNewUserLink" href="/register" variant="body2">
                 Har du inte ett konto? Registrera dig
               </Link>
             </Grid>

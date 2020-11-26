@@ -152,12 +152,13 @@ const Register = (props) => {
             color="primary"
             className={classes.submit}
             disabled={props.inProgress}
+            id="registerUserButton"
           >
             Registrera
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link id="registerLoginLink" href="/login" variant="body2">
                 Har du redan ett konto? Logga in
               </Link>
             </Grid>

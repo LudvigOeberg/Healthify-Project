@@ -18,7 +18,7 @@ export default function Copyright() {
       <Container maxWidth="sm">
         <Typography variant="body2" color="textSecondary" align="center">
           {'Copyright © '}
-          <Link color="inherit" href="/">
+          <Link id="healthifyFooterLink" color="inherit" href="/">
             Healthify
           </Link>{' '}
           {new Date().getFullYear()}.

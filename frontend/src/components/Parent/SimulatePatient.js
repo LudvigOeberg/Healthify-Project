@@ -189,7 +189,7 @@ const SimulatePatient = (props) => {
                   <Typography variant="h5">Ny Simulering</Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Accordion variant="outlined" rounded>
+                  <Accordion id="obesityDropdownSimulationFood" variant="outlined" rounded>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h6">Kost</Typography>
                     </AccordionSummary>
@@ -216,7 +216,7 @@ const SimulatePatient = (props) => {
                   </Accordion>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Accordion variant="outlined" rounded>
+                  <Accordion id="obesityDropdownSimulationionTraining" variant="outlined" rounded>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h6">Träning</Typography>
                     </AccordionSummary>
@@ -250,13 +250,13 @@ const SimulatePatient = (props) => {
                                 disableScrollLock: true,
                               }}
                             >
-                              <MenuItem type="number" value={1}>
+                              <MenuItem id="simulateLowIntensityLink" type="number" value={1}>
                                 Lågintensiv
                               </MenuItem>
-                              <MenuItem type="number" value={2}>
+                              <MenuItem id="simulateMediumIntensityLink" type="number" value={2}>
                                 Medelintensiv
                               </MenuItem>
-                              <MenuItem type="number" value={3}>
+                              <MenuItem id="simulateHighIntensityLink" type="number" value={3}>
                                 Högintensiv
                               </MenuItem>
                             </Select>
@@ -313,7 +313,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
-              id="goBackObesity"
+              id="parentGoBackObesityButton"
               type="submit"
               fullWidth
               variant="outlined"
@@ -327,7 +327,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
-              id="simulateObesity"
+              id="parentSimulateObesityButton"
               type="submit"
               fullWidth
               variant="contained"
@@ -364,7 +364,7 @@ const SimulatePatient = (props) => {
                   <Typography variant="h5">Ny Simulering</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Accordion variant="outlined" rounded>
+                  <Accordion id="diabetesDropDownSimulation" variant="outlined" rounded>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h6">Måltid</Typography>
                     </AccordionSummary>
@@ -377,6 +377,7 @@ const SimulatePatient = (props) => {
                         </Grid>
                         <Grid item xs={11}>
                           <Slider
+                            id="diabetesMealSlider"
                             value={meal}
                             onChange={handleSliderChange}
                             step={1}
@@ -403,7 +404,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
-              id="goBackDiabetes"
+              id="parentGoBackDiabetesButton"
               type="submit"
               fullWidth
               variant="outlined"
@@ -417,7 +418,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
-              id="simulateDiabetes"
+              id="parentSimulateDiabetesButton"
               type="submit"
               fullWidth
               variant="contained"
