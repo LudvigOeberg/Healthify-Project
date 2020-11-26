@@ -150,12 +150,24 @@ const ParentOverview = (props) => {
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Button variant="contained" color="secondary" href={`/monitor-child/${id}`} fullWidth>
+                    <Button
+                      id="toChildValues"
+                      variant="contained"
+                      color="secondary"
+                      href={`/monitor-child/${id}`}
+                      fullWidth
+                    >
                       Hantera värden
                     </Button>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Button variant="contained" color="secondary" href={`/simulate-patient/${id}`} fullWidth>
+                    <Button
+                      id="toSimulatePage"
+                      variant="contained"
+                      color="secondary"
+                      href={`/simulate-patient/${id}`}
+                      fullWidth
+                    >
                       Simulera värden
                     </Button>
                   </Grid>

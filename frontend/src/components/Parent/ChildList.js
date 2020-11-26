@@ -7,20 +7,22 @@ import ChildListItem from './ChildListItem'
 /**
  * Displays a list of childrens
  * @param {ChildListItem} props
-*/
+ */
 
-const mapStateToProps =(state) => ({
-  ...state.ehr
+const mapStateToProps = (state) => ({
+  ...state.ehr,
 })
 
- function ChildList(props) {
+function ChildList(props) {
   const { children } = props
   const classes = useStyles()
   return (
     <Container>
       <Grid container direction="row" justify="center" spacing={0} alignItems="flex-start">
         {children.map((child) => (
-          <Grid key>{<ChildListItem child={child.child} partyIn={props.party ? props.party[child.child.ehrid] : null} />}</Grid>
+          <Grid key>
+            <ChildListItem child={child.child} partyIn={props.party ? props.party[child.child.ehrid] : null} />
+          </Grid>
         ))}
         <Grid item xs={12}>
           <div className={classes.paper}>

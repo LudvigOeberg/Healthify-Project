@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     '& > * + *': {
       marginTop: theme.spacing(2),
-      zIndex: 20000
+      zIndex: 20000,
     },
   },
 }))
@@ -42,7 +42,14 @@ const MySnackbar = (props) => {
   return (
     <div className={classes.root}>
       <Snackbar open={props.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert elevation={6} severity={props.color} autoHideDuration={6000} variant="filled" onClose={handleClose} color={props.color}>
+        <Alert
+          elevation={6}
+          severity={props.color}
+          autoHideDuration={6000}
+          variant="filled"
+          onClose={handleClose}
+          color={props.color}
+        >
           {props.message}
         </Alert>
       </Snackbar>
