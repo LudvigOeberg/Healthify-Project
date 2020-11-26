@@ -7,7 +7,7 @@ const localURL = 'http://localhost:4100/'
 beforeAll(() => {
   jest.setTimeout(30000)
   const options = new chrome.Options()
-  options.addArguments('--headless')
+ // options.addArguments('--headless')
   options.addArguments('--no-sandbox')
   options.addArguments('--disable-dev-shm-usage')
 
@@ -46,54 +46,60 @@ async function getHomePage(url) {
 }
 
 async function logut(driver) {
-  await driver.findElement(webdriver.By.xpath("//span[text()='Logga ut']")).click()
+  await driver.findElement(webdriver.By.id('logoutHeaderButton')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}login`))
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
 }
 
 async function login(driver, userPath, user) {
   await driver.get(localURL)
-  await driver.findElement(webdriver.By.xpath("//span[text()='Logga in']")).click()
+  await driver.findElement(webdriver.By.id('loginHeaderButton')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}login`))
   await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(user.passw)
-  await driver.findElement(webdriver.By.xpath("//span[text()='Logga In']")).click()
+  await driver.findElement(webdriver.By.id('loginButton')).click()
   await driver.wait(webdriver.until.urlIs(localURL + userPath))
   expect(await driver.getCurrentUrl()).toEqual(localURL + userPath)
 }
 
 async function register(driver, user) {
   await driver.get(localURL)
-  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click()
+  await driver.findElement(webdriver.By.id('registerHeaderButton')).click()
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
   await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(user.passw)
   await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(user.passw)
-  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
+  await driver.findElement(webdriver.By.id('registerUserButton')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 10000, 'Timed out after 5 sec', 100)
 }
 
 async function registerPatient(driver, patient) {
-  await driver
-    .findElement(
-      webdriver.By.xpath(
-        "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-5 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
-      ),
-    )
-    .click()
-  await driver.findElement(webdriver.By.xpath('//a[3]')).click()
+ // await driver
+  //  .findElement(
+  //    webdriver.By.xpath(
+   //     "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-5 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
+  //    ),
+  //  )
+  //  .click()
+ // await driver.findElement(webdriver.By.xpath('//a[3]')).click()
+  await driver.sleep(3000)
+  //await driver.findElement(webdriver.By.id('parentAddChildLink')).click() // doesnt work for some reason
   await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
   await driver.findElement(webdriver.By.id('email')).sendKeys(patient.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(patient.passw)
   await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
-  await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys(patient.dateOfBirth)
+  await driver.sleep(5000)
+  //await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys(patient.dateOfBirth) // commented for macusers?
   await driver.findElement(webdriver.By.css("div[aria-labelledby='gender-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='MALE']")).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
+ // await driver.findElement(webdriver.By.id('st')).sendKeys(5)
+  //await driver.findElement(webdriver.By.id('mmol/L')).sendKeys(0)
+  await driver.sleep(5000) // max value has same ID as lowest value, therefore pause to manually enter
   await driver.findElement(webdriver.By.css('#main > main > div > form > button')).sendKeys(webdriver.Key.ENTER)
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`))
 }
