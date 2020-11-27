@@ -46,7 +46,8 @@ const reformat = (data) => {
   const dataObjects = []
   let newData = []
   let sameDay
-  for (let i = 0; i < data.length > 6 ? 7 : data.length; i++) {
+  let loopLn = data.length > 6 ? 7 : data.length
+  for (let i = 0; i < loopLn; i++) {
     sameDay = true
     while (sameDay && data.length > 0) {
       if (Moment().subtract(i, 'day').format('YYYY-MM-DD') === Moment(data[0].time).format('YYYY-MM-DD')) {
