@@ -35,6 +35,8 @@ import {
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import SimulateChart from '../SimulateChart'
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
+import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined'
 
 /**
  * Page where a parent can make simulations based on a specific childs values
@@ -441,8 +443,18 @@ const SimulatePatient = (props) => {
                               </Grid>
                               <Grid item xs={6}>
                                 <Grid container spacing={0} justify='center'>
-                                <Grid item xs={12}>
-                                <Typography variant='subtitle1' align='center'>{avgBloodSugar ? Math.round(avgBloodSugar*6*100)/100: "Välj ett värde ovan"}</Typography>
+                                <Grid container spacing={2} justify='center'>
+                                <Grid item >
+                                <Typography variant='subtitle1' align='right'>{avgBloodSugar ? Math.round(avgBloodSugar*6*100)/100: "Välj ett värde"}</Typography>
+                                </Grid>
+                                <Grid item >
+                                  <Paper elevation={0} hidden={!avgBloodSugar || ( avgBloodSugar*6<27 || avgBloodSugar*6>52)}>
+                                    <ThumbUpAltOutlinedIcon style={{ color: 'green' }} />
+                                  </Paper>
+                                  <Paper elevation={0} hidden={!avgBloodSugar || ( avgBloodSugar*6>=27 && avgBloodSugar*6<=52)}>
+                                    <ThumbDownAltOutlinedIcon style={{ color: 'red' }} />
+                                  </Paper>
+                                </Grid>
                                 </Grid>
                                 <Grid item xs={12}>
                                 <Divider variant='middle'/>
