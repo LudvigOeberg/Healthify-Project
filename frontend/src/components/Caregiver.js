@@ -7,7 +7,7 @@ import PhoneIcon from '@material-ui/icons/Phone'
 import MailIcon from '@material-ui/icons/Mail'
 import Container from '@material-ui/core/Container'
 import { Divider } from '@material-ui/core'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 /**
  * Displays a caregiver
@@ -25,20 +25,20 @@ export default function Caregiver(props) {
       <List>
         <ListItem>
           <ListItemIcon>
-            <AccountCircleIcon fontSize = "large"/> 
+            <AccountCircleIcon fontSize="large" />
           </ListItemIcon>
-          <ListItemText primary={props.name} secondary = {props.org}/>
+          <ListItemText primary={props.name} secondary={props.org} />
         </ListItem>
         <Divider />
         <ListItem button component="a" href={`mailto:${props.mail}`}>
           <ListItemIcon>
-            <MailIcon/>
+            <MailIcon />
           </ListItemIcon>
           <ListItemText primary={props.mail} />
         </ListItem>
         <ListItem button component="a" href={`tel:${props.telephone}`}>
           <ListItemIcon>
-            <PhoneIcon/>
+            <PhoneIcon />
           </ListItemIcon>
           <ListItemText primary={props.telephone} />
         </ListItem>

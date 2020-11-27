@@ -5,7 +5,8 @@ import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableRow from '@material-ui/core/TableRow'
 import Moment from 'moment'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { Typography, Grid, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core'
 
 /**
  * Displays a table with a set of given values
@@ -19,7 +20,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles2 = makeStyles((theme) => ({
   table: {
-    minWidth: "100%",
+    minWidth: '100%',
     width: 'auto',
   },
   paper: {
@@ -27,7 +28,7 @@ const useStyles2 = makeStyles((theme) => ({
     width: 'auto',
   },
   root: {
-    maxWidth: "100%",
+    maxWidth: '100%',
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -39,45 +40,50 @@ const useStyles2 = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  
 }))
 
 const reformat = (data) => {
-    const dataObjects = []
-    var newData = []
-    let sameDay;
-    for (let i = 0; i < data.length > 6 ? 7 : data.length; i++) {
-        sameDay = true
-        while (sameDay & data.length > 0) {
-
-            if (Moment().subtract(i, 'day').format('YYYY-MM-DD') == Moment(data[0].time).format('YYYY-MM-DD')) {
-                newData.push({
-                    time: Moment(data[0].time).format('HH:mm'),
-                    value: data[0].value,
-                })
-                data.shift()
-            } else {
-                sameDay = false;
-            }
-        }
+  const dataObjects = []
+  let newData = []
+  let sameDay
+  for (let i = 0; i < data.length > 6 ? 7 : data.length; i++) {
+    sameDay = true
+    while (sameDay && data.length > 0) {
+      if (Moment().subtract(i, 'day').format('YYYY-MM-DD') === Moment(data[0].time).format('YYYY-MM-DD')) {
+        newData.push({
+          time: Moment(data[0].time).format('HH:mm'),
+          value: data[0].value,
+        })
+        data.shift()
+      } else {
+        sameDay = false
+      }
+    }
     if (newData.length) {
-      dataObjects.push({
-      section: i == 0 ? "Idag" : i == 1 ? "Igår" : Moment().subtract(i, 'day').format('DD/MM'),
-      rows: newData,
-    })
+      if (i < 2) {
+        dataObjects.push({
+          section: i === 0 ? 'Idag' : 'Igår',
+          rows: newData,
+        })
+      } else {
+        dataObjects.push({
+          section: Moment().subtract(i, 'day').format('DD/MM'),
+          rows: newData,
+        })
+      }
+    }
+    newData = []
   }
-  newData = [];
-}
-    return dataObjects
+  return dataObjects
 }
 
 export default function CustomPaginationActionsTable({ loading = false, ...props }) {
   const classes = useStyles2()
   const { rows } = props
-  const rowsdivided = rows ? reformat(rows) : null;
-  const lrows = rows ? rowsdivided.length : null;
-  
-    if (loading) {
+  const rowsdivided = rows ? reformat(rows) : null
+  const lrows = rows ? rowsdivided.length : null
+
+  if (loading) {
     return (
       <TableContainer className={classes.paper}>
         <Typography component="h4" variant="subtitle1">
@@ -96,58 +102,58 @@ export default function CustomPaginationActionsTable({ loading = false, ...props
     )
   }
 
-
-
   return (
-    
     <Grid container className={classes.root} spacing={2} height="100%">
       <Grid item xs={12}>
-      <Table className={classes.table} >
-        {rowsdivided.slice(0,lrows > 1 ? 2 : lrows).map((rowdiv) => (
+        <Table className={classes.table}>
+          {rowsdivided.slice(0, lrows > 1 ? 2 : lrows).map((rowdiv) => (
             <>
-            <p></p>
-             <Typography component="h1" variant="h5"> {rowdiv.section} </Typography>
-             {rowdiv.rows.map((row) => (
+              <p></p>
+              <Typography component="h1" variant="h5">
+                {' '}
+                {rowdiv.section}{' '}
+              </Typography>
+              {rowdiv.rows.map((row) => (
                 <TableRow hover>
-                    {props.columns.map((data) => (
-                        <TableCell>{row[data]}</TableCell>
-                    ))}
-                    </TableRow>
-                ))}
+                  {props.columns.map((data) => (
+                    <TableCell>{row[data]}</TableCell>
+                  ))}
+                </TableRow>
+              ))}
             </>
-        ))}
+          ))}
         </Table>
-        </Grid>
-        <Grid item xs={12}>
-
-        <Table className={classes.table} >
-        <Accordion className={classes.accordion}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-        >
-          <Typography className={classes.heading}>Tidigare mätningar</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-        <Table className={classes.table} >
-        {(lrows > 1 ? rowsdivided.slice(2,lrows) : rowsdivided.slice(0,0)).map((rowdiv) => (
-            <>
-            <p></p>
-             <Typography component="h1" variant="h5"> {rowdiv.section} </Typography>
-             {rowdiv.rows.map((row) => (
-                <TableRow hover>
-                    {props.columns.map((data) => (
-                        <TableCell>{row[data]}</TableCell>
+      </Grid>
+      <Grid item xs={12}>
+        <Table className={classes.table}>
+          <Accordion className={classes.accordion}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography className={classes.heading}>Tidigare mätningar</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Table className={classes.table}>
+                {(lrows > 1 ? rowsdivided.slice(2, lrows) : rowsdivided.slice(0, 0)).map((rowdiv) => (
+                  <>
+                    <p></p>
+                    <Typography component="h1" variant="h5">
+                      {' '}
+                      {rowdiv.section}{' '}
+                    </Typography>
+                    {rowdiv.rows.map((row) => (
+                      <TableRow hover>
+                        {props.columns.map((data) => (
+                          <TableCell>{row[data]}</TableCell>
+                        ))}
+                      </TableRow>
                     ))}
-                    </TableRow>
+                    <p></p>
+                  </>
                 ))}
-            <p></p>
-            </>
-        ))}
+              </Table>
+            </AccordionDetails>
+          </Accordion>
         </Table>
-        </AccordionDetails>
-      </Accordion>
-</Table>    
-</Grid>
-</Grid>
+      </Grid>
+    </Grid>
   )
 }

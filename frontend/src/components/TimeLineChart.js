@@ -44,7 +44,7 @@ const getSettings = (horizon) => {
   const today = new Date()
   if (horizon === 'day') {
     return {
-      min: today.setHours(0,0,0,0),
+      min: today.setHours(0, 0, 0, 0),
       unit: 'hour',
       stepSize: 3,
       dispFormat: 'HH:00',
@@ -132,19 +132,19 @@ const TimeLineChart = (props) => {
           },
         }}
       />
-      {!hideRadio && 
+      {!hideRadio && (
         <>
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Tidsspann</FormLabel>
-          <RadioGroup row aria-label="horizon" name="horizon" value={timeHorizon} onChange={changeRadio}>
-            <FormControlLabel value="day" control={<Radio />} label="Idag" />
-            <FormControlLabel value="week" control={<Radio />} label="Senaste veckan" />
-            <FormControlLabel value="month" control={<Radio />} label="Senaste månaden" />
-            <FormControlLabel value="all" control={<Radio />} label="Fullständig" />
-          </RadioGroup>
-        </FormControl>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Tidsspann</FormLabel>
+            <RadioGroup row aria-label="horizon" name="horizon" value={timeHorizon} onChange={changeRadio}>
+              <FormControlLabel value="day" control={<Radio />} label="Idag" />
+              <FormControlLabel value="week" control={<Radio />} label="Senaste veckan" />
+              <FormControlLabel value="month" control={<Radio />} label="Senaste månaden" />
+              <FormControlLabel value="all" control={<Radio />} label="Fullständig" />
+            </RadioGroup>
+          </FormControl>
         </>
-      }
+      )}
     </div>
   )
 }

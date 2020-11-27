@@ -13,7 +13,6 @@ import TimeLineChart from '../TimeLineChart'
 import Reformat from '../../reformatEHRData'
 import profileAvatar from '../../Static/profile_avatar.png'
 
-
 const mapStateToProps = (state) => ({
   ...state.common,
   ...state.ehr,
@@ -31,7 +30,6 @@ const mapDispatchToProps = (dispatch) => ({
     else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
   },
 })
-
 
 const ParentOverview = (props) => {
   const { id } = props.match.params
@@ -53,8 +51,10 @@ const ParentOverview = (props) => {
     const dataObjects = []
     for (let i = 0; i < data.length; i++) {
       dataObjects.push({
-        time: Moment(data[i].time).format('YYYY-MM-DD HH:mm'),/*new Date(data[i].time.substring(0, 16)).toLocaleString()*/
-        value: disease === 'DIABETES' ? data[i].value + " mmol/L" : data[i].weight + " kg",
+        time: Moment(data[i].time).format(
+          'YYYY-MM-DD HH:mm',
+        ) /* new Date(data[i].time.substring(0, 16)).toLocaleString() */,
+        value: disease === 'DIABETES' ? `${data[i].value} mmol/L` : `${data[i].weight} kg`,
       })
     }
     return dataObjects
@@ -81,48 +81,64 @@ const ParentOverview = (props) => {
             <Grid item xs={12}>
               <Paper className={classes.paper} elevation={2}>
                 <Grid container spacing={2}>
-
                   <Grid item xs={3}>
-                    <img  src={profileAvatar} width = "100%"></img>
+                    <img src={profileAvatar} alt="Profile" width="100%"></img>
                   </Grid>
                   <Grid item xs={9}>
-                    <Typography component="h1" variant="h5"> {name} </Typography>
-                    <ListItemText secondary={disease==='DIABETES' ? 'Diabetes' : 'Fetma'}/>
+                    <Typography component="h1" variant="h5">
+                      {' '}
+                      {name}{' '}
+                    </Typography>
+                    <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
                   </Grid>
                 </Grid>
               </Paper>
 
               <Grid container spacing={1}>
                 <Grid item xs={6} sm={6}>
-                  <Button className = {classes.button} variant="contained" color="primary" href={`/monitor-child/${id}`} fullWidth>
+                  <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    href={`/monitor-child/${id}`}
+                    fullWidth
+                  >
                     Hantera värden
-                    </Button>
+                  </Button>
                 </Grid>
                 <Grid item xs={6} sm={6}>
-                  <Button className = {classes.button} variant="contained" color="primary" href={`/simulate-patient/${id}`} fullWidth>
+                  <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    href={`/simulate-patient/${id}`}
+                    fullWidth
+                  >
                     Simulera värden
-                    </Button>
+                  </Button>
                 </Grid>
               </Grid>
               <Grid item xs={12} sm={12}>
-              <Paper className={classes.paper} elevation={2}>
-                <Grid container spacing={1} alignItems="center" justify="center">
-                  <ListItemText primary = "Tidigare mätningar" secondary={disease==='DIABETES' ? 'Blodsocker' : 'Vikt'}/>
-                  <Grid item xs={12}>
-                    <CustomPaginationActionsTable
-                      columns={['time', 'value']}
-                      loading={loading}
-                      rows={input ? reformat(input, false) : null}
-                      paginate={false}
+                <Paper className={classes.paper} elevation={2}>
+                  <Grid container spacing={1} alignItems="center" justify="center">
+                    <ListItemText
+                      primary="Tidigare mätningar"
+                      secondary={disease === 'DIABETES' ? 'Blodsocker' : 'Vikt'}
                     />
+                    <Grid item xs={12}>
+                      <CustomPaginationActionsTable
+                        columns={['time', 'value']}
+                        loading={loading}
+                        rows={input ? reformat(input, false) : null}
+                        paginate={false}
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Paper>
+                </Paper>
               </Grid>
             </Grid>
-          </Grid>   
+          </Grid>
         </Grid>
-
 
         <Grid item xs={12} sm={12} md={6}>
           <Grid container spacing={2}>
@@ -132,28 +148,28 @@ const ParentOverview = (props) => {
                   {' '}
                   Blodsocker
                 </Typography>
-                <ListItemText secondary="Idag"/>
+                <ListItemText secondary="Idag" />
                 <p></p>
                 <TimeLineChart
                   chartData={input ? reformatForChart(input) : null}
                   label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
-                  currSettings = 'day'
-                  hideRadio = {true}
+                  currSettings="day"
+                  hideRadio
                 ></TimeLineChart>
               </Paper>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm = {3}>
-              <Paper className={classes.paper} elevation={3}>
-                <Typography component="h1" variant="h6">
-                  {' '}
-                  Vårdgivare
-                </Typography>
-                {/* Caregivers ska stå här och annan info. Ändra format. */}
-                <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
-              </Paper>
-            </Grid>
+        <Grid item xs={12} sm={3}>
+          <Paper className={classes.paper} elevation={3}>
+            <Typography component="h1" variant="h6">
+              {' '}
+              Vårdgivare
+            </Typography>
+            {/* Caregivers ska stå här och annan info. Ändra format. */}
+            <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
+          </Paper>
+        </Grid>
       </Grid>
     </div>
   )
@@ -167,8 +183,8 @@ const styles = makeStyles((theme) => ({
     maxWidth: '100%',
   },
   button: {
-    top : "5px",
-    marginBottom: "5px",
+    top: '5px',
+    marginBottom: '5px',
   },
 
   paper: {

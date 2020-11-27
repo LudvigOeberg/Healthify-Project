@@ -35,7 +35,7 @@ const Reformat = {
     } else {
       for (let i = 0; i < data.length; i++) {
         if (iso) {
-          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD HH:MM'), y: data[i].weight })
+          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD HH:mm'), y: data[i].weight })
         } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] HH:mm'), y: data[i].weight })
       }
     }
