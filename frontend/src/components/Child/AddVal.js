@@ -193,7 +193,7 @@ const AddVal = (props) => {
           <Grid item xs>
             <Slider
               id="childValue"
-              value={childValue}
+              value={typeof childValue === 'number' ? childValue : 0}
               onChange={(ev, value) => changeAuthSlider(ev, value)}
               aria-labelledby="input-slider"
               defaultValue={10}
@@ -206,7 +206,7 @@ const AddVal = (props) => {
           </Grid>
           <Grid item>
             <Input
-              id="showCurrentchildValue"
+              id="childValue"
               className={classes.input}
               value={childValue}
               margin="dense"
