@@ -16,7 +16,10 @@ const NotFound = (props) => {
         </h2>
         Sidan {props.location} hittades inte på servern.
         <br />
-        Tillbaka till <Link id="404BackToMain" href="/">startsidan.</Link>
+        Tillbaka till{' '}
+        <Link id="404BackToMain" href="/">
+          startsidan.
+        </Link>
       </div>
     </Container>
   )

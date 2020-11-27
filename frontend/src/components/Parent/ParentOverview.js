@@ -31,8 +31,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
 })
 
-
-
 const ParentOverview = (props) => {
   const { id } = props.match.params
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
@@ -80,18 +78,15 @@ const ParentOverview = (props) => {
     <div className={classes.main}>
       <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
         <Grid item xs={4}>
-            <img src={profileAvatar} alt="Profile" ></img>
+          <img src={profileAvatar} alt="Profile"></img>
         </Grid>
         <Grid item xs={4} className={classes.avatarName}>
-          <Typography variant="h5">
-            {' '}
-            {name}{' '}
-          </Typography>
+          <Typography variant="h5"> {name} </Typography>
           <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
         </Grid>
       </Grid>
 
-      <Grid  spacing={1} className={classes.root} justify="center" alignItems="center" container>
+      <Grid spacing={1} className={classes.root} justify="center" alignItems="center" container>
         <Grid item md={2} sm={4} xs={6}>
           <Button
             id="toChildValuesButton"
@@ -103,8 +98,8 @@ const ParentOverview = (props) => {
           >
             Hantera värden
           </Button>
-          </Grid>
-          <Grid item md={2} sm={4} xs={6}>
+        </Grid>
+        <Grid item md={2} sm={4} xs={6}>
           <Button
             id="toSimulatePageButton"
             className={classes.button}
@@ -122,14 +117,9 @@ const ParentOverview = (props) => {
         <Grid item xs={12} md={3}>
           <Paper className={classes.paper} elevation={2}>
             <Grid container spacing={1} alignItems="center" justify="center">
-              <Grid item xs={12} >
-                <Typography variant="h5">
-                  {' '}
-                  Tidigare mätningar
-                </Typography>
-                <ListItemText
-                  secondary={disease === 'DIABETES' ? 'Blodsocker' : 'Vikt'}
-                  />
+              <Grid item xs={12}>
+                <Typography variant="h5"> Tidigare mätningar</Typography>
+                <ListItemText secondary={disease === 'DIABETES' ? 'Blodsocker' : 'Vikt'} />
               </Grid>
               <Grid item xs={12}>
                 <CustomPaginationActionsTable
@@ -147,10 +137,7 @@ const ParentOverview = (props) => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Paper className={classes.paper} elevation={2}>
-                <Typography variant="h5">
-                  {' '}
-                  Blodsocker
-                </Typography>
+                <Typography variant="h5"> Blodsocker</Typography>
                 <ListItemText secondary="Idag" />
                 <p></p>
                 <TimeLineChart
@@ -165,10 +152,7 @@ const ParentOverview = (props) => {
         </Grid>
         <Grid item xs={12} md={3}>
           <Paper className={classes.paper} elevation={2}>
-            <Typography variant="h5">
-              {' '}
-              Vårdgivare
-            </Typography>
+            <Typography variant="h5"> Vårdgivare</Typography>
             {/* Caregivers ska stå här och annan info. Ändra format. */}
             <CaregivingTeam caregivers={caregivers}></CaregivingTeam>
           </Paper>
@@ -188,7 +172,7 @@ const styles = makeStyles((theme) => ({
   button: {
     top: '5px',
     marginBottom: '5px',
-    padding: "10px 5px 10px 5px"
+    padding: '10px 5px 10px 5px',
   },
 
   paper: {
@@ -200,7 +184,7 @@ const styles = makeStyles((theme) => ({
     marginTop: theme.spacing(6),
   },
   avatarName: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   form: {
     width: '100%', // Fix IE 11 issue.

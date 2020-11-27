@@ -57,14 +57,24 @@ function TablePaginationActions(props) {
 
   return (
     <div className={classes.root}>
-      <IconButton id="tableFirstPage" onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label="first page">
+      <IconButton
+        id="tableFirstPage"
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
         {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
-      <IconButton id="tablePreviousPage" onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+      <IconButton
+        id="tablePreviousPage"
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
       </IconButton>
       <IconButton
-        id= "tableNextPage"
+        id="tableNextPage"
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="next page"

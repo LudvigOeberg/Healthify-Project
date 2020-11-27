@@ -46,7 +46,7 @@ const reformat = (data) => {
   const dataObjects = []
   let newData = []
   let sameDay
-  let loopLn = data.length > 6 ? 7 : data.length
+  const loopLn = data.length > 6 ? 7 : data.length
   for (let i = 0; i < loopLn; i++) {
     sameDay = true
     while (sameDay && data.length > 0) {
