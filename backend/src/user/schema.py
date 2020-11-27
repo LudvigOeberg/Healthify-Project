@@ -122,6 +122,11 @@ class RegisterChildSchema(Schema):
             self.load_fields.update({'diseaseInfo': fields.Nested(ObesityInfoSchema())})
             self.fields.update({'diseaseInfo': fields.Nested(ObesityInfoSchema())})
             self.dump_fields.update({'diseaseInfo': fields.Nested(ObesityInfoSchema())})
+        elif data.get('disease')=="DIABETES":
+            self.declared_fields.update({'diseaseInfo': fields.Nested(DiabetesInfoSchema())})
+            self.load_fields.update({'diseaseInfo': fields.Nested(DiabetesInfoSchema())})
+            self.fields.update({'diseaseInfo': fields.Nested(DiabetesInfoSchema())})
+            self.dump_fields.update({'diseaseInfo': fields.Nested(DiabetesInfoSchema())})
         return data
 
     def handle_error(self, exc, data, **kwargs):
