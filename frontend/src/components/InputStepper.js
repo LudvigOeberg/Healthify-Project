@@ -50,15 +50,15 @@ function InputStepper(props) {
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12}>
           <FormControl fullWidth error={error}>
-            <InputLabel id={`${unit}-label`} shrink={typeof input === 'number'}>
+            <InputLabel id={`${id}-label`} shrink={typeof input === 'number'}>
               {definition}
             </InputLabel>
             <Input
               endAdornment={<InputAdornment position="end">{unit}</InputAdornment>}
               fullWidth
-              id={`${unit}`}
+              id={`${id}`}
               value={input}
-              labelId={`${unit}-label`}
+              labelId={`${id}-label`}
               label={`${unit}`}
               onChange={handleInputChange}
               onBlur={handleBlur}
@@ -70,7 +70,7 @@ function InputStepper(props) {
                 'aria-labelledby': 'input-slider',
               }}
             />
-            <FormHelperText id={`${unit}`}>{error ? error : `I heltal mellan ${min} och ${max} `}</FormHelperText>
+            <FormHelperText id={`${id}`}>{error ? error : `I heltal mellan ${min} och ${max} `}</FormHelperText>
           </FormControl>
         </Grid>
       </Grid>
