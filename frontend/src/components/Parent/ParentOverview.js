@@ -78,78 +78,76 @@ const ParentOverview = (props) => {
 
   return (
     <div className={classes.main}>
-      <Grid container className={classes.root} spacing={2} height="100%">
-        <Grid item xs={12} sm={6} md={3}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Paper className={classes.paper} elevation={2}>
-                <Grid container spacing={2}>
-                  <Grid item xs={3}>
-                    <img src={profileAvatar} alt="Profile" width="100%"></img>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Typography component="h1" variant="h5">
-                      {' '}
-                      {name}{' '}
-                    </Typography>
-                    <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
-                  </Grid>
-                </Grid>
-              </Paper>
+      <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
+        <Grid item xs={4}>
+            <img src={profileAvatar} alt="Profile" ></img>
+        </Grid>
+        <Grid item xs={4} className={classes.avatarName}>
+          <Typography variant="h5">
+            {' '}
+            {name}{' '}
+          </Typography>
+          <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
+        </Grid>
+      </Grid>
 
-              <Grid container spacing={1}>
-                <Grid item xs={6} sm={6}>
-                  <Button
-                    id="toChildValuesButton"
-                    className={classes.button}
-                    variant="contained"
-                    color="primary"
-                    href={`/monitor-child/${id}`}
-                    fullWidth
-                  >
-                    Hantera värden
-                  </Button>
-                </Grid>
-                <Grid item xs={6} sm={6}>
-                  <Button
-                    id="toSimulatePageButton"
-                    className={classes.button}
-                    variant="contained"
-                    color="primary"
-                    href={`/simulate-patient/${id}`}
-                    fullWidth
-                  >
-                    Simulera värden
-                  </Button>
-                </Grid>
+      <Grid  spacing={1} className={classes.root} justify="center" alignItems="center" container>
+        <Grid item md={2} sm={4} xs={6}>
+          <Button
+            id="toChildValuesButton"
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            href={`/monitor-child/${id}`}
+            fullWidth
+          >
+            Hantera värden
+          </Button>
+          </Grid>
+          <Grid item md={2} sm={4} xs={6}>
+          <Button
+            id="toSimulatePageButton"
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            href={`/simulate-patient/${id}`}
+            fullWidth
+          >
+            Simulera värden
+          </Button>
+        </Grid>
+      </Grid>
+
+      <Grid container className={classes.root} spacing={2} justify="center" height="100%">
+        <Grid item xs={12} md={3}>
+          <Paper className={classes.paper} elevation={2}>
+            <Grid container spacing={1} alignItems="center" justify="center">
+              <Grid item xs={12} >
+                <Typography variant="h5">
+                  {' '}
+                  Tidigare mätningar
+                </Typography>
+                <ListItemText
+                  secondary={disease === 'DIABETES' ? 'Blodsocker' : 'Vikt'}
+                  />
               </Grid>
-              <Grid item xs={12} sm={12}>
-                <Paper className={classes.paper} elevation={2}>
-                  <Grid container spacing={1} alignItems="center" justify="center">
-                    <ListItemText
-                      primary="Tidigare mätningar"
-                      secondary={disease === 'DIABETES' ? 'Blodsocker' : 'Vikt'}
-                    />
-                    <Grid item xs={12}>
-                      <CustomPaginationActionsTable
-                        columns={['time', 'value']}
-                        loading={loading}
-                        rows={input ? reformat(input, false) : null}
-                        paginate={false}
-                      />
-                    </Grid>
-                  </Grid>
-                </Paper>
+              <Grid item xs={12}>
+                <CustomPaginationActionsTable
+                  columns={['time', 'value']}
+                  loading={loading}
+                  rows={input ? reformat(input, false) : null}
+                  paginate={false}
+                />
               </Grid>
             </Grid>
-          </Grid>
+          </Paper>
         </Grid>
 
-        <Grid item xs={12} sm={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Paper className={classes.paper} elevation={2}>
-                <Typography component="h1" variant="h5">
+                <Typography variant="h5">
                   {' '}
                   Blodsocker
                 </Typography>
@@ -165,9 +163,9 @@ const ParentOverview = (props) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={3}>
-          <Paper className={classes.paper} elevation={3}>
-            <Typography component="h1" variant="h6">
+        <Grid item xs={12} md={3}>
+          <Paper className={classes.paper} elevation={2}>
+            <Typography variant="h5">
               {' '}
               Vårdgivare
             </Typography>
@@ -190,18 +188,19 @@ const styles = makeStyles((theme) => ({
   button: {
     top: '5px',
     marginBottom: '5px',
+    padding: "10px 5px 10px 5px"
   },
 
   paper: {
     // height: '100%',
-    padding: theme.spacing(1),
-    marginTop: theme.spacing(1),
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
   avatar: {
-    margin: theme.spacing(1),
-    width: theme.spacing(20),
-    height: theme.spacing(20),
-    backgroundColor: theme.palette.secondary.main,
+    marginTop: theme.spacing(6),
+  },
+  avatarName: {
+    textAlign: "center",
   },
   form: {
     width: '100%', // Fix IE 11 issue.
