@@ -84,7 +84,7 @@ async function registerPatient(driver, patient) {
   //  .click()
  // await driver.findElement(webdriver.By.xpath('//a[3]')).click()
   await driver.sleep(3000)
-  //await driver.findElement(webdriver.By.id('parentAddChildLink')).click() // doesnt work for some reason
+  //await driver.findElement(webdriver.By.id('parentAddChildLink')).click() // doesnt work for some reason.
   await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
