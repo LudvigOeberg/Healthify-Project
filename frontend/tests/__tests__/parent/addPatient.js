@@ -3,7 +3,7 @@ let driver
 const webdriver = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
-const localURL = 'http://localhost:4100/'
+const localURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 beforeAll(() => {
   jest.setTimeout(300000)
   const options = new chrome.Options()
@@ -50,8 +50,8 @@ async function login(driver, userPath, user) {
 }
 
 async function register(driver, user) {
-  // await driver.get(localURL)
-  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click()
+  await driver.get(localURL)
+  await driver.findElement(webdriver.By.id('registerHeaderButton')).click()
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
   await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
@@ -61,16 +61,10 @@ async function register(driver, user) {
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 10000, 'Timed out after 5 sec', 100)
 }
 
-// eslint-disable-next-line no-shadow
+
 async function registerPatient(driver, patient) {
-  await driver
-    .findElement(
-      webdriver.By.xpath(
-        "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-5 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
-      ),
-    )
-    .click()
-  await driver.findElement(webdriver.By.xpath('//a[3]')).click()
+  //await driver.findElement(webdriver.By.xpath("//span[text()='Lägg till barn']")).click()
+  await driver.get(localURL+"register-patient")
   await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
@@ -82,9 +76,34 @@ async function registerPatient(driver, patient) {
   await driver.findElement(webdriver.By.css("li[data-value='FEMALE']")).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
+  await driver.findElement(webdriver.By.id('measurements')).sendKeys(1)
+  await driver.findElement(webdriver.By.id('SU_LO')).sendKeys(0)
+  await driver.findElement(webdriver.By.id("SU_HI")).sendKeys(0)
   await driver.findElement(webdriver.By.css('#main > main > div > form > button')).sendKeys(webdriver.Key.ENTER)
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
 }
+
+async function registerPatientWithDiabetes(driver, patient) {
+  //await driver.findElement(webdriver.By.xpath("//span[text()='Lägg till barn']")).click()
+  await driver.get(localURL+"register-patient")
+  await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
+  await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
+  await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
+  await driver.findElement(webdriver.By.id('email')).sendKeys(patient.email)
+  await driver.findElement(webdriver.By.id('password')).sendKeys(patient.passw)
+  await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
+  await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys('2010-01-01T00:00:00Z')
+  await driver.findElement(webdriver.By.css("div[aria-labelledby='gender-label']")).click()
+  await driver.findElement(webdriver.By.css("li[data-value='FEMALE']")).click()
+  await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
+  await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
+  await driver.findElement(webdriver.By.id('measurements')).sendKeys(5.5)
+  await driver.findElement(webdriver.By.id('SU_LO')).sendKeys(5.5)
+  await driver.findElement(webdriver.By.id("SU_HI")).sendKeys(5.5)
+  await driver.findElement(webdriver.By.css('#main > main > div > form > button')).sendKeys(webdriver.Key.ENTER)
+  await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
+}
+
 
 async function logut(driver) {
   await driver.findElement(webdriver.By.xpath("//span[text()='Logga ut']")).click()
@@ -123,4 +142,46 @@ test('TestCaseID:22.1.3. Register two new Patient', async () => {
   const patient2 = new User()
   await registerPatient(driver, patient2)
   await logut(driver)
+})
+
+
+test('TestCaseID:98.1.1. Register Patient with diabetes using valid values', async () => {
+  const user = new User()
+  // await connectToEHR()
+  await register(driver, user)
+  const patient = new User()
+  await registerPatientWithDiabetes(driver, patient)
+  await logut(driver)
+})
+
+
+test('TestCaseID:98.1.2. Register Patient with diabetes using invalid values', async () => {
+  const user = new User()
+  // await connectToEHR()
+  await register(driver, user)
+  const patient = new User()
+  await driver.get(localURL+"register-patient")
+  await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
+  await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
+  await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
+  await driver.findElement(webdriver.By.id('email')).sendKeys(patient.email)
+  await driver.findElement(webdriver.By.id('password')).sendKeys(patient.passw)
+  await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
+  await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys('2010-01-01T00:00:00Z')
+  await driver.findElement(webdriver.By.css("div[aria-labelledby='gender-label']")).click()
+  await driver.findElement(webdriver.By.css("li[data-value='FEMALE']")).click()
+  await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
+  await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
+  await driver.findElement(webdriver.By.id('measurements')).sendKeys(21)
+  await driver.findElement(webdriver.By.id('SU_LO')).sendKeys(16)
+  await driver.findElement(webdriver.By.id("SU_HI")).sendKeys(16)
+  var x = await driver.findElement(webdriver.By.id("measurements")).getAttribute("value")
+  expect(x).toEqual("20")
+  x = await driver.findElement(webdriver.By.id("SU_LO")).getAttribute("value")
+  expect(x).toEqual("15")
+  await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
+  x = await driver.findElement(webdriver.By.id("SU_HI")).getAttribute("value")
+  expect(x).toEqual("15")
+  await driver.findElement(webdriver.By.css('#main > main > div > form > button')).sendKeys(webdriver.Key.ENTER)
+  await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
 })
