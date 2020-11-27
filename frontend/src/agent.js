@@ -42,6 +42,7 @@ const Parent = {
   editParent: (email) => requests.put('/user', { user: { email } }),
   deleteChild: (ehrid) => requests.del(`/child?ehrid=${ehrid}`),
   deleteParent: () => requests.del('/user'),
+  addReward: (nameOf, description, reward, endDate, ehrid) => requests.post('/child/reward', { reward:{ nameOf, description, reward, endDate, ehrid }})
 }
 
 const Child = {

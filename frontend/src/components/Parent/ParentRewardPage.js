@@ -9,9 +9,6 @@ import {
   Container,
   Grid,
   Button,
-  FormControl,
-  InputLabel,
-  Input,
 } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -20,15 +17,12 @@ import EmojiEventsIcon from "@material-ui/icons/EmojiEvents";
 //import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Divider } from "@material-ui/core";
-import RedeemIcon from "@material-ui/icons/Redeem";
 import RewardCardList from './RewardCardList';
 import agentEHR from "../../agentEHR";
 
 import {
   PAGE_UNLOADED,
   LOAD_PARTY,
-  FIELD_CHANGE,
-  SUBMIT_GOAL
 } from "../../constants/actionTypes";
 
 const mapStateToProps = (state) => ({
@@ -37,17 +31,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onChange: (key, value) =>
-    dispatch({ type: FIELD_CHANGE, key, value }),
+/*   onChange: (key, value) =>
+    dispatch({ type: FIELD_CHANGE, key, value }), */
   onLoad: (ehrId) =>
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }),
     
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
-
-  submitGoal: (key, value, nameOf, description, reward, numberOfDays) => {
-    
-    dispatch({ type: SUBMIT_GOAL, key, value})
-  }
   
   })
 
@@ -55,26 +44,11 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ParentRewardPage = (props) => {
   
-//  const onChange = (ev) => props.onChange(ev.target.id, ev.target.value)
-
-  const {nameOf, description, reward, numberOfDays} = props
-  
+//  const onChange = (ev) => props.onChange(ev.target.id, ev.target.value)  
   const classes = styles();
+  const { id } = props.match.params
 
     
-
-    // Ska spara
-const handleForm = (ev) => {
-  props.onChange(ev.target.id, ev.target.value)
-}
-
-
-    // Skapa och skicka till rewardcard 
-  const sendForm = () => (ev) => {
- //   ev.preventDefault()
-    console.log('rewardy: ' + nameOf, description, reward, numberOfDays);
-    props.submitGoal(nameOf, description, reward, numberOfDays)
-  }
 
   return (
     /* -------------------------------Utmaningar-------------------------------------- */
@@ -96,7 +70,7 @@ const handleForm = (ev) => {
               fullWidth
               variant="contained"
               color="primary"
-              // onClick={   }
+              href={`/add-reward/${id}`}
             >
               Lägg Till Ny Utmaning
             </Button>
@@ -133,83 +107,9 @@ const handleForm = (ev) => {
         </Card>
       </Grid>
 
-      {/* -------------------------Ny Utmaning------------------------------- */}
-      <Grid item xs={12} className={classes.card}>
-        <Card elevation={5} className={classes.card}>
-          <CardHeader
-            title="Ny Utmaning"
-            titleTypographyProps={{ variant: "h5" }}
-            avatar={<EmojiEventsIcon></EmojiEventsIcon>}
-          >
-            \
-          </CardHeader>
 
-          <RedeemIcon
-            className={classes.RedeemIcon}
-            fontSize="large"
-          ></RedeemIcon>
 
-          <CardContent>
-            <FormControl fullWidth className={classes.inputs}>
-              <InputLabel>Namn på Utmaning</InputLabel>
-              <Input
-                fullWidth
-                value={nameOf}
-                id="nameOf"
-                margin="dense"
-                labelId="goalweight-label"
-                onChange={handleForm}
-              />
-            </FormControl>
 
-            <FormControl fullWidth className={classes.inputs}>
-              <InputLabel>Beskrivning</InputLabel>
-              <Input
-                fullWidth
-                value={description}
-                id="description"
-                margin="dense"
-                labelId="description-label"
-                onChange={handleForm}
-              />
-            </FormControl>
-            <FormControl fullWidth className={classes.inputs}>
-              <InputLabel>Belöning</InputLabel>
-              <Input
-                value={reward}
-                fullWidth
-                id="reward"
-                margin="dense"
-                labelId="reward-label"
-                onChange={handleForm}
-              />
-            </FormControl>
-
-            <FormControl fullWidth className={classes.inputs}>
-              <InputLabel>Antal dagar</InputLabel>
-              <Input
-                fullWidth
-                value={numberOfDays}
-                id="numberOfDays"
-                margin="dense"
-                labelId="day-label"
-                onChange={handleForm}
-              />
-            </FormControl>
-          </CardContent>
-        </Card>
-
-        <Button
-          className={classes.button}
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={sendForm}
-        >
-          Spara Utmaning
-        </Button>
-      </Grid>
     </Container>
   );
 };

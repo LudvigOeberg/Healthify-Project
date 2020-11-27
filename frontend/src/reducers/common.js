@@ -23,6 +23,7 @@ import {
   SAVE_TIMER,
   SAVE_SIMULATION,
   SAVE_WEIGHT,
+  SAVE_REWARD,
 } from '../constants/actionTypes'
 
 const defaultState = {
@@ -100,6 +101,18 @@ export default (state = defaultState, action) => {
         ...state,
         redirectTo: action.error ? null : '/parent',
         currentUser,
+        inProgress: false,
+        snackbar: action.error
+          ? {
+              open: true,
+              message: 'Något gick fel',
+              color: 'warning',
+            }
+          : action.snackbar,
+      }
+    case SAVE_REWARD:
+      return {
+        ...state,
         inProgress: false,
         snackbar: action.error
           ? {

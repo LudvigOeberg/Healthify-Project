@@ -175,6 +175,17 @@ const getIndication = (data) => {
                       Simulera värden
                     </Button>
                   </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Button
+                      id="toRewardPageButton"
+                      variant="contained"
+                      color="secondary"
+                      href={`/parent-reward/${id}`}
+                      fullWidth
+                    >
+                      Utmaningar
+                    </Button>
+                  </Grid>
                 </Grid>
               </Paper>
             </Grid>

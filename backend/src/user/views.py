@@ -11,8 +11,8 @@ from src.database import db
 
 from src.extensions import api
 from src.exceptions import InvalidUsage
-from .models import User, Parent, Child
-from .schema import user_schema, user_schemas, login_schema, register_user_schema, child_schemas, child_schema, parent_schemas, register_child_schema
+from .models import User, Parent, Child, Reward
+from .schema import user_schema, user_schemas, login_schema, register_user_schema, child_schemas, child_schema, parent_schemas, register_child_schema, register_reward_schema, reward_schema
 from requests.auth import HTTPBasicAuth
 import requests
 from flask import current_app
@@ -232,3 +232,20 @@ class ChildTimerResource(MethodResource):
             db.session.rollback()
             raise InvalidUsage.unknown_error()
         return timer
+
+@api.resource('/child/reward')
+@doc(tags=["Child"])
+class ChildRewardResource(MethodResource):
+    @jwt_required
+    @use_kwargs(register_reward_schema)
+    @marshal_with(reward_schema)
+    @doc(description="Add a reward to child")
+    def post(self, nameOf, description, reward, endDate, ehrid, **kwargs):
+        try:
+            reward=Reward(nameOf, description, reward, endDate, ehrid, **kwargs)
+            db.session.add(reward)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise InvalidUsage.unknown_error()
+        return 200

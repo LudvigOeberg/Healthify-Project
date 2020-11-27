@@ -135,6 +135,29 @@ class RegisterChildSchema(Schema):
     class Meta:
         strict = True
 
+class RewardSchema(Schema):
+    nameOf = fields.Str()
+    description = fields.Str()
+    reward = fields.Str()
+    endDate = fields.Date()
+    ehrid = fields.Str()
+
+    @pre_load
+    def make_reward(self, data, **kwargs):
+        data = data.get('reward')
+        return data
+
+class RegisterRewardSchema(Schema):
+    nameOf = fields.Str(required=True)
+    description = fields.Str(required=True)
+    reward = fields.Str(required=True)
+    endDate = fields.Date(required=True)
+    ehrid = fields.Str(required=True)
+
+    @pre_load
+    def make_reward(self, data, **kwargs):
+        data = data.get('reward')
+        return data
 
 class ChildSchema(Schema):
     name = fields.Str(dump_only=True)
@@ -145,7 +168,7 @@ class ChildSchema(Schema):
     lastSeen = fields.DateTime(attribute='last_seen', dump_only=True)
     type = fields.Str(dump_only=True)
     timer = fields.DateTime(dump_only=True)
-    #reward = fields.
+    rewards = fields.List(fields.Nested(lambda:RewardSchema()))
 
     @pre_load
     def make_user(self, data, **kwargs):
@@ -198,3 +221,5 @@ user_schemas = UserSchema(many=True)
 child_schema = ChildSchema()
 child_schemas = ChildSchema(many=True)
 parent_schemas = ParentSchema(many=True)
+register_reward_schema = RegisterRewardSchema()
+reward_schema = RewardSchema()
