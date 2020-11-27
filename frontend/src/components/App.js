@@ -108,7 +108,7 @@ class App extends React.Component {
         }
       }
       let footer = <Footer />
-      if (this.props.currentUser && this.props.currentUser.type==='child') {
+      if (this.props.currentUser && this.props.currentUser.type === 'child') {
         footer = <FooterBar />
       }
 

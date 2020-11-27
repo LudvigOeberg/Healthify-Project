@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
 import { FormControl, FormHelperText, InputLabel, InputAdornment } from '@material-ui/core/'
 import { connect } from 'react-redux'
-import {  UPDATE_FIELD_AUTH } from '../constants/actionTypes'
+import { UPDATE_FIELD_AUTH } from '../constants/actionTypes'
 
 /**
  * A slider with an input box to the right, these two are displaying the same value
@@ -14,25 +14,24 @@ import {  UPDATE_FIELD_AUTH } from '../constants/actionTypes'
  * @param {id} id id of the input
  * @param {input} input the variable that is the input
  * @param {definition} definition a definition of what the input is
- *
+ * @param {int} int boolean wether it need to be int (true) or not (false)
  */
 
 const mapStateToProps = (state) => ({
-  ...state.auth
+  ...state.auth,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   onChange: (key, value) => {
-    dispatch({ type:  UPDATE_FIELD_AUTH, key, value })
+    dispatch({ type: UPDATE_FIELD_AUTH, key, value })
   },
 })
 function InputStepper(props) {
-  const { unit, step, min, max, id, input, definition, error } = props
+  const { unit, step, min, max, id, input, definition, error, int } = props
   // const [value, setValue] = React.useState(output);
   // const onChange = (ev) => props.onChange(id, ev.target.value)
   const handleOffset = (val) => props.onChange(id, val)
 
- 
   const handleInputChange = (event) => {
     props.onChange(id, event.target.value === '' ? '' : Number(event.target.value))
   }
@@ -50,15 +49,15 @@ function InputStepper(props) {
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12}>
           <FormControl fullWidth error={error}>
-            <InputLabel id={`${unit}-label`} shrink={typeof input === 'number'}>
+            <InputLabel id={`${id}-label`} shrink={typeof input === 'number'}>
               {definition}
             </InputLabel>
             <Input
               endAdornment={<InputAdornment position="end">{unit}</InputAdornment>}
               fullWidth
-              id={`${unit}`}
+              id={`${id}`}
               value={input}
-              labelId={`${unit}-label`}
+              labelId={`${id}-label`}
               label={`${unit}`}
               onChange={handleInputChange}
               onBlur={handleBlur}
@@ -70,7 +69,9 @@ function InputStepper(props) {
                 'aria-labelledby': 'input-slider',
               }}
             />
-            <FormHelperText id={`${unit}`}>{error ? error : `I heltal mellan ${min} och ${max} `}</FormHelperText>
+            <FormHelperText id={`${id}`}>
+              {error || `I ${int ? 'heltal' : 'decimaltal'} mellan ${min} och ${max} `}
+            </FormHelperText>
           </FormControl>
         </Grid>
       </Grid>

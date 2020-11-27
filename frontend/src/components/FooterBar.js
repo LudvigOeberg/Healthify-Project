@@ -48,7 +48,7 @@ export default function FooterBar() {
     <footer className={classes.footer}>
       <Grid container className={classes.root} height="100%">
         <Grid item xs={3} className={classes.borderRight}>
-          <a id="homeFooterLink" href='/child'>
+          <a id="homeFooterLink" href="/child">
             <Tooltip title="Hem" aria-label="home">
               <Paper className={classes.paper} square>
                 <SvgIcon width="22" height="12" viewBox="0 0 22 12">

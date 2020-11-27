@@ -105,7 +105,12 @@ function ChildListItem(props) {
               </a>
             </ListItem>
             <Divider />
-            <ListItem id="parentsChildOverviewButton" button component="a" href={`/parent-child-overview/${child.ehrid}`}>
+            <ListItem
+              id="parentsChildOverviewButton"
+              button
+              component="a"
+              href={`/parent-child-overview/${child.ehrid}`}
+            >
               <ListItemIcon>
                 <AccountBox color="primary" />
               </ListItemIcon>
