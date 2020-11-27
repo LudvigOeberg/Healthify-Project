@@ -60,6 +60,9 @@ const Patient = (props) => {
   const weight = props.weight ? props.weight : null
   const bloodsugar = props.bloodsugar ? props.bloodsugar : null
 
+  // eslint-disable-next-line no-console
+  console.log(`weight: ${weight == null}`)
+
   const badBloodsugar = !!(
     bloodsugar &&
     disease === 'DIABETES' &&
@@ -71,6 +74,7 @@ const Patient = (props) => {
     weight &&
     disease === 'OBESITY' &&
     weight &&
+    weight[1] &&
     weight[1].weight &&
     weight[1].weight !== weight[0].weight
   )
@@ -82,30 +86,31 @@ const Patient = (props) => {
 
   const lastWeight = props.weight ? props.weight[1] : null
 
-  // if (
-  //   (disease === 'DIABETES' ? bloodsugar !== null : weight !== null) &&
-  //   (disease === 'DIABETES' ? bloodsugar !== null : weight !== undefined)
-  // ) {
-  //   if (
-  //     (disease === 'DIABETES' ? bloodsugar[0].value < 4 : weight[0].weight < 0) ||
-  //     (disease === 'DIABETES' ? bloodsugar[0].value > 8 : weight[0].weight > 70)
-  //   ) {
-  //     Avatar = sadAvatar
-  //   } else {
-  //     Avatar = happyAvatar
-  //   }
-  //   if ((disease === 'DIABETES' ? bloodsugar[0].time : weight[0].time) < setTimer()) {
-  //     // Might not work
-  //     Avatar = normalAvatar
-  //   }
-  // }
+  if (
+    (disease === 'DIABETES' ? bloodsugar !== null : weight !== null) &&
+    (disease === 'DIABETES' ? SU_LO !== undefined : weight !== undefined)
+  ) {
+    if (disease === 'DIABETES' ? bloodsugar[0] !== undefined : weight[0] !== undefined) {
+      if (
+        (disease === 'DIABETES' ? bloodsugar[0].value < SU_LO : weight[0].weight < 0) ||
+        (disease === 'DIABETES' ? bloodsugar[0].value > SU_HI : weight[0].weight > 70)
+      ) {
+        Avatar = sadAvatar
+      } else {
+        Avatar = happyAvatar
+      }
+      if ((disease === 'DIABETES' ? bloodsugar[0].time : weight[0].time) < setTimer()) {
+        // Might not work
+        Avatar = normalAvatar
+      }
+    }
+  }
 
   useEffect(() => {
     props.onLoad(id)
     props.loadValues(id, 0, 20, disease)
   }, [id, disease]); // eslint-disable-line
 
-  // eslint-disable-next-line consistent-return
   function getMeasurementValue() {
     if (disease === 'DIABETES') {
       if (bloodsugar !== undefined) {
@@ -117,7 +122,7 @@ const Patient = (props) => {
     if (disease === 'OBESITY') {
       if (weight !== undefined) {
         if (weight !== null) {
-          if (weight[0].weight !== undefined) {
+          if (weight[0] !== undefined) {
             return weight[0].weight
           }
         }
@@ -133,7 +138,6 @@ const Patient = (props) => {
     return 'kg'
   }
 
-  // eslint-disable-next-line consistent-return
   function getMeasurementTime() {
     const t = new Date()
 
@@ -161,31 +165,7 @@ const Patient = (props) => {
         }
       }
     }
-  }
-
-  // eslint-disable-next-line consistent-return
-  function paintBubbleBorder() {
-    if (disease === 'DIABETES') {
-      if (bloodsugar !== undefined) {
-        if (bloodsugar !== null) {
-          if (bloodsugar[0].value > 8 || bloodsugar[0].value < 4) {
-            document.getElementById('bubble').style.border = '1px solid red'
-            // document.getElementById('trendIcon').attributes.id.value = 'trending_down'
-          }
-        }
-      }
-    }
-    if (disease === 'OBESITY') {
-      if (weight !== undefined) {
-        if (weight !== null) {
-          if (lastWeight !== undefined) {
-            if (weight.weight > lastWeight.weight) {
-              document.getElementById('bubble').style.border = '1px solid red'
-            }
-          }
-        }
-      }
-    }
+    return 'Inget mätvärde'
   }
 
   return (
@@ -197,58 +177,62 @@ const Patient = (props) => {
           </Box>
         </Grid>
         <Grid item xs={12}>
-          <div id="bubble" className={classes.bubble}>
-            <Grid container spacing={1}>
-              {paintBubbleBorder()}
-              <Grid item xs={1.5}>
-                {/* <Icon id="trendIcon">trending_up</Icon> */}
-                <Icon>
-                  <Paper hidden={(disease === 'DIABETES' && badBloodsugar) || disease === 'OBESITY'} elevation={0}>
-                    <ThumbUpAltOutlinedIcon style={{ color: 'green' }} />
-                  </Paper>
-                  <Paper hidden={(disease === 'DIABETES' && !badBloodsugar) || disease === 'OBESITY'} elevation={0}>
-                    <ThumbDownAltOutlinedIcon style={{ color: 'red' }} />
-                  </Paper>
-                  <Paper
-                    hidden={
-                      (disease === 'OBESITY' && badWeight) ||
-                      (disease === 'OBESITY' && oneOrSameWeight) ||
-                      disease === 'DIABETES'
-                    }
-                    elevation={0}
-                  >
-                    <TrendingDownIcon style={{ color: 'green' }} />
-                  </Paper>
-                  <Paper hidden={(disease === 'OBESITY' && !oneOrSameWeight) || disease === 'DIABETES'} elevation={0}>
-                    <ArrowRightAltIcon style={{ color: 'gray' }} />
-                  </Paper>
-                  <Paper
-                    hidden={
-                      (disease === 'OBESITY' && !badWeight) ||
-                      (disease === 'OBESITY' && oneOrSameWeight) ||
-                      disease === 'DIABETES'
-                    }
-                    elevation={0}
-                  >
-                    <TrendingUpIcon style={{ color: 'red' }} />
-                  </Paper>
-                </Icon>
+          <Paper className={classes.bubble}>
+            <Grid container direction="row" justify="center" alignItems="center">
+              <Grid item xs={7}>
+                <Grid container direction="row" justify="center" alignItems="center">
+                  <Grid item xs={3}>
+                    <Icon>
+                      <Paper hidden={(disease === 'DIABETES' && badBloodsugar) || disease === 'OBESITY'} elevation={0}>
+                        <ThumbUpAltOutlinedIcon style={{ color: 'green' }} />
+                      </Paper>
+                      <Paper hidden={(disease === 'DIABETES' && !badBloodsugar) || disease === 'OBESITY'} elevation={0}>
+                        <ThumbDownAltOutlinedIcon style={{ color: 'red' }} />
+                      </Paper>
+                      <Paper
+                        hidden={
+                          (disease === 'OBESITY' && badWeight) ||
+                          (disease === 'OBESITY' && oneOrSameWeight) ||
+                          disease === 'DIABETES'
+                        }
+                        elevation={0}
+                      >
+                        <TrendingDownIcon style={{ color: 'green' }} />
+                      </Paper>
+                      <Paper
+                        hidden={(disease === 'OBESITY' && !oneOrSameWeight) || disease === 'DIABETES'}
+                        elevation={0}
+                      >
+                        <ArrowRightAltIcon style={{ color: 'gray' }} />
+                      </Paper>
+                      <Paper
+                        hidden={
+                          (disease === 'OBESITY' && !badWeight) ||
+                          (disease === 'OBESITY' && oneOrSameWeight) ||
+                          disease === 'DIABETES'
+                        }
+                        elevation={0}
+                      >
+                        <TrendingUpIcon style={{ color: 'red' }} />
+                      </Paper>
+                    </Icon>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography variant="h6">{getMeasurementValue()}</Typography>
+                  </Grid>
+                  <Grid item xs={4.5}>
+                    <Typography variant="body1">{getMeasurementUnit()}</Typography>
+                  </Grid>
+                </Grid>
               </Grid>
-              <Grid item xs={1.5}>
-                <Typography variant="h6">{getMeasurementValue()}</Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant="body1">{getMeasurementUnit()}</Typography>
-              </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <Typography className={classes.disabled} variant="body1">
                   {getMeasurementTime()}
                 </Typography>
               </Grid>
             </Grid>
-          </div>
+          </Paper>
         </Grid>
-        {/* </Grid> */}
       </Container>
     </Container>
   )
@@ -266,14 +250,8 @@ const styles = makeStyles((theme) => ({
     position: 'relative',
   },
   bubble: {
-    width: '100%',
-    height: '5vmax',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    background: '#F2F2F2',
+    marginTop: '5vh',
     boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
-    textAlign: 'center',
-    alignSelf: 'center',
     borderRadius: '10px',
     border: '2px solid #64B4EA',
   },
