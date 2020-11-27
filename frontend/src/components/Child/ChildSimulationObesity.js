@@ -84,6 +84,7 @@ const ChildSimulationObesity = (props) => {
   const id = props.currentUser.ehrid
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
   const { weight } = props
+  const goalweight = props.party ? `${props.party[id].additionalInfo.goalweight}` : null
 
   useEffect(() => {
     props.onLoad(id)
@@ -123,7 +124,8 @@ const ChildSimulationObesity = (props) => {
   const encouragingDialogInfo = [
     'Simulera',
     'Simulation',
-    'Om du tränar så här lite kommer det ta lång tid att nu ditt mål, försök att träna mer så är inget omöjligt!',
+    'Du har redan uppnått din målvikt! Bra jobbat!',
+    // 'Om du tränar så här lite kommer det ta lång tid att nu ditt mål, försök att träna mer så är inget omöjligt!',
     '',
     'running avatar',
   ]
@@ -158,9 +160,10 @@ const ChildSimulationObesity = (props) => {
       return -101
     }
 
-    const weightGoal = 0.7 * currentWeight
+    const w = Math.floor((currentWeight - goalweight) / workouts) * 2
 
-    const w = Math.floor((currentWeight - weightGoal) / workouts) * 2
+    // eslint-disable-next-line no-console
+    console.log(`w: ${w}`)
     return w
   }
 
