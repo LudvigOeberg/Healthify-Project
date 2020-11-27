@@ -296,7 +296,7 @@ class PatientRegister extends Component {
                     </Grid>
                     <Grid item xs={12}>
                     <InputStepper
-            
+                    int={true}
                     error={errors && errors.diseaseInfo && errors.diseaseInfo.measurements ? errors.diseaseInfo.measurements : null}
                     unit="st"
                     step={1}
@@ -310,6 +310,7 @@ class PatientRegister extends Component {
                     </Grid>
                     <Grid item xs={12}>
                     <InputStepper
+                      int={false}
                       error={errors && errors.diseaseInfo && errors.diseaseInfo.SU_LO ? errors.diseaseInfo.SU_LO : null}
                       unit="mmol/L"
                       step={0.1}
@@ -322,6 +323,7 @@ class PatientRegister extends Component {
                     </Grid>
                     <Grid item xs={12}>
                     <InputStepper
+                      int={false}
                       error={errors && errors.diseaseInfo && errors.diseaseInfo.SU_HI ? errors.diseaseInfo.SU_HI : null}
                       unit="mmol/L"
                       step={0.1}
@@ -343,6 +345,7 @@ class PatientRegister extends Component {
                     </Grid>
                     <Grid item xs={12}>
                     <InputStepper
+                    int={true}
                     error={errors && errors.diseaseInfo && errors.diseaseInfo.goalweight ? errors.diseaseInfo.goalweight : null}
                     unit="kg"
                     step={1}
