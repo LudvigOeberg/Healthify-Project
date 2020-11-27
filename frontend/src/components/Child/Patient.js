@@ -1,7 +1,13 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Box, Container, Typography, Icon } from '@material-ui/core'
+import { Grid, Box, Container, Typography, Icon, Paper } from '@material-ui/core'
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
+import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined'
+import TrendingUpIcon from '@material-ui/icons/TrendingUp'
+import TrendingDownIcon from '@material-ui/icons/TrendingDown'
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import agentEHR from '../../agentEHR'
 import {
   FIELD_CHANGE,
@@ -48,32 +54,51 @@ const mapDispatchToProps = (dispatch) => ({
 const Patient = (props) => {
   const id = props.currentUser.ehrid
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const SU_LO = props.party ? `${props.party[id].additionalInfo.SU_LO}` : null
+  const SU_HI = props.party ? `${props.party[id].additionalInfo.SU_HI}` : null
 
-  const classes = styles()
-  const weight = props.weight ? props.weight[0] : null
+  const weight = props.weight ? props.weight : null
   const bloodsugar = props.bloodsugar ? props.bloodsugar : null
 
+  const badBloodsugar = !!(
+    bloodsugar &&
+    disease === 'DIABETES' &&
+    bloodsugar &&
+    (bloodsugar[0].value < SU_LO || bloodsugar[0].value > SU_HI)
+  )
+  const badWeight = !!(weight && disease === 'OBESITY' && weight && weight[1] && weight[1].weight < weight[0].weight)
+  const oneOrSameWeight = !(
+    weight &&
+    disease === 'OBESITY' &&
+    weight &&
+    weight[1].weight &&
+    weight[1].weight !== weight[0].weight
+  )
+
+  const classes = styles()
+
+  // eslint-disable-next-line prefer-const
   let Avatar = normalAvatar
 
   const lastWeight = props.weight ? props.weight[1] : null
 
-  if (
-    (disease === 'DIABETES' ? bloodsugar !== null : weight !== null) &&
-    (disease === 'DIABETES' ? bloodsugar !== null : weight !== undefined)
-  ) {
-    if (
-      (disease === 'DIABETES' ? bloodsugar[0].value < 4 : weight.weight < 0) ||
-      (disease === 'DIABETES' ? bloodsugar[0].value > 8 : weight.weight > 70)
-    ) {
-      Avatar = sadAvatar
-    } else {
-      Avatar = happyAvatar
-    }
-    if ((disease === 'DIABETES' ? bloodsugar[0].time : weight.time) < setTimer()) {
-      // Might not work
-      Avatar = normalAvatar
-    }
-  }
+  // if (
+  //   (disease === 'DIABETES' ? bloodsugar !== null : weight !== null) &&
+  //   (disease === 'DIABETES' ? bloodsugar !== null : weight !== undefined)
+  // ) {
+  //   if (
+  //     (disease === 'DIABETES' ? bloodsugar[0].value < 4 : weight[0].weight < 0) ||
+  //     (disease === 'DIABETES' ? bloodsugar[0].value > 8 : weight[0].weight > 70)
+  //   ) {
+  //     Avatar = sadAvatar
+  //   } else {
+  //     Avatar = happyAvatar
+  //   }
+  //   if ((disease === 'DIABETES' ? bloodsugar[0].time : weight[0].time) < setTimer()) {
+  //     // Might not work
+  //     Avatar = normalAvatar
+  //   }
+  // }
 
   useEffect(() => {
     props.onLoad(id)
@@ -92,7 +117,9 @@ const Patient = (props) => {
     if (disease === 'OBESITY') {
       if (weight !== undefined) {
         if (weight !== null) {
-          return weight.weight
+          if (weight[0].weight !== undefined) {
+            return weight[0].weight
+          }
         }
       }
     }
@@ -124,11 +151,13 @@ const Patient = (props) => {
     if (disease === 'OBESITY') {
       if (weight !== undefined) {
         if (weight !== null) {
-          const n = new Date(weight.time)
-          const difference = t.getTime() - n.getTime()
-          const diffDays = Math.floor(difference / (1000 * 3600 * 24))
+          if (weight[0] !== undefined) {
+            const n = new Date(weight[0].time)
+            const difference = t.getTime() - n.getTime()
+            const diffDays = Math.floor(difference / (1000 * 3600 * 24))
 
-          return `${diffDays} dagar sedan`
+            return `${diffDays} dagar sedan`
+          }
         }
       }
     }
@@ -172,7 +201,38 @@ const Patient = (props) => {
             <Grid container spacing={1}>
               {paintBubbleBorder()}
               <Grid item xs={1.5}>
-                <Icon id="trendIcon">trending_up</Icon>
+                {/* <Icon id="trendIcon">trending_up</Icon> */}
+                <Icon>
+                  <Paper hidden={(disease === 'DIABETES' && badBloodsugar) || disease === 'OBESITY'} elevation={0}>
+                    <ThumbUpAltOutlinedIcon style={{ color: 'green' }} />
+                  </Paper>
+                  <Paper hidden={(disease === 'DIABETES' && !badBloodsugar) || disease === 'OBESITY'} elevation={0}>
+                    <ThumbDownAltOutlinedIcon style={{ color: 'red' }} />
+                  </Paper>
+                  <Paper
+                    hidden={
+                      (disease === 'OBESITY' && badWeight) ||
+                      (disease === 'OBESITY' && oneOrSameWeight) ||
+                      disease === 'DIABETES'
+                    }
+                    elevation={0}
+                  >
+                    <TrendingDownIcon style={{ color: 'green' }} />
+                  </Paper>
+                  <Paper hidden={(disease === 'OBESITY' && !oneOrSameWeight) || disease === 'DIABETES'} elevation={0}>
+                    <ArrowRightAltIcon style={{ color: 'gray' }} />
+                  </Paper>
+                  <Paper
+                    hidden={
+                      (disease === 'OBESITY' && !badWeight) ||
+                      (disease === 'OBESITY' && oneOrSameWeight) ||
+                      disease === 'DIABETES'
+                    }
+                    elevation={0}
+                  >
+                    <TrendingUpIcon style={{ color: 'red' }} />
+                  </Paper>
+                </Icon>
               </Grid>
               <Grid item xs={1.5}>
                 <Typography variant="h6">{getMeasurementValue()}</Typography>

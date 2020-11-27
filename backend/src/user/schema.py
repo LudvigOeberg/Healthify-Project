@@ -96,6 +96,9 @@ class DiabetesInfoSchema(Schema):
     SU_LO= fields.Float(validate=validate.Range(min=0, max=15), required=True)
     SU_HI= fields.Float(validate=validate.Range(min=0, max=15), required=True)    
 
+class ObesityInfoSchema(Schema):
+    goalweight = fields.Int(validate=validate.Range(min=40, max=60), required=True)
+
 class RegisterChildSchema(Schema):
     name = fields.Str(validate=validate.Length(min=1), required=True)
     surname = fields.Str(validate=validate.Length(min=1), required=True)
@@ -115,10 +118,15 @@ class RegisterChildSchema(Schema):
     def make_user(self, data, **kwargs):
         data = data.get('user')
         if data.get('disease')=="OBESITY":
-            self.declared_fields.update({'diseaseInfo': fields.Str()})
-            self.load_fields.update({'diseaseInfo': fields.Str()})
-            self.fields.update({'diseaseInfo': fields.Str()})
-            self.dump_fields.update({'diseaseInfo': fields.Str()})
+            self.declared_fields.update({'diseaseInfo': fields.Nested(ObesityInfoSchema())})
+            self.load_fields.update({'diseaseInfo': fields.Nested(ObesityInfoSchema())})
+            self.fields.update({'diseaseInfo': fields.Nested(ObesityInfoSchema())})
+            self.dump_fields.update({'diseaseInfo': fields.Nested(ObesityInfoSchema())})
+        elif data.get('disease')=="DIABETES":
+            self.declared_fields.update({'diseaseInfo': fields.Nested(DiabetesInfoSchema())})
+            self.load_fields.update({'diseaseInfo': fields.Nested(DiabetesInfoSchema())})
+            self.fields.update({'diseaseInfo': fields.Nested(DiabetesInfoSchema())})
+            self.dump_fields.update({'diseaseInfo': fields.Nested(DiabetesInfoSchema())})
         return data
 
     def handle_error(self, exc, data, **kwargs):

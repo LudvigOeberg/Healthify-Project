@@ -24,6 +24,7 @@ import {
 } from '../../constants/actionTypes'
 import agent from '../../agent'
 
+// eslint-disable-next-line import/no-named-as-default-member
 import InputStepper from '../InputStepper'
 
 /**
@@ -76,6 +77,7 @@ class PatientRegister extends Component {
       measurements,
       SU_LO,
       SU_HI,
+      goalweight,
     ) => (ev) => {
       ev.preventDefault()
       const snackbar = {
@@ -91,7 +93,9 @@ class PatientRegister extends Component {
               SU_LO,
               SU_HI,
             }
-          : 'Väntar på analysts'
+          : {
+              goalweight,
+            }
 
       this.props.onSubmit(
         name,
@@ -123,7 +127,7 @@ class PatientRegister extends Component {
     const { dateofbirth } = this.props
     const errors = this.props.errors ? this.props.errors : null
     const { disease } = this.props
-    const { measurements, SU_LO, SU_HI } = this.props
+    const { measurements, SU_LO, SU_HI, goalweight } = this.props
 
     return (
       <Container component="main" maxWidth="xs">
@@ -149,6 +153,7 @@ class PatientRegister extends Component {
               measurements,
               SU_LO,
               SU_HI,
+              goalweight,
             )}
           >
             <Grid container spacing={2}>
@@ -329,6 +334,7 @@ class PatientRegister extends Component {
                     </Grid>
                     <Grid item xs={12}>
                       <InputStepper
+                        int
                         error={
                           errors && errors.diseaseInfo && errors.diseaseInfo.measurements
                             ? errors.diseaseInfo.measurements
@@ -345,6 +351,7 @@ class PatientRegister extends Component {
                     </Grid>
                     <Grid item xs={12}>
                       <InputStepper
+                        int={false}
                         error={
                           errors && errors.diseaseInfo && errors.diseaseInfo.SU_LO ? errors.diseaseInfo.SU_LO : null
                         }
@@ -359,6 +366,7 @@ class PatientRegister extends Component {
                     </Grid>
                     <Grid item xs={12}>
                       <InputStepper
+                        int={false}
                         error={
                           errors && errors.diseaseInfo && errors.diseaseInfo.SU_HI ? errors.diseaseInfo.SU_HI : null
                         }
@@ -372,6 +380,43 @@ class PatientRegister extends Component {
                       />
                     </Grid>
                     <Grid item xs={12}></Grid>
+                  </Grid>
+                  <Grid item xs={12}></Grid>
+                  {/* </Grid> */}
+                </Paper>
+                <Paper
+                  className={classes.additional}
+                  variant="outlined"
+                  style={{ borderColor: errors && errors.diseaseInfo ? 'red' : 'lightgray' }}
+                  hidden={disease !== 'OBESITY'}
+                >
+                  <Grid container spacing={1} justify="flex-start" alignItems="flex-end">
+                    <Grid item>
+                      <InputLabel
+                        error={errors && (errors.diseaseInfo ? true : !!(false || errors.general))}
+                        required
+                        shrink={goalweight}
+                      >
+                        Vikt info
+                      </InputLabel>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputStepper
+                        int
+                        error={
+                          errors && errors.diseaseInfo && errors.diseaseInfo.goalweight
+                            ? errors.diseaseInfo.goalweight
+                            : null
+                        }
+                        unit="kg"
+                        step={1}
+                        min={40}
+                        max={60}
+                        id="goalweight"
+                        input={goalweight}
+                        definition="Målvikt"
+                      />
+                    </Grid>
                   </Grid>
                 </Paper>
               </Grid>
