@@ -190,7 +190,7 @@ const Patient = (props) => {
 
   return (
     <Container maxWidth="" className={classes.backGround}>
-      <Grid container className={classes.root} spacing={2} height="100%">
+      <Container maxWidht="sm">
         <Grid item xs={12}>
           <Box textAlign="center">
             <img id="currentMood" className={classes.avatar} src={Avatar} alt="mood avatar"></img>
@@ -248,7 +248,8 @@ const Patient = (props) => {
             </Grid>
           </div>
         </Grid>
-      </Grid>
+        {/* </Grid> */}
+      </Container>
     </Container>
   )
 }
@@ -256,22 +257,23 @@ const Patient = (props) => {
 const styles = makeStyles((theme) => ({
   backGround: {
     position: 'absolute',
-    padding: '42% 10% 40%',
+    padding: '10% 5% 10%',
     background: 'linear-gradient(0deg, rgba(118,176,208,1) 40%, rgba(106,161,191,1) 41%, rgba(125,180,213,1) 86%)',
     marginTop: '-3%', // Removes a small white space at the top.
-    width: '100%',
+    minHeight: '100vh',
   },
   avatar: {
     position: 'relative',
   },
   bubble: {
-    width: '95%',
+    width: '100%',
     height: '5vmax',
     marginLeft: 'auto',
     marginRight: 'auto',
     background: '#F2F2F2',
     boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
     textAlign: 'center',
+    alignSelf: 'center',
     borderRadius: '10px',
     border: '2px solid #64B4EA',
   },

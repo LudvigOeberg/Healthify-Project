@@ -381,8 +381,6 @@ class PatientRegister extends Component {
                     </Grid>
                     <Grid item xs={12}></Grid>
                   </Grid>
-                  <Grid item xs={12}></Grid>
-                  {/* </Grid> */}
                 </Paper>
                 <Paper
                   className={classes.additional}
