@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Box, Container, Typography } from '@material-ui/core'
+import { Grid, Box, Container, Typography, Icon } from '@material-ui/core'
 import agentEHR from '../../agentEHR'
 import {
   FIELD_CHANGE,
@@ -117,7 +117,7 @@ const Patient = (props) => {
           const difference = t.getTime() - n.getTime()
           const diffHours = Math.floor(difference / (1000 * 3600))
 
-          return `${diffHours}h`
+          return `${diffHours} timmar sedan`
         }
       }
     }
@@ -128,7 +128,7 @@ const Patient = (props) => {
           const difference = t.getTime() - n.getTime()
           const diffDays = Math.floor(difference / (1000 * 3600 * 24))
 
-          return `${diffDays} dagar`
+          return `${diffDays} dagar sedan`
         }
       }
     }
@@ -141,6 +141,7 @@ const Patient = (props) => {
         if (bloodsugar !== null) {
           if (bloodsugar[0].value > 8 || bloodsugar[0].value < 4) {
             document.getElementById('bubble').style.border = '1px solid red'
+            // document.getElementById('trendIcon').attributes.id.value = 'trending_down'
           }
         }
       }
@@ -168,12 +169,23 @@ const Patient = (props) => {
         </Grid>
         <Grid item xs={12}>
           <div id="bubble" className={classes.bubble}>
-            {paintBubbleBorder()}
-            <Typography variant="h4">{getMeasurementValue()}</Typography>
-            <Typography variant="h6">{getMeasurementUnit()}</Typography>
-            <Typography className={classes.disabled} variant="body1">
-              Mättes - {getMeasurementTime()}
-            </Typography>
+            <Grid container spacing={1}>
+              {paintBubbleBorder()}
+              <Grid item xs={1.5}>
+                <Icon id="trendIcon">trending_up</Icon>
+              </Grid>
+              <Grid item xs={1.5}>
+                <Typography variant="h6">{getMeasurementValue()}</Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <Typography variant="body1">{getMeasurementUnit()}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography className={classes.disabled} variant="body1">
+                  {getMeasurementTime()}
+                </Typography>
+              </Grid>
+            </Grid>
           </div>
         </Grid>
       </Grid>
@@ -193,17 +205,15 @@ const styles = makeStyles((theme) => ({
     position: 'relative',
   },
   bubble: {
-    width: '50%',
-    height: '150px',
-    borderRadius: '50%',
+    width: '95%',
+    height: '5vmax',
+    marginLeft: 'auto',
+    marginRight: 'auto',
     background: '#F2F2F2',
-    // paddingTop: '100%',
-    position: 'absolute',
-    left: '-35px',
-    bottom: '8vh',
     boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
     textAlign: 'center',
-    border: '1px solid green',
+    borderRadius: '10px',
+    border: '2px solid #64B4EA',
   },
   disabled: {
     color: theme.palette.text.disabled,
