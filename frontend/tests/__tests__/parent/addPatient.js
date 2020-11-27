@@ -3,7 +3,7 @@ let driver
 const webdriver = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
 // const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
-const localURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
+const localURL = 'http://localhost:4100/'
 beforeAll(() => {
   jest.setTimeout(300000)
   const options = new chrome.Options()
@@ -51,7 +51,7 @@ async function login(driver, userPath, user) {
 
 async function register(driver, user) {
   await driver.get(localURL)
-  await driver.findElement(webdriver.By.id('registerHeaderButton')).click()
+  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click()
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
   await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
@@ -61,9 +61,9 @@ async function register(driver, user) {
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 10000, 'Timed out after 5 sec', 100)
 }
 
-
 async function registerPatient(driver, patient) {
   //await driver.findElement(webdriver.By.xpath("//span[text()='Lägg till barn']")).click()
+  //work around, not able to press the plus sign for registration with webdriver.
   await driver.get(localURL+"register-patient")
   await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
@@ -85,6 +85,7 @@ async function registerPatient(driver, patient) {
 
 async function registerPatientWithDiabetes(driver, patient) {
   //await driver.findElement(webdriver.By.xpath("//span[text()='Lägg till barn']")).click()
+  //work around, not able to press the plus sign for registration with webdriver.
   await driver.get(localURL+"register-patient")
   await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
