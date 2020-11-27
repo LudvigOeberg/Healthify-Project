@@ -85,8 +85,10 @@ function SimulateChart(props) {
   const goalweight = props.goalweight ? props.goalweight : 0
   const trainingammount = props.trainingammount ? props.trainingammount : 0
   const meal = props.meal ? props.meal : 0
-  const weight = props.weight ? props.weight[0].weight : 0
+  const weight = props.weight ? props.weight.weight : 0
   const bloodsugar = props.bloodsugar ? props.bloodsugar[0].value : 0
+  const SU_LO = props.SU_LO ? props.SU_LO : null
+  const SU_HI = props.SU_HI ? props.SU_HI : null
   const theme = useTheme()
   const timeHorizon = props.timeHorizon ? props.timeHorizon : 'year'
   const displaySettings = getSettings(disease, timeHorizon)
@@ -204,7 +206,7 @@ function SimulateChart(props) {
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: Simulate.constant(10),
+        data: SU_HI ? Simulate.constant(SU_HI): null,
       },
       {
         label: 'Lågt blodsocker',
@@ -224,7 +226,7 @@ function SimulateChart(props) {
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: Simulate.constant(3),
+        data: SU_LO ? Simulate.constant(SU_LO) : null
       },
     ],
   }
@@ -286,10 +288,10 @@ function SimulateChart(props) {
             <FormControl component="fieldset">
               <FormLabel component="legend">Tidsspann</FormLabel>
               <RadioGroup row aria-label="horizon" name="horizon" value={timeHorizon} onChange={changeRadio}>
-                <FormControlLabel value="1month" control={<Radio />} label="En månad" />
-                <FormControlLabel value="3month" control={<Radio />} label="Tre månader" />
-                <FormControlLabel value="6month" control={<Radio />} label="Sex månader" />
-                <FormControlLabel value="year" control={<Radio />} label="Ett år" />
+                <FormControlLabel id="chartOneMonth" value="1month" control={<Radio />} label="En månad" />
+                <FormControlLabel id="chartThreeMonts" value="3month" control={<Radio />} label="Tre månader" />
+                <FormControlLabel id="chartSixMonths" value="6month" control={<Radio />} label="Sex månader" />
+                <FormControlLabel id="chartOneYear" value="year" control={<Radio />} label="Ett år" />
               </RadioGroup>
             </FormControl>
           </Paper>

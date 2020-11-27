@@ -100,13 +100,15 @@ const mapDispatchToProps = (dispatch) => ({
 const SimulatePatient = (props) => {
   const { id } = props.match.params
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null
+  const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null
   const classes = styles()
   const { intensity, calorieintake, trainingammount, goalweight, meal, showGraph } = props
   const changeIntensity = (ev) => props.onChange('intensity', ev.target.value)
   let noInputTraining
   let noInputDiet
   let noInput
-  const weight = props.weight ? props.weight : null
+  const weight = props.weight ? props.weight[0] : null
   const bloodsugar = props.bloodsugar ? props.bloodsugar : null
 
   useEffect(() => {
@@ -187,7 +189,7 @@ const SimulatePatient = (props) => {
                   <Typography variant="h5">Ny Simulering</Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Accordion variant="outlined" rounded>
+                  <Accordion id="obesityDropdownSimulationFood" variant="outlined" rounded>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h6">Kost</Typography>
                     </AccordionSummary>
@@ -214,7 +216,7 @@ const SimulatePatient = (props) => {
                   </Accordion>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Accordion variant="outlined" rounded>
+                  <Accordion id="obesityDropdownSimulationionTraining" variant="outlined" rounded>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h6">Träning</Typography>
                     </AccordionSummary>
@@ -248,13 +250,13 @@ const SimulatePatient = (props) => {
                                 disableScrollLock: true,
                               }}
                             >
-                              <MenuItem type="number" value={1}>
+                              <MenuItem id="simulateLowIntensityLink" type="number" value={1}>
                                 Lågintensiv
                               </MenuItem>
-                              <MenuItem type="number" value={2}>
+                              <MenuItem id="simulateMediumIntensityLink" type="number" value={2}>
                                 Medelintensiv
                               </MenuItem>
-                              <MenuItem type="number" value={3}>
+                              <MenuItem id="simulateHighIntensityLink" type="number" value={3}>
                                 Högintensiv
                               </MenuItem>
                             </Select>
@@ -311,6 +313,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
+              id="parentGoBackObesityButton"
               type="submit"
               fullWidth
               variant="outlined"
@@ -324,6 +327,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
+              id="parentSimulateObesityButton"
               type="submit"
               fullWidth
               variant="contained"
@@ -360,7 +364,7 @@ const SimulatePatient = (props) => {
                   <Typography variant="h5">Ny Simulering</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Accordion variant="outlined" rounded>
+                  <Accordion id="diabetesDropDownSimulation" variant="outlined" rounded>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h6">Måltid</Typography>
                     </AccordionSummary>
@@ -373,6 +377,7 @@ const SimulatePatient = (props) => {
                         </Grid>
                         <Grid item xs={11}>
                           <Slider
+                            id="diabetesMealSlider"
                             value={meal}
                             onChange={handleSliderChange}
                             step={1}
@@ -392,13 +397,14 @@ const SimulatePatient = (props) => {
             {/* _____________________________________ */}
             <Grid item xs={12}>
               <Paper className={classes.paper} hidden={!showGraph}>
-                <SimulateChart disease={disease} bloodsugar={bloodsugar} meal={meal} />
+                <SimulateChart disease={disease} bloodsugar={bloodsugar} meal={meal} SU_LO={SU_LO} SU_HI={SU_HI} />
               </Paper>
             </Grid>
             {/* _____________________________________ */}
           </Grid>
           <Grid item xs={6}>
             <Button
+              id="parentGoBackDiabetesButton"
               type="submit"
               fullWidth
               variant="outlined"
@@ -412,6 +418,7 @@ const SimulatePatient = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Button
+              id="parentSimulateDiabetesButton"
               type="submit"
               fullWidth
               variant="contained"
@@ -438,14 +445,21 @@ const SimulatePatient = (props) => {
               nedan kommer du till sidan för att hantera ditt barns värden.
             </CardContent>
             <CardContent>
-              <Button size="large" variant="contained" color="primary" href={`/monitor-child/${id}`}>
+              <Button id="handleValues" size="large" variant="contained" color="primary" href={`/monitor-child/${id}`}>
                 Hantera värden
               </Button>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Button type="submit" fullWidth variant="outlined" color="primary" href={`/parent-child-overview/${id}`}>
+          <Button
+            id="back"
+            type="submit"
+            fullWidth
+            variant="outlined"
+            color="primary"
+            href={`/parent-child-overview/${id}`}
+          >
             Tillbaka
           </Button>
         </Grid>

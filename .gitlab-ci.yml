@@ -1,5 +1,5 @@
 stages:
-  - lint
+  - linter
   - build
   - build-image
   - test
@@ -61,7 +61,7 @@ test-frontend:
 
 
 lint-checker:
-  stage: lint
+  stage: linter
   image: node
 
   script:
@@ -91,10 +91,6 @@ build-flask-image:
     - export BUILDAH_ISOLATION=chroot
     - export STORAGE_DRIVER=vfs
     - export BUILDAH_FORMAT=docker
-    - echo "${CI_REGISTRY_PASSWORD}"
-    - echo "${CI_REGISTRY_IMAGE}"
-    - echo "${CI_REGISTRY_USER}"
-    - echo "${CI_JOB_TOKEN}"
     - buildah build-using-dockerfile --tag "flask" "backend"
     - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "flask" "docker://${CI_REGISTRY_IMAGE}/flask:latest"
 
@@ -120,10 +116,6 @@ build-app-image:
     - export BUILDAH_ISOLATION=chroot
     - export STORAGE_DRIVER=vfs
     - export BUILDAH_FORMAT=docker
-    - echo "${CI_REGISTRY_PASSWORD}"
-    - echo "${CI_REGISTRY_IMAGE}"
-    - echo "${CI_REGISTRY_USER}"
-    - echo "${CI_JOB_TOKEN}"
     - buildah build-using-dockerfile --tag "app-frontend" "frontend"
     - buildah push --creds "${CI_REGISTRY_USER}:${CI_JOB_TOKEN}" "app-frontend" "docker://${CI_REGISTRY_IMAGE}/app-frontend:latest"
 
@@ -147,11 +139,6 @@ deploy-app:
   script:
     - kubectl delete pods -l app=healthapp
     - kubectl delete pods -l app=flask
-    - kubectl apply -f yaml/app-deployment.yaml
-    - kubectl apply -f yaml/app-service.yaml
-    - kubectl apply -f yaml/flask-deployment.yaml
-    - kubectl apply -f yaml/flask-service.yaml
-    - kubectl apply -f yaml/app-ingress.yaml
 
 
 

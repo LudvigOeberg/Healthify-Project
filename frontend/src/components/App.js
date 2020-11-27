@@ -25,11 +25,13 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
-import Laboration from './Child/Laboration'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
-import ChildSimulation from './Child/ChildSimulation'
+import ChildLaboration from './Child/ChildLaboration'
+import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
+import ChildSimulationObesity from './Child/ChildSimulationObesity'
+import AddVal from './Child/AddVal'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -104,7 +106,7 @@ class App extends React.Component {
         }
       }
       let footer = <Footer />
-      if (this.props.currentUser) {
+      if (this.props.currentUser && this.props.currentUser.type==='child') {
         footer = <FooterBar />
       }
 
@@ -172,6 +174,13 @@ class App extends React.Component {
                 user={this.props.currentUser}
                 component={Integrations}
               />
+              <RequiredRoute
+                exact
+                path="/add"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={AddVal}
+              />
               {/* Commented out as link from ChildListItem no longer links to /caregiving-team
                here in case we need it */}
               {/*
@@ -230,7 +239,7 @@ class App extends React.Component {
                 path="/child-laboration"
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
-                component={Laboration}
+                component={ChildLaboration}
               />
               <RequiredRoute
                 exact
@@ -241,10 +250,17 @@ class App extends React.Component {
               />
               <RequiredRoute
                 exact
-                path="/simulate-child/"
+                path="/simulate-child-diabetes/"
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
-                component={ChildSimulation}
+                component={ChildSimulationDiabetes}
+              />
+              <RequiredRoute
+                exact
+                path="/simulate-child-Obesity/"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={ChildSimulationObesity}
               />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
@@ -253,8 +269,13 @@ class App extends React.Component {
           {footer}
           <MySnackbar />
 
-          <div className={classes.snackbar}>
-            <Snackbar open={this.props.timerSnackbarOpen} autoHideDuration={5000} onClose={handleClose}>
+          <div className={classes.snackbarDiv}>
+            <Snackbar
+              className={classes.snackbar}
+              open={this.props.timerSnackbarOpen}
+              autoHideDuration={5000}
+              onClose={handleClose}
+            >
               <Alert
                 elevation={6}
                 severity={timerSnackbar.color}
@@ -304,7 +325,11 @@ const RequiredRoute = ({ requires, user, component, path, exact, ...rest }) => {
 
 const styles = (theme) => ({
   snackbar: {
+    bottom: '5rem',
+  },
+  snackbarDiv: {
     width: '100%',
+    zIndex: 20000,
     '& > * + *': {
       marginTop: theme.spacing(4),
     },

@@ -32,22 +32,13 @@ const mapDispatchToProps = (dispatch) => ({
   },
 })
 
-// Checks if given bloodsugar levels are considered low, high or good.
-// getIndication & reformat are dublicated in MonitorChildValue
-const getIndication = (data) => {
-  if (data > 0 && data < 4) {
-    return 'Lågt'
-  }
-  if (data > 9) {
-    return 'Högt'
-  }
 
-  return 'Stabilt'
-}
 
 const ParentOverview = (props) => {
   const { id } = props.match.params
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null
+  const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null
   const colDesc = [
     'Datum',
     `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
@@ -66,6 +57,19 @@ const ParentOverview = (props) => {
     if (weight) return Reformat.weight(data, false, true)
     return null
   }
+
+  // Checks if given bloodsugar levels are considered low, high or good.
+// getIndication & reformat are dublicated in MonitorChildValue
+const getIndication = (data) => {
+  if (data > 0 && data < SU_LO) {
+    return 'Lågt'
+  }
+  if (data > SU_HI) {
+    return 'Högt'
+  }
+
+  return 'Stabilt'
+}
 
   const reformat = (data) => {
     const dataObjects = []
@@ -150,12 +154,24 @@ const ParentOverview = (props) => {
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Button variant="contained" color="secondary" href={`/monitor-child/${id}`} fullWidth>
+                    <Button
+                      id="toChildValuesButton"
+                      variant="contained"
+                      color="secondary"
+                      href={`/monitor-child/${id}`}
+                      fullWidth
+                    >
                       Hantera värden
                     </Button>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Button variant="contained" color="secondary" href={`/simulate-patient/${id}`} fullWidth>
+                    <Button
+                      id="toSimulatePageButton"
+                      variant="contained"
+                      color="secondary"
+                      href={`/simulate-patient/${id}`}
+                      fullWidth
+                    >
                       Simulera värden
                     </Button>
                   </Grid>
