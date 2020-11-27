@@ -38,11 +38,7 @@ const ParentOverview = (props) => {
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
   const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null
   const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null
-  const colDesc = [
-    'Datum',
-    `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
-    `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
-  ]
+
   const classes = styles()
   const { bloodsugar } = props
   const { weight } = props
@@ -55,19 +51,6 @@ const ParentOverview = (props) => {
     if (weight) return Reformat.weight(data, false, true)
     return null
   }
-
-  // Checks if given bloodsugar levels are considered low, high or good.
-// getIndication & reformat are dublicated in MonitorChildValue
-const getIndication = (data) => {
-  if (data > 0 && data < SU_LO) {
-    return 'Lågt'
-  }
-  if (data > SU_HI) {
-    return 'Högt'
-  }
-
-  return 'Stabilt'
-}
 
   const reformat = (data) => {
     const dataObjects = []
