@@ -36,8 +36,6 @@ const mapDispatchToProps = (dispatch) => ({
 const ParentOverview = (props) => {
   const { id } = props.match.params
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-  const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null
-  const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null
 
   const classes = styles()
   const { bloodsugar } = props
