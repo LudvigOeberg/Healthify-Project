@@ -361,12 +361,12 @@ const SimulatePatient = (props) => {
       <Container className={classes.root}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Card variant="outlined" className={showGraph ? classes.card2 : classes.card}>
-              <CardHeader title={showGraph ? 'Observera!' : 'Simulering'} />
-              <CardContent hidden={showGraph}>
+            <Card variant="outlined" className={showGraph || AccordionOpen==='HbA1c' ? classes.card2 : classes.card}>
+              <CardHeader title={showGraph || AccordionOpen==='HbA1c'  ? 'Observera!' : 'Simulering'} />
+              <CardContent hidden={showGraph || AccordionOpen==='HbA1c'}>
                 Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har.
               </CardContent>
-              <CardContent hidden={!showGraph}>
+              <CardContent hidden={!showGraph && AccordionOpen!=='HbA1c'}>
                 Detta är enbart en simulering och bör ej betraktas som fakta.
               </CardContent>
             </Card>
@@ -430,12 +430,12 @@ const SimulatePatient = (props) => {
                           <Paper variant='outlined'>
                             <Grid container spacing={2} style={{padding: 10}} justify='center' alignItems='center'>
                               <Grid item xs={6} >
-                                <Grid container spacing={0} alignItems='flex-end'>
+                                <Grid container spacing={0} >
                                   <Grid item xs={12}>
-                                  <Typography variant='h5' align='right'>Simulerat</Typography>
+                                  <Typography variant='h5' align='center'>Simulerat</Typography>
                                   </Grid>
                                   <Grid item xs={12}>
-                                  <Typography variant='h5'align='right'>HbA1c:</Typography>
+                                  <Typography variant='h5'align='center'>HbA1c</Typography>
                                   </Grid>
                                 </Grid>
                               </Grid>
@@ -450,20 +450,27 @@ const SimulatePatient = (props) => {
                                 <Grid item xs={12}>
                                 <Typography  variant='body2' style={{color:'gray'}} align='center'>mmol/mol</Typography>
                                 </Grid>
-                                <Grid item xs={12}>
+                               {/*  <Grid item xs={12}>
                                 <Paper elevation={0} hidden={avgBloodSugar}>
-                                <Typography variant='body2' 
+                                <Typography variant='caption'
+                                  display='block' 
                                   align='center'
-                                  >Här får du en indikation om HbA1c värdet</Typography>
+                                  >Inget värde</Typography>
                                 </Paper>
                                 <Paper elevation={0} hidden={!avgBloodSugar}>
-                                  <Typography variant='body2' 
+                                  <Typography variant='caption' 
+                                  display='block' 
                                   style={{color: avgBloodSugar*6<27 || avgBloodSugar*6>52 ? 'red' : 'green' }} 
                                   align='center'
                                   >{avgBloodSugar*6<27 || avgBloodSugar*6>52 ? 'Detta är ett dåligt värde' : 'Detta är ett bra värde'}</Typography>
                                 </Paper>
+                                </Grid> */}
                                 </Grid>
-                                </Grid>
+                              </Grid>
+                              <Grid item xs={12}>
+                                <Typography variant='body1'>
+                                  Ett normalt HbA1c-värde ska ligga i intervallet 27-52 mmol/mol. Detta värde kan påverkas av fler faktorer än blodsockret, har du några frågor kontakta ditt barns vårdteam.
+                                </Typography>
                               </Grid>
                             </Grid>
                           </Paper>
