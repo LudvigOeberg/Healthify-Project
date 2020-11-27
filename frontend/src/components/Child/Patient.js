@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
@@ -20,6 +19,12 @@ import normalAvatar from '../../Static/normal_avatar.png'
 import happyAvatar from '../../Static/happy_avatar.png'
 import sadAvatar from '../../Static/sad_avatar.png'
 import { setTimer } from './AddVal'
+
+/**
+ * The starting page for the child. Showing their avatar, whichs displays their current mood.
+ * Displays an information-bubble showing their latest measurement value,
+ * how long time ago that measure was taken and if that was a good, neutral or bad measurement.
+ */
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -60,9 +65,6 @@ const Patient = (props) => {
   const weight = props.weight ? props.weight : null
   const bloodsugar = props.bloodsugar ? props.bloodsugar : null
 
-  // eslint-disable-next-line no-console
-  console.log(`weight: ${weight == null}`)
-
   const badBloodsugar = !!(
     bloodsugar &&
     disease === 'DIABETES' &&
@@ -81,10 +83,7 @@ const Patient = (props) => {
 
   const classes = styles()
 
-  // eslint-disable-next-line prefer-const
   let Avatar = normalAvatar
-
-  const lastWeight = props.weight ? props.weight[1] : null
 
   if (
     (disease === 'DIABETES' ? bloodsugar !== null : weight !== null) &&

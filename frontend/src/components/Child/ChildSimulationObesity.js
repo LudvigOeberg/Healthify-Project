@@ -18,7 +18,7 @@ import agentEHR from '../../agentEHR'
 
 /**
  * Page where the child may run a simulation of how long it will take to reach their goal weight if they do a certain amount of workouts per week.
- * Right now: Bases the simulation on
+ * Right now: Bases the simulation on the goal weight set by their parent.
  */
 
 const mapStateToProps = (state) => ({
