@@ -24,6 +24,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
+import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined'
 import InputSlider from '../InputSlider'
 import {
   FIELD_CHANGE,
@@ -35,8 +37,6 @@ import {
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import SimulateChart from '../SimulateChart'
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
-import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined'
 
 /**
  * Page where a parent can make simulations based on a specific childs values
@@ -113,7 +113,7 @@ const SimulatePatient = (props) => {
   let noInput
   const weight = props.weight ? props.weight[0] : null
   const bloodsugar = props.bloodsugar ? props.bloodsugar : null
-  const {AccordionOpen} = props
+  const { AccordionOpen } = props
 
   useEffect(() => {
     props.onLoad(id)
@@ -171,15 +171,11 @@ const SimulatePatient = (props) => {
   }
 
   const handleAccordionChange = (value) => (event, newExpanded) => {
-    if(newExpanded){
+    if (newExpanded) {
       props.onChange('AccordionOpen', value)
-      if(value==='HbA1c')
-        props.onChange('meal', "")
-      else if(value==='Meal')
-        props.onChange('avgBloodSugar', "")
-    }
-    else 
-      props.onChange('AccordionOpen', 'None')
+      if (value === 'HbA1c') props.onChange('meal', '')
+      else if (value === 'Meal') props.onChange('avgBloodSugar', '')
+    } else props.onChange('AccordionOpen', 'None')
   }
 
   if (disease === 'OBESITY' && weight) {
@@ -363,12 +359,12 @@ const SimulatePatient = (props) => {
       <Container className={classes.root}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Card variant="outlined" className={showGraph || AccordionOpen==='HbA1c' ? classes.card2 : classes.card}>
-              <CardHeader title={showGraph || AccordionOpen==='HbA1c'  ? 'Observera!' : 'Simulering'} />
-              <CardContent hidden={showGraph || AccordionOpen==='HbA1c'}>
+            <Card variant="outlined" className={showGraph || AccordionOpen === 'HbA1c' ? classes.card2 : classes.card}>
+              <CardHeader title={showGraph || AccordionOpen === 'HbA1c' ? 'Observera!' : 'Simulering'} />
+              <CardContent hidden={showGraph || AccordionOpen === 'HbA1c'}>
                 Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har.
               </CardContent>
-              <CardContent hidden={!showGraph && AccordionOpen!=='HbA1c'}>
+              <CardContent hidden={!showGraph && AccordionOpen !== 'HbA1c'}>
                 Detta är enbart en simulering och bör ej betraktas som fakta.
               </CardContent>
             </Card>
@@ -380,7 +376,13 @@ const SimulatePatient = (props) => {
                   <Typography variant="h5">Ny Simulering</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Accordion id="diabetesDropDownSimulation" variant="outlined" rounded expanded={AccordionOpen==='Meal'} onChange={handleAccordionChange('Meal')}>
+                  <Accordion
+                    id="diabetesDropDownSimulation"
+                    variant="outlined"
+                    rounded
+                    expanded={AccordionOpen === 'Meal'}
+                    onChange={handleAccordionChange('Meal')}
+                  >
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h6">Måltid</Typography>
                     </AccordionSummary>
@@ -393,7 +395,7 @@ const SimulatePatient = (props) => {
                         </Grid>
                         <Grid item xs={11}>
                           <Slider
-                            value={typeof meal==='number' ? meal : 0}
+                            value={typeof meal === 'number' ? meal : 0}
                             onChange={handleSliderChange('meal')}
                             id="diabetesMealSlider"
                             step={1}
@@ -406,7 +408,13 @@ const SimulatePatient = (props) => {
                       </Grid>
                     </AccordionDetails>
                   </Accordion>
-                  <Accordion id="HbA1cDropDownSimulation"  variant="outlined" rounded expanded={AccordionOpen==='HbA1c'} onChange={handleAccordionChange('HbA1c')}>
+                  <Accordion
+                    id="HbA1cDropDownSimulation"
+                    variant="outlined"
+                    rounded
+                    expanded={AccordionOpen === 'HbA1c'}
+                    onChange={handleAccordionChange('HbA1c')}
+                  >
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h6">HbA1c</Typography>
                     </AccordionSummary>
@@ -419,50 +427,63 @@ const SimulatePatient = (props) => {
                         </Grid>
                         <Grid item xs={11}>
                           <Slider
-                            value={typeof avgBloodSugar==='number' ? avgBloodSugar : 0}
-                            valueLabelDisplay='auto'
+                            value={typeof avgBloodSugar === 'number' ? avgBloodSugar : 0}
+                            valueLabelDisplay="auto"
                             onChange={handleSliderChange('avgBloodSugar')}
                             step={0.1}
                             min={1}
                             max={15}
-                            
                           ></Slider>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <Paper variant='outlined'>
-                            <Grid container spacing={2} style={{padding: 10}} justify='center' alignItems='center'>
-                              <Grid item xs={6} >
-                                <Grid container spacing={0} >
+                          <Paper variant="outlined">
+                            <Grid container spacing={2} style={{ padding: 10 }} justify="center" alignItems="center">
+                              <Grid item xs={6}>
+                                <Grid container spacing={0}>
                                   <Grid item xs={12}>
-                                  <Typography variant='h5' align='center'>Simulerat</Typography>
+                                    <Typography variant="h5" align="center">
+                                      Simulerat
+                                    </Typography>
                                   </Grid>
                                   <Grid item xs={12}>
-                                  <Typography variant='h5'align='center'>HbA1c</Typography>
+                                    <Typography variant="h5" align="center">
+                                      HbA1c
+                                    </Typography>
                                   </Grid>
                                 </Grid>
                               </Grid>
                               <Grid item xs={6}>
-                                <Grid container spacing={0} justify='center'>
-                                <Grid container spacing={2} justify='center'>
-                                <Grid item >
-                                <Typography variant='subtitle1' align='right'>{avgBloodSugar ? Math.round(avgBloodSugar*6*100)/100: "Välj ett värde"}</Typography>
-                                </Grid>
-                                <Grid item >
-                                  <Paper elevation={0} hidden={!avgBloodSugar || ( avgBloodSugar*6<27 || avgBloodSugar*6>52)}>
-                                    <ThumbUpAltOutlinedIcon style={{ color: 'green' }} />
-                                  </Paper>
-                                  <Paper elevation={0} hidden={!avgBloodSugar || ( avgBloodSugar*6>=27 && avgBloodSugar*6<=52)}>
-                                    <ThumbDownAltOutlinedIcon style={{ color: 'red' }} />
-                                  </Paper>
-                                </Grid>
-                                </Grid>
-                                <Grid item xs={12}>
-                                <Divider variant='middle'/>
-                                </Grid>
-                                <Grid item xs={12}>
-                                <Typography  variant='body2' style={{color:'gray'}} align='center'>mmol/mol</Typography>
-                                </Grid>
-                               {/*  <Grid item xs={12}>
+                                <Grid container spacing={0} justify="center">
+                                  <Grid container spacing={2} justify="center">
+                                    <Grid item>
+                                      <Typography variant="subtitle1" align="right">
+                                        {avgBloodSugar ? Math.round(avgBloodSugar * 6 * 100) / 100 : 'Välj ett värde'}
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                      <Paper
+                                        elevation={0}
+                                        hidden={!avgBloodSugar || avgBloodSugar * 6 < 27 || avgBloodSugar * 6 > 52}
+                                      >
+                                        <ThumbUpAltOutlinedIcon style={{ color: 'green' }} />
+                                      </Paper>
+                                      <Paper
+                                        elevation={0}
+                                        hidden={!avgBloodSugar || (avgBloodSugar * 6 >= 27 && avgBloodSugar * 6 <= 52)}
+                                      >
+                                        <ThumbDownAltOutlinedIcon style={{ color: 'red' }} />
+                                      </Paper>
+                                    </Grid>
+                                  </Grid>
+                                  <Grid item xs={12}>
+                                    <Divider variant="middle" />
+                                  </Grid>
+                                  <Grid item xs={12}>
+                                    <Typography variant="body2" style={{ color: 'gray' }} align="center">
+                                      mmol/mol
+                                    </Typography>
+                                  </Grid>
+                                  {/*  <Grid item xs={12}>
                                 <Paper elevation={0} hidden={avgBloodSugar}>
                                 <Typography variant='caption'
                                   display='block' 
@@ -480,8 +501,10 @@ const SimulatePatient = (props) => {
                                 </Grid>
                               </Grid>
                               <Grid item xs={12}>
-                                <Typography variant='body1'>
-                                  Ett normalt HbA1c-värde ska ligga i intervallet 27-52 mmol/mol. Detta värde kan påverkas av fler faktorer än blodsockret, har du några frågor kontakta ditt barns vårdteam.
+                                <Typography variant="body1">
+                                  Ett normalt HbA1c-värde ska ligga i intervallet 27-52 mmol/mol. Detta värde kan
+                                  påverkas av fler faktorer än blodsockret, har du några frågor kontakta ditt barns
+                                  vårdteam.
                                 </Typography>
                               </Grid>
                             </Grid>
@@ -517,18 +540,18 @@ const SimulatePatient = (props) => {
             </Button>
           </Grid>
           <Grid item xs={6}>
-            <Paper elevation={0} hidden={AccordionOpen==='HbA1c'}>
-            <Button
-              id="parentSimulateDiabetesButton"
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick={handleGraph}
-              disabled={showGraph || !meal}
-            >
-              Simulera
-            </Button>
+            <Paper elevation={0} hidden={AccordionOpen === 'HbA1c'}>
+              <Button
+                id="parentSimulateDiabetesButton"
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleGraph}
+                disabled={showGraph || !meal}
+              >
+                Simulera
+              </Button>
             </Paper>
           </Grid>
         </Grid>

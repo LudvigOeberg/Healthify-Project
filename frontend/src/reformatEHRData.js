@@ -12,14 +12,14 @@ const Reformat = {
     if (reverse) {
       for (let i = data.length - 1; i >= 0; i--) {
         if (iso) {
-          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD HH:MM'), y: data[i].value })
-        } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] HH:MM'), y: data[i].value })
+          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD HH:mm'), y: data[i].value })
+        } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] HH:mm'), y: data[i].value })
       }
     } else {
       for (let i = 0; i < data.length; i++) {
         if (iso) {
-          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD HH:MM'), y: data[i].value })
-        } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] HH:MM'), y: data[i].value })
+          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD HH:mm'), y: data[i].value })
+        } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] HH:mm'), y: data[i].value })
       }
     }
     return dataObjects
@@ -29,14 +29,14 @@ const Reformat = {
     if (reverse) {
       for (let i = data.length - 1; i >= 0; i--) {
         if (iso) {
-          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD HH:MM'), y: data[i].weight })
-        } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] HH:MM'), y: data[i].weight })
+          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD HH:mm'), y: data[i].weight })
+        } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] HH:mm'), y: data[i].weight })
       }
     } else {
       for (let i = 0; i < data.length; i++) {
         if (iso) {
-          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD HH:MM'), y: data[i].weight })
-        } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] HH:MM'), y: data[i].weight })
+          dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD HH:mm'), y: data[i].weight })
+        } else dataObjects.push({ x: Moment(data[i].time).format('YYYY-MM-DD [kl:] HH:mm'), y: data[i].weight })
       }
     }
     return dataObjects

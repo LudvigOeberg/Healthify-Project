@@ -59,7 +59,7 @@ class ParentPage extends Component {
           </Typography>
 
           <div className={classes.paper}>
-            <a href="/register-patient">
+            <a id="parentsRegisterChildNew" href="/register-patient">
               <AddIcon color="primary" style={{ fontSize: 100 }} />
             </a>
             <Typography fontSize="50" color="primary">
