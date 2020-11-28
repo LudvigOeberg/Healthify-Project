@@ -60,19 +60,20 @@ function InputSlider(props) {
             step={step}
             min={min}
             max={max}
+            id={id}
           />
         </Grid>
         <Grid item xs={4} md={3}>
           <FormControl fullWidth>
-            <InputLabel id={`${unit}-label`} shrink={typeof input === 'number'}>
+            <InputLabel id={`${id}-label`} shrink={typeof input === 'number'}>
               {definition}
             </InputLabel>
             <Input
               endAdornment={<InputAdornment position="end">{unit}</InputAdornment>}
               fullWidth
-              id={`${unit}`}
+              id={`${id}`}
               value={input}
-              labelId={`${unit}-label`}
+              labelId={`${id}-label`}
               label={`${unit}`}
               onChange={handleInputChange}
               onBlur={handleBlur}
@@ -84,7 +85,7 @@ function InputSlider(props) {
                 'aria-labelledby': 'input-slider',
               }}
             />
-            <FormHelperText id={`${unit}`}>{`I heltal mellan ${min} och ${max} `}</FormHelperText>
+            <FormHelperText id={`${id}`}>{`I heltal mellan ${min} och ${max} `}</FormHelperText>
           </FormControl>
         </Grid>
       </Grid>

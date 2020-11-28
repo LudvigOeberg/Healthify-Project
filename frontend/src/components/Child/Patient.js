@@ -80,13 +80,13 @@ const Patient = (props) => {
 
   return (
     <Container maxWidth="" className={classes.backGround}>
-      <Grid container className={classes.root} spacing={2} height="100%">
+      <Container maxWidht="sm">
         <Grid item xs={12}>
           <Box textAlign="center">
             <img id="currentMood" className={classes.avatar} src={Avatar} alt="mood avatar"></img>
           </Box>
         </Grid>
-      </Grid>
+      </Container>
     </Container>
   )
 }
@@ -94,10 +94,10 @@ const Patient = (props) => {
 const styles = makeStyles(() => ({
   backGround: {
     position: 'absolute',
-    padding: '38% 10% 40%',
+    padding: '10% 10% 10%',
     background: 'linear-gradient(0deg, rgba(118,176,208,1) 40%, rgba(106,161,191,1) 41%, rgba(125,180,213,1) 86%)',
     marginTop: '-3%', // Removes a small white space at the top.
-    width: '100%',
+    minHeight: '100vh',
   },
   avatar: {
     position: 'relative',

@@ -44,7 +44,7 @@ const getSettings = (horizon) => {
   const today = new Date()
   if (horizon === 'day') {
     return {
-      min: today.setDate(today.getDate() - 1.1),
+      min: today.setHours(0, 0, 0, 0),
       unit: 'hour',
       stepSize: 3,
       dispFormat: 'HH:00',
@@ -79,6 +79,7 @@ const getSettings = (horizon) => {
 const TimeLineChart = (props) => {
   const timeHorizon = props.currSettings === undefined ? 'all' : props.currSettings
   const { label } = props
+  const hideRadio = props.hideRadio === undefined ? false : props.hideRadio
   const theme = useTheme()
   const { chartData } = props
   const displaySettings = getSettings(timeHorizon)
@@ -131,15 +132,19 @@ const TimeLineChart = (props) => {
           },
         }}
       />
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Tidsspann</FormLabel>
-        <RadioGroup row aria-label="horizon" name="horizon" value={timeHorizon} onChange={changeRadio}>
-          <FormControlLabel value="day" control={<Radio />} label="Senaste dagen" />
-          <FormControlLabel value="week" control={<Radio />} label="Senaste veckan" />
-          <FormControlLabel value="month" control={<Radio />} label="Senaste månaden" />
-          <FormControlLabel value="all" control={<Radio />} label="Fullständig" />
-        </RadioGroup>
-      </FormControl>
+      {!hideRadio && (
+        <>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Tidsspann</FormLabel>
+            <RadioGroup row aria-label="horizon" name="horizon" value={timeHorizon} onChange={changeRadio}>
+              <FormControlLabel value="day" control={<Radio />} label="Idag" />
+              <FormControlLabel value="week" control={<Radio />} label="Senaste veckan" />
+              <FormControlLabel value="month" control={<Radio />} label="Senaste månaden" />
+              <FormControlLabel value="all" control={<Radio />} label="Fullständig" />
+            </RadioGroup>
+          </FormControl>
+        </>
+      )}
     </div>
   )
 }

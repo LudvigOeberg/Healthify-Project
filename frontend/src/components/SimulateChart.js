@@ -206,7 +206,7 @@ function SimulateChart(props) {
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: SU_HI ? Simulate.constant(SU_HI): null,
+        data: SU_HI ? Simulate.constant(SU_HI) : null,
       },
       {
         label: 'Lågt blodsocker',
@@ -226,7 +226,7 @@ function SimulateChart(props) {
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: SU_LO ? Simulate.constant(SU_LO) : null
+        data: SU_LO ? Simulate.constant(SU_LO) : null,
       },
     ],
   }
