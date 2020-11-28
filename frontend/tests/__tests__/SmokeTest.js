@@ -25,7 +25,8 @@ function User(user) {
   this.passw = 'passw'
   this.dateOfBirth = undefined
   if (user === 'patient') {
-    this.dateOfBirth = '25092010'
+    //this.dateOfBirth = '25092010' // works for windows?
+    this.dateOfBirth = '002010-09-25' // works for mac?
   }
 }
 
@@ -75,31 +76,21 @@ async function register(driver, user) {
 }
 
 async function registerPatient(driver, patient) {
- // await driver
-  //  .findElement(
-  //    webdriver.By.xpath(
-   //     "//button[@class='MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-5 MuiIconButton-colorInherit MuiIconButton-edgeStart']",
-  //    ),
-  //  )
-  //  .click()
- // await driver.findElement(webdriver.By.xpath('//a[3]')).click()
-  await driver.sleep(3000)
-  //await driver.findElement(webdriver.By.id('parentAddChildLink')).click() // doesnt work for some reason.
+  await driver.findElement(webdriver.By.id('parentsRegisterChildNew')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
   await driver.findElement(webdriver.By.id('email')).sendKeys(patient.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(patient.passw)
   await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
-  await driver.sleep(5000)
-  //await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys(patient.dateOfBirth) // commented for macusers?
+  await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys(patient.dateOfBirth)
   await driver.findElement(webdriver.By.css("div[aria-labelledby='gender-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='MALE']")).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
   await driver.findElement(webdriver.By.css("li[data-value='DIABETES']")).click()
- // await driver.findElement(webdriver.By.id('st')).sendKeys(5)
-  //await driver.findElement(webdriver.By.id('mmol/L')).sendKeys(0)
-  await driver.sleep(5000) // max value has same ID as lowest value, therefore pause to manually enter
+  await driver.findElement(webdriver.By.id('measurements')).sendKeys(5)
+  await driver.findElement(webdriver.By.id('SU_LO')).sendKeys(0)
+  await driver.findElement(webdriver.By.id('SU_HI')).sendKeys(15)
   await driver.findElement(webdriver.By.css('#main > main > div > form > button')).sendKeys(webdriver.Key.ENTER)
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`))
 }
@@ -146,7 +137,8 @@ describe('General Smoke Test', () => {
     await register(driver, user)
     await logut(driver)
     await register(driver, user).catch(async () => {
-      const text = await driver.findElement(webdriver.By.xpath("//p[@id='email-helper-text']"), 10000).getText()
+      //const text = await driver.findElement(webdriver.By.xpath("//p[@id='email-helper-text']"), 10000).getText()
+      const text = await driver.findElement(webdriver.By.id('email-helper-text'), 10000).getText()
       expect(text).toEqual('User already registered')
     })
   })
