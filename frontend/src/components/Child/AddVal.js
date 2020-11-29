@@ -20,6 +20,13 @@ import {
 import agentEHR from "../../agentEHR";
 import agent from "../../agent";
 import thinkingAvatar from "../../Static/thinking_avatar.png";
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import selectSad from '../../Static/select_sad.png'
+import selectGrumpy from '../../Static/select_grumpy.png'
+import selectNormal from '../../Static/select_normal.png'
+import selectHappy from '../../Static/select_happy.png'
+import selectVeryHappy from '../../Static/select_very_happy.png'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -190,26 +197,62 @@ const AddVal = (props) => {
   return (
     <Container component="main" maxWidth="md">
     
-        <Grid container className={classes.backGround} item xs={12} container spacing={5}>
-          <Box textAlign="right">
-            <img id="currentMood" src={thinkingAvatar} alt="mood avatar"></img>
-          </Box>
-        </Grid>
-        <Grid container className={classes.lowerBG} item xs={12} spacing={5}>
-          <Container>
-
-
-              <Grid item xs={12} align="center">
-                <Typography component="h1" variant="h5">
-                  Skriv in{" "}
-                  {disease === "DIABETES"
-                    ? "ditt blodsockervärde"
-                    : "din uppmätta vikt"}
-                </Typography>
-              </Grid>
-            </Container>
-        </Grid>
+        {/* <Grid container className={classes.backGround} item xs={12} container spacing={5}> */}
         
+          <Container textAlign="right">
+          <Paper className={classes.backGround}>
+            <img id="currentMood" src={thinkingAvatar} alt="mood avatar"></img>
+            </Paper>
+          </Container>
+          
+        {/* </Grid> */}
+
+        <Grid container direction="row" justify="center" alignItems="center">
+          <Grid container justify="center" alignItems="center" className={classes.circle}>
+            <img id="currentMood" src={selectSad} alt="mood avatar"></img>
+          </Grid>
+          <Grid container justify="center" alignItems="center" className={classes.circle}>
+            <img id="currentMood" src={selectGrumpy} alt="mood avatar"></img>
+          </Grid>
+          <Grid container justify="center" alignItems="center" className={classes.circle}>
+          <img id="currentMood" src={selectNormal} alt="mood avatar"></img>
+          </Grid>
+          <Grid container justify="center" alignItems="center" className={classes.circle}>
+          <img id="currentMood" src={selectHappy} alt="mood avatar"></img>
+          </Grid>
+          <Grid container justify="center" alignItems="center" className={classes.circle}>
+          <img id="currentMood" src={selectVeryHappy} alt="mood avatar"></img>
+          </Grid>
+
+        </Grid>
+
+        <Container align="center">
+        <Paper className={classes.bubble}>
+        <Typography component="h3" variant="h5">
+              Skriv in{" "}
+              {disease === "DIABETES"
+                ? "ditt blodsockervärde"
+                : "din uppmätta vikt"}
+            </Typography>
+        <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              id="childValue"
+              name="childValue"
+              InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">{disease === 'DIABETES' ? 'mmol/L' : 'kg'}</InputAdornment>
+                  ),
+                }}
+              value={childValue}
+              disabled={open}
+              onChange={changeField}
+              className={classes.submit}
+              />
+          </Grid>
+          </Paper>
         <Grid item xs>
           <Button
             id="addButton weight/bloodsugar"
@@ -223,6 +266,7 @@ const AddVal = (props) => {
             Spara
           </Button>
         </Grid>
+        </Container>
 
     </Container>
   );
@@ -230,7 +274,7 @@ const AddVal = (props) => {
 
 const styles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -244,13 +288,13 @@ const styles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(4, 0, 3),
   },
   backGround: {
     //position: "absolute",
     //padding: '10% 10% 10%',
     background: "#72AAC9", //'linear-gradient(0deg, rgba(118,176,208,1) 40%, rgba(106,161,191,1) 41%, rgba(125,180,213,1) 86%)',
-    marginTop: "-3%", // Removes a small white space at the top.
+    //marginTop: "-3%", // Removes a small white space at the top.
     //minHeight: '100vh',
   },
   lowerBG: {
@@ -261,7 +305,8 @@ const styles = makeStyles((theme) => ({
     //width: "100%",
     //height: "100%",
   },
-  // bubble: {
+   bubble: {
+    border: '2px solid #64B4EA',
   //   width: '50%',
   //   height: '150px',
   //   borderRadius: '10% 10% 10% 10%',
@@ -273,7 +318,18 @@ const styles = makeStyles((theme) => ({
   //   boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
   //   textAlign: 'center',
   //   border: '1px solid green',
-  // },
+   },
+   circle: {
+    //alignItems: 'center', 
+    //justify:'center',
+    height: '70px',
+    width: '70px',
+    borderRadius: '50%',
+    background: '#72AAC9',
+    //paddingTop: '100%',
+    //position: 'relative',
+    border: '2px solid #696969',
+  },
 }));
 
 export function getCurrentDate() {
