@@ -2,6 +2,7 @@ stages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   - lint
 =======
   - linter
@@ -12,6 +13,9 @@ stages:
 =======
   - linter
 >>>>>>> a77d64ad31630c8aa8f51d3885ae010e74c36707
+=======
+  - linter
+>>>>>>> Test-webdriver-test-case
   - build
   - build-image
   - test
@@ -56,6 +60,9 @@ build-frontend:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Test-webdriver-test-case
     - export DEBIAN_FRONTEND=noninteractive
     - export TZ=Europe/Stockholm
     - export ehr_user=${K8S_SECRET_EHR_USER%.123}
@@ -70,18 +77,22 @@ build-frontend:
     - npm i -g serve
     - npm i -S serve
     - cd ..
+<<<<<<< HEAD
 =======
 >>>>>>> testing script ci/cd
 =======
 >>>>>>> master
 =======
 >>>>>>> a77d64ad31630c8aa8f51d3885ae010e74c36707
+=======
+>>>>>>> Test-webdriver-test-case
     - chmod +x ./testScript.sh
     - ./testScript.sh
 
 
 
 lint-checker:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -95,6 +106,9 @@ lint-checker:
 =======
   stage: linter
 >>>>>>> a77d64ad31630c8aa8f51d3885ae010e74c36707
+=======
+  stage: linter
+>>>>>>> Test-webdriver-test-case
   image: node
 
   script:
