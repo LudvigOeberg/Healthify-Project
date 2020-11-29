@@ -189,15 +189,16 @@ const AddVal = (props) => {
 
   return (
     <Container component="main" maxWidth="md">
-      <div className={classes.paper}>
-        <Grid className={classes.backGround} item xs={12} container spacing={5}>
+    
+        <Grid container className={classes.backGround} item xs={12} container spacing={5}>
           <Box textAlign="right">
             <img id="currentMood" src={thinkingAvatar} alt="mood avatar"></img>
           </Box>
         </Grid>
-        <Grid className={classes.lowerBG} item xs={12} container spacing={5}>
+        <Grid container className={classes.lowerBG} item xs={12} spacing={5}>
+          <Container>
 
-            <Paper variant="outlined" square>
+
               <Grid item xs={12} align="center">
                 <Typography component="h1" variant="h5">
                   Skriv in{" "}
@@ -205,48 +206,11 @@ const AddVal = (props) => {
                     ? "ditt blodsockervärde"
                     : "din uppmätta vikt"}
                 </Typography>
-                <form
-                  className={classes.form}
-                  noValidate
-                  onSubmit={(ev) => submitForm(ev)}
-                  autoComplete="off"
-                ></form>
               </Grid>
-              <Grid container spacing={5} alignItems="center"></Grid>
-              <Grid item xs>
-                <Slider
-                  id="childValue"
-                  value={typeof childValue === "number" ? childValue : 0}
-                  onChange={(ev, value) => changeAuthSlider(ev, value)}
-                  aria-labelledby="input-slider"
-                  defaultValue={10}
-                  step={disease === "DIABETES" ? 0.1 : 1}
-                  valueLabelDisplay="auto"
-                  marks={marks}
-                  max={disease === "DIABETES" ? 15 : 100}
-                  min={0}
-                />
-              </Grid>
-              <Grid item>
-                <Input
-                  id="childValue"
-                  className={classes.input}
-                  value={childValue}
-                  margin="dense"
-                  onChange={changeField}
-                  inputProps={{
-                    step: disease === "DIABETES" ? 0.1 : 1,
-                    min: disease === "DIABETES" ? 0.1 : 1,
-                    max: disease === "DIABETES" ? 15 : 100,
-                    type: "number",
-                    "aria-labelledby": "input-slider",
-                  }}
-                />
-              </Grid>
-            </Paper>
-
+            </Container>
         </Grid>
-        <Grid item>
+        
+        <Grid item xs>
           <Button
             id="addButton weight/bloodsugar"
             variant="contained"
@@ -259,7 +223,7 @@ const AddVal = (props) => {
             Spara
           </Button>
         </Grid>
-      </div>
+
     </Container>
   );
 };
@@ -290,12 +254,12 @@ const styles = makeStyles((theme) => ({
     //minHeight: '100vh',
   },
   lowerBG: {
-    marginBottom: theme.spacing(2),
+    //marginBottom: theme.spacing(2),
     borderRadius: "30% 30% 0% 0%",
-    background: "#F2F2F2",
+    //background: "#F2F2F2",
     //marginTop: "-3%",
-    width: "100%",
-    height: "100%",
+    //width: "100%",
+    //height: "100%",
   },
   // bubble: {
   //   width: '50%',
