@@ -20,10 +20,8 @@ function User() {
   this.email = `${randInt(1000000)}epost@test.se`
   this.passw = 'passw'
   this.dateOfBirth = undefined
-  if (user === 'patient') {
-    //this.dateOfBirth = '25092010' // works for windows?
-    this.dateOfBirth = '002010-09-25' // works for mac?
-  }
+  // this.dateOfBirth = '25092010' // works for windows?
+  this.dateOfBirth = '002010-09-25' // works for mac?
 }
 
 async function getHomePage(url) {
