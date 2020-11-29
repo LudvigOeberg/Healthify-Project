@@ -44,6 +44,8 @@ const mapDispatchToProps = (dispatch) => ({
 function ChildListItem(props) {
   const { child } = props
   const disease = props.partyIn ? props.partyIn.additionalInfo.disease : null
+  const SU_LO = props.partyIn ? props.partyIn.additionalInfo.SU_LO : null
+  const SU_HI = props.partyIn ? props.partyIn.additionalInfo.SU_HI : null
   const classes = useStyles()
   const weight =
     disease === 'OBESITY' && props.weights && props.weights[child.ehrid] && props.weights[child.ehrid].weight[0]
@@ -60,7 +62,7 @@ function ChildListItem(props) {
     props.bloodsugars &&
     disease === 'DIABETES' &&
     bloodsugar &&
-    (bloodsugar.value < 3 || bloodsugar.value > 10)
+    (bloodsugar.value < SU_LO || bloodsugar.value > SU_HI)
   )
   const badWeight = !!(
     props.weights &&
@@ -96,14 +98,19 @@ function ChildListItem(props) {
                 primary={`${child.name} ${child.surname} `}
                 secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}
               />
-              <a href={`/edit-child/${child.ehrid}`}>
+              <a id="parentsEditChildButton" href={`/edit-child/${child.ehrid}`}>
                 <ListItemIcon>
                   <EditIcon color="primary" />
                 </ListItemIcon>
               </a>
             </ListItem>
             <Divider />
-            <ListItem button component="a" href={`/parent-child-overview/${child.ehrid}`}>
+            <ListItem
+              id="parentsChildOverviewButton"
+              button
+              component="a"
+              href={`/parent-child-overview/${child.ehrid}`}
+            >
               <ListItemIcon>
                 <AccountBox color="primary" />
               </ListItemIcon>

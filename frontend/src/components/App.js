@@ -25,12 +25,13 @@ import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
 import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
-import Laboration from './Child/Laboration'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
-import ChildSimulation from './Child/ChildSimulation'
 import ParentRewardPage from './Parent/ParentRewardPage'
+import ChildLaboration from './Child/ChildLaboration'
+import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
+import ChildSimulationObesity from './Child/ChildSimulationObesity'
 import AddVal from './Child/AddVal'
 
 const mapStateToProps = (state) => ({
@@ -106,7 +107,7 @@ class App extends React.Component {
         }
       }
       let footer = <Footer />
-      if (this.props.currentUser) {
+      if (this.props.currentUser && this.props.currentUser.type === 'child') {
         footer = <FooterBar />
       }
 
@@ -239,7 +240,7 @@ class App extends React.Component {
                 path="/child-laboration"
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
-                component={Laboration}
+                component={ChildLaboration}
               />
               <RequiredRoute
                 exact
@@ -250,10 +251,17 @@ class App extends React.Component {
               />
               <RequiredRoute
                 exact
-                path="/simulate-child/"
+                path="/simulate-child-diabetes/"
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
-                component={ChildSimulation}
+                component={ChildSimulationDiabetes}
+              />
+              <RequiredRoute
+                exact
+                path="/simulate-child-Obesity/"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={ChildSimulationObesity}
               />
               <RequiredRoute
                 exact

@@ -1,10 +1,9 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
-import Slider from '@material-ui/core/Slider'
 import Input from '@material-ui/core/Input'
 import { FormControl, FormHelperText, InputLabel, InputAdornment } from '@material-ui/core/'
 import { connect } from 'react-redux'
-import { FIELD_CHANGE } from '../constants/actionTypes'
+import { UPDATE_FIELD_AUTH } from '../constants/actionTypes'
 
 /**
  * A slider with an input box to the right, these two are displaying the same value
@@ -15,27 +14,23 @@ import { FIELD_CHANGE } from '../constants/actionTypes'
  * @param {id} id id of the input
  * @param {input} input the variable that is the input
  * @param {definition} definition a definition of what the input is
- *
+ * @param {int} int boolean wether it need to be int (true) or not (false)
  */
 
 const mapStateToProps = (state) => ({
-  ...state.common,
+  ...state.auth,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   onChange: (key, value) => {
-    dispatch({ type: FIELD_CHANGE, key, value })
+    dispatch({ type: UPDATE_FIELD_AUTH, key, value })
   },
 })
-function InputSlider(props) {
-  const { unit, step, min, max, id, input, definition } = props
+function InputStepper(props) {
+  const { unit, step, min, max, id, input, definition, error, int } = props
   // const [value, setValue] = React.useState(output);
   // const onChange = (ev) => props.onChange(id, ev.target.value)
   const handleOffset = (val) => props.onChange(id, val)
-
-  const handleSliderChange = (event, newValue) => {
-    props.onChange(id, newValue)
-  }
 
   const handleInputChange = (event) => {
     props.onChange(id, event.target.value === '' ? '' : Number(event.target.value))
@@ -52,19 +47,8 @@ function InputSlider(props) {
   return (
     <div>
       <Grid container spacing={2} alignItems="center">
-        <Grid item xs={8} md={9}>
-          <Slider
-            value={typeof input === 'number' ? input : 0}
-            onChange={handleSliderChange}
-            aria-labelledby="input-slider"
-            step={step}
-            min={min}
-            max={max}
-            id={id}
-          />
-        </Grid>
-        <Grid item xs={4} md={3}>
-          <FormControl fullWidth>
+        <Grid item xs={12}>
+          <FormControl fullWidth error={error}>
             <InputLabel id={`${id}-label`} shrink={typeof input === 'number'}>
               {definition}
             </InputLabel>
@@ -85,7 +69,9 @@ function InputSlider(props) {
                 'aria-labelledby': 'input-slider',
               }}
             />
-            <FormHelperText id={`${id}`}>{`I heltal mellan ${min} och ${max} `}</FormHelperText>
+            <FormHelperText id={`${id}`}>
+              {error || `I ${int ? 'heltal' : 'decimaltal'} mellan ${min} och ${max} `}
+            </FormHelperText>
           </FormControl>
         </Grid>
       </Grid>
@@ -93,4 +79,4 @@ function InputSlider(props) {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InputSlider)
+export default connect(mapStateToProps, mapDispatchToProps)(InputStepper)

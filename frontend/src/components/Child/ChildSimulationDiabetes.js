@@ -1,5 +1,6 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-return-assign */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
@@ -9,24 +10,38 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link'
 import Slider from '@material-ui/core/Slider'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Box from '@material-ui/core/Box'
+
 import MyDialog from '../MyDialog'
+import { LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT } from '../../constants/actionTypes'
+import agentEHR from '../../agentEHR'
 
 /**
- * Page where the child may run a simulation of how they will feel if they eat something
- * Right now: Eating something of the portion size "Mellan" will show a good result,
- * other portion sizes will show a bad result.
+ * Page where the child may run a simulation of how they will feel if they eat something.
+ * Right now: Bases the simulation of the size of the meal and the latest recorded bloodsugar value.
  */
 
-const mapStateToProps = () => ({
-  // ...state.common,
+const mapStateToProps = (state) => ({
+  ...state.common,
+  ...state.ehr,
 })
 
-const mapDispatchToProps = () => ({})
+const mapDispatchToProps = (dispatch) => ({
+  onLoad: (ehrId) => {
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
+  },
+  loadValues: (ehrId, offset, limit, disease) => {
+    if (disease === 'DIABETES')
+      dispatch({
+        type: LOAD_BLOODSUGAR,
+        payload: agentEHR.Query.bloodsugar(ehrId, offset, limit),
+      })
+    else if (disease === 'OBESITY')
+      dispatch({
+        type: LOAD_WEIGHT,
+        payload: agentEHR.Query.weight(ehrId, limit),
+      })
+  },
+})
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,18 +72,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ChildSimulation = () => {
-  const date = getCurrentDate()
+const ChildSimulationDiabetes = (props) => {
+  const id = props.currentUser.ehrid
+  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  let { bloodsugar } = props
 
-  const [meal, setMeal] = React.useState('Måltid')
-
-  const handleChange = (event) => {
-    setMeal(event.target.value)
+  if (bloodsugar !== undefined) {
+    bloodsugar = bloodsugar[0].value
   }
 
-  const [value, setValue] = React.useState(2)
+  useEffect(() => {
+    props.onLoad(id)
+    props.loadValues(id, 0, 1, disease)
+  }, [id, disease]); // eslint-disable-line
 
+  const date = getCurrentDate()
+
+  const [Meal_size, setValue] = React.useState(2)
   const handleSliderChange = (event, newValue) => {
+    props.onLoad(props.currentUser.ehrid)
     setValue(newValue)
   }
 
@@ -105,6 +127,17 @@ const ChildSimulation = () => {
     'happy avatar',
   ]
 
+  const neutralDialogInfo = [
+    'Simulera',
+    'Simulation',
+    'Ditt mående kommer inte att förändras om du äter detta!',
+    '../Static/neutral_avatar.png',
+    'neutral avatar',
+  ]
+
+  const lowBloodsugarValue = 4
+  const highBloodsugarValue = 10
+
   const classes = useStyles()
 
   function getCurrentDate() {
@@ -114,17 +147,38 @@ const ChildSimulation = () => {
   }
 
   function getDialogInfo() {
-    if (value === 2) {
+    if (bloodsugar < lowBloodsugarValue) {
+      if (Meal_size === 1) {
+        return badDialogInfo
+      }
+      if (Meal_size === 2) {
+        return goodDialogInfo
+      }
+      if (Meal_size === 3) {
+        return goodDialogInfo
+      }
+    }
+    if (bloodsugar > highBloodsugarValue) {
+      if (Meal_size === 1) {
+        return neutralDialogInfo
+      }
+      return badDialogInfo
+    }
+    if (Meal_size === 1) {
       return goodDialogInfo
+    }
+    if (Meal_size === 2) {
+      return neutralDialogInfo
     }
     return badDialogInfo
   }
+
   return (
     <Container className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Card className={classes.card}>
-            <Grid item xs={8}>
+            <Grid item xs={12}>
               <Typography variant="h4" className={classes.title} color="textSecondary" gutterBottom>
                 Ny simulering
               </Typography>
@@ -136,7 +190,7 @@ const ChildSimulation = () => {
             </Grid>
             <Grid item xs={8}>
               <Typography variant="body1" className={classes.diet} gutterBottom>
-                {meal}
+                Måltid
               </Typography>
             </Grid>
             <Grid item xs={8}>
@@ -146,7 +200,8 @@ const ChildSimulation = () => {
             </Grid>
             <Grid item xs={12}>
               <Slider
-                value={value}
+                id="childSimluteSlider"
+                value={Meal_size}
                 defaultValue={2}
                 step={1}
                 marks={marks}
@@ -157,26 +212,15 @@ const ChildSimulation = () => {
             </Grid>
           </Card>
         </Grid>
-        <Grid item xs={12}>
-          <Box textAlign="center">
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="demo-simple-select-outlined-label">Måltid</InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={meal}
-                onChange={handleChange}
-                label="Meal"
-              >
-                <MenuItem value="Måltid">Måltid</MenuItem>
-                <MenuItem value="Snack">Snack</MenuItem>
-                <MenuItem value="Mellanmål">Mellanmål</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </Grid>
         <Grid item xs={6}>
-          <Button component={Link} href="/child-laboration" variant="outlined" color="primary" fullWidth>
+          <Button
+            id="childDiabetesSimulationBackButton"
+            component={Link}
+            href="/child-laboration"
+            variant="outlined"
+            color="primary"
+            fullWidth
+          >
             {' '}
             Tillbaka
           </Button>{' '}
@@ -196,4 +240,4 @@ const ChildSimulation = () => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChildSimulation)
+export default connect(mapStateToProps, mapDispatchToProps)(ChildSimulationDiabetes)
