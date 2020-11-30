@@ -467,7 +467,7 @@ const SimulatePatient = (props) => {
                                   vårdteam.
                                 </Typography>
                               </Grid>
-                              <Grid item xs={2}>
+                              <Grid item xs={2} md={1}>
                                 <Paper
                                   elevation={0}
                                   hidden={!avgBloodSugar || avgBloodSugar * 6 < 27 || avgBloodSugar * 6 > 52}
@@ -481,9 +481,9 @@ const SimulatePatient = (props) => {
                                   <ThumbDownAltOutlinedIcon style={{ color: 'red' }} />
                                 </Paper>
                               </Grid>
-                              <Grid item xs={10}>
+                              <Grid item xs={10} md={11}>
                                 <Typography variant="body1" hidden={!avgBloodSugar}>
-                                  {!avgBloodSugar || (avgBloodSugar * 6 >= 27 && avgBloodSugar * 6 <= 52) ? 'Ej inom tröskel värdet' : 'Inom tröskelvärdet'}
+                                  {!avgBloodSugar || (avgBloodSugar * 6 >= 27 && avgBloodSugar * 6 <= 52) ? 'Inom tröskel värdet' : 'Ej inom tröskelvärdet'}
                                 </Typography>
                               </Grid>
                               
