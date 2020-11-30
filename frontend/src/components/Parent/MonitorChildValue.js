@@ -137,30 +137,29 @@ const MonitorChildValue = (props) => {
     props.onChangeField(ev.target.id, ev.target.value)
   }
 
-  // getIndication & reformat are dublicated in ParentOverview.
   const getIndication = (data) => {
-    if (disease === 'DIABETES') {
-      if (data > 0 && data < SU_LO) {
-        return 'Lågt'
-      }
-      if (data > SU_HI) {
-        return 'Högt'
-      }
-      return 'Stabilt'
-    }
+    switch (disease) {
+      case 'DIABETES':
+        if (data < SU_LO) {
+          return 'Lågt'
+        }
+        if (data > SU_HI) {
+          return 'Högt'
+        }
+        return 'Stabilt'
 
-    if (disease === 'OBESITY') {
-      if (data < 50) {
-        return 'Undervikt'
-      }
-      if (data > 49 && data < 60) {
-        return 'Lagom'
-      }
-      if (data > 59) {
-        return 'Övervikt'
-      }
+      case 'OBESITY':
+        if (data < 50) {
+          return 'Undervikt'
+        }
+        if (data > 59) {
+          return 'Övervikt'
+        }
+        return 'Stabilt'
+
+      default:
+        return 'Out of bounds'
     }
-    return 'Out of bound'
   }
 
   const reformat = (data) => {
@@ -188,11 +187,9 @@ const MonitorChildValue = (props) => {
               Tabell
             </Typography>
             <CustomPaginationActionsTable
-              //   columns={['x', 'y']}
               columns={['time', 'value', 'indicator']}
               loading={loading}
               rows={input ? reformat(input, false) : null}
-              // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
               titles={colDesc}
               paginate
             />

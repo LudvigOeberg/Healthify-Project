@@ -29,6 +29,7 @@ import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
+import ParentRewardPage from './Parent/ParentRewardPage'
 import ChildLaboration from './Child/ChildLaboration'
 import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
 import ChildSimulationObesity from './Child/ChildSimulationObesity'
@@ -270,6 +271,12 @@ class App extends React.Component {
                 requires={['auth', 'child']}
                 user={this.props.currentUser}
                 component={ChildRealLifeRewards}
+              />
+              <RequiredRoute
+                path="/parent-reward"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={ParentRewardPage}
               />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
