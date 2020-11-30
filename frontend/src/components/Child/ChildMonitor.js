@@ -85,7 +85,7 @@ const ChildMonitor = (props) => {
     <Container maxWidth="sm">
       <Paper elevation={3} className={classes.paperTop}>
         <Grid container spacing={2} className={classes.stats}>
-          <Grid item xs={3} className={classes.grid}>
+          <Grid item xs={3}>
             <div className={`${classes.circle} ${classes.circleSm}`}>
               <div className={classes.textInCircle}>
                 <div className={classes.textAlign}>

@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Grid, Box, Paper } from "@material-ui/core";
+import { Grid, Box, Paper, GridList } from "@material-ui/core";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 import {
@@ -20,13 +20,13 @@ import {
 import agentEHR from "../../agentEHR";
 import agent from "../../agent";
 import thinkingAvatar from "../../Static/thinking_avatar.png";
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import selectSad from '../../Static/select_sad.png'
-import selectGrumpy from '../../Static/select_grumpy.png'
-import selectNormal from '../../Static/select_normal.png'
-import selectHappy from '../../Static/select_happy.png'
-import selectVeryHappy from '../../Static/select_very_happy.png'
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import selectSad from "../../Static/select_sad.png";
+import selectGrumpy from "../../Static/select_grumpy.png";
+import selectNormal from "../../Static/select_normal.png";
+import selectHappy from "../../Static/select_happy.png";
+import selectVeryHappy from "../../Static/select_very_happy.png";
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -179,95 +179,112 @@ const AddVal = (props) => {
     props.onChangeField(ev.target.id, ev.target.value);
   };
 
-  const changeAuthSlider = (ev, value) => {
-    props.onChangeField(ev.target.id, value);
-  };
-
-  const marks = [
-    {
-      value: 0,
-      label: disease === "DIABETES" ? "0 mmol/L" : "0 kg",
-    },
-    {
-      value: disease === "DIABETES" ? 15 : 100,
-      label: disease === "DIABETES" ? "15 mmol/L" : "100 kg",
-    },
-  ];
-
   return (
     <Container component="main" maxWidth="md">
-    
-        {/* <Grid container className={classes.backGround} item xs={12} container spacing={5}> */}
-        
-          <Container textAlign="right">
-          <Paper className={classes.backGround}>
-            <img id="currentMood" src={thinkingAvatar} alt="mood avatar"></img>
-            </Paper>
-          </Container>
-          
-        {/* </Grid> */}
+      {/* <Grid container className={classes.backGround} item xs={12} container spacing={5}> */}
 
+      <Grid container justify="center" textAlign="right">
+        <Paper className={classes.backGround}>
+          <Grid>
+          <Typography className={classes.bubbleText} variant="h6">Hur mår du just nu?</Typography>
+          <img id="currentMood" src={thinkingAvatar} alt="mood avatar"></img>
+          
+          </Grid>
+        </Paper>
+      </Grid>
+
+      {/* </Grid> */}
+      <Paper elevation={0} className={classes.lowerBG}>
         <Grid container direction="row" justify="center" alignItems="center">
-          <Grid container justify="center" alignItems="center" className={classes.circle}>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.circle}
+          >
             <img id="currentMood" src={selectSad} alt="mood avatar"></img>
           </Grid>
-          <Grid container justify="center" alignItems="center" className={classes.circle}>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.circle}
+          >
             <img id="currentMood" src={selectGrumpy} alt="mood avatar"></img>
           </Grid>
-          <Grid container justify="center" alignItems="center" className={classes.circle}>
-          <img id="currentMood" src={selectNormal} alt="mood avatar"></img>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.circle}
+          >
+            <img id="currentMood" src={selectNormal} alt="mood avatar"></img>
           </Grid>
-          <Grid container justify="center" alignItems="center" className={classes.circle}>
-          <img id="currentMood" src={selectHappy} alt="mood avatar"></img>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.circle}
+          >
+            <img id="currentMood" src={selectHappy} alt="mood avatar"></img>
           </Grid>
-          <Grid container justify="center" alignItems="center" className={classes.circle}>
-          <img id="currentMood" src={selectVeryHappy} alt="mood avatar"></img>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.circle}
+          >
+            <img id="currentMood" src={selectVeryHappy} alt="mood avatar"></img>
           </Grid>
-
         </Grid>
 
-        <Container align="center">
-        <Paper className={classes.bubble}>
-        <Typography component="h3" variant="h5">
-              Skriv in{" "}
-              {disease === "DIABETES"
-                ? "ditt blodsockervärde"
-                : "din uppmätta vikt"}
-            </Typography>
-        <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              id="childValue"
-              name="childValue"
-              InputProps={{
+        <Grid container alignItems="center" justify="center" direction="column">
+          <Paper className={classes.bubble}>
+            <Grid item xs>
+              <Box textAlign="center">
+              <Typography subtile1="h2" className={classes.inputText}>
+                {disease === "DIABETES"
+                  ? "Hur högt blodsocker har du?"
+                  : "Hur mycket väger du?"}
+              </Typography>
+              </Box>
+
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                id="childValue"
+                name="childValue"
+                InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">{disease === 'DIABETES' ? 'mmol/L' : 'kg'}</InputAdornment>
+                    <InputAdornment position="start">
+                      {disease === "DIABETES" ? "mmol/L" : "kg"}
+                    </InputAdornment>
                   ),
                 }}
-              value={childValue}
-              disabled={open}
-              onChange={changeField}
-              className={classes.submit}
+                value={childValue}
+                disabled={open}
+                onChange={changeField}
+                className={classes.submit}
               />
-          </Grid>
+            </Grid>
           </Paper>
-        <Grid item xs>
-          <Button
-            id="addButton weight/bloodsugar"
-            variant="contained"
-            color="secondary"
-            onClick={(ev) => submitForm(ev)}
-            disabled={props.inProgress || open}
-            className={classes.submit}
-          >
-            {" "}
-            Spara
-          </Button>
-        </Grid>
-        </Container>
 
+          <Box justify="center">
+            <Button
+              id="addButton weight/bloodsugar"
+              variant="contained"
+              color="primary"
+              onClick={(ev) => submitForm(ev)}
+              disabled={props.inProgress || open}
+              className={classes.submit}
+            >
+              {" "}
+              Spara
+            </Button>
+          </Box>
+        </Grid>
+      </Paper>
     </Container>
   );
 };
@@ -288,48 +305,46 @@ const styles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(4, 0, 3),
+    margin: theme.spacing(4),
   },
   backGround: {
-    //position: "absolute",
-    //padding: '10% 10% 10%',
-    background: "#72AAC9", //'linear-gradient(0deg, rgba(118,176,208,1) 40%, rgba(106,161,191,1) 41%, rgba(125,180,213,1) 86%)',
-    //marginTop: "-3%", // Removes a small white space at the top.
-    //minHeight: '100vh',
+    position: "relative",
+    background: "#72AAC9", 
+    width: "100%",
+    zIndex: '0',
   },
   lowerBG: {
-    //marginBottom: theme.spacing(2),
-    borderRadius: "30% 30% 0% 0%",
-    //background: "#F2F2F2",
-    //marginTop: "-3%",
-    //width: "100%",
-    //height: "100%",
+    borderRadius: "5% 5% 0% 0%",
+    //background: "#F0f0f0",
+    marginTop: "-2%",
+    zIndex: '4',
+    position: 'relative',
+    borderTop: '1px solid #c3bebe',
   },
-   bubble: {
-    border: '2px solid #64B4EA',
-  //   width: '50%',
-  //   height: '150px',
-  //   borderRadius: '10% 10% 10% 10%',
-  //   background: '#F2F2F2',
-  //   // paddingTop: '100%',
-  //   position: 'absolute',
-  //   left: '-35px',
-  //   bottom: '8vh',
-  //   boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
-  //   textAlign: 'center',
-  //   border: '1px solid green',
-   },
-   circle: {
-    //alignItems: 'center', 
-    //justify:'center',
-    height: '70px',
-    width: '70px',
-    borderRadius: '50%',
-    background: '#72AAC9',
-    //paddingTop: '100%',
-    //position: 'relative',
-    border: '2px solid #696969',
+  bubble: {
+    border: "3px solid #64B4EA",
+    margin: theme.spacing(3),
+    borderRadius: '5%',
+    zIndex: '0',
   },
+  circle: {
+    height: "70px",
+    width: "70px",
+    borderRadius: "50%",
+    background: "#72AAC9",
+    margin: theme.spacing(1),
+    border: "2px solid #696969",
+  },
+  inputText: {
+    color: theme.palette.text.disabled,
+  },
+  bubbleText: {
+    color: theme.palette.text.primary,
+    position: 'relative',
+    top: '160px',
+    left: '270px'
+  },
+
 }));
 
 export function getCurrentDate() {
