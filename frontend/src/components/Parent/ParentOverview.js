@@ -77,7 +77,7 @@ const ParentOverview = (props) => {
   return (
     <div className={classes.main}>
       <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           <img src={profileAvatar} alt="Profile"></img>
         </Grid>
         <Grid item xs={4} className={classes.avatarName}>
