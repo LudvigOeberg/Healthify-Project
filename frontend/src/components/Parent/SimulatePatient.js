@@ -8,7 +8,6 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  Container,
   Paper,
   Grid,
   Button,
@@ -607,12 +606,6 @@ const styles = makeStyles((theme) => ({
    // height: '100%',
    padding: theme.spacing(2),
    marginTop: theme.spacing(2),
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    width: theme.spacing(20),
-    height: theme.spacing(20),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
