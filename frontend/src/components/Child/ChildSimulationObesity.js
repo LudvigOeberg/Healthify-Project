@@ -18,7 +18,7 @@ import agentEHR from '../../agentEHR'
 
 /**
  * Page where the child may run a simulation of how long it will take to reach their goal weight if they do a certain amount of workouts per week.
- * Right now: Bases the simulation on
+ * Right now: Bases the simulation on the goal weight set by their parent.
  */
 
 const mapStateToProps = (state) => ({
@@ -84,6 +84,7 @@ const ChildSimulationObesity = (props) => {
   const id = props.currentUser.ehrid
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
   const { weight } = props
+  const goalweight = props.party ? `${props.party[id].additionalInfo.goalweight}` : null
 
   useEffect(() => {
     props.onLoad(id)
@@ -123,7 +124,16 @@ const ChildSimulationObesity = (props) => {
   const encouragingDialogInfo = [
     'Simulera',
     'Simulation',
-    'Om du tränar så här lite kommer det ta lång tid att nu ditt mål, försök att träna mer så är inget omöjligt!',
+    'Du har redan uppnått din målvikt! Bra jobbat!',
+    // 'Om du tränar så här lite kommer det ta lång tid att nu ditt mål, försök att träna mer så är inget omöjligt!',
+    '',
+    'running avatar',
+  ]
+
+  const noMeasurementDialogInfo = [
+    'Simulera',
+    'Simulation',
+    'Du måste ange ett mätvärde för att kunna genomföra en simulering!',
     '',
     'running avatar',
   ]
@@ -140,13 +150,20 @@ const ChildSimulationObesity = (props) => {
   // the number of weeks it will take for the person
   // to reach their goal weight.
   function getWeeksNumber() {
-    let currentWeight
+    let currentWeight = -1
     if (weight !== undefined) {
-      currentWeight = weight[0].weight
+      if (weight[0] !== undefined) {
+        currentWeight = weight[0].weight
+      }
     }
-    const weightGoal = 0.7 * currentWeight
+    if (currentWeight < 1) {
+      return -101
+    }
 
-    const w = Math.floor((currentWeight - weightGoal) / workouts) * 2
+    const w = Math.floor((currentWeight - goalweight) / workouts) * 2
+
+    // eslint-disable-next-line no-console
+    console.log(`w: ${w}`)
     return w
   }
 
@@ -158,6 +175,9 @@ const ChildSimulationObesity = (props) => {
   function getDialogInfo() {
     if (getWeeksNumber() > 0) {
       return goodDialogInfo
+    }
+    if (getWeeksNumber() < -100) {
+      return noMeasurementDialogInfo
     }
     return encouragingDialogInfo
   }
