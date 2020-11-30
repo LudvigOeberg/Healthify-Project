@@ -65,7 +65,7 @@ export default function FooterBar() {
 
         <Grid item xs={3} className={classes.borderRight}>
           {/* Här ska reward sidan in */}
-          <a id="rewardFooterLink" href="/child">
+          <a id="rewardFooterLink" href="/child-real-life-rewards">
             <Tooltip title="Pokal" aria-label="trophy">
               <Paper className={classes.paper} square>
                 <SvgIcon width="22" height="10" viewBox="2 5 22 12">
