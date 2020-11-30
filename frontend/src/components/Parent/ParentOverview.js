@@ -77,7 +77,7 @@ const ParentOverview = (props) => {
   return (
     <div className={classes.main}>
       <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           <img src={profileAvatar} alt="Profile"></img>
         </Grid>
         <Grid item xs={4} className={classes.avatarName}>
@@ -148,13 +148,13 @@ const ParentOverview = (props) => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Paper className={classes.paper} elevation={2}>
-                <Typography variant="h5"> Blodsocker</Typography>
+                <Typography variant="h5">{disease === 'DIABETES' ? 'Blodsocker' : 'Vikt'}</Typography>
                 <ListItemText secondary="Idag" />
                 <p></p>
                 <TimeLineChart
                   chartData={input ? reformatForChart(input) : null}
                   label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
-                  currSettings="day"
+                  currSettings={disease === 'DIABETES' ? 'day' : 'month'}
                   hideRadio
                 ></TimeLineChart>
               </Paper>

@@ -17,6 +17,7 @@ import Header from './Header'
 import NotFound from './NotFound'
 import CaregivingPage from './Parent/CaregivingPage'
 import Parent from './Parent/Parent'
+// eslint-disable-next-line import/no-named-as-default-member
 import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
@@ -28,6 +29,10 @@ import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
+<<<<<<< HEAD
+=======
+import ParentRewardPage from './Parent/ParentRewardPage'
+>>>>>>> cf80a170b95850660d3ccb6f0aac1ddf85321a8f
 import ChildLaboration from './Child/ChildLaboration'
 import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
 import ChildSimulationObesity from './Child/ChildSimulationObesity'

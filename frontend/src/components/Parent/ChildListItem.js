@@ -62,7 +62,11 @@ function ChildListItem(props) {
     props.bloodsugars &&
     disease === 'DIABETES' &&
     bloodsugar &&
+<<<<<<< HEAD
     (bloodsugar.value < 3 || bloodsugar.value > 10)
+=======
+    (bloodsugar.value < SU_LO || bloodsugar.value > SU_HI)
+>>>>>>> cf80a170b95850660d3ccb6f0aac1ddf85321a8f
   )
   const badWeight = !!(
     props.weights &&
