@@ -13,13 +13,16 @@ const mapStateToProps = (state) => ({
 const RewardCardList = (props) => {
 
     const classes = styles();
+    const {rewards} = props
 
-
+    console.log(rewards)
     return (
         <Container className={classes.root}>
-            <RewardCard></RewardCard> 
-            <RewardCard></RewardCard>
-            <RewardCard></RewardCard>
+            {rewards.map((r) => (
+
+            <RewardCard one_reward={r}></RewardCard> 
+            ))}
+
         </Container>
 
     )

@@ -115,10 +115,19 @@ const ParentOverview = (props) => {
       </Grid>
       <Grid container justify='center' className={classes.root} spacing={1} >
       <Grid item xs={12} sm={8} md={4}>
-          <Button component= 'a' href={`/parent-reward/${id}`}>
-          <Paper className={classes.paper} elevation={2}>
+          <Button 
+          className={classes.button}
+          component= 'a' 
+          href={`/parent-reward/${id}`}
+          fullWidth
+          variant="contained"
+            color="primary"
+          
+          
+          > Utmaningar
+      {/*     <Paper className={classes.paper} elevation={2}>
           <Typography variant='h5'> Utmaningar</Typography>
-          </Paper>
+          </Paper> */}
           </Button>
 
         </Grid>

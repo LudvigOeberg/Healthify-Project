@@ -6,10 +6,6 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import Modal from '@material-ui/core/Modal'
 import TextField from '@material-ui/core/TextField'
-<<<<<<< HEAD
-=======
-
->>>>>>> cf80a170b95850660d3ccb6f0aac1ddf85321a8f
 import { PAGE_UNLOADED, LOAD_PARTY, UPDATE_FIELD_AUTH, EDIT_PARENT, DELETE_PARENT } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 

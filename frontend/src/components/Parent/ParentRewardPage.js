@@ -47,7 +47,7 @@ const ParentRewardPage = (props) => {
 //  const onChange = (ev) => props.onChange(ev.target.id, ev.target.value)  
   const classes = styles();
   const { id } = props.match.params
-
+  const rewards = props.currentUser ? props.currentUser.children[0].child.rewards : null
     
 
   return (
@@ -77,7 +77,9 @@ const ParentRewardPage = (props) => {
             <Grid> Pågående</Grid>
           <Grid>
 
-          <RewardCardList></RewardCardList>
+          <RewardCardList rewards={rewards}>
+
+          </RewardCardList>
 
           </Grid>
             <Grid>

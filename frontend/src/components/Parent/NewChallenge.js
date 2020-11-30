@@ -55,6 +55,7 @@ const NewChallenge = (props) => {
         open: true,
       }
       props.submitGoal(nameOf, description, reward, endDate, id, snackbar)
+      //redirect href={`/add-reward/${id}`}
     }
 
 return (

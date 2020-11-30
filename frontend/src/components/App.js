@@ -29,15 +29,11 @@ import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
 import FooterBar from './FooterBar'
-<<<<<<< HEAD
-=======
 import ParentRewardPage from './Parent/ParentRewardPage'
->>>>>>> cf80a170b95850660d3ccb6f0aac1ddf85321a8f
 import ChildLaboration from './Child/ChildLaboration'
 import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
 import ChildSimulationObesity from './Child/ChildSimulationObesity'
 import AddVal from './Child/AddVal'
-import ParentRewardPage from './Parent/ParentRewardPage'
 import NewChallenge from './Parent/NewChallenge'
 
 const mapStateToProps = (state) => ({

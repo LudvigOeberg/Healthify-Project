@@ -114,6 +114,7 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         inProgress: false,
+        redirectTo: action.error ? null : `/parent-reward/${action.payload.ehrid}`,
         snackbar: action.error
           ? {
               open: true,
