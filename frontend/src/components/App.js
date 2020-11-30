@@ -17,6 +17,7 @@ import Header from './Header'
 import NotFound from './NotFound'
 import CaregivingPage from './Parent/CaregivingPage'
 import Parent from './Parent/Parent'
+// eslint-disable-next-line import/no-named-as-default-member
 import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
