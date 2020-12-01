@@ -191,8 +191,8 @@ const SimulatePatient = (props) => {
 
           <Grid container spacing={2} className={classes.root} justify='center' alignItems='center'>
             <Grid item xs={12}>
-            <Paper className={classes.paper} elevation={2} hidden={showGraph}>
-              <Grid container className={classes.root} spacing={2}>
+            <Paper className={classes.paper} elevation={2} hidden={showGraph} align='center'>
+              <Grid container className={classes.root} spacing={2}  justify='center' alignItems='center'>
                 <Grid item xs={12}>
                   <Typography variant="h5">Ny Simulering</Typography>
                 </Grid>
@@ -276,20 +276,20 @@ const SimulatePatient = (props) => {
                 </Grid>
             </Grid>
             </Paper>
-           
-            <Grid item xs={12} md={8}>
-                    <Paper className={classes.paper} hidden={!showGraph}>
-                      <SimulateChart
-                        disease={disease}
-                        weight={weight}
-                        intensity={intensity}
-                        calorieintake={calorieintake}
-                        trainingammount={trainingammount}
-                        goalweight={goalweight}
-                      />
-                    </Paper>
-                  </Grid>
-                  </Grid> 
+          </Grid> 
+
+          <Grid item xs={12} md={8}>
+              <Paper className={classes.paper} hidden={!showGraph}>
+                <SimulateChart
+                  disease={disease}
+                  weight={weight}
+                  intensity={intensity}
+                  calorieintake={calorieintake}
+                  trainingammount={trainingammount}
+                  goalweight={goalweight}
+                />
+              </Paper>
+            </Grid>
                 
                 <Grid item xs={6}>
             <Button
@@ -496,15 +496,16 @@ const SimulatePatient = (props) => {
                     </Grid>
                   </Grid>
             </Paper>
-            
-            {/* _____________________________________ */}
-            <Grid item xs={12} md={8}>
+          </Grid>
+
+          
+          <Grid item xs={12} md={8}>
               <Paper className={classes.paper} hidden={!showGraph}>
                 <SimulateChart disease={disease} bloodsugar={bloodsugar} meal={meal} SU_LO={SU_LO} SU_HI={SU_HI} />
               </Paper>
             </Grid>
-            {/* _____________________________________ */}
-          </Grid>
+      
+
           <Grid item xs={6}>
             <Button
               className={classes.button}
