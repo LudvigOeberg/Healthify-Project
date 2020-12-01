@@ -80,7 +80,7 @@ function ChildListItem(props) {
               <ListItemText primary="Gå till översikt" />
             </ListItem>
 
-            <ChildListItemValue ehrId = {child.ehrid} partyIn={props.party ? props.party[child.ehrid] : null} />
+            <ChildListItemValue ehrId={child.ehrid} partyIn={props.party ? props.party[child.ehrid] : null} />
           </List>
         </Paper>
       </div>

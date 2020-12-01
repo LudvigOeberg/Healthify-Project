@@ -1,15 +1,9 @@
-import React from "react"
-import { Line } from "react-chartjs-2"
-import { useTheme } from "@material-ui/core/styles"
-import {
-  RadioGroup,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  FormControl,
-} from "@material-ui/core"
-import { connect } from "react-redux"
-import { FIELD_CHANGE } from "../constants/actionTypes"
+import React from 'react'
+import { Line } from 'react-chartjs-2'
+import { useTheme } from '@material-ui/core/styles'
+import { RadioGroup, FormControlLabel, FormLabel, Radio, FormControl } from '@material-ui/core'
+import { connect } from 'react-redux'
+import { FIELD_CHANGE } from '../constants/actionTypes'
 
 /**
  * Displays a timeline graph with Xaxis as time format and regular values as Yaxis
@@ -23,12 +17,11 @@ import { FIELD_CHANGE } from "../constants/actionTypes"
 
 const mapStateToProps = (state) => ({
   ...state.common,
-});
+})
 
 const mapDispatchToProps = (dispatch) => ({
-  onChangeRadio: (value) =>
-    dispatch({ type: FIELD_CHANGE, key: "currSettings", value }),
-});
+  onChangeRadio: (value) => dispatch({ type: FIELD_CHANGE, key: 'currSettings', value }),
+})
 
 const createChartProps = (chartData, label, theme) => {
   const state = {
@@ -43,82 +36,77 @@ const createChartProps = (chartData, label, theme) => {
         data: chartData,
       },
     ],
-  };
-  return state;
-};
+  }
+  return state
+}
 // eslint-disable-next-line consistent-return
 const getSettings = (horizon) => {
-  const today = new Date();
+  const today = new Date()
 
   switch (horizon) {
-    case "day":
+    case 'day':
       return {
         min: today.setHours(0, 0, 0, 0),
-        unit: "hour",
+        unit: 'hour',
         stepSize: 0.5,
-        dispFormat: "HH:mm",
-      };
-    case "week":
+        dispFormat: 'HH:mm',
+      }
+    case 'week':
       return {
         min: today.setDate(today.getDate() - 7),
-        unit: "day",
+        unit: 'day',
         stepSize: 1,
-        dispFormat: "ddd",
-      };
-    case "month":
+        dispFormat: 'ddd',
+      }
+    case 'month':
       return {
         min: today.setDate(today.getDate() - 30),
-        unit: "day",
+        unit: 'day',
         stepSize: 7,
-        dispFormat: "ddd DD MMM",
-      };
+        dispFormat: 'ddd DD MMM',
+      }
 
-    case "all":
+    case 'all':
       return {
         min: null,
-        unit: "month",
+        unit: 'month',
         stepSize: 1,
-        dispFormat: "MMM Y",
-      };
+        dispFormat: 'MMM Y',
+      }
     default:
-      break;
+      break
   }
-};
+}
 
 const TimeLineChart = (props) => {
-  const timeHorizon =
-    props.currSettings === undefined ? "all" : props.currSettings;
-  const { label } = props;
-  const hideRadio = props.hideRadio === undefined ? false : props.hideRadio;
-  const theme = useTheme();
-  const { chartData } = props;
-  const displaySettings = getSettings(timeHorizon);
+  const timeHorizon = props.currSettings === undefined ? 'all' : props.currSettings
+  const { label } = props
+  const hideRadio = props.hideRadio === undefined ? false : props.hideRadio
+  const theme = useTheme()
+  const { chartData } = props
+  const displaySettings = getSettings(timeHorizon)
   const changeRadio = (event) => {
-    props.onChangeRadio(event.target.value);
-  };
-  let maxData = 0;
+    props.onChangeRadio(event.target.value)
+  }
+  let maxData = 0
   // eslint-disable-next-line
   for (var data in chartData) if (data > maxData) maxData = data;
 
   return (
     <div>
       <Line
-        data={
-          chartData && chartData.length > 0
-            ? createChartProps(chartData, label, theme)
-            : {}
-        }
+        data={chartData && chartData.length > 0 ? createChartProps(chartData, label, theme) : {}}
         options={{
           maintainAspectRatio: true,
           responsive: true,
           legend: {
             display: true,
-            position: "bottom",
+            position: 'bottom',
           },
           scales: {
             xAxes: [
               {
-                type: "time",
+                type: 'time',
                 time: {
                   unit: displaySettings.unit,
                   unitStepSize: displaySettings.stepSize,
@@ -149,21 +137,16 @@ const TimeLineChart = (props) => {
         <>
           <FormControl component="fieldset">
             <FormLabel component="legend">Tidsspann</FormLabel>
-            <RadioGroup
-              row
-              aria-label="horizon"
-              name="horizon"
-              value={timeHorizon}
-              onChange={changeRadio}>
+            <RadioGroup row aria-label="horizon" name="horizon" value={timeHorizon} onChange={changeRadio}>
               <FormControlLabel value="day" control={<Radio />} label="Idag" />
-              <FormControlLabel value="week" control={<Radio />} label="Senaste veckan"/>
-              <FormControlLabel value="month" control={<Radio />} label="Senaste månaden"/>
-              <FormControlLabel value="all" control={<Radio />} label="Fullständig"/>
+              <FormControlLabel value="week" control={<Radio />} label="Senaste veckan" />
+              <FormControlLabel value="month" control={<Radio />} label="Senaste månaden" />
+              <FormControlLabel value="all" control={<Radio />} label="Fullständig" />
             </RadioGroup>
           </FormControl>
         </>
       )}
     </div>
-  );
-};
-export default connect(mapStateToProps, mapDispatchToProps)(TimeLineChart);
+  )
+}
+export default connect(mapStateToProps, mapDispatchToProps)(TimeLineChart)

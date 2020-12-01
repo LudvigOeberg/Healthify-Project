@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import { Grid } from "@material-ui/core";
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import AddIcon from '@material-ui/icons/Add'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import { Grid } from '@material-ui/core'
 import {
   OPEN_SNACKBAR,
   FIELD_CHANGE,
@@ -17,41 +17,39 @@ import {
   SAVE_BLOODSUGAR,
   LOAD_WEIGHT,
   SAVE_WEIGHT,
-} from "../../constants/actionTypes";
-import CustomPaginationActionsTable from "../TablePagination";
-import TimeLineChart from "../TimeLineChart";
-import agentEHR from "../../agentEHR";
-import Reformat from "../../reformatEHRData";
+} from '../../constants/actionTypes'
+import CustomPaginationActionsTable from '../TablePagination'
+import TimeLineChart from '../TimeLineChart'
+import agentEHR from '../../agentEHR'
+import Reformat from '../../reformatEHRData'
 
 const mapStateToProps = (state) => ({
   ...state.common,
   ...state.ehr,
-});
+})
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
   onSubmit: (ehrId, measurement, snackbar, disease) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     dispatch({
-      type: disease === "DIABETES" ? SAVE_BLOODSUGAR : SAVE_WEIGHT,
+      type: disease === 'DIABETES' ? SAVE_BLOODSUGAR : SAVE_WEIGHT,
       payload:
         // eslint-disable-next-line no-nested-ternary
-        disease === "DIABETES"
+        disease === 'DIABETES'
           ? agentEHR.Composition.saveBloodSugar(ehrId, measurement).then(() => {
               dispatch({
                 type: LOAD_BLOODSUGAR,
                 payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
-              });
+              })
             })
           : measurement !== null
-          ? agentEHR.Demograhics.newMeasurment(null, measurement, ehrId).then(
-              () => {
-                dispatch({
-                  type: LOAD_WEIGHT,
-                  payload: agentEHR.Query.weight(ehrId, 20),
-                });
-              }
-            )
+          ? agentEHR.Demograhics.newMeasurment(null, measurement, ehrId).then(() => {
+              dispatch({
+                type: LOAD_WEIGHT,
+                payload: agentEHR.Query.weight(ehrId, 20),
+              })
+            })
           : dispatch({
               type: LOAD_WEIGHT,
               payload: agentEHR.Query.weight(ehrId, 20),
@@ -59,134 +57,122 @@ const mapDispatchToProps = (dispatch) => ({
 
       snackbar,
     }),
-  onOpenSnackbar: (message, color) =>
-    dispatch({ type: OPEN_SNACKBAR, message, color }),
+  onOpenSnackbar: (message, color) => dispatch({ type: OPEN_SNACKBAR, message, color }),
   onLoad: (ehrId) => {
-    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) });
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
   },
   loadValues: (ehrId, offset, limit, disease) => {
-    if (disease === "DIABETES")
+    if (disease === 'DIABETES')
       dispatch({
         type: LOAD_BLOODSUGAR,
         payload: agentEHR.Query.bloodsugar(ehrId, offset, limit),
-      });
-    else if (disease === "OBESITY")
+      })
+    else if (disease === 'OBESITY')
       dispatch({
         type: LOAD_WEIGHT,
         payload: agentEHR.Query.weight(ehrId, limit),
-      });
+      })
   },
-});
+})
 
 const MonitorChildValue = (props) => {
-  const { id } = props.match.params;
-  const classes = styles();
-  const { childValue } = props;
-  const open = props.snackbarOpen;
-  const { bloodsugar } = props;
-  const { weight } = props;
-  const disease = props.party
-    ? `${props.party[id].additionalInfo.disease}`
-    : null;
-  const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null;
-  const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null;
-  const name = props.party
-    ? `${props.party[id].firstNames} ${props.party[id].lastNames}`
-    : null;
-  const loading = props.inProgress;
+  const { id } = props.match.params
+  const classes = styles()
+  const { childValue } = props
+  const open = props.snackbarOpen
+  const { bloodsugar } = props
+  const { weight } = props
+  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null
+  const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null
+  const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
+  const loading = props.inProgress
   const colDesc = [
-    "Datum",
-    `Värde ${disease === "DIABETES" ? "(mmol/L)" : "(vikt i kg)"}`,
-    `${disease === "DIABETES" ? "Blodsocker" : "Viktklass"}`,
-  ];
-  const input = bloodsugar || weight;
+    'Datum',
+    `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
+    `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
+  ]
+  const input = bloodsugar || weight
 
   const reformatForChart = (data) => {
-    if (bloodsugar) return Reformat.bloodsugar(data, false, true);
-    if (weight) return Reformat.weight(data, false, true);
-    return null;
-  };
+    if (bloodsugar) return Reformat.bloodsugar(data, false, true)
+    if (weight) return Reformat.weight(data, false, true)
+    return null
+  }
 
   useEffect(() => {
-    props.onLoad(id);
-    props.loadValues(id, 0, 20, disease);
+    props.onLoad(id)
+    props.loadValues(id, 0, 20, disease)
   }, [id, disease]); // eslint-disable-line
 
   const validate = (val) => {
-    if (disease === "DIABETES") {
-      return val <= 10 && val > 0;
+    if (disease === 'DIABETES') {
+      return val <= 10 && val > 0
     }
-    return val <= 100 && val >= 40;
-  };
+    return val <= 100 && val >= 40
+  }
 
   const submitForm = (ev) => {
-    ev.preventDefault();
+    ev.preventDefault()
 
-    const measurementChild = props.childValue;
+    const measurementChild = props.childValue
 
     const snackbar = {
       open: true,
       message: validate(props.childValue)
-        ? `Du loggade värdet: ${props.childValue} ${
-            disease === "DIABETES" ? "mmol/L" : "kg"
-          }`
-        : `${
-            disease === "DIABETES"
-              ? "Fel format eller ogiltigt blodsockervärde"
-              : "Fel format eller ogiltig vikt"
-          }`,
-      color: validate(props.childValue) ? "success" : "error",
-    };
+        ? `Du loggade värdet: ${props.childValue} ${disease === 'DIABETES' ? 'mmol/L' : 'kg'}`
+        : `${disease === 'DIABETES' ? 'Fel format eller ogiltigt blodsockervärde' : 'Fel format eller ogiltig vikt'}`,
+      color: validate(props.childValue) ? 'success' : 'error',
+    }
 
     if (validate(props.childValue)) {
-      props.onSubmit(id, measurementChild, snackbar, disease);
+      props.onSubmit(id, measurementChild, snackbar, disease)
     } else {
-      props.onSubmit(id, null, snackbar, disease);
+      props.onSubmit(id, null, snackbar, disease)
     }
-    return null;
-  };
+    return null
+  }
 
   const changeField = (ev) => {
-    props.onChangeField(ev.target.id, ev.target.value);
-  };
+    props.onChangeField(ev.target.id, ev.target.value)
+  }
 
   const getIndication = (data) => {
     switch (disease) {
-      case "DIABETES":
+      case 'DIABETES':
         if (data < SU_LO) {
-          return "Lågt";
+          return 'Lågt'
         }
-        else if (data > SU_HI) {
-          return "Högt";
-        } else return "Stabilt";
+        if (data > SU_HI) {
+          return 'Högt'
+        }
+        return 'Stabilt'
 
-      case "OBESITY":
+      case 'OBESITY':
         if (data < 50) {
-          return "Undervikt";
+          return 'Undervikt'
         }
-        else if (data > 59) {
-          return "Övervikt";
-        } else {
-          return 'Stabilt';
+        if (data > 59) {
+          return 'Övervikt'
         }
+        return 'Stabilt'
+
       default:
-        return "Out of bounds";
+        return 'Out of bounds'
     }
-  };
+  }
 
   const reformat = (data) => {
-    const dataObjects = [];
+    const dataObjects = []
     for (let i = 0; i < data.length; i++) {
       dataObjects.push({
         time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
-        value: disease === "DIABETES" ? data[i].value : data[i].weight,
-        indicator: getIndication(
-          disease === "DIABETES" ? data[i].value : data[i].weight
-        ),
-      });
+        value: disease === 'DIABETES' ? data[i].value : data[i].weight,
+        indicator: getIndication(disease === 'DIABETES' ? data[i].value : data[i].weight),
+      })
     }
-    return dataObjects;
-  };
+    return dataObjects
+  }
 
   return (
     <Container component="main" maxWidth="md">
@@ -201,7 +187,7 @@ const MonitorChildValue = (props) => {
               Tabell
             </Typography>
             <CustomPaginationActionsTable
-              columns={["time", "value", "indicator"]}
+              columns={['time', 'value', 'indicator']}
               loading={loading}
               rows={input ? reformat(input, false) : null}
               titles={colDesc}
@@ -214,9 +200,7 @@ const MonitorChildValue = (props) => {
             </Typography>
             <TimeLineChart
               chartData={input ? reformatForChart(input) : null}
-              label={
-                disease === "DIABETES" ? "Blodsocker (mmol/L)" : "Vikt (kg)"
-              }
+              label={disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}
             ></TimeLineChart>
           </Grid>
           <Grid item xs={12} align="center">
@@ -224,20 +208,10 @@ const MonitorChildValue = (props) => {
               <AddIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Skriv in ditt barns{" "}
-              {disease === "DIABETES" ? "blodsockervärde" : "uppmätta vikt"}
+              Skriv in ditt barns {disease === 'DIABETES' ? 'blodsockervärde' : 'uppmätta vikt'}
             </Typography>
-            <Typography>
-              {disease === "DIABETES"
-                ? "mellan 1-10 mmol/L."
-                : "mellan 40-100kg"}
-            </Typography>
-            <form
-              className={classes.form}
-              noValidate
-              onSubmit={(ev) => submitForm(ev)}
-              autoComplete="off"
-            >
+            <Typography>{disease === 'DIABETES' ? 'mellan 1-10 mmol/L.' : 'mellan 40-100kg'}</Typography>
+            <form className={classes.form} noValidate onSubmit={(ev) => submitForm(ev)} autoComplete="off">
               <Grid container spacing={0}>
                 <Grid item xs={12}>
                   <TextField
@@ -248,9 +222,7 @@ const MonitorChildValue = (props) => {
                     name="childValue"
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start">
-                          {disease === "DIABETES" ? "mmol/L" : "kg"}
-                        </InputAdornment>
+                        <InputAdornment position="start">{disease === 'DIABETES' ? 'mmol/L' : 'kg'}</InputAdornment>
                       ),
                     }}
                     value={childValue}
@@ -276,37 +248,35 @@ const MonitorChildValue = (props) => {
         </Grid>
       </div>
     </Container>
-  );
-};
+  )
+}
 
 const styles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "50%", // Fix IE 11 issue.
+    width: '50%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-}));
+}))
 
 export function getCurrentDate() {
-  const today = new Date();
-  const todaysDate = `${String(today.getFullYear())}-${String(
-    today.getMonth()
-  )}-${String(today.getDate())} ${String(today.getHours())}:${String(
-    today.getMinutes()
-  )}`;
-  return todaysDate;
+  const today = new Date()
+  const todaysDate = `${String(today.getFullYear())}-${String(today.getMonth())}-${String(today.getDate())} ${String(
+    today.getHours(),
+  )}:${String(today.getMinutes())}`
+  return todaysDate
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MonitorChildValue);
+export default connect(mapStateToProps, mapDispatchToProps)(MonitorChildValue)
