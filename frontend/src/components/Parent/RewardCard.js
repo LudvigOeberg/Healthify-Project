@@ -12,17 +12,49 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import RewardCardList from "./RewardCardList";
+import { DELETE_REWARD } from "../../constants/actionTypes";
+import agent from "../../agent"
+import agentEHR from "../../agentEHR";
+
+import {
+  PAGE_UNLOADED,
+  LOAD_PARTY,
+} from "../../constants/actionTypes";
 
 
 const mapStateToProps = (state) => ({
     ...state.common,
+    ...state.ehr,
   });
+
+  const mapDispatchToProps = (dispatch) => ({
+    onLoad: (ehrId) =>
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }),
+    onUnload: () => dispatch({ type: PAGE_UNLOADED }),
+
+    deleteReward: (nameOf, description, reward, endDate, ehrid, snackbar) => {
+      const payload=agent.Parent.deleteReward(nameOf, description, reward, endDate, ehrid)
+      dispatch({ type: DELETE_REWARD, payload, snackbar}) 
+    },
+  })
 
 const RewardCard = (props) => {
   const classes = styles();
-  
   const {one_reward} = props
+  ////const {id} = props.currentUser ? props.currentUser.children[0].child.ehrid : null
+//  const rewards = props.currentUser ? props.currentUser.children[0].child.rewards : null
 
+
+  const deleteReward = (nameOf, description, reward, endDate, id) => (ev) => {
+    ev.preventDefault()
+    const snackbar = {
+      message: `Du tog bort reward`,
+      color: 'success',
+      open: true,
+    }
+    props.deleteReward(nameOf, description, reward, endDate, id, snackbar)
+
+  }
   return (
     <Container className={classes.root}>
         
@@ -36,7 +68,9 @@ const RewardCard = (props) => {
             ></CardHeader>
               </Grid>
             <Grid item xs = {2}>
-              <Button>
+              <Button
+               onClick={deleteReward(one_reward.nameOf, one_reward.description, one_reward.reward, one_reward.endDate)}
+               >
                 <DeleteIcon color="primary" />
               </Button>
             </Grid>
@@ -44,7 +78,7 @@ const RewardCard = (props) => {
             <CardContent className={classes.card}>Beskrivning: {one_reward.description}</CardContent>
             <CardContent className={classes.card}>Belöning: {one_reward.reward}</CardContent>
             <CardContent className={classes.card}>Deadline: {one_reward.endDate}</CardContent>
-        
+
           </Card>
 
     </Container>
@@ -68,5 +102,5 @@ const styles = makeStyles((theme) => ({
 }
 }));
   
-  export default connect(mapStateToProps)(RewardCard);
+  export default connect(mapStateToProps, mapDispatchToProps)(RewardCard);
   

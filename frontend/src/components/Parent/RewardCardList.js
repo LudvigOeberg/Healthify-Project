@@ -15,11 +15,9 @@ const RewardCardList = (props) => {
     const classes = styles();
     const {rewards} = props
 
-    console.log(rewards)
     return (
         <Container className={classes.root}>
             {rewards.map((r) => (
-
             <RewardCard one_reward={r}></RewardCard> 
             ))}
 

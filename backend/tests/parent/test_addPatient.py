@@ -151,7 +151,7 @@ def test_addChildWithDiabetes_ValuesOnLowerBoundary():
     headers = {'authorization': 'Token ' + token, 'Content-Type': 'application/json'}
     child = Child(emailC5, "FEMALE", "DIABETES")
     task =  {"user": {"name": child.name, "surname": child.surname, "email": child.email, "password": child.password, "confirmPassword": child.confirmPassword,
-     "dateofbirth": child.dateOfBirth, "gender": child.gender, "disease": child.disease, "diseaseInfo": { "SU_HI": 0, "SU_LO": 0, "measurements": 0}}}
+     "dateofbirth": child.dateOfBirth, "gender": child.gender, "disease": child.disease, "diseaseInfo": { "SU_HI": 0, "SU_LO": 0, "measurements": 1}}}
     resp = addChild(headers, task)
     assert resp.status_code == 200 
 

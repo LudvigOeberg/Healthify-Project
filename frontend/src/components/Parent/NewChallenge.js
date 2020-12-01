@@ -7,6 +7,8 @@ import {
   FormControl,
   InputLabel,
   Input,
+  Typography,
+  Divider
 } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -14,7 +16,13 @@ import CardContent from "@material-ui/core/CardContent";
 import EmojiEventsIcon from "@material-ui/icons/EmojiEvents";
 import RedeemIcon from "@material-ui/icons/Redeem";
 import agent from "../../agent"
-
+import Accordion from '@material-ui/core/Accordion'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
+import AccordionDetails from '@material-ui/core/AccordionDetails'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import TextField from '@material-ui/core/TextField'
 import {
   PAGE_UNLOADED,
   FIELD_CHANGE,
@@ -41,7 +49,17 @@ const mapStateToProps = (state) => ({
 const NewChallenge = (props) => {
     const classes = styles();
     const { id } = props.match.params
-    const {nameOf, description, reward, endDate } = props
+    let {nameOf, description, reward, endDate } = props
+
+
+    //if diabetes 
+    let premade = { 
+      name: /* disease === "DIABETES" ? 'Blodsocker Streak' :  */'Logga vikt',
+      desc: 'Logga ditt blodsocker 7 dagar på raken för att vinna utmaningen!',
+      rew: 'Åka och bada',
+      days: '7'           
+    }
+
 
     const handleForm = (ev) => {
         props.onChange(ev.target.id, ev.target.value)
@@ -58,26 +76,33 @@ const NewChallenge = (props) => {
       //redirect href={`/add-reward/${id}`}
     }
 
+
+    
+
 return (
 <Grid item xs={12} className={classes.card}>
+
 <form 
     onSubmit={submitForm(nameOf, description, reward, endDate, id)}
     noValidate>
-<Card elevation={5} className={classes.card}>
-  <CardHeader
-    title="Ny Utmaning"
+<Accordion elevation={2} className={classes.card}>
+
+
+  <AccordionSummary avatar={<EmojiEventsIcon/>} expandIcon={<ExpandMoreIcon />}>
+  <Typography variant="h5"> Skapa egen Utmaning </Typography>
+  </AccordionSummary>
+{/*   <CardHeader
+    title="Skapa egen Utmaning"
     titleTypographyProps={{ variant: "h5" }}
     avatar={<EmojiEventsIcon></EmojiEventsIcon>}
   >
     \
-  </CardHeader>
+  </CardHeader> */}
 
   <RedeemIcon
     className={classes.RedeemIcon}
     fontSize="large"
   ></RedeemIcon>
-
-  <CardContent>
     <FormControl fullWidth className={classes.inputs}>
       <InputLabel>Namn på Utmaning</InputLabel>
       <Input
@@ -125,20 +150,70 @@ return (
         onChange={handleForm}
       />
     </FormControl>
-  </CardContent>
-</Card>
+    <Button
+        className={classes.button}
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        disabled={props.inProgress}
+      >
+        Spara Utmaning
+      </Button>
 
-<Button
-  className={classes.button}
-  type="submit"
-  fullWidth
-  variant="contained"
-  color="primary"
-  disabled={props.inProgress}
->
-  Spara Utmaning
-</Button>
+  </Accordion>
+  </form>
+<form 
+    onSubmit={submitForm(nameOf, description, reward, endDate, id)}
+    noValidate>
+<Accordion elevation={2} className={classes.card}>
+
+
+<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+<Typography variant="h5">Välj en förbestämd utmaning</Typography>
+</AccordionSummary>
+  <RedeemIcon
+    className={classes.RedeemIcon}
+    fontSize="large"
+  ></RedeemIcon>
+
+<Typography variant="h6">Namn på utmaning</Typography>
+      <Typography >
+      {premade.name}
+        <Divider/>
+        </Typography>
+
+        <Typography variant="h6">Beskrivning</Typography>
+        <Typography >
+        {premade.desc}
+        <Divider/>
+        </Typography>
+
+        <Typography variant="h6">Belöning</Typography>
+        <Typography >
+        {premade.rew}
+        <Divider/>
+        </Typography>
+
+        <Typography variant="h6">Antal Dagar</Typography>
+        <Typography >
+          {premade.days}
+        <Divider/>
+        </Typography>
+        <Button
+        className={classes.button}
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        disabled={props.inProgress}
+      >
+        Spara Utmaning
+      </Button>
+
+</Accordion>
 </form>
+
 </Grid>
 
     )
@@ -154,6 +229,7 @@ const styles = makeStyles((theme) => ({
     card: {
       borderRadius: 10,
       padding: theme.spacing(1),
+      marginBottom: 5,
     },
     innerCard: {
       borderRadius: 10,

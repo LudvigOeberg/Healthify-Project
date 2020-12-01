@@ -46,9 +46,12 @@ const ParentRewardPage = (props) => {
   
 //  const onChange = (ev) => props.onChange(ev.target.id, ev.target.value)  
   const classes = styles();
-  const { id } = props.match.params
+  const {id}  = props.match.params
   const rewards = props.currentUser ? props.currentUser.children[0].child.rewards : null
-    
+  
+  const sendForm = (ev) => {
+    props.onChange(ev.target.id, ev.target.value)
+  }
 
   return (
     /* -------------------------------Utmaningar-------------------------------------- */
@@ -85,7 +88,7 @@ const ParentRewardPage = (props) => {
             <Grid>
               <List subheader={"Avklarade"}>
                 <ListItem>
-                  <ListItemText> Köpa Glass </ListItemText>
+                  <ListItemText> text </ListItemText>
                   <ListItemIcon>
                     <Button>
                       <DeleteIcon color="primary" />
