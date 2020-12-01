@@ -189,9 +189,9 @@ const SimulatePatient = (props) => {
           </Grid>
         </Grid>
 
-        <Grid container spacing={2} className={classes.root} justify="center" alignItems="center">
-          <Grid item xs={12}>
-            <Paper className={classes.paper} elevation={2} hidden={showGraph}>
+          <Grid container spacing={2} className={classes.root} justify='center' alignItems='center'>
+            <Grid item xs={12}>
+            <Paper className={classes.paper} elevation={2} hidden={showGraph} align='center'>
               <Grid container className={classes.root} spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="h5">Ny Simulering</Typography>
@@ -276,8 +276,9 @@ const SimulatePatient = (props) => {
                 </Grid>
               </Grid>
             </Paper>
+          </Grid> 
 
-            <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={8}>
               <Paper className={classes.paper} hidden={!showGraph}>
                 <SimulateChart
                   disease={disease}
@@ -289,9 +290,8 @@ const SimulatePatient = (props) => {
                 />
               </Paper>
             </Grid>
-          </Grid>
-
-          <Grid item xs={6}>
+                
+                <Grid item xs={6}>
             <Button
               className={classes.button}
               id="parentGoBackObesityButton"
@@ -498,15 +498,16 @@ const SimulatePatient = (props) => {
                 </Grid>
               </Grid>
             </Paper>
+          </Grid>
 
-            {/* _____________________________________ */}
-            <Grid item xs={12} md={8}>
+          
+          <Grid item xs={12} md={8}>
               <Paper className={classes.paper} hidden={!showGraph}>
                 <SimulateChart disease={disease} bloodsugar={bloodsugar} meal={meal} SU_LO={SU_LO} SU_HI={SU_HI} />
               </Paper>
             </Grid>
-            {/* _____________________________________ */}
-          </Grid>
+      
+
           <Grid item xs={6}>
             <Button
               className={classes.button}
