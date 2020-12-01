@@ -56,7 +56,6 @@ const ParentRewardPage = (props) => {
     
   const sendForm = (ev) => {
     props.onChange(ev.target.id, ev.target.value)
-    console.log(props.reward);
   }
 
   return (
