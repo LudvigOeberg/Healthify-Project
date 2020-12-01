@@ -155,20 +155,7 @@ const MonitorChildValue = (props) => {
     props.onChangeField(ev.target.id, ev.target.value);
   };
 
-  /* const shiftDates = (data) => {
-    const today = new Date()
-    today.setDate(today.getDate()-1)
-    for (let i = 0; i < data.length; i++) {
-      console.log(Moment(today).format('YYYY-MM-DD HH:mm') > Moment(data[i].time).format('YYYY-MM-DD HH:mm'))
-      console.log(Moment(today).format('YYYY-MM-DD HH:mm'))
-      console.log(Moment(data[i].time).format('YYYY-MM-DD HH:mm'))
-    }
-    return data
-  } */
-
-
-
-  const avg = (data, horizon) => {
+  const avgValue = (data, horizon) => {
     let sum = 0
     let days = 0
     let avg = 0
@@ -288,7 +275,7 @@ const MonitorChildValue = (props) => {
                 <Typography component="h1" variant="h5">{disease === 'DIABETES' ? 'Blodsocker' : 'Vikt'}</Typography>
               </Grid>
               <Grid item md={2} xs={4}>
-                <Typography component="h1" variant="h5">{input ? Math.round(avg(input, currSettings) * 100) / 100 : 'Laddar..'}</Typography>
+                <Typography component="h1" variant="h5">{input ? Math.round(avgValue(input, currSettings) * 100) / 100 : 'Laddar..'}</Typography>
                 <Divider />
               </Grid>
               <Grid item md={10}  xs={8}>
