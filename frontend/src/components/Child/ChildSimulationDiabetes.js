@@ -75,10 +75,16 @@ const useStyles = makeStyles((theme) => ({
 const ChildSimulationDiabetes = (props) => {
   const id = props.currentUser.ehrid
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const SU_LO = props.party ? `${props.party[id].additionalInfo.SU_LO}` : null
+  const SU_HI = props.party ? `${props.party[id].additionalInfo.SU_HI}` : null
   let { bloodsugar } = props
 
   if (bloodsugar !== undefined) {
-    bloodsugar = bloodsugar[0].value
+    if (bloodsugar !== null) {
+      if (bloodsugar[0] !== undefined) {
+        bloodsugar = bloodsugar[0].value
+      }
+    }
   }
 
   useEffect(() => {
@@ -135,8 +141,13 @@ const ChildSimulationDiabetes = (props) => {
     'neutral avatar',
   ]
 
-  const lowBloodsugarValue = 4
-  const highBloodsugarValue = 10
+  const noDataDialogInfo = [
+    'Simulera',
+    'Simulation',
+    'Du måste ange ett mätvärde för att kunna genomföra en simulation!',
+    '../Static/neutral_avatar.png',
+    'neutral avatar',
+  ]
 
   const classes = useStyles()
 
@@ -147,30 +158,33 @@ const ChildSimulationDiabetes = (props) => {
   }
 
   function getDialogInfo() {
-    if (bloodsugar < lowBloodsugarValue) {
-      if (Meal_size === 1) {
+    if (bloodsugar !== null) {
+      if (bloodsugar < SU_LO) {
+        if (Meal_size === 1) {
+          return badDialogInfo
+        }
+        if (Meal_size === 2) {
+          return goodDialogInfo
+        }
+        if (Meal_size === 3) {
+          return goodDialogInfo
+        }
+      }
+      if (bloodsugar > SU_HI) {
+        if (Meal_size === 1) {
+          return neutralDialogInfo
+        }
         return badDialogInfo
       }
-      if (Meal_size === 2) {
-        return goodDialogInfo
-      }
-      if (Meal_size === 3) {
-        return goodDialogInfo
-      }
-    }
-    if (bloodsugar > highBloodsugarValue) {
       if (Meal_size === 1) {
+        return goodDialogInfo
+      }
+      if (Meal_size === 2) {
         return neutralDialogInfo
       }
       return badDialogInfo
     }
-    if (Meal_size === 1) {
-      return goodDialogInfo
-    }
-    if (Meal_size === 2) {
-      return neutralDialogInfo
-    }
-    return badDialogInfo
+    return noDataDialogInfo
   }
 
   return (

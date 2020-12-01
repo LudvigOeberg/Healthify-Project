@@ -24,6 +24,7 @@ import {
 } from '../../constants/actionTypes'
 import agent from '../../agent'
 
+// eslint-disable-next-line import/no-named-as-default-member
 import InputStepper from '../InputStepper'
 
 /**
