@@ -137,13 +137,13 @@ const ParentOverview = (props) => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Paper className={classes.paper} elevation={2}>
-                <Typography variant="h5">{disease==='DIABETES' ? "Blodsocker" : "Vikt"}</Typography>
+                <Typography variant="h5">{disease === 'DIABETES' ? 'Blodsocker' : 'Vikt'}</Typography>
                 <ListItemText secondary="Idag" />
                 <p></p>
                 <TimeLineChart
                   chartData={input ? reformatForChart(input) : null}
                   label={`${disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}`}
-                  currSettings={disease==='DIABETES' ? "day" : "month"}
+                  currSettings={disease === 'DIABETES' ? 'day' : 'month'}
                   hideRadio
                 ></TimeLineChart>
               </Paper>

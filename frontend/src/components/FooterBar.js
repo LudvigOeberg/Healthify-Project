@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 'auto',
     display: 'flex',
     width: '100%',
-    zIndex: 10001,
+    zIndex: 10,
   },
 
   avatar: {
@@ -82,7 +82,7 @@ export default function FooterBar() {
 
         <Grid item xs={3} className={classes.borderRight}>
           <a id="statisticsFooterLink" href="/child-monitor/">
-            <Tooltip title="Simulera" aria-label="simulation">
+            <Tooltip title="Statistik" aria-label="statistics">
               <Paper className={classes.paper} square>
                 <SvgIcon width="22" height="12" viewBox="0 0 22 12">
                   <path

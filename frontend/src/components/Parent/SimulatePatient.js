@@ -13,7 +13,7 @@ import {
   Button,
   Slider,
   Divider,
-  ListItemText
+  ListItemText,
 } from '@material-ui/core'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
@@ -101,7 +101,7 @@ const SimulatePatient = (props) => {
   const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null
   const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null
   const goalweight = props.party ? props.party[id].additionalInfo.goalweight : null
-  const name = props.party ? props.party[id].firstNames + ' ' + props.party[id].lastNames : null
+  const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
   const classes = styles()
   const { intensity, calorieintake, trainingammount, meal, showGraph, avgBloodSugar } = props
   const changeIntensity = (ev) => props.onChange('intensity', ev.target.value)
@@ -155,7 +155,6 @@ const SimulatePatient = (props) => {
     props.onChange(key, newValue)
   }
 
-
   const handleAccordionChange = (value) => (event, newExpanded) => {
     if (newExpanded) {
       props.onChange('AccordionOpen', value)
@@ -166,25 +165,26 @@ const SimulatePatient = (props) => {
 
   if (disease === 'OBESITY' && weight) {
     return (
-      
       <div className={classes.main}>
-      <Grid container className={classes.avatar} justify="center" direction="column" alignItems="center" >
-        <Grid item xs={6}>
-          <img src={profileAvatar} alt="Profile"></img>
+        <Grid container className={classes.avatar} justify="center" direction="column" alignItems="center">
+          <Grid item xs={6}>
+            <img src={profileAvatar} alt="Profile"></img>
+          </Grid>
+          <Grid item xs={4} className={classes.avatarName}>
+            <Typography variant="h5"> {name} </Typography>
+            <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
+          </Grid>
         </Grid>
-        <Grid item xs={4} className={classes.avatarName}>
-          <Typography variant="h5"> {name} </Typography>
-          <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
-        </Grid>
-      </Grid>
-     
 
-        <Grid container spacing={2} classname={classes.root} justify='center' alignItems='center'>
+        <Grid container spacing={2} classname={classes.root} justify="center" alignItems="center">
           <Grid item md={5} sm={10} xs={11}>
             <Paper variant="outlined" className={showGraph ? classes.card2 : classes.card}>
-              <Typography variant='h5'>{showGraph ? 'Observera!' : 'Simulering'}</Typography>
-              <Typography>{showGraph ? "Detta är enbart en simulering och bör ej betraktas som fakta." : 
-              "Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har."} </Typography>
+              <Typography variant="h5">{showGraph ? 'Observera!' : 'Simulering'}</Typography>
+              <Typography>
+                {showGraph
+                  ? 'Detta är enbart en simulering och bör ej betraktas som fakta.'
+                  : 'Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har.'}{' '}
+              </Typography>
             </Paper>
           </Grid>
         </Grid>
@@ -274,7 +274,7 @@ const SimulatePatient = (props) => {
                     </AccordionDetails>
                   </Accordion>
                 </Grid>
-            </Grid>
+              </Grid>
             </Paper>
           </Grid> 
 
@@ -305,30 +305,29 @@ const SimulatePatient = (props) => {
               {' '}
               Tillbaka{' '}
             </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                className={classes.button}
-                id="parentSimulateObesityButton"
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={handleGraph}
-                disabled={noInput || showGraph}
-              >
-                Simulera
-              </Button>
-            </Grid>
           </Grid>
-          
-        </div>
+          <Grid item xs={6}>
+            <Button
+              className={classes.button}
+              id="parentSimulateObesityButton"
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleGraph}
+              disabled={noInput || showGraph}
+            >
+              Simulera
+            </Button>
+          </Grid>
+        </Grid>
+      </div>
     )
   }
   if (disease === 'DIABETES' && bloodsugar) {
     return (
       <div className={classes.main}>
-        <Grid container className={classes.avatar} justify="center" direction="column" alignItems="center" >
+        <Grid container className={classes.avatar} justify="center" direction="column" alignItems="center">
           <Grid item xs={6}>
             <img src={profileAvatar} alt="Profile"></img>
           </Grid>
@@ -337,26 +336,28 @@ const SimulatePatient = (props) => {
             <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
           </Grid>
         </Grid>
-     
 
-        <Grid container spacing={2} classname={classes.root} justify='center' alignItems='center'>
+        <Grid container spacing={2} classname={classes.root} justify="center" alignItems="center">
           <Grid item md={5} sm={10} xs={11}>
             <Paper variant="outlined" className={showGraph ? classes.card2 : classes.card}>
-            <Grid container className={classes.root} spacing={1}>
-            <Grid item xs={12}>
-              <Typography variant='h5'>{showGraph ? 'Observera!' : 'Simulering'}</Typography>
+              <Grid container className={classes.root} spacing={1}>
+                <Grid item xs={12}>
+                  <Typography variant="h5">{showGraph ? 'Observera!' : 'Simulering'}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography>
+                    {showGraph
+                      ? 'Detta är enbart en simulering och bör ej betraktas som fakta.'
+                      : 'Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har.'}{' '}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-              <Typography>{showGraph ? "Detta är enbart en simulering och bör ej betraktas som fakta." : 
-              "Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har."} </Typography>
-              </Grid>
-            </Grid>
             </Paper>
           </Grid>
         </Grid>
-      
-        <Grid container spacing={2} className={classes.root} justify='center' alignItems='center'>
-            <Grid item xs={12}>
+
+        <Grid container spacing={2} className={classes.root} justify="center" alignItems="center">
+          <Grid item xs={12}>
             <Paper className={classes.paper} elevation={2} hidden={showGraph}>
               <Grid container className={classes.root} spacing={2}>
                 <Grid item xs={12}>
@@ -395,15 +396,15 @@ const SimulatePatient = (props) => {
                       </Grid>
                     </AccordionDetails>
                   </Accordion>
-                  </Grid>
-                  <Grid item xs={12}>                  
-                    <Accordion
-                      id="HbA1cDropDownSimulation"
-                      variant="outlined"
-                      rounded
-                      expanded={AccordionOpen === 'HbA1c'}
-                      onChange={handleAccordionChange('HbA1c')}
-                    >
+                </Grid>
+                <Grid item xs={12}>
+                  <Accordion
+                    id="HbA1cDropDownSimulation"
+                    variant="outlined"
+                    rounded
+                    expanded={AccordionOpen === 'HbA1c'}
+                    onChange={handleAccordionChange('HbA1c')}
+                  >
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="subtitle1">HbA1c</Typography>
                     </AccordionSummary>
@@ -483,18 +484,19 @@ const SimulatePatient = (props) => {
                               </Grid>
                               <Grid item xs={10} md={11}>
                                 <Typography variant="body1" hidden={!avgBloodSugar}>
-                                  {!avgBloodSugar || (avgBloodSugar * 6 >= 27 && avgBloodSugar * 6 <= 52) ? 'Inom tröskel värdet' : 'Ej inom tröskelvärdet'}
+                                  {!avgBloodSugar || (avgBloodSugar * 6 >= 27 && avgBloodSugar * 6 <= 52)
+                                    ? 'Inom tröskel värdet'
+                                    : 'Ej inom tröskelvärdet'}
                                 </Typography>
                               </Grid>
-                              
                             </Grid>
                           </Paper>
                         </Grid>
                       </Grid>
                     </AccordionDetails>
-                    </Accordion>
-                    </Grid>
-                  </Grid>
+                  </Accordion>
+                </Grid>
+              </Grid>
             </Paper>
           </Grid>
 
@@ -553,31 +555,38 @@ const SimulatePatient = (props) => {
         </Grid>
       </Grid>
 
-      <Grid container spacing={2} className={classes.root} justify='center' alignItems='center'>
+      <Grid container spacing={2} className={classes.root} justify="center" alignItems="center">
         <Grid item md={5} sm={10} xs={12}>
-              <Paper variant="outlined" className={classes.card}>
-                <Grid container className={classes.root} spacing={1}>
-                <Grid item xs={12}>
-                <Typography variant='h5'>Simulering</Typography>
-                </Grid>
-                <Grid item xs={12}>
+          <Paper variant="outlined" className={classes.card}>
+            <Grid container className={classes.root} spacing={1}>
+              <Grid item xs={12}>
+                <Typography variant="h5">Simulering</Typography>
+              </Grid>
+              <Grid item xs={12}>
                 <Typography>
-                Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har. Men vi
-                hittar inga loggade värden för ditt barn. Mata in ett värde för att kunna simulera. Med hjälp av knappen
-                nedan kommer du till sidan för att hantera ditt barns värden.
+                  Här kan du simulera hur ditt barn kommer att må i framtiden beroende på vilka vanor barnet har. Men vi
+                  hittar inga loggade värden för ditt barn. Mata in ett värde för att kunna simulera. Med hjälp av
+                  knappen nedan kommer du till sidan för att hantera ditt barns värden.
                 </Typography>
-                </Grid>
-                <Grid item xs={8} md={4}>
-                <Button className={classes.button} id="handleValues" fullWidth variant="contained" color="primary" href={`/monitor-child/${id}`}>
+              </Grid>
+              <Grid item xs={8} md={4}>
+                <Button
+                  className={classes.button}
+                  id="handleValues"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  href={`/monitor-child/${id}`}
+                >
                   Hantera värden
                 </Button>
-                </Grid>
-                </Grid>
-              </Paper>
+              </Grid>
             </Grid>
+          </Paper>
+        </Grid>
       </Grid>
 
-      <Grid container spacing={2} className={classes.root} justify='center' alignItems='center'>
+      <Grid container spacing={2} className={classes.root} justify="center" alignItems="center">
         <Grid item md={5} sm={10} xs={12}>
           <Button
             className={classes.button}
@@ -604,9 +613,9 @@ const styles = makeStyles((theme) => ({
     maxWidth: '100%',
   },
   paper: {
-   // height: '100%',
-   padding: theme.spacing(2),
-   marginTop: theme.spacing(2),
+    // height: '100%',
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -620,7 +629,7 @@ const styles = makeStyles((theme) => ({
     borderColor: theme.palette.primary.main,
     borderRadius: 20,
     padding: theme.spacing(2),
-   marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
   card2: {
     borderWidth: 5,
@@ -646,7 +655,6 @@ const styles = makeStyles((theme) => ({
     top: '5px',
     marginBottom: '5px',
     padding: '10px 5px 10px 5px',
- 
   },
 }))
 
