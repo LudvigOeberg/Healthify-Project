@@ -192,7 +192,7 @@ const SimulatePatient = (props) => {
           <Grid container spacing={2} className={classes.root} justify='center' alignItems='center'>
             <Grid item xs={12}>
             <Paper className={classes.paper} elevation={2} hidden={showGraph} align='center'>
-              <Grid container className={classes.root} spacing={2}  justify='center' alignItems='center'>
+              <Grid container className={classes.root} spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="h5">Ny Simulering</Typography>
                 </Grid>
