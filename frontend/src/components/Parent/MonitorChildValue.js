@@ -25,17 +25,17 @@ import Moment from 'moment'
 const mapStateToProps = (state) => ({
   ...state.common,
   ...state.ehr,
-});
+})
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeField: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
   onSubmit: (ehrId, measurement, snackbar, disease) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     dispatch({
-      type: disease === "DIABETES" ? SAVE_BLOODSUGAR : SAVE_WEIGHT,
+      type: disease === 'DIABETES' ? SAVE_BLOODSUGAR : SAVE_WEIGHT,
       payload:
         // eslint-disable-next-line no-nested-ternary
-        disease === "DIABETES"
+        disease === 'DIABETES'
           ? agentEHR.Composition.saveBloodSugar(ehrId, measurement).then(() => {
             dispatch({
               type: LOAD_BLOODSUGAR,
@@ -58,24 +58,23 @@ const mapDispatchToProps = (dispatch) => ({
 
       snackbar,
     }),
-  onOpenSnackbar: (message, color) =>
-    dispatch({ type: OPEN_SNACKBAR, message, color }),
+  onOpenSnackbar: (message, color) => dispatch({ type: OPEN_SNACKBAR, message, color }),
   onLoad: (ehrId) => {
-    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) });
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
   },
   loadValues: (ehrId, offset, limit, disease) => {
-    if (disease === "DIABETES")
+    if (disease === 'DIABETES')
       dispatch({
         type: LOAD_BLOODSUGAR,
         payload: agentEHR.Query.bloodsugar(ehrId, offset, limit),
-      });
-    else if (disease === "OBESITY")
+      })
+    else if (disease === 'OBESITY')
       dispatch({
         type: LOAD_WEIGHT,
         payload: agentEHR.Query.weight(ehrId, limit),
-      });
+      })
   },
-});
+})
 
 const MonitorChildValue = (props) => {
   const { id } = props.match.params;
@@ -98,10 +97,10 @@ const MonitorChildValue = (props) => {
   let chartFormat = disease === 'DIABETES' ? 'Idag' : 'Senaste månaden'
 
   const reformatForChart = (data) => {
-    if (bloodsugar) return Reformat.bloodsugar(data, false, true);
-    if (weight) return Reformat.weight(data, false, true);
-    return null;
-  };
+    if (bloodsugar) return Reformat.bloodsugar(data, false, true)
+    if (weight) return Reformat.weight(data, false, true)
+    return null
+  }
 
   if (currSettings === 'month')
     chartFormat = 'Senaste månaden'
@@ -114,21 +113,21 @@ const MonitorChildValue = (props) => {
 
 
   useEffect(() => {
-    props.onLoad(id);
-    props.loadValues(id, 0, 20, disease);
+    props.onLoad(id)
+    props.loadValues(id, 0, 20, disease)
   }, [id, disease]); // eslint-disable-line
 
   const validate = (val) => {
     if (disease === "DIABETES") {
       return val <= 15 && val > 0;
     }
-    return val <= 100 && val >= 40;
-  };
+    return val <= 100 && val >= 40
+  }
 
   const submitForm = (ev) => {
-    ev.preventDefault();
+    ev.preventDefault()
 
-    const measurementChild = props.childValue;
+    const measurementChild = props.childValue
 
     const snackbar = {
       open: true,
@@ -143,17 +142,17 @@ const MonitorChildValue = (props) => {
     };
 
     if (validate(props.childValue)) {
-      props.onSubmit(id, measurementChild, snackbar, disease);
+      props.onSubmit(id, measurementChild, snackbar, disease)
     } else {
-      props.onSubmit(id, null, snackbar, disease);
+      props.onSubmit(id, null, snackbar, disease)
     }
     return null;
 
   };
 
   const changeField = (ev) => {
-    props.onChangeField(ev.target.id, ev.target.value);
-  };
+    props.onChangeField(ev.target.id, ev.target.value)
+  }
 
   const avgValue = (data, horizon) => {
     let sum = 0
@@ -196,7 +195,7 @@ const MonitorChildValue = (props) => {
       <Paper elevation={0} hidden={!disease} style={{backgroundColor:'#fafafa'}}>
       <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
         <Grid item xs={6}>
-          <img src={profileAvatar} alt="Profile" width='73' height='85'></img>
+        <img src={profileAvatar} alt="Profile"></img>
         </Grid>
         <Grid item xs={4} className={classes.avatarName}>
           <Typography variant="h5"> {name} </Typography>
@@ -338,7 +337,7 @@ const styles = makeStyles((theme) => ({
     maxWidth: '100%',
   },
   form: {
-    width: "50%", // Fix IE 11 issue.
+    width: '50%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   main: {
@@ -355,16 +354,14 @@ const styles = makeStyles((theme) => ({
     marginBottom: '5px',
     padding: '10px 5px 10px 5px',
   },
-}));
+}))
 
 export function getCurrentDate() {
-  const today = new Date();
-  const todaysDate = `${String(today.getFullYear())}-${String(
-    today.getMonth()
-  )}-${String(today.getDate())} ${String(today.getHours())}:${String(
-    today.getMinutes()
-  )}`;
-  return todaysDate;
+  const today = new Date()
+  const todaysDate = `${String(today.getFullYear())}-${String(today.getMonth())}-${String(today.getDate())} ${String(
+    today.getHours(),
+  )}:${String(today.getMinutes())}`
+  return todaysDate
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MonitorChildValue);
+export default connect(mapStateToProps, mapDispatchToProps)(MonitorChildValue)
