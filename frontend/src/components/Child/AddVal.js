@@ -180,112 +180,126 @@ const AddVal = (props) => {
   };
 
   return (
-    <Container component="main" maxWidth="md">
-      {/* <Grid container className={classes.backGround} item xs={12} container spacing={5}> */}
-
-      <Grid container justify="center" textAlign="right">
-        <Paper className={classes.backGround}>
-          <Grid>
-          <Typography className={classes.bubbleText} variant="h6">Hur mår du just nu?</Typography>
-          <img id="currentMood" src={thinkingAvatar} alt="mood avatar"></img>
-          
-          </Grid>
-        </Paper>
-      </Grid>
-
-      {/* </Grid> */}
-      <Paper elevation={0} className={classes.lowerBG}>
-        <Grid container direction="row" justify="center" alignItems="center">
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.circle}
-          >
-            <img id="currentMood" src={selectSad} alt="mood avatar"></img>
-          </Grid>
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.circle}
-          >
-            <img id="currentMood" src={selectGrumpy} alt="mood avatar"></img>
-          </Grid>
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.circle}
-          >
-            <img id="currentMood" src={selectNormal} alt="mood avatar"></img>
-          </Grid>
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.circle}
-          >
-            <img id="currentMood" src={selectHappy} alt="mood avatar"></img>
-          </Grid>
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.circle}
-          >
-            <img id="currentMood" src={selectVeryHappy} alt="mood avatar"></img>
-          </Grid>
-        </Grid>
-
-        <Grid container alignItems="center" justify="center" direction="column">
-          <Paper className={classes.bubble}>
-            <Grid item xs>
-              <Box textAlign="center">
-              <Typography subtile1="h2" className={classes.inputText}>
-                {disease === "DIABETES"
-                  ? "Hur högt blodsocker har du?"
-                  : "Hur mycket väger du?"}
+    <div className={classes.backGround}>
+      <Container component="main" maxWidth="md">
+        <Grid container justify="center" textAlign="right">
+          <Paper elevation={0} className={classes.backGround}>
+            <Grid>
+              <Typography className={classes.bubbleText} variant="h6">
+                Hur mår du just nu?
               </Typography>
-              </Box>
-
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                id="childValue"
-                name="childValue"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {disease === "DIABETES" ? "mmol/L" : "kg"}
-                    </InputAdornment>
-                  ),
-                }}
-                value={childValue}
-                disabled={open}
-                onChange={changeField}
-                className={classes.submit}
-              />
+              <img
+                id="currentMood"
+                className={classes.centerIcon}
+                src={thinkingAvatar}
+                alt="mood avatar"
+              ></img>
             </Grid>
           </Paper>
-
-          <Box justify="center">
-            <Button
-              id="addButton weight/bloodsugar"
-              variant="contained"
-              color="primary"
-              onClick={(ev) => submitForm(ev)}
-              disabled={props.inProgress || open}
-              className={classes.submit}
-            >
-              {" "}
-              Spara
-            </Button>
-          </Box>
         </Grid>
-      </Paper>
-    </Container>
+
+        <Paper elevation={0} className={classes.lowerBG}>
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className={classes.circle}
+            >
+              <img id="currentMood" src={selectSad} alt="mood avatar"></img>
+            </Grid>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className={classes.circle}
+            >
+              <img id="currentMood" src={selectGrumpy} alt="mood avatar"></img>
+            </Grid>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className={classes.circle}
+            >
+              <img id="currentMood" src={selectNormal} alt="mood avatar"></img>
+            </Grid>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className={classes.circle}
+            >
+              <img id="currentMood" src={selectHappy} alt="mood avatar"></img>
+            </Grid>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className={classes.circle}
+            >
+              <img
+                id="currentMood"
+                src={selectVeryHappy}
+                alt="mood avatar"
+              ></img>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            alignItems="center"
+            justify="center"
+            direction="column"
+          >
+            <Paper className={classes.bubble}>
+              <Grid item xs>
+                <Box textAlign="center">
+                  <Typography subtile1="h2" className={classes.inputText}>
+                    {disease === "DIABETES"
+                      ? "Hur högt blodsocker har du?"
+                      : "Hur mycket väger du?"}
+                  </Typography>
+                </Box>
+
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  id="childValue"
+                  name="childValue"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        {disease === "DIABETES" ? "mmol/L" : "kg"}
+                      </InputAdornment>
+                    ),
+                  }}
+                  value={childValue}
+                  disabled={open}
+                  onChange={changeField}
+                  className={classes.submit}
+                />
+              </Grid>
+            </Paper>
+
+            <Box justify="center">
+              <Button
+                id="addButton weight/bloodsugar"
+                variant="contained"
+                color="primary"
+                onClick={(ev) => submitForm(ev)}
+                disabled={props.inProgress || open}
+                className={classes.submit}
+              >
+                {" "}
+                Spara
+              </Button>
+            </Box>
+          </Grid>
+        </Paper>
+      </Container>
+    </div>
   );
 };
 
@@ -308,24 +322,24 @@ const styles = makeStyles((theme) => ({
     margin: theme.spacing(4),
   },
   backGround: {
-    position: "relative",
-    background: "#72AAC9", 
-    width: "100%",
-    zIndex: '0',
+    //position: "relative",
+    background: "#72AAC9",
+    height: "100%",
+    //width: "100%",
+    //zIndex: '0',
   },
   lowerBG: {
     borderRadius: "5% 5% 0% 0%",
-    //background: "#F0f0f0",
     marginTop: "-2%",
-    zIndex: '4',
-    position: 'relative',
-    borderTop: '1px solid #c3bebe',
+    zIndex: "4",
+    position: "relative",
+    borderTop: "1px solid #c3bebe",
   },
   bubble: {
     border: "3px solid #64B4EA",
     margin: theme.spacing(3),
-    borderRadius: '5%',
-    zIndex: '0',
+    borderRadius: "5%",
+    zIndex: "0",
   },
   circle: {
     height: "70px",
@@ -340,11 +354,14 @@ const styles = makeStyles((theme) => ({
   },
   bubbleText: {
     color: theme.palette.text.primary,
-    position: 'relative',
-    top: '160px',
-    left: '270px'
+    position: "relative",
+    top: "160px",
+    left: "270px",
+    fontSize: "2vh",
   },
-
+  centerIcon: {
+    width: "100%",
+  },
 }));
 
 export function getCurrentDate() {
