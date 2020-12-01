@@ -213,13 +213,16 @@ const styles = makeStyles((theme) => ({
     marginBottom: '5px',
     padding: '10px 5px 10px 5px',
   },
-
+  backpaper: {
+    padding: theme.spacing(2),
+    margin: theme.spacing(5),
+  },
   paper: {
     padding: theme.spacing(2),
     marginTop: theme.spacing(2),
   },
   avatar: {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(2),
   },
   avatarName: {
     textAlign: 'center',
