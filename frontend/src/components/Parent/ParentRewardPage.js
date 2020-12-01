@@ -28,7 +28,7 @@ import {
 const mapStateToProps = (state) => ({
   ...state.common,
   ...state.ehr,
-});
+})
 
 const mapDispatchToProps = (dispatch) => ({
 /*   onChange: (key, value) =>
@@ -61,7 +61,7 @@ const ParentRewardPage = (props) => {
         <Card elevation={5} className={classes.card}>
           <CardHeader
             title="Utmaningar"
-            titleTypographyProps={{ variant: "h5" }}
+            titleTypographyProps={{ variant: 'h5' }}
             avatar={<EmojiEventsIcon></EmojiEventsIcon>}
           >
             \
@@ -86,7 +86,7 @@ const ParentRewardPage = (props) => {
 
           </Grid>
             <Grid>
-              <List subheader={"Avklarade"}>
+              <List subheader="Avklarade">
                 <ListItem>
                   <ListItemText> text </ListItemText>
                   <ListItemIcon>
@@ -116,14 +116,14 @@ const ParentRewardPage = (props) => {
 
 
     </Container>
-  );
-};
+  )
+}
 
 const styles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(8),
-    alignItems: "top",
-    display: "flex",
+    alignItems: 'top',
+    display: 'flex',
     padding: theme.spacing(1),
   },
   card: {
@@ -144,9 +144,9 @@ const styles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   RedeemIcon: {
-    display: "flex",
-    margin: "auto",
+    display: 'flex',
+    margin: 'auto',
   },
-}));
+}))
 
-export default connect(mapStateToProps, mapDispatchToProps)(ParentRewardPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ParentRewardPage)
