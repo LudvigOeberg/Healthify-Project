@@ -1,12 +1,14 @@
-import { Avatar, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
 import { withStyles } from '@material-ui/core/styles'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import AddIcon from '@material-ui/icons/Add'
+import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import ChildList from './ChildList'
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
+import profileAvatar from '../../Static/rsz_avatar.png'
+
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -38,11 +40,19 @@ class ParentPage extends Component {
       return (
         <Container component="main">
           <div className={classes.paper}>
-            <Avatar className={classes.purple} src="test.123" alt={name} />
-            <Typography component="h1" variant="h5">
-              {name}
-            </Typography>
-
+            <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
+              <Grid item xs={8}>
+                <img src={profileAvatar} alt="Profile"></img>
+              </Grid>
+              <Grid item xs={4} className={classes.avatarName}>
+                <Typography variant="h5"> {name} </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant='h6' align='center'>
+                  {children && children[0] ? "Registrerade barn" : 'Inga registrerade barn'}
+                </Typography>
+              </Grid>
+            </Grid>
             {/* child list component to list children for logged in user */}
             {/* eslint-disable-next-line react/no-children-prop */}
             <ChildList children={children} />
@@ -53,18 +63,29 @@ class ParentPage extends Component {
     return (
       <Container component="main">
         <div className={classes.paper}>
-          <Avatar className={classes.purple} src="test.123" alt={name} />
-          <Typography component="h1" variant="h5">
-            {name}
-          </Typography>
+          <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
+            <Grid item xs={6}>
+              <img src={profileAvatar} alt="Profile" ></img>
+            </Grid>
+            <Grid item xs={4} className={classes.avatarName}>
+              <Typography variant="h5"> {name} </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6' align='center'>
+                Inga registrerade barn
+            </Typography>
+            </Grid>
+          </Grid>
+
+
 
           <div className={classes.paper}>
-            <a id="parentsRegisterChildNew" href="/register-patient">
-              <AddIcon color="primary" style={{ fontSize: 100 }} />
-            </a>
-            <Typography fontSize="50" color="primary">
+            <a className={classes.link} id="parentAddChildLink" href="/register-patient">
+            <AddCircleOutlineRoundedIcon color="primary" style={{ fontSize: 100 }} />
+            <Typography fontSize="50" color="primary" align='center'>
               Lägg till barn
             </Typography>
+            </a>
           </div>
         </div>
       </Container>
@@ -74,7 +95,7 @@ class ParentPage extends Component {
 
 const styles = (theme) => ({
   paper: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -95,5 +116,17 @@ const styles = (theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  main: {
+    width: '100%',
+  },
+  avatar: {
+    marginTop: theme.spacing(6),
+  },
+  avatarName: {
+    textAlign: 'center',
+  },
+  link:{
+    textDecoration: 'none !important'
+  }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ParentPage))
