@@ -6,7 +6,6 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import AccountBox from '@material-ui/icons/AccountBox'
 import Avatar from '@material-ui/core/Avatar'
-import Container from '@material-ui/core/Container'
 import { Divider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -16,6 +15,7 @@ import { connect } from 'react-redux'
 import agentEHR from '../../agentEHR'
 import { LOAD_MULTIPLE_BLOODSUGARS, LOAD_MULTIPLE_WEIGHTS } from '../../constants/actionTypes'
 import ChildListItemValue from './ChildListItemValue'
+import profileAvatar from '../../Static/profile_avatar.png'
 /**
  * Displays a ChildListItem
  * @param {const} props- a const with a name, an email and a telephone number to the ChildListItem
@@ -49,52 +49,40 @@ function ChildListItem(props) {
 
   Moment.locale('sv')
   return (
-    <Container>
-      <div className={classes.paper}>
-        <Paper>
-          <List className={classes.card}>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar src="väntar på bild medans vill jag ha bokstav.jpg" alt={child.name} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={`${child.name} ${child.surname} `}
-                secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}
-              />
-              <a id="parentsEditChildButton" href={`/edit-child/${child.ehrid}`}>
-                <ListItemIcon>
-                  <EditIcon color="primary" />
-                </ListItemIcon>
-              </a>
-            </ListItem>
-            <Divider />
-            <ListItem
-              id="parentsChildOverviewButton"
-              button
-              component="a"
-              href={`/parent-child-overview/${child.ehrid}`}
-            >
-              <ListItemIcon>
-                <AccountBox color="primary" />
-              </ListItemIcon>
-              <ListItemText primary="Gå till översikt" />
-            </ListItem>
+    <Paper className={classes.paper}>
+      <List className={classes.card}>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar src={profileAvatar} alt={child.name} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={`${child.name} ${child.surname} `}
+            secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'}
+          />
+          <a id="parentsEditChildButton" href={`/edit-child/${child.ehrid}`}>
+            <ListItemIcon>
+              <EditIcon color="primary" />
+            </ListItemIcon>
+          </a>
+        </ListItem>
+        <Divider />
+        <ListItem id="parentsChildOverviewButton" button component="a" href={`/parent-child-overview/${child.ehrid}`}>
+          <ListItemIcon>
+            <AccountBox color="primary" />
+          </ListItemIcon>
+          <ListItemText primary="Gå till översikt" />
+        </ListItem>
 
-            <ChildListItemValue ehrId={child.ehrid} partyIn={props.party ? props.party[child.ehrid] : null} />
-          </List>
-        </Paper>
-      </div>
-    </Container>
+        <ChildListItemValue ehrId={child.ehrid} partyIn={props.party ? props.party[child.ehrid] : null} />
+      </List>
+    </Paper>
   )
 }
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyItems: 'flex-start',
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   },
   avatar: {
     margin: theme.spacing(1),
@@ -108,7 +96,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   card: {
-    width: '100%',
     minWidth: 300,
   },
 }))

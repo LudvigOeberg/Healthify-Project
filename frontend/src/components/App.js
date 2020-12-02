@@ -21,6 +21,7 @@ import Parent from './Parent/Parent'
 import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
+// eslint-disable-next-line import/no-named-as-default-member
 import MonitorChildValue from './Parent/MonitorChildValue'
 import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
@@ -35,6 +36,7 @@ import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
 import ChildSimulationObesity from './Child/ChildSimulationObesity'
 import AddVal from './Child/AddVal'
 import ChildRealLifeRewards from './Child/ChildRealLifeRewards'
+import NewChallenge from './Parent/NewChallenge'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -273,10 +275,17 @@ class App extends React.Component {
                 component={ChildRealLifeRewards}
               />
               <RequiredRoute
-                path="/parent-reward"
+                path="/parent-reward/:id"
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
                 component={ParentRewardPage}
+              />
+              <RequiredRoute
+                exact
+                path="/add-reward/:id"
+                requires={['auth', 'parent']}
+                user={this.props.currentUser}
+                component={NewChallenge}
               />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />
