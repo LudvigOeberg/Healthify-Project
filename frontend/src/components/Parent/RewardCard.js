@@ -11,7 +11,6 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
-import RewardCardList from "./RewardCardList";
 import { DELETE_REWARD } from "../../constants/actionTypes";
 import agent from "../../agent"
 import agentEHR from "../../agentEHR";
@@ -32,6 +31,7 @@ const mapStateToProps = (state) => ({
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }),
     onUnload: () => dispatch({ type: PAGE_UNLOADED }),
 
+
     deleteReward: (nameOf, description, reward, endDate, ehrid, snackbar) => {
       const payload=agent.Parent.deleteReward(nameOf, description, reward, endDate, ehrid)
       dispatch({ type: DELETE_REWARD, payload, snackbar}) 
@@ -41,9 +41,6 @@ const mapStateToProps = (state) => ({
 const RewardCard = (props) => {
   const classes = styles();
   const {one_reward} = props
-  ////const {id} = props.currentUser ? props.currentUser.children[0].child.ehrid : null
-//  const rewards = props.currentUser ? props.currentUser.children[0].child.rewards : null
-
 
   const deleteReward = (nameOf, description, reward, endDate, id) => (ev) => {
     ev.preventDefault()

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -10,23 +10,21 @@ import {
   Typography,
   Divider
 } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
 import EmojiEventsIcon from "@material-ui/icons/EmojiEvents";
 import RedeemIcon from "@material-ui/icons/Redeem";
 import agent from "../../agent"
+import agentEHR from '../../agentEHR'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import TextField from '@material-ui/core/TextField'
 import {
   PAGE_UNLOADED,
   FIELD_CHANGE,
-  SAVE_REWARD
+  SAVE_REWARD,
+  LOAD_PARTY,
+  LOAD_BLOODSUGAR,
+  LOAD_WEIGHT
+
 } from "../../constants/actionTypes";
 
 const mapStateToProps = (state) => ({
@@ -35,10 +33,16 @@ const mapStateToProps = (state) => ({
   });
 
   const mapDispatchToProps = (dispatch) => ({
+    onLoad: (ehrId) =>
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }),
     onChange: (key, value) =>
       dispatch({ type: FIELD_CHANGE, key, value }),
     onUnload: () => dispatch({ type: PAGE_UNLOADED }),
-  
+    loadValues: (ehrId, offset, limit, disease) => {
+      if (disease === 'DIABETES')
+        dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+      else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
+    },
     submitGoal: (nameOf, description, reward, endDate, ehrid, snackbar) => {
       const payload=agent.Parent.addReward(nameOf, description, reward, endDate, ehrid)
       dispatch({ type: SAVE_REWARD,  payload, snackbar}) 
@@ -50,16 +54,20 @@ const NewChallenge = (props) => {
     const classes = styles();
     const { id } = props.match.params
     let {nameOf, description, reward, endDate } = props
+    const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
 
-
-    //if diabetes 
-    let premade = { 
-      name: /* disease === "DIABETES" ? 'Blodsocker Streak' :  */'Logga vikt',
-      desc: 'Logga ditt blodsocker 7 dagar på raken för att vinna utmaningen!',
-      rew: 'Åka och bada',
-      days: '7'           
-    }
-
+      let premade = { 
+        name: disease === "DIABETES" ? 'Blodsocker Streak' :  'Logga vikt',
+        desc: disease === "DIABETES" ? 'Logga ditt blodsocker 7 dagar på raken för att vinna utmaningen!': 'Spring 20 gånger',
+        rew : disease === "DIABETES" ? 'Åka och bada' : 'Biobesök',
+        days: disease === "DIABETES" ? '7' : '20'           
+      }
+    
+    
+  useEffect(() => {
+    props.onLoad(id)
+    props.loadValues(id, 0, 11, disease)
+  }, [id, disease]) // eslint-disable-line
 
     const handleForm = (ev) => {
         props.onChange(ev.target.id, ev.target.value)
@@ -177,29 +185,39 @@ return (
     fontSize="large"
   ></RedeemIcon>
 
-<Typography variant="h6">Namn på utmaning</Typography>
+  
+<Grid className={classes.premade}>
+  <Typography  color="primary" variant="caption">Namn på utmaning</Typography>
       <Typography >
       {premade.name}
         <Divider/>
         </Typography>
+        </Grid>
 
-        <Typography variant="h6">Beskrivning</Typography>
+        <Grid className={classes.premade}>
+        <Typography  color="primary" variant="caption" >Beskrivning</Typography>
         <Typography >
         {premade.desc}
         <Divider/>
         </Typography>
-
-        <Typography variant="h6">Belöning</Typography>
+        </Grid>
+        
+        <Grid className={classes.premade}>
+        <Typography  color="primary" variant="caption">Belöning</Typography>
         <Typography >
         {premade.rew}
         <Divider/>
         </Typography>
+        </Grid>
 
-        <Typography variant="h6">Antal Dagar</Typography>
+        <Grid className={classes.premade}>
+        <Typography  color="primary" variant="caption">Antal Dagar</Typography>
         <Typography >
           {premade.days}
         <Divider/>
         </Typography>
+        </Grid>
+
         <Button
         className={classes.button}
         type="submit"
@@ -208,9 +226,8 @@ return (
         color="primary"
         disabled={props.inProgress}
       >
-        Spara Utmaning
+        Lägg till
       </Button>
-
 </Accordion>
 </form>
 
@@ -248,6 +265,11 @@ const styles = makeStyles((theme) => ({
       display: "flex",
       margin: "auto",
     },
+    premade: {
+      padding: theme.spacing(1),
+      //marginLeft: theme.spacing(1),
+    //  marginBottom: theme.spacing(2),
+    }
   }));
   
   export default connect(mapStateToProps, mapDispatchToProps)(NewChallenge);

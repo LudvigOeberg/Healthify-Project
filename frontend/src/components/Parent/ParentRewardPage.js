@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -23,6 +23,8 @@ import agentEHR from "../../agentEHR";
 import {
   PAGE_UNLOADED,
   LOAD_PARTY,
+  LOAD_BLOODSUGAR,
+  LOAD_WEIGHT
 } from "../../constants/actionTypes";
 
 const mapStateToProps = (state) => ({
@@ -31,11 +33,14 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-/*   onChange: (key, value) =>
-    dispatch({ type: FIELD_CHANGE, key, value }), */
+
   onLoad: (ehrId) =>
     dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }),
-    
+    loadValues: (ehrId, offset, limit, disease) => {
+      if (disease === 'DIABETES')
+        dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
+      else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
+    },
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
   
   })
@@ -44,15 +49,19 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ParentRewardPage = (props) => {
   
-//  const onChange = (ev) => props.onChange(ev.target.id, ev.target.value)  
+
   const classes = styles();
   const {id}  = props.match.params
+  const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  //funkar inte med 2 barn [0]
   const rewards = props.currentUser ? props.currentUser.children[0].child.rewards : null
-  
-  const sendForm = (ev) => {
-    props.onChange(ev.target.id, ev.target.value)
-  }
+  //const rewards = props.party ? `${props.party[id].additionalInfo.disease}` : null
 
+  useEffect(() => {
+    props.onLoad(id)
+    props.loadValues(id, 0, 11, disease)
+  }, [id, disease]) // eslint-disable-line
+  
   return (
     /* -------------------------------Utmaningar-------------------------------------- */
 
