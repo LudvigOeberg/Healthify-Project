@@ -41,8 +41,6 @@ const ParentRewardPage = (props) => {
 
   const sendForm = (ev) => {
     props.onChange(ev.target.id, ev.target.value)
-    // eslint-disable-next-line no-console
-    console.log(props.reward)
   }
 
   return (

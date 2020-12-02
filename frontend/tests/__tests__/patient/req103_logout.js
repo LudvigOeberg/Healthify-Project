@@ -19,9 +19,6 @@ function randInt(maxNum) {
 function User() {
   this.email = `${randInt(1000000)}epost@test.se`
   this.passw = 'passw'
-  this.dateOfBirth = undefined
-  // this.dateOfBirth = '25092010' // works for windows?
-  this.dateOfBirth = '002010-09-25' // works for mac?
 }
 
 async function getHomePage(url) {
@@ -38,7 +35,7 @@ async function getHomePage(url) {
   await alert2.accept()
 }
 
-async function logut(driver) {
+async function checkLogOut(driver) {
   await driver.findElement(webdriver.By.id('logoutHeaderButton')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}login`))
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
@@ -105,46 +102,15 @@ async function registerPatient(driver, patient) {
 
 test('ID:S1. Test start application', async () => {
   await getHomePage(localURL)
+  expect(await driver.getTitle()).toEqual('Healthify')
 })
 
-test('ID:S2. Test registration follow by auto login for parent', async () => {
-  const user = new User()
-  await register(driver, user)
-  await logut(driver)
-})
-
-test('ID:S3. Register a Patient', async () => {
-  const user = new User()
-  await register(driver, user)
-  const patient = new User()
-  await registerPatient(driver, patient)
-  await logut(driver)
-})
-
-test('ID:S4. Log out', async () => {
-  const user = new User()
-  await register(driver, user)
-  await logut(driver)
-  await login(driver, 'parent', user)
-  await logut(driver)
-})
-
-test('ID:S5. Login as a registered Patient', async () => {
+test('ID:REQ103.', async () => {
   const parent = new User()
   await register(driver, parent)
   const patient = new User()
   await registerPatient(driver, patient)
-  await logut(driver)
+  await checkLogOut(driver)
   await login(driver, 'child', patient)
-  await logut(driver)
-})
-
-test('ID:S6. Registration for an already registered email', async () => {
-  const user = new User()
-  await register(driver, user)
-  await logut(driver)
-  await register(driver, user).catch(async () => {
-    const text = await driver.findElement(webdriver.By.xpath("//p[@id='email-helper-text']"), 10000).getText()
-    await expect(text).toEqual('User already registered')
-  })
+  await checkLogOut(driver)
 })

@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import AddIcon from '@material-ui/icons/Add'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import { Grid } from '@material-ui/core'
+import { Divider, Grid, ListItemText, Paper } from '@material-ui/core'
+import Moment from 'moment'
 import {
   OPEN_SNACKBAR,
   FIELD_CHANGE,
@@ -18,10 +15,11 @@ import {
   LOAD_WEIGHT,
   SAVE_WEIGHT,
 } from '../../constants/actionTypes'
-import CustomPaginationActionsTable from '../TablePagination'
+import CustomPaginationActionsTable from '../TableOverview'
 import TimeLineChart from '../TimeLineChart'
 import agentEHR from '../../agentEHR'
 import Reformat from '../../reformatEHRData'
+import profileAvatar from '../../Static/profile_avatar.png'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -83,22 +81,24 @@ const MonitorChildValue = (props) => {
   const { bloodsugar } = props
   const { weight } = props
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-  const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null
-  const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null
+  /*  const SU_LO = props.party ? props.party[id].additionalInfo.SU_LO : null;
+   const SU_HI = props.party ? props.party[id].additionalInfo.SU_HI : null; */
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
   const loading = props.inProgress
-  const colDesc = [
-    'Datum',
-    `Värde ${disease === 'DIABETES' ? '(mmol/L)' : '(vikt i kg)'}`,
-    `${disease === 'DIABETES' ? 'Blodsocker' : 'Viktklass'}`,
-  ]
   const input = bloodsugar || weight
+  const currSettings = props.currSettings ? props.currSettings : null
+  let chartFormat = disease === 'DIABETES' ? 'Idag' : 'Senaste månaden'
 
   const reformatForChart = (data) => {
     if (bloodsugar) return Reformat.bloodsugar(data, false, true)
     if (weight) return Reformat.weight(data, false, true)
     return null
   }
+
+  if (currSettings === 'month') chartFormat = 'Senaste månaden'
+  else if (currSettings === 'all') chartFormat = 'Alla mätningar'
+  else if (currSettings === 'week') chartFormat = 'Senaste veckan'
+  else if (currSettings === 'day') chartFormat = 'Idag'
 
   useEffect(() => {
     props.onLoad(id)
@@ -107,7 +107,7 @@ const MonitorChildValue = (props) => {
 
   const validate = (val) => {
     if (disease === 'DIABETES') {
-      return val <= 10 && val > 0
+      return val <= 15 && val > 0
     }
     return val <= 100 && val >= 40
   }
@@ -137,97 +137,70 @@ const MonitorChildValue = (props) => {
     props.onChangeField(ev.target.id, ev.target.value)
   }
 
-  const getIndication = (data) => {
-    switch (disease) {
-      case 'DIABETES':
-        if (data < SU_LO) {
-          return 'Lågt'
-        }
-        if (data > SU_HI) {
-          return 'Högt'
-        }
-        return 'Stabilt'
+  const avgValue = (data, horizon) => {
+    let sum = 0
+    let days = 0
+    let avg = 0
+    const blocker = new Date()
+    if (horizon === 'week') days = 7
+    else if (horizon === 'month') days = 31
+    else if (horizon === 'day' || !horizon) days = 1
 
-      case 'OBESITY':
-        if (data < 50) {
-          return 'Undervikt'
-        }
-        if (data > 59) {
-          return 'Övervikt'
-        }
-        return 'Stabilt'
-
-      default:
-        return 'Out of bounds'
+    blocker.setDate(blocker.getDate() - days)
+    for (let i = 0; i < data.length; i++) {
+      if (days !== 0)
+        if (Moment(blocker).format('YYYY-MM-DD HH:mm') > Moment(data[i].time).format('YYYY-MM-DD HH:mm')) break
+      sum += disease === 'DIABETES' ? data[i].value : data[i].weight
+      avg = sum / (i + 1)
     }
+    return avg
   }
 
   const reformat = (data) => {
     const dataObjects = []
     for (let i = 0; i < data.length; i++) {
       dataObjects.push({
-        time: new Date(data[i].time.substring(0, 16)).toLocaleString(),
-        value: disease === 'DIABETES' ? data[i].value : data[i].weight,
-        indicator: getIndication(disease === 'DIABETES' ? data[i].value : data[i].weight),
+        time: Moment(data[i].time).format(
+          'YYYY-MM-DD HH:mm',
+        ) /* new Date(data[i].time.substring(0, 16)).toLocaleString() */,
+        value: disease === 'DIABETES' ? `${data[i].value} mmol/L` : `${data[i].weight} kg`,
       })
     }
     return dataObjects
   }
 
   return (
-    <Container component="main" maxWidth="md">
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h3">
-          Hantera {name}s värden
-        </Typography>
-        <p></p>
-        <Grid container spacing={5}>
-          <Grid item xs={12} sm={12} md={6}>
-            <Typography component="h1" variant="h5">
-              Tabell
-            </Typography>
-            <CustomPaginationActionsTable
-              columns={['time', 'value', 'indicator']}
-              loading={loading}
-              rows={input ? reformat(input, false) : null}
-              titles={colDesc}
-              paginate
-            />
+    <div className={classes.main}>
+      <Paper elevation={0} hidden={!disease} style={{ backgroundColor: '#fafafa' }}>
+        <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
+          <Grid item xs={6}>
+            <img src={profileAvatar} alt="Profile"></img>
           </Grid>
-          <Grid item xs={12} sm={12} md={6}>
-            <Typography component="h1" variant="h5">
-              Graf
-            </Typography>
-            <TimeLineChart
-              chartData={input ? reformatForChart(input) : null}
-              label={disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}
-            ></TimeLineChart>
+          <Grid item xs={4} className={classes.avatarName}>
+            <Typography variant="h5"> {name} </Typography>
+            <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
           </Grid>
-          <Grid item xs={12} align="center">
-            <Avatar className={classes.avatar}>
-              <AddIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Skriv in ditt barns {disease === 'DIABETES' ? 'blodsockervärde' : 'uppmätta vikt'}
-            </Typography>
-            <Typography>{disease === 'DIABETES' ? 'mellan 1-10 mmol/L.' : 'mellan 40-100kg'}</Typography>
-            <form className={classes.form} noValidate onSubmit={(ev) => submitForm(ev)} autoComplete="off">
-              <Grid container spacing={0}>
+        </Grid>
+
+        <Grid container spacing={2} className={classes.root} alignItems="center" justify="center">
+          <Grid item xs={12} md={3} align="center">
+            <Paper variant="outlined" className={classes.paperOutline}>
+              <Typography variant="body1">
+                Skriv in ditt barns {disease === 'DIABETES' ? 'blodsockervärde' : 'uppmätta vikt'}
+              </Typography>
+
+              <form className={classes.form} noValidate onSubmit={(ev) => submitForm(ev)} autoComplete="off">
                 <Grid item xs={12}>
                   <TextField
-                    variant="outlined"
                     margin="normal"
+                    align="center"
                     required
                     id="childValue"
                     name="childValue"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">{disease === 'DIABETES' ? 'mmol/L' : 'kg'}</InputAdornment>
-                      ),
-                    }}
                     value={childValue}
                     disabled={open}
                     onChange={changeField}
+                    helperText={disease === 'DIABETES' ? 'mellan 1-15 mmol/L.' : 'mellan 40-100kg'}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -236,38 +209,117 @@ const MonitorChildValue = (props) => {
                     type="submit"
                     variant="contained"
                     color="primary"
+                    fullWidth
                     disabled={props.inProgress || open}
-                    className={classes.submit}
+                    className={classes.button}
                   >
                     Logga värde
                   </Button>
                 </Grid>
-              </Grid>
-            </form>
+              </form>
+            </Paper>
           </Grid>
         </Grid>
-      </div>
-    </Container>
+
+        <Grid container spacing={2} className={classes.root} justify="center">
+          <Grid item xs={12} sm={12} md={6}>
+            <Paper elevation={2} className={classes.paper} style={{ height: '100%' }}>
+              <Typography component="h1" variant="h5">
+                Barnets mätningar
+              </Typography>
+              <ListItemText secondary={disease === 'DIABETES' ? 'Blodsocker' : 'Vikt'} />
+              <CustomPaginationActionsTable
+                columns={['time', 'value']}
+                loading={loading}
+                rows={input ? reformat(input, false) : null}
+                paginate={false}
+              />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={12} md={6}>
+            <Paper elevation={2} className={classes.paper} style={{ width: '100%' }}>
+              <Grid container spacing={2} className={classes.root}>
+                <Grid item md={10} xs={8}>
+                  <Typography component="h1" variant="h5">
+                    {disease === 'DIABETES' ? 'Blodsocker' : 'Vikt'}
+                  </Typography>
+                </Grid>
+                <Grid item md={2} xs={4}>
+                  <Typography component="h1" variant="h5">
+                    {input ? Math.round(avgValue(input, currSettings) * 100) / 100 : 'Laddar..'}
+                  </Typography>
+                  <Divider />
+                </Grid>
+                <Grid item md={10} xs={8}>
+                  <ListItemText secondary={chartFormat} />
+                </Grid>
+                <Grid item md={2} xs={4}>
+                  <ListItemText secondary="Genomsnitt" />
+                </Grid>
+                <Grid item md={12}>
+                  <TimeLineChart
+                    currSettings={disease === 'DIABETES' ? 'day' : 'month'}
+                    chartData={input ? reformatForChart(input) : null}
+                    label={disease === 'DIABETES' ? 'Blodsocker (mmol/L)' : 'Vikt (kg)'}
+                  ></TimeLineChart>
+                </Grid>
+              </Grid>
+            </Paper>
+            <Grid container justify="center" alignItems="center" className={classes.root}>
+              <Grid item xs={6}>
+                <Button
+                  className={classes.button}
+                  fullWidth
+                  variant="outlined"
+                  color="primary"
+                  href={`/parent-child-overview/${id}`}
+                >
+                  Tillbaka
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Paper>
+    </div>
   )
 }
 
 const styles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    // height: '100%',
+    padding: theme.spacing(2),
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+  paperOutline: {
+    borderWidth: 5,
+    borderColor: theme.palette.primary.main,
+    borderRadius: 20,
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(2),
+  },
+  root: {
+    margin: '0px !important',
+    // display: 'horizontal',
+    padding: theme.spacing(1),
+    maxWidth: '100%',
   },
   form: {
     width: '50%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  main: {
+    width: '100%',
+  },
+  avatar: {
+    marginTop: theme.spacing(6),
+  },
+  avatarName: {
+    textAlign: 'center',
+  },
+  button: {
+    top: '5px',
+    marginBottom: '5px',
+    padding: '10px 5px 10px 5px',
   },
 }))
 
