@@ -61,8 +61,7 @@ const NewChallenge = (props) => {
         desc: disease === "DIABETES" ? 'Logga ditt blodsocker 7 dagar på raken för att vinna utmaningen!': 'Spring 20 gånger',
         rew : disease === "DIABETES" ? 'Åka och bada' : 'Biobesök',
         days: disease === "DIABETES" ? '7' : '20'           
-      }
-    
+      }   
     
   useEffect(() => {
     props.onLoad(id)
@@ -84,9 +83,6 @@ const NewChallenge = (props) => {
       //redirect href={`/add-reward/${id}`}
     }
 
-
-    
-
 return (
 <Grid item xs={12} className={classes.card}>
 
@@ -99,14 +95,6 @@ return (
   <AccordionSummary avatar={<EmojiEventsIcon/>} expandIcon={<ExpandMoreIcon />}>
   <Typography variant="h5"> Skapa egen Utmaning </Typography>
   </AccordionSummary>
-{/*   <CardHeader
-    title="Skapa egen Utmaning"
-    titleTypographyProps={{ variant: "h5" }}
-    avatar={<EmojiEventsIcon></EmojiEventsIcon>}
-  >
-    \
-  </CardHeader> */}
-
   <RedeemIcon
     className={classes.RedeemIcon}
     fontSize="large"
@@ -118,7 +106,6 @@ return (
         value={nameOf}
         id="nameOf"
         margin="dense"
-        labelId="goalweight-label"
         onChange={handleForm}
       />
     </FormControl>
@@ -130,7 +117,6 @@ return (
         value={description}
         id="description"
         margin="dense"
-        labelId="description-label"
         onChange={handleForm}
       />
     </FormControl>
@@ -141,7 +127,6 @@ return (
         fullWidth
         id="reward"
         margin="dense"
-        labelId="reward-label"
         onChange={handleForm}
       />
     </FormControl>
@@ -154,7 +139,6 @@ return (
         value={endDate}
         id="endDate"
         margin="dense"
-        labelId="day-label"
         onChange={handleForm}
       />
     </FormControl>
@@ -171,12 +155,13 @@ return (
 
   </Accordion>
   </form>
+
+{/* ---------------------------- */}
+
 <form 
-    onSubmit={submitForm(nameOf, description, reward, endDate, id)}
+    onSubmit={submitForm(premade.name, premade.desc, premade.rew, premade.days, id)}
     noValidate>
 <Accordion elevation={2} className={classes.card}>
-
-
 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
 <Typography variant="h5">Välj en förbestämd utmaning</Typography>
 </AccordionSummary>
@@ -186,7 +171,7 @@ return (
   ></RedeemIcon>
 
   
-<Grid className={classes.premade}>
+<Grid className={classes.inputs}>
   <Typography  color="primary" variant="caption">Namn på utmaning</Typography>
       <Typography >
       {premade.name}
@@ -194,7 +179,7 @@ return (
         </Typography>
         </Grid>
 
-        <Grid className={classes.premade}>
+        <Grid className={classes.inputs}>
         <Typography  color="primary" variant="caption" >Beskrivning</Typography>
         <Typography >
         {premade.desc}
@@ -202,7 +187,7 @@ return (
         </Typography>
         </Grid>
         
-        <Grid className={classes.premade}>
+        <Grid className={classes.inputs}>
         <Typography  color="primary" variant="caption">Belöning</Typography>
         <Typography >
         {premade.rew}
@@ -210,7 +195,7 @@ return (
         </Typography>
         </Grid>
 
-        <Grid className={classes.premade}>
+        <Grid className={classes.inputs}>
         <Typography  color="primary" variant="caption">Antal Dagar</Typography>
         <Typography >
           {premade.days}
@@ -265,11 +250,6 @@ const styles = makeStyles((theme) => ({
       display: "flex",
       margin: "auto",
     },
-    premade: {
-      padding: theme.spacing(1),
-      //marginLeft: theme.spacing(1),
-    //  marginBottom: theme.spacing(2),
-    }
   }));
   
   export default connect(mapStateToProps, mapDispatchToProps)(NewChallenge);

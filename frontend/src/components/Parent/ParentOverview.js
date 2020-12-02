@@ -110,25 +110,6 @@ const ParentOverview = (props) => {
         </Grid>
 
       </Grid>
-      <Grid container justify='center' className={classes.root} spacing={1} >
-      <Grid item xs={12} sm={8} md={4}>
-          <Button 
-          className={classes.button}
-          component= 'a' 
-          href={`/parent-reward/${id}`}
-          fullWidth
-          variant="contained"
-            color="primary"
-          
-          
-          > Utmaningar
-      {/*     <Paper className={classes.paper} elevation={2}>
-          <Typography variant='h5'> Utmaningar</Typography>
-          </Paper> */}
-          </Button>
-
-        </Grid>
-      </Grid>
 
       <Grid container className={classes.root} spacing={2} justify="center" height="100%">
         <Grid item xs={12} md={4}>
@@ -177,7 +158,7 @@ const ParentOverview = (props) => {
                   </ListItem>
                 </Grid>
                 <Grid item xs={1} style={{ alignSelf: 'center' }}>
-                  <a href="/parent-reward">
+                  <a href={`/parent-reward/${id}`}>
                     <SvgIcon width="22" height="10" viewBox="2 5 22 12">
                       <path
                         d="M0 15.885L6.79892 9L0 2.115L2.09312 0L11 9L2.09312 18L0 15.885Z"
