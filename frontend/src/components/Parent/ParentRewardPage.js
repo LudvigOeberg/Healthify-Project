@@ -9,16 +9,18 @@ import {
   Container,
   Grid,
   Button,
+  SvgIcon,
+  Typography,
+  Paper
 } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
-import EmojiEventsIcon from "@material-ui/icons/EmojiEvents";
-//import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Divider } from "@material-ui/core";
 import RewardCardList from './RewardCardList';
 import agentEHR from "../../agentEHR";
+import profileAvatar from '../../Static/profile_avatar.png'
 
 import {
   PAGE_UNLOADED,
@@ -48,32 +50,60 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 const ParentRewardPage = (props) => {
-  
-
   const classes = styles();
-  const {id}  = props.match.params
+  const { id }  = props.match.params
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
-  //funkar inte med 2 barn [0]
-  const rewards = props.currentUser ? props.currentUser.children[0].child.rewards : null
-  //const rewards = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const children = props.currentUser ? props.currentUser.children : null
+  const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
 
+  const matchChild = (id, children) =>{
+    let rewards = null
+    for( var i=0; i<children.length; ++i) {
+      if(children[i].child.ehrid===id)
+        rewards = children[i].child.rewards
+    }
+    return rewards
+  }
   useEffect(() => {
     props.onLoad(id)
     props.loadValues(id, 0, 11, disease)
   }, [id, disease]) // eslint-disable-line
   
   return (
-    /* -------------------------------Utmaningar-------------------------------------- */
-
     <Container className={classes.root}>
-      <Grid item xs={12} className={classes.card}>
+            <Grid justify="center" direction="column" alignItems="center" container>
+        <Grid justify="left" alignItems="left" container>
+          <a href = {`/parent`}>
+          <Paper className={classes.backpaper} elevation={5}>
+            <SvgIcon viewBox="0 0 15 22">
+              <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" fill="#4F4F4F"
+                fillOpacity="1"></path>
+            </SvgIcon>
+          </Paper>
+          </a>
+        </Grid>
+        <Grid item xs={6}>
+          <img src={profileAvatar} alt="Profile"></img>
+        </Grid>
+        <Grid item xs={4} className={classes.avatarName}>
+          <Typography variant="h5"> {name} </Typography>
+          <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
+        </Grid>
+      </Grid>
+    
         <Card elevation={5} className={classes.card}>
           <CardHeader
             title="Utmaningar"
             titleTypographyProps={{ variant: 'h5' }}
-            avatar={<EmojiEventsIcon></EmojiEventsIcon>}
+            avatar={<SvgIcon width="22" height="10" viewBox="2 5 22 12">
+            <path
+              d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM7 10.82C5.84 10.4 5 9.3 5 8V7h2v3.82zM19 8c0 1.3-.84 2.4-2 2.82V7h2v1z"
+              fill="#FFD700"
+              fillOpacity="1"
+            />
+          </SvgIcon>}
           >
-            \
+            
           </CardHeader>
           <CardContent>
             <Button
@@ -89,7 +119,7 @@ const ParentRewardPage = (props) => {
             <Grid> Pågående</Grid>
           <Grid>
 
-          <RewardCardList rewards={rewards}>
+          <RewardCardList rewards={matchChild(id, children)}>
 
           </RewardCardList>
 
@@ -97,7 +127,7 @@ const ParentRewardPage = (props) => {
             <Grid>
               <List subheader="Avklarade">
                 <ListItem>
-                  <ListItemText> text </ListItemText>
+                  <ListItemText> Spring Linköpingsloppet </ListItemText>
                   <ListItemIcon>
                     <Button>
                       <DeleteIcon color="primary" />
@@ -107,7 +137,7 @@ const ParentRewardPage = (props) => {
                 <Divider />
 
                 <ListItem>
-                  <ListItemText> Åka och bada </ListItemText>
+                  <ListItemText>Logga värden varje dag</ListItemText>
                   <ListItemIcon>
                     <Button>
                       <DeleteIcon color="primary" />
@@ -119,25 +149,29 @@ const ParentRewardPage = (props) => {
             </Grid>
           </CardContent>
         </Card>
-      </Grid>
-
-
-
-
     </Container>
   )
 }
 
 const styles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(0),
     alignItems: 'top',
-    display: 'flex',
     padding: theme.spacing(1),
+    
   },
   card: {
     borderRadius: 10,
-    padding: theme.spacing(1),
+    padding: theme.spacing(0),
+  },
+  backpaper: {
+    width: "60px",
+    height: "60px",
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    borderRadius: "50%",
+
   },
   innerCard: {
     borderRadius: 10,
@@ -155,6 +189,12 @@ const styles = makeStyles((theme) => ({
   RedeemIcon: {
     display: 'flex',
     margin: 'auto',
+  },
+  avatar: {
+    marginTop: theme.spacing(2),
+  },
+  avatarName: {
+    textAlign: 'center',
   },
 }))
 

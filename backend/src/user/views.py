@@ -248,4 +248,16 @@ class ChildRewardResource(MethodResource):
         except:
             db.session.rollback()
             raise InvalidUsage.unknown_error()
-        return 200
+        return reward
+"""
+    @jwt_required
+    @marshal_with(user_schema)
+    @doc(description="Delete reward")
+    def delete(self):
+        ehrid = request.args['ehrid']
+        child = Child.query.filter_by(ehrid=ehrid).first()
+        db.session.delete(child)
+        db.session.commit()
+        return current_user
+
+"""

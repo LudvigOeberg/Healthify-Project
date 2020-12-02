@@ -38,7 +38,7 @@ const ParentOverview = (props) => {
   useEffect(() => {
     props.onLoad(id)
     props.loadValues(id, 0, 11, disease)
-  }, [id, disease]) // eslint-disable-line
+      }, [id, disease]) // eslint-disable-line
 
   const doctor = {
     name: 'Doktor Göran',
@@ -212,6 +212,7 @@ const ParentOverview = (props) => {
     </div>
   )
 }
+
 
 const styles = makeStyles((theme) => ({
   root: {

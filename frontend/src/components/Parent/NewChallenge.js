@@ -45,7 +45,7 @@ const mapStateToProps = (state) => ({
     },
     submitGoal: (nameOf, description, reward, endDate, ehrid, snackbar) => {
       const payload=agent.Parent.addReward(nameOf, description, reward, endDate, ehrid)
-      dispatch({ type: SAVE_REWARD,  payload, snackbar}) 
+      dispatch({ type: SAVE_REWARD, ehrid, payload, snackbar}) 
     }
     
     })
