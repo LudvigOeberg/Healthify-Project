@@ -63,7 +63,17 @@ const ParentOverview = (props) => {
 
   return (
     <div className={classes.main}>
-      <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
+      <Grid justify="center" direction="column" alignItems="center" container>
+        <Grid justify="left" alignItems="left" container>
+          <a href = {`/parent`}>
+          <Paper className={classes.backpaper} elevation={5}>
+            <SvgIcon viewBox="0 0 15 22">
+              <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" fill="#4F4F4F"
+                fillOpacity="1"></path>
+            </SvgIcon>
+          </Paper>
+          </a>
+        </Grid>
         <Grid item xs={6}>
           <img src={profileAvatar} alt="Profile"></img>
         </Grid>
@@ -213,13 +223,21 @@ const styles = makeStyles((theme) => ({
     marginBottom: '5px',
     padding: '10px 5px 10px 5px',
   },
+  backpaper: {
+    width: "60px",
+    height: "60px",
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    borderRadius: "50%",
 
+  },
   paper: {
     padding: theme.spacing(2),
     marginTop: theme.spacing(2),
   },
   avatar: {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(2),
   },
   avatarName: {
     textAlign: 'center',
