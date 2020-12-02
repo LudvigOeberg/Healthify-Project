@@ -39,17 +39,18 @@ const mapDispatchToProps = (dispatch) => ({
 const useStyles = makeStyles((theme) => ({
   paper: {
     //  marginTop: theme.spacing(8),
-    marginTop: '-3%',
+    marginTop: '-7%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   backgroundImage: {
-    width: '100%',
+    maxWidth: '110%',
+    maxHeight: '50vh',
   },
   card: {
     position: 'relative',
-    top: '-100px',
+    top: '-15vh',
     borderWidth: 5,
     borderColor: theme.palette.primary.main,
     borderRadius: 20,
@@ -60,14 +61,6 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     color: theme.palette.text.primary,
-  },
-  diet: {
-    marginTop: '7vh',
-    borderWidth: 5,
-    borderColor: theme.palette.primary.main,
-    borderRadius: 20,
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
   },
   form: {
     width: '100%', // Fix IE 11 issue.
