@@ -163,10 +163,15 @@ const MonitorChildValue = (props) => {
       days = 7
     else if (horizon === 'month')
       days = 31
-    else if (horizon === 'day' || !horizon)
+    else if (horizon === 'day')
       days = 1
+    else if (!horizon)
+      days=disease==='DIABETES' ? 1 : 30
 
-    blocker.setDate(blocker.getDate() - days)
+    if(days===1)
+      blocker.setHours(0,0,0,0)
+    else 
+      blocker.setDate(blocker.getDate()-days)
     for (let i = 0; i < data.length; i++) {
       if (days !== 0)
         if (Moment(blocker).format('YYYY-MM-DD HH:mm') > Moment(data[i].time).format('YYYY-MM-DD HH:mm'))
@@ -195,7 +200,7 @@ const MonitorChildValue = (props) => {
       <Paper elevation={0} hidden={!disease} style={{backgroundColor:'#fafafa'}}>
       <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
         <Grid item xs={6}>
-        <img src={profileAvatar} alt="Profile"></img>
+        <img src={profileAvatar} alt="Profile" width='73' height='85'></img>
         </Grid>
         <Grid item xs={4} className={classes.avatarName}>
           <Typography variant="h5"> {name} </Typography>
