@@ -69,7 +69,7 @@ class Child(User):
     __mapper_args__ = {'polymorphic_identity': 'child'}
     id = Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     parents = relationship('Parent', secondary=parents_children, back_populates="children")
-    ehrid = Column(db.String)
+    ehrid = Column(db.String, unique=True)
     timer = Column(db.DateTime, default=None, nullable=True)
     rewards = relationship('Reward', backref='child', lazy=True)
 
