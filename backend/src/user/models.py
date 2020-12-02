@@ -51,6 +51,7 @@ parents_children = db.Table('parents_children',
 
 class Parent(User):
     __tablename__ = 'parent'
+    __table_args__ = {'extend_existing': True}
     __mapper_args__ = {'polymorphic_identity': 'parent'}
     id = Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     children = relationship('Child', secondary=parents_children, back_populates="parents")
@@ -70,6 +71,7 @@ class Child(User):
     parents = relationship('Parent', secondary=parents_children, back_populates="children")
     ehrid = Column(db.String)
     timer = Column(db.DateTime, default=None, nullable=True)
+    rewards = relationship('Reward', backref='child', lazy=True)
 
     def __init__(self, name, surname, email, password, parent, ehrid, **kwargs):
         super().__init__(name, surname, email, password, **kwargs)
@@ -79,3 +81,22 @@ class Child(User):
     def __repr__(self):
         """Represent instance as a unique string."""
         return '<Child({name!r}{parent!r})>'.format(name=self.name, parent=self.parents)
+
+
+class Reward(SurrogatePK, Model):
+    __tablename__= 'reward'
+    nameOf = Column(db.String, nullable=False)
+    description = Column(db.String, nullable=False)
+    reward = Column(db.String, nullable=False)
+    endDate = Column(db.DateTime, nullable=False)
+    child_ehrid = Column(db.Integer, db.ForeignKey('child.ehrid'), nullable=False)
+
+    def __init__(self, nameOf, description, reward, endDate, ehrid, **kwargs):
+        db.Model.__init__(self, nameOf=nameOf, description=description, reward=reward, endDate = endDate, child_ehrid = ehrid, **kwargs)
+        
+    
+    def __repr__(self):
+        """Represent instance as a unique string."""
+        return '<Reward({nameOf!r})>'.format(nameOf=self.nameOf)
+
+    

@@ -3,12 +3,11 @@ import Container from '@material-ui/core/Container'
 import { withStyles } from '@material-ui/core/styles'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
+import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded'
 import ChildList from './ChildList'
 import { PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import profileAvatar from '../../Static/rsz_avatar.png'
-
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -48,8 +47,8 @@ class ParentPage extends Component {
                 <Typography variant="h5"> {name} </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant='h6' align='center'>
-                  {children && children[0] ? "Registrerade barn" : 'Inga registrerade barn'}
+                <Typography variant="h6" align="center">
+                  {children && children[0] ? 'Registrerade barn' : 'Inga registrerade barn'}
                 </Typography>
               </Grid>
             </Grid>
@@ -65,26 +64,24 @@ class ParentPage extends Component {
         <div className={classes.paper}>
           <Grid className={classes.avatar} justify="center" direction="column" alignItems="center" container>
             <Grid item xs={6}>
-              <img src={profileAvatar} alt="Profile" ></img>
+              <img src={profileAvatar} alt="Profile"></img>
             </Grid>
             <Grid item xs={4} className={classes.avatarName}>
               <Typography variant="h5"> {name} </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant='h6' align='center'>
+              <Typography variant="h6" align="center">
                 Inga registrerade barn
-            </Typography>
+              </Typography>
             </Grid>
           </Grid>
 
-
-
           <div className={classes.paper}>
             <a className={classes.link} id="parentAddChildLink" href="/register-patient">
-            <AddCircleOutlineRoundedIcon color="primary" style={{ fontSize: 100 }} />
-            <Typography fontSize="50" color="primary" align='center'>
-              Lägg till barn
-            </Typography>
+              <AddCircleOutlineRoundedIcon color="primary" style={{ fontSize: 100 }} />
+              <Typography fontSize="50" color="primary" align="center">
+                Lägg till barn
+              </Typography>
             </a>
           </div>
         </div>
@@ -121,8 +118,8 @@ const styles = (theme) => ({
   avatarName: {
     textAlign: 'center',
   },
-  link:{
-    textDecoration: 'none !important'
-  }
+  link: {
+    textDecoration: 'none !important',
+  },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ParentPage))

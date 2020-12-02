@@ -49,10 +49,8 @@ function ChildListItem(props) {
 
   Moment.locale('sv')
   return (
-
     <Paper className={classes.paper}>
       <List className={classes.card}>
-
         <ListItem>
           <ListItemAvatar>
             <Avatar src={profileAvatar} alt={child.name} />
@@ -68,12 +66,7 @@ function ChildListItem(props) {
           </a>
         </ListItem>
         <Divider />
-        <ListItem
-          id="parentsChildOverviewButton"
-          button
-          component="a"
-          href={`/parent-child-overview/${child.ehrid}`}
-        >
+        <ListItem id="parentsChildOverviewButton" button component="a" href={`/parent-child-overview/${child.ehrid}`}>
           <ListItemIcon>
             <AccountBox color="primary" />
           </ListItemIcon>
@@ -81,11 +74,8 @@ function ChildListItem(props) {
         </ListItem>
 
         <ChildListItemValue ehrId={child.ehrid} partyIn={props.party ? props.party[child.ehrid] : null} />
-
       </List>
     </Paper>
-
-
   )
 }
 

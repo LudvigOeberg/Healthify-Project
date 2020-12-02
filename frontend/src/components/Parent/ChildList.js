@@ -1,7 +1,7 @@
 import { Container, Grid, Typography } from '@material-ui/core'
 import { connect } from 'react-redux'
 import React from 'react'
-import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
+import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded'
 import { makeStyles } from '@material-ui/core/styles'
 import ChildListItem from './ChildListItem'
 /**
@@ -27,10 +27,10 @@ function ChildList(props) {
         <Grid item xs={12}>
           <div className={classes.paper}>
             <a className={classes.link} id="parentAddChildLink" href="/register-patient">
-            <AddCircleOutlineRoundedIcon color="primary" style={{ fontSize: 100 }} />
-            <Typography fontSize="50" color="primary" align='center'>
-              Lägg till barn
-            </Typography>
+              <AddCircleOutlineRoundedIcon color="primary" style={{ fontSize: 100 }} />
+              <Typography fontSize="50" color="primary" align="center">
+                Lägg till barn
+              </Typography>
             </a>
           </div>
         </Grid>
@@ -64,9 +64,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     maxWidth: '100%',
   },
-  link:{
-    textDecoration: 'none !important'
-  }
+  link: {
+    textDecoration: 'none !important',
+  },
 }))
 
 export default connect(mapStateToProps)(ChildList)

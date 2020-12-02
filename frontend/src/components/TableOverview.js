@@ -110,10 +110,7 @@ export default function CustomPaginationActionsTable({ loading = false, ...props
           {rowsdivided.slice(0, lrows > 1 ? 2 : lrows).map((rowdiv) => (
             <>
               <p></p>
-              <Typography variant="h6">
-                {' '}
-                {rowdiv.section}{' '}
-              </Typography>
+              <Typography variant="h6"> {rowdiv.section} </Typography>
               {rowdiv.rows.map((row) => (
                 <TableRow hover>
                   {props.columns.map((data) => (

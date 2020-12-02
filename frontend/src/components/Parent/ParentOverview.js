@@ -38,7 +38,7 @@ const ParentOverview = (props) => {
   useEffect(() => {
     props.onLoad(id)
     props.loadValues(id, 0, 11, disease)
-  }, [id, disease]) // eslint-disable-line
+      }, [id, disease]) // eslint-disable-line
 
   const doctor = {
     name: 'Doktor Göran',
@@ -65,13 +65,12 @@ const ParentOverview = (props) => {
     <div className={classes.main}>
       <Grid justify="center" direction="column" alignItems="center" container>
         <Grid justify="left" alignItems="left" container>
-          <a href = {`/parent`}>
-          <Paper className={classes.backpaper} elevation={5}>
-            <SvgIcon viewBox="0 0 15 22">
-              <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" fill="#4F4F4F"
-                fillOpacity="1"></path>
-            </SvgIcon>
-          </Paper>
+          <a href="/parent">
+            <Paper className={classes.backpaper} elevation={5}>
+              <SvgIcon viewBox="0 0 15 22">
+                <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" fill="#4F4F4F" fillOpacity="1"></path>
+              </SvgIcon>
+            </Paper>
           </a>
         </Grid>
         <Grid item xs={6}>
@@ -157,7 +156,7 @@ const ParentOverview = (props) => {
                   </ListItem>
                 </Grid>
                 <Grid item xs={1} style={{ alignSelf: 'center' }}>
-                  <a href="/parent-reward">
+                  <a href={`/parent-reward/${id}`}>
                     <SvgIcon width="22" height="10" viewBox="2 5 22 12">
                       <path
                         d="M0 15.885L6.79892 9L0 2.115L2.09312 0L11 9L2.09312 18L0 15.885Z"
@@ -224,13 +223,12 @@ const styles = makeStyles((theme) => ({
     padding: '10px 5px 10px 5px',
   },
   backpaper: {
-    width: "60px",
-    height: "60px",
+    width: '60px',
+    height: '60px',
     padding: theme.spacing(2),
     marginTop: theme.spacing(1),
     marginLeft: theme.spacing(1),
-    borderRadius: "50%",
-
+    borderRadius: '50%',
   },
   paper: {
     padding: theme.spacing(2),

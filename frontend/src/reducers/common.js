@@ -23,6 +23,8 @@ import {
   SAVE_TIMER,
   SAVE_SIMULATION,
   SAVE_WEIGHT,
+  SAVE_REWARD,
+  DELETE_REWARD,
 } from '../constants/actionTypes'
 
 const defaultState = {
@@ -109,6 +111,34 @@ export default (state = defaultState, action) => {
             }
           : action.snackbar,
       }
+    case SAVE_REWARD:
+      return {
+        ...state,
+        inProgress: false,
+        redirectTo: action.error ? null : `/parent-child-overview/${action.ehrid}`,
+        snackbar: action.error
+          ? {
+              open: true,
+              message: 'Något gick fel',
+              color: 'warning',
+            }
+          : action.snackbar,
+      }
+
+    case DELETE_REWARD:
+      return {
+        ...state,
+        // redirectTo: `/parent-reward/${action.payload.ehrid}`,
+        inProgress: false,
+        snackbar: action.error
+          ? {
+              open: true,
+              message: 'Något gick fel med rewardcard',
+              color: 'warning',
+            }
+          : action.snackbar,
+      }
+
     case FIELD_CHANGE:
       return { ...state, [action.key]: action.value }
     case UPDATE_BOOLEAN:
