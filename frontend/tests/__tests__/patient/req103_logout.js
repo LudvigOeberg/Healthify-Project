@@ -9,8 +9,11 @@ beforeAll(() => {
   const options = new chrome.Options()
   options.addArguments('--test-type')
   options.addArguments('--start-maximized')
-  // options.addArguments('--headless')
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
+})
+
+afterAll(() => {
+  driver.close()
 })
 
 function randInt(maxNum) {

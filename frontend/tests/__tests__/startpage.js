@@ -8,18 +8,15 @@ const localURL = 'http://localhost:4100/'
 beforeEach(async () => {
   jest.setTimeout(30000)
   const options = new chrome.Options()
-  options.addArguments('--headless')
   options.addArguments('--test-type')
   options.addArguments('--start-maximized')
-  options.addArguments('--remote-debugging-port=9222')
 
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
-});
-
+})
 
 afterEach(async () => {
   await driver.quit()
-});
+})
 
 async function connectToEHR() {
   await driver.get(localURL)
@@ -39,9 +36,8 @@ test('TestCaseID:51. Check Healthify startpage', async () => {
   await connectToEHR()
   expect(await driver.getTitle()).toEqual('Healthify')
 })
-/*
 test('TestCaseID:52. Check if log in button exists', async () => {
-  // await connectToEHR()
+  await connectToEHR()
   await driver.get(localURL)
 
   let present = true
@@ -54,7 +50,7 @@ test('TestCaseID:52. Check if log in button exists', async () => {
 })
 
 test('TestCaseID:53. Check if registration button exists', async () => {
-  // await connectToEHR()
+  await connectToEHR()
   await driver.get(localURL)
 
   let present = true
@@ -67,16 +63,15 @@ test('TestCaseID:53. Check if registration button exists', async () => {
 })
 
 test('TestCaseID:54. Check log in button functionallity', async () => {
-  // await connectToEHR()
+  await connectToEHR()
   await driver.get(localURL)
   await driver.findElement(webdriver.By.xpath("//span[text()='Logga in']")).click()
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
 })
 
 test('TestCaseID:55. Check registration button functionallity', async () => {
-  // await connectToEHR()
+  await connectToEHR()
   await driver.get(localURL)
   await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click()
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}register`)
 })
-*/

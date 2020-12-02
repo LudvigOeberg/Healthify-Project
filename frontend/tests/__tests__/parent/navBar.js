@@ -2,14 +2,12 @@
 let driver
 const webdriver = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
-// const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 beforeAll(() => {
   jest.setTimeout(300000)
   const options = new chrome.Options()
   options.addArguments('--test-type')
   options.addArguments('--start-maximized')
-  // options.addArguments('--headless')
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
