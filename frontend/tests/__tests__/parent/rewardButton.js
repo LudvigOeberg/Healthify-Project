@@ -93,36 +93,19 @@ async function logut(driver) {
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
 }
 
-test('TestCaseID:114.1.1. Test HbA1c', async () => {
-  const user = new User()
-  await connectToEHR()
-  await register(driver, user)
-  const patient = new User()
-  await registerPatient(driver, patient, 'diabetes', [5.5, 5.5, 5.5])
-  await driver.findElement(webdriver.By.id('parentsChildOverviewButton')).click()
-  expect(await driver.getCurrentUrl()).toContain(`${localURL}parent-child-overview`)
+test('TestCaseID:112.1.1 Test Reward Button', async () => {
+    const user = new User()
+    await connectToEHR()
+    await register(driver, user)
+    const patient = new User()
+    await registerPatient(driver, patient, 'obesity', [45])
+    await driver.findElement(webdriver.By.id('parentsChildOverviewButton')).click()
 
-  // A parent and child have been created here
-  await driver.findElement(webdriver.By.id('toChildValuesButton')).click()
-  await driver.findElement(webdriver.By.id('childValue')).sendKeys('5')
-  await driver.findElement(webdriver.By.id('addValueToChildButton')).click()
-
-  // A measurement value has now been added to the child
-
-  await driver.findElement(webdriver.By.id('healthifyIconButton')).click()
-  await driver.findElement(webdriver.By.id('parentsChildOverviewButton')).click()
-  await driver.findElement(webdriver.By.id('toSimulatePageButton')).click()
-  // The parent is now in the simulation page
-
-  await driver.sleep(5000)
-  await driver.findElement(webdriver.By.id('HbA1cDropDownSimulation')).click()
-  //Slider = webdriver.By.xpath("//span[@class='MuiSlider-thumb MuiSlider-thumbColorPrimary PrivateValueLabel-thumb-32']")
-  //Destination = webdriver.By.xpath("//span[@class='MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-align-items-xs-center MuiGrid-justify-xs-center']")
-  //xCoord = Slider.getLocation().getX()
-  //await driver.Slider.click().dragAndDropBy(Slider, Destination).build().perform()
-  await driver.sleep(5000)
-
-
+    driver.executeScript(
+        'arguments[0].click();',
+        await driver.findElement(webdriver.By.xpath("//a[@href='/parent-reward']")),
+      )
+      await driver.wait(webdriver.until.urlIs(`${localURL}parent-reward`), 10000, 'Timed out after 5 sec', 100)
   
-  await logut(driver)
-})
+    await logut(driver)   
+  })
