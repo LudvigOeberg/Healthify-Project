@@ -87,9 +87,9 @@ const ChildMonitor = (props) => {
         <Grid container spacing={2} className={classes.stats}>
           <Grid item xs={3}>
             <Paper className={`${classes.circle} ${classes.circleSm}`}>
-              <div style={{ marginTop: '-63px'}}>
-                  <Typography variant="h6">78</Typography>
-                  <Typography variant="body2">mmol/L</Typography>
+              <div style={{ marginTop: '-63px' }}>
+                <Typography variant="h6">78</Typography>
+                <Typography variant="body2">mmol/L</Typography>
               </div>
             </Paper>
             <Box textAlign="center">
@@ -99,16 +99,18 @@ const ChildMonitor = (props) => {
             </Box>
           </Grid>
           <Grid item xs={6}>
-              <img className={classes.centerIcon} src={smileChild} alt="smile child"></img>
+            <img className={classes.centerIcon} src={smileChild} alt="smile child"></img>
           </Grid>
           <Grid item xs={3}>
-          <Paper className={`${classes.circle} ${classes.circleSm}`}>
-              <div style={{ marginTop: '-60px'}}>
-                <Typography style={{ margin: '0 0 0 0'}} variant="body2">0</Typography> 
-                <hr style={{width:"50%" }}/>               
+            <Paper className={`${classes.circle} ${classes.circleSm}`}>
+              <div style={{ marginTop: '-60px' }}>
+                <Typography style={{ margin: '0 0 0 0' }} variant="body2">
+                  0
+                </Typography>
+                <hr style={{ width: '50%' }} />
                 <Typography variant="body2">0</Typography>
               </div>
-          </Paper>
+            </Paper>
             <Box textAlign="center">
               <Typography className={classes.text} variant="body1">
                 Hög/Låg
@@ -118,9 +120,9 @@ const ChildMonitor = (props) => {
           <Grid justify="space-evenly" alignItems="flex-start" container spacing={2} className={classes.circlesUnder}>
             <Grid item xs={3}>
               <Paper className={`${classes.circle} ${classes.circlesUnder}`}>
-                <div style={{ marginTop: '-60px'}}>
-                    <Typography variant="h6">50</Typography>
-                    <Typography variant="body2">g</Typography>
+                <div style={{ marginTop: '-60px' }}>
+                  <Typography variant="h6">50</Typography>
+                  <Typography variant="body2">g</Typography>
                 </div>
               </Paper>
               <Box textAlign="center">
@@ -131,7 +133,7 @@ const ChildMonitor = (props) => {
             </Grid>
             <Grid item xs={3}>
               <Paper className={`${classes.circle} ${classes.circleSm}`}>
-                <div style={{ marginTop: '-65px'}}>
+                <div style={{ marginTop: '-65px' }}>
                   <Typography variant="h4">15</Typography>
                   <Typography variant="body3">dagar</Typography>
                 </div>
@@ -143,12 +145,12 @@ const ChildMonitor = (props) => {
               </Box>
             </Grid>
             <Grid item xs={3}>
-            <Paper className={`${classes.circle} ${classes.circlesUnder}`}>
-              <div style={{ marginTop: '-60px'}}>
-                <Typography variant="h6">1</Typography>
-                <Typography variant="body2">+ -</Typography>                    
-              </div>
-            </Paper>
+              <Paper className={`${classes.circle} ${classes.circlesUnder}`}>
+                <div style={{ marginTop: '-60px' }}>
+                  <Typography variant="h6">1</Typography>
+                  <Typography variant="body2">+ -</Typography>
+                </div>
+              </Paper>
               <Box textAlign="center">
                 <Typography className={classes.text} variant="body1">
                   Avvikelse
@@ -193,7 +195,7 @@ const ChildMonitor = (props) => {
 
 const styles = makeStyles((theme) => ({
   circle: {
-    textAlign: "center",
+    textAlign: 'center',
     width: '100%',
     borderRadius: '50%',
     background: '#F2F2F2',
@@ -216,7 +218,7 @@ const styles = makeStyles((theme) => ({
   },
   centerIcon: {
     width: '100%',
-    borderRadius: "50%"
+    borderRadius: '50%',
   },
   paper: {
     // Defines the papers below avatar
