@@ -8,7 +8,6 @@ beforeAll(() => {
   const options = new chrome.Options()
   options.addArguments('--test-type')
   options.addArguments('--start-maximized')
-  // options.addArguments('--headless')
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
 })
 
@@ -56,7 +55,6 @@ async function login(driver, userPath, user) {
   await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(user.passw)
   await driver.findElement(webdriver.By.id('loginButton')).click()
-  // await driver.wait(webdriver.until.urlIs(localURL + userPath))
 }
 
 async function register(driver, user) {
