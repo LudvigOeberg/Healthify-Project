@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Button, FormControl, InputLabel, Input, Typography, Divider } from '@material-ui/core'
+import { Grid, Button, Container, FormControl, InputLabel, Input, Typography, Divider, Paper, SvgIcon, ListItemText} from '@material-ui/core'
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents'
 import RedeemIcon from '@material-ui/icons/Redeem'
 import Accordion from '@material-ui/core/Accordion'
@@ -17,6 +17,7 @@ import {
   LOAD_BLOODSUGAR,
   LOAD_WEIGHT,
 } from '../../constants/actionTypes'
+import profileAvatar from '../../Static/profile_avatar.png'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -43,13 +44,14 @@ const NewChallenge = (props) => {
   const { id } = props.match.params
   const { nameOf, description, reward, endDate } = props
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
 
   const premade = {
-    name: disease === 'DIABETES' ? 'Blodsocker Streak' : 'Logga vikt',
+    name: disease === 'DIABETES' ? 'Blodsocker Streak' : 'Nå ditt viktmål',
     desc:
-      disease === 'DIABETES' ? 'Logga ditt blodsocker 7 dagar på raken för att vinna utmaningen!' : 'Spring 20 gånger',
-    rew: disease === 'DIABETES' ? 'Åka och bada' : 'Biobesök',
-    days: disease === 'DIABETES' ? '7' : '20',
+      disease === 'DIABETES' ? 'Logga ditt blodsocker 7 dagar på raken för att vinna utmaningen!' : 'När du når ditt viktmål vinner du utmaningen!',
+    rew: disease === 'DIABETES' ? 'Biobesök' : 'Resa till Legoland',
+    days: disease === 'DIABETES' ? '7' : '100',
   }
 
   useEffect(() => {
@@ -73,7 +75,27 @@ const NewChallenge = (props) => {
   }
 
   return (
-    <Grid item xs={12} className={classes.card}>
+   //<Grid item xs={12} className={classes.card}>
+
+      <Container className={classes.root}>
+      <Grid justify="center" direction="column" alignItems="center" container>
+        <Grid justify="left" alignItems="left" container>
+          <a href={`/parent-reward/${id}`}>
+            <Paper className={classes.backpaper} elevation={5}>
+              <SvgIcon viewBox="0 0 15 22">
+                <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" fill="#4F4F4F" fillOpacity="1"></path>
+              </SvgIcon>
+            </Paper>
+          </a>
+        </Grid>
+        <Grid item xs={6}>
+          <img src={profileAvatar} alt="Profile"></img>
+        </Grid>
+        <Grid item xs={4} className={classes.avatarName}>
+          <Typography variant="h5"> {name} </Typography>
+          <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
+        </Grid>
+      </Grid>
       <form onSubmit={submitForm(nameOf, description, reward, endDate, id)} noValidate>
         <Accordion elevation={2} className={classes.card}>
           <AccordionSummary avatar={<EmojiEventsIcon />} expandIcon={<ExpandMoreIcon />}>
@@ -111,7 +133,6 @@ const NewChallenge = (props) => {
         </Accordion>
       </form>
 
-      {/* ---------------------------- */}
 
       <form onSubmit={submitForm(premade.name, premade.desc, premade.rew, premade.days, id)} noValidate>
         <Accordion elevation={2} className={classes.card}>
@@ -172,15 +193,14 @@ const NewChallenge = (props) => {
           </Button>
         </Accordion>
       </form>
-    </Grid>
+      </Container> 
   )
 }
 
 const styles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(0),
     alignItems: 'top',
-    display: 'flex',
     padding: theme.spacing(1),
   },
   card: {
@@ -204,6 +224,17 @@ const styles = makeStyles((theme) => ({
   RedeemIcon: {
     display: 'flex',
     margin: 'auto',
+  },
+  backpaper: {
+    width: '60px',
+    height: '60px',
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    borderRadius: '50%',
+  },
+  avatarName: {
+    textAlign: 'center',
   },
 }))
 
