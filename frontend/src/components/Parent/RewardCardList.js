@@ -15,7 +15,7 @@ const RewardCardList = (props) => {
 
   return (
     <Container className={classes.root}>
-      {rewards ? rewards.map((r) => <RewardCard one_reward={r}></RewardCard>) : 'Det finns inga utmaningar'}
+      {rewards ? rewards.map((r) => <RewardCard oneReward={r}></RewardCard>) : 'Det finns inga utmaningar'}
     </Container>
   )
 }

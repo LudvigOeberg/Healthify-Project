@@ -115,7 +115,7 @@ export default function FooterBar() {
 
       <a id="addFooterLink" href="/add">
         <Tooltip title="Lägg till" aria-label="add">
-          <Fab color="primary" className={classes.avatar}>
+          <Fab id="addFooterLinkButton" color="primary" className={classes.avatar}>
             <AddIcon fontSize="medium" />
           </Fab>
         </Tooltip>
