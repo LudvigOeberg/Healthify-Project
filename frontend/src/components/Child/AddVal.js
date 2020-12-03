@@ -181,22 +181,22 @@ const AddVal = (props) => {
 
   return (
     <div className={classes.backGround}>
-      <Container component="main" maxWidth="md">
+      {/* <Container component="main" maxWidth="md"> */}
         <Grid container justify="center" textAlign="right">
-          <Paper elevation={0} className={classes.backGround}>
-            <Grid>
-              <Typography className={classes.bubbleText} variant="h6">
+          {/* <Paper elevation={0} > */}
+            {/* <Grid> */}
+              {/* <Typography className={classes.bubbleText} variant="h6">
                 Hur mår du just nu?
-              </Typography>
+              </Typography>  */}
               <img
                 id="currentMood"
                 className={classes.centerIcon}
                 src={thinkingAvatar}
                 alt="mood avatar"
               ></img>
-            </Grid>
-          </Paper>
-        </Grid>
+            {/* </Grid> */}
+          {/* </Paper> */}
+        </Grid> 
 
         <Paper elevation={0} className={classes.lowerBG}>
           <Grid container direction="row" justify="center" alignItems="center">
@@ -298,7 +298,7 @@ const AddVal = (props) => {
             </Box>
           </Grid>
         </Paper>
-      </Container>
+      {/* </Container> */}
     </div>
   );
 };
@@ -309,6 +309,7 @@ const styles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    background: "#72AAC9",
   },
   avatar: {
     margin: theme.spacing(1),
@@ -323,13 +324,15 @@ const styles = makeStyles((theme) => ({
   },
   backGround: {
     //position: "relative",
+    marginTop: '-3%',
     background: "#72AAC9",
     height: "100%",
-    //width: "100%",
+    width: "100%",
     //zIndex: '0',
   },
   lowerBG: {
-    borderRadius: "5% 5% 0% 0%",
+    background: "250, 250, 250",
+    borderRadius: "3vmax 3vmax 0% 0%",
     marginTop: "-2%",
     zIndex: "4",
     position: "relative",
@@ -338,7 +341,7 @@ const styles = makeStyles((theme) => ({
   bubble: {
     border: "3px solid #64B4EA",
     margin: theme.spacing(3),
-    borderRadius: "5%",
+    borderRadius: "2vmin",
     zIndex: "0",
   },
   circle: {
@@ -355,12 +358,14 @@ const styles = makeStyles((theme) => ({
   bubbleText: {
     color: theme.palette.text.primary,
     position: "relative",
-    top: "160px",
-    left: "270px",
+    top: "250px",
+    left: "480px",
     fontSize: "2vh",
   },
   centerIcon: {
     width: "100%",
+    maxWidth:"70vh",
+    minwidth:"40vh",
   },
 }));
 
