@@ -35,31 +35,31 @@ function User() {
 }
 
 async function logout(driver) {
-  await driver.findElement(webdriver.By.xpath("//span[text()='Logga ut']")).click()
+  await driver.findElement(webdriver.By.id('logoutHeaderButton')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}login`))
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
 }
 
 async function login(driver, userPath, user) {
   await driver.get(localURL)
-  await driver.findElement(webdriver.By.xpath("//span[text()='Logga in']")).click()
+  await driver.findElement(webdriver.By.id('loginHeaderButton')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}login`))
   await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(user.passw)
-  await driver.findElement(webdriver.By.xpath("//span[text()='Logga In']")).click()
+  await driver.findElement(webdriver.By.id('loginButton')).click()
   await driver.wait(webdriver.until.urlIs(localURL + userPath))
   expect(await driver.getCurrentUrl()).toEqual(localURL + userPath)
 }
 
 async function register(driver, user) {
   await driver.get(localURL)
-  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click()
+  await driver.findElement(webdriver.By.id('registerHeaderButton')).click()
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
   await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(user.passw)
   await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(user.passw)
-  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
+  await driver.findElement(webdriver.By.id('registerUserButton')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 10000, 'Timed out after 5 sec', 100)
 }
 
