@@ -9,8 +9,11 @@ beforeAll(() => {
   const options = new chrome.Options()
   options.addArguments('--test-type')
   options.addArguments('--start-maximized')
-  // options.addArguments('--headless')
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
+})
+
+afterAll(() => {
+  driver.close()
 })
 
 function randInt(maxNum) {
@@ -19,9 +22,6 @@ function randInt(maxNum) {
 function User() {
   this.email = `${randInt(1000000)}epost@test.se`
   this.passw = 'passw'
-  this.dateOfBirth = undefined
-  // this.dateOfBirth = '25092010' // works for windows?
-  this.dateOfBirth = '002010-09-25' // works for mac?
 }
 
 async function getHomePage(url) {
@@ -38,7 +38,7 @@ async function getHomePage(url) {
   await alert2.accept()
 }
 
-async function logut(driver) {
+async function checkLogOut(driver) {
   await driver.findElement(webdriver.By.id('logoutHeaderButton')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}login`))
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
@@ -67,15 +67,12 @@ async function register(driver, user) {
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 10000, 'Timed out after 5 sec', 100)
 }
 
-/* registerPatient fuction takes in a driver object, a patient object,
-   a disease which is a string and must take a value of 'diabetes' or 'obesity',
-   a value which is an array of the form [3,7,12] if disease is diabetes or
-   [42] if disease is obesity */
-async function registerPatient(driver, patient, disease, values) {
+async function registerPatient(driver, patient) {
   driver.executeScript(
     'arguments[0].click();',
     await driver.findElement(webdriver.By.xpath("//a[@href='/register-patient']")),
   )
+  // await driver.findElement(webdriver.By.xpath("//a[@href='/register-patient']")).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}register-patient`), 10000, 'Timed out after 5 sec', 100)
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
@@ -83,22 +80,24 @@ async function registerPatient(driver, patient, disease, values) {
   await driver.findElement(webdriver.By.id('password')).sendKeys(patient.passw)
   await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(patient.passw)
   await driver.findElement(webdriver.By.id('dateofbirth')).sendKeys('25092011')
-  const genderArray = ['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']
+  let genderArray = ['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']
+  let diseaseArray = ['DIABETES', 'OBESITY']
   const selectedGender = genderArray[randInt(4)]
+  const selectedDisease = diseaseArray[randInt(2)]
 
   // selects a gender and a disease randomly
   await driver.findElement(webdriver.By.css("div[aria-labelledby='gender-label']")).click()
   await driver.findElement(webdriver.By.css(`li[data-value='${selectedGender}']`)).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
-  await driver.findElement(webdriver.By.css(`li[data-value='${disease.toUpperCase()}']`)).click()
+  await driver.findElement(webdriver.By.css(`li[data-value='${selectedDisease}']`)).click()
   await driver.sleep(2000)
   // passes  input to the remaining fields based on the disease
-  if (disease === 'diabetes') {
-    await driver.findElement(webdriver.By.id('measurements')).sendKeys(values[0].toString())
-    await driver.findElement(webdriver.By.id('SU_LO')).sendKeys(values[1].toString())
-    await driver.findElement(webdriver.By.id('SU_HI')).sendKeys(values[2].toString())
+  if (selectedDisease === 'DIABETES') {
+    await driver.findElement(webdriver.By.id('measurements')).sendKeys('3')
+    await driver.findElement(webdriver.By.id('SU_LO')).sendKeys('5')
+    await driver.findElement(webdriver.By.id('SU_HI')).sendKeys('13')
   } else {
-    await driver.findElement(webdriver.By.id('goalweight')).sendKeys(values[0].toString())
+    await driver.findElement(webdriver.By.id('goalweight')).sendKeys('45')
   }
   await driver.findElement(webdriver.By.id('registerChild')).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
@@ -106,46 +105,15 @@ async function registerPatient(driver, patient, disease, values) {
 
 test('ID:S1. Test start application', async () => {
   await getHomePage(localURL)
+  expect(await driver.getTitle()).toEqual('Healthify')
 })
 
-test('ID:S2. Test registration follow by auto login for parent', async () => {
-  const user = new User()
-  await register(driver, user)
-  await logut(driver)
-})
-
-test('ID:S3. Register a Patient', async () => {
-  const user = new User()
-  await register(driver, user)
-  const patient = new User()
-  await registerPatient(driver, patient, 'diabetes', [5, 7, 13])
-  await logut(driver)
-})
-
-test('ID:S4. Log out', async () => {
-  const user = new User()
-  await register(driver, user)
-  await logut(driver)
-  await login(driver, 'parent', user)
-  await logut(driver)
-})
-
-test('ID:S5. Login as a registered Patient', async () => {
+test('ID:REQ103.', async () => {
   const parent = new User()
   await register(driver, parent)
   const patient = new User()
-  await registerPatient(driver, patient, 'obesity', [45])
-  await logut(driver)
+  await registerPatient(driver, patient)
+  await checkLogOut(driver)
   await login(driver, 'child', patient)
-  await logut(driver)
-})
-
-test('ID:S6. Registration for an already registered email', async () => {
-  const user = new User()
-  await register(driver, user)
-  await logut(driver)
-  await register(driver, user).catch(async () => {
-    const text = await driver.findElement(webdriver.By.xpath("//p[@id='email-helper-text']"), 10000).getText()
-    await expect(text).toEqual('User already registered')
-  })
+  await checkLogOut(driver)
 })

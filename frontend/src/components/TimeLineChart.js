@@ -42,37 +42,39 @@ const createChartProps = (chartData, label, theme) => {
 // eslint-disable-next-line consistent-return
 const getSettings = (horizon) => {
   const today = new Date()
-  if (horizon === 'day') {
-    return {
-      min: today.setHours(0, 0, 0, 0),
-      unit: 'hour',
-      stepSize: 3,
-      dispFormat: 'HH:00',
-    }
-  }
-  if (horizon === 'week') {
-    return {
-      min: today.setDate(today.getDate() - 7),
-      unit: 'day',
-      stepSize: 1,
-      dispFormat: 'ddd',
-    }
-  }
-  if (horizon === 'month') {
-    return {
-      min: today.setDate(today.getDate() - 30),
-      unit: 'day',
-      stepSize: 7,
-      dispFormat: 'ddd DD MMM',
-    }
-  }
-  if (horizon === 'all') {
-    return {
-      min: null,
-      unit: 'month',
-      stepSize: 1,
-      dispFormat: 'MMM Y',
-    }
+
+  switch (horizon) {
+    case 'day':
+      return {
+        min: today.setHours(0, 0, 0, 0),
+        unit: 'hour',
+        stepSize: 0.5,
+        dispFormat: 'HH:mm',
+      }
+    case 'week':
+      return {
+        min: today.setDate(today.getDate() - 7),
+        unit: 'day',
+        stepSize: 1,
+        dispFormat: 'ddd',
+      }
+    case 'month':
+      return {
+        min: today.setDate(today.getDate() - 30),
+        unit: 'day',
+        stepSize: 7,
+        dispFormat: 'ddd DD MMM',
+      }
+
+    case 'all':
+      return {
+        min: null,
+        unit: 'month',
+        stepSize: 1,
+        dispFormat: 'MMM Y',
+      }
+    default:
+      break
   }
 }
 
@@ -88,9 +90,7 @@ const TimeLineChart = (props) => {
   }
   let maxData = 0
   // eslint-disable-next-line
-  for (var data in chartData) 
-    if (data>maxData)
-      maxData=data
+  for (var data in chartData) if (data > maxData) maxData = data;
 
   return (
     <div>
@@ -118,6 +118,7 @@ const TimeLineChart = (props) => {
                 },
                 ticks: {
                   min: displaySettings.min,
+                  max: displaySettings.max,
                 },
               },
             ],

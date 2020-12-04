@@ -126,9 +126,9 @@ const AddVal = (props) => {
       open: true,
       message: validate(props.childValue)
         ? `Ditt värde på ${props.childValue} ${
-            disease === "DIABETES" ? "mmol/L" : "kg"
-          } jättebra ut! -Att hålla koll på ditt ${
-            disease === "DIABETES" ? "blodsockervärde" : "vikt"
+            disease === 'DIABETES' ? 'mmol/L' : 'kg'
+          } ser jättebra ut! -Att hålla koll på ditt ${
+            disease === 'DIABETES' ? 'blodsockervärde' : 'vikt'
           } är ett bra sätt att hålla en bra hälsa.`
         : "Fel format!",
       color: validate(props.childValue) ? "success" : "error",

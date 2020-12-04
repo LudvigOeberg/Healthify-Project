@@ -8,7 +8,7 @@ import { FIELD_CHANGE, LOAD_PARTY, LOAD_BLOODSUGAR, LOAD_WEIGHT } from '../../co
 import agentEHR from '../../agentEHR'
 import CustomPaginationActionsTable from '../TablePagination'
 import Reformat from '../../reformatEHRData'
-import smileChild from '../../Static/big_smile_child.png'
+import smileChild from '../../Static/profile_neutral_avatar.png'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -86,14 +86,12 @@ const ChildMonitor = (props) => {
       <Paper elevation={3} className={classes.paperTop}>
         <Grid container spacing={2} className={classes.stats}>
           <Grid item xs={3}>
-            <div className={`${classes.circle} ${classes.circleSm}`}>
-              <div className={classes.textInCircle}>
-                <div className={classes.textAlign}>
-                  <Typography variant="h6">78</Typography>
-                  <Typography variant="body2">mg/dL</Typography>
-                </div>
+            <Paper className={`${classes.circle} ${classes.circleSm}`}>
+              <div style={{ marginTop: '-63px' }}>
+                <Typography variant="h6">78</Typography>
+                <Typography variant="body2">mmol/L</Typography>
               </div>
-            </div>
+            </Paper>
             <Box textAlign="center">
               <Typography className={classes.text} variant="body1">
                 Genomsnitt
@@ -101,19 +99,18 @@ const ChildMonitor = (props) => {
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <div className={classes.circleEmoji}>
-              <img className={classes.centerIcon} src={smileChild} alt="smile child"></img>
-            </div>
+            <img className={classes.centerIcon} src={smileChild} alt="smile child"></img>
           </Grid>
           <Grid item xs={3}>
-            <div className={`${classes.circle} ${classes.circleSm}`}>
-              <div className={classes.textInCircle}>
-                <div className={classes.textAlign}>
-                  <Typography variant="h6">0</Typography>
-                  <Typography variant="h6">0</Typography>
-                </div>
+            <Paper className={`${classes.circle} ${classes.circleSm}`}>
+              <div style={{ marginTop: '-60px' }}>
+                <Typography style={{ margin: '0 0 0 0' }} variant="body2">
+                  0
+                </Typography>
+                <hr style={{ width: '50%' }} />
+                <Typography variant="body2">0</Typography>
               </div>
-            </div>
+            </Paper>
             <Box textAlign="center">
               <Typography className={classes.text} variant="body1">
                 Hög/Låg
@@ -122,17 +119,12 @@ const ChildMonitor = (props) => {
           </Grid>
           <Grid justify="space-evenly" alignItems="flex-start" container spacing={2} className={classes.circlesUnder}>
             <Grid item xs={3}>
-              <div className={`${classes.circle} ${classes.circlesUnder}`}>
-                <Box boxShadow={2}>
-                  <div className={classes.textInCircle}>
-                    <div className={classes.textAlign}>
-                      <Typography variant="h6">50</Typography>
-                      <Typography variant="body2">g</Typography>
-                    </div>
-                  </div>
-                </Box>
-              </div>
-
+              <Paper className={`${classes.circle} ${classes.circlesUnder}`}>
+                <div style={{ marginTop: '-60px' }}>
+                  <Typography variant="h6">50</Typography>
+                  <Typography variant="body2">g</Typography>
+                </div>
+              </Paper>
               <Box textAlign="center">
                 <Typography className={classes.text} variant="body1">
                   Kolhydrater
@@ -140,31 +132,28 @@ const ChildMonitor = (props) => {
               </Box>
             </Grid>
             <Grid item xs={3}>
-              <div className={`${classes.circle} ${classes.circleSm}`}>
-                <div className={classes.textInCircle}>
-                  <div className={classes.textAlign}>
-                    <Typography variant="h6">+- 1</Typography>
-                  </div>
+              <Paper className={`${classes.circle} ${classes.circleSm}`}>
+                <div style={{ marginTop: '-65px' }}>
+                  <Typography variant="h4">15</Typography>
+                  <Typography variant="body3">dagar</Typography>
                 </div>
-              </div>
+              </Paper>
               <Box textAlign="center">
                 <Typography className={classes.text} variant="body1">
-                  Avvikelse
+                  Streak
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs={3}>
-              <div className={`${classes.circle} ${classes.circlesUnder}`}>
-                <div className={classes.textInCircle}>
-                  <div className={classes.textAlign}>
-                    <Typography variant="h6">78</Typography>
-                    <Typography variant="body2">mg/dL</Typography>
-                  </div>
+              <Paper className={`${classes.circle} ${classes.circlesUnder}`}>
+                <div style={{ marginTop: '-60px' }}>
+                  <Typography variant="h6">1</Typography>
+                  <Typography variant="body2">+ -</Typography>
                 </div>
-              </div>
+              </Paper>
               <Box textAlign="center">
                 <Typography className={classes.text} variant="body1">
-                  Genomsnitt
+                  Avvikelse
                 </Typography>
               </Box>
             </Grid>
@@ -182,7 +171,6 @@ const ChildMonitor = (props) => {
               columns={['time', 'value', 'indicator']}
               loading={loading}
               rows={input ? reformat(input, false) : null}
-              // rows={bloodsugar ? Reformat(bloodsugar, false) : null}
               titles={colDesc}
               paginate
             />
@@ -207,30 +195,13 @@ const ChildMonitor = (props) => {
 
 const styles = makeStyles((theme) => ({
   circle: {
+    textAlign: 'center',
     width: '100%',
     borderRadius: '50%',
     background: '#F2F2F2',
     paddingTop: '100%',
     position: 'relative',
     boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
-  },
-  circleEmoji: {
-    width: '100%',
-    borderRadius: '50%',
-    background: '#C4C4C4',
-    boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)',
-  },
-  textInCircle: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    top: '0',
-    textAlign: 'center',
-  },
-  textAlign: {
-    position: 'relative',
-    width: '100%',
-    top: '7%',
   },
   text: {
     color: '#F2F2F2',
@@ -247,14 +218,7 @@ const styles = makeStyles((theme) => ({
   },
   centerIcon: {
     width: '100%',
-  },
-  hr: {
-    margin: '0px',
-  },
-
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    borderRadius: '50%',
   },
   paper: {
     // Defines the papers below avatar

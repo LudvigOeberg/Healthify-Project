@@ -2,30 +2,30 @@
 let driver
 const webdriver = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
-// const remoteURL = 'http://tddc88-company-2-2020.kubernetes-public.it.liu.se/'
 const localURL = 'http://localhost:4100/'
 beforeAll(() => {
-  jest.setTimeout(30000)
+  jest.setTimeout(300000)
   const options = new chrome.Options()
   options.addArguments('--test-type')
   options.addArguments('--start-maximized')
-  // options.addArguments('--headless')
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build()
+})
+
+afterAll(() => {
+  driver.close()
 })
 
 function randInt(maxNum) {
   return Math.floor(Math.random() * maxNum)
 }
+
 function User() {
   this.email = `${randInt(1000000)}epost@test.se`
   this.passw = 'passw'
-  this.dateOfBirth = undefined
-  // this.dateOfBirth = '25092010' // works for windows?
-  this.dateOfBirth = '002010-09-25' // works for mac?
 }
 
-async function getHomePage(url) {
-  await driver.get(url)
+async function connectToEHR() {
+  await driver.get(localURL)
   await driver.wait(webdriver.until.alertIsPresent())
   const alert1 = await driver.switchTo().alert()
   // replace username with the username for openEHR
@@ -38,35 +38,19 @@ async function getHomePage(url) {
   await alert2.accept()
 }
 
-async function logut(driver) {
-  await driver.findElement(webdriver.By.id('logoutHeaderButton')).click()
-  await driver.wait(webdriver.until.urlIs(`${localURL}login`))
-  expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
-}
-
-async function login(driver, userPath, user) {
-  await driver.get(localURL)
-  await driver.findElement(webdriver.By.id('loginHeaderButton')).click()
-  await driver.wait(webdriver.until.urlIs(`${localURL}login`))
-  await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
-  await driver.findElement(webdriver.By.id('password')).sendKeys(user.passw)
-  await driver.findElement(webdriver.By.id('loginButton')).click()
-  await driver.wait(webdriver.until.urlIs(localURL + userPath))
-  expect(await driver.getCurrentUrl()).toEqual(localURL + userPath)
-}
-
 async function register(driver, user) {
-  await driver.get(localURL)
-  await driver.findElement(webdriver.By.id('registerHeaderButton')).click()
+  // await driver.get(localURL)
+  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click()
   await driver.findElement(webdriver.By.id('name')).sendKeys('Namn')
   await driver.findElement(webdriver.By.id('surname')).sendKeys('Efteramn')
   await driver.findElement(webdriver.By.id('email')).sendKeys(user.email)
   await driver.findElement(webdriver.By.id('password')).sendKeys(user.passw)
   await driver.findElement(webdriver.By.id('confirmPassword')).sendKeys(user.passw)
-  await driver.findElement(webdriver.By.id('registerUserButton')).click()
+  await driver.findElement(webdriver.By.xpath("//span[text()='Registrera']")).click()
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 10000, 'Timed out after 5 sec', 100)
 }
 
+// eslint-disable-next-line no-shadow
 /* registerPatient fuction takes in a driver object, a patient object,
    a disease which is a string and must take a value of 'diabetes' or 'obesity',
    a value which is an array of the form [3,7,12] if disease is diabetes or
@@ -86,7 +70,7 @@ async function registerPatient(driver, patient, disease, values) {
   const genderArray = ['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']
   const selectedGender = genderArray[randInt(4)]
 
-  // selects a gender and a disease randomly
+  // selects a gender randomly
   await driver.findElement(webdriver.By.css("div[aria-labelledby='gender-label']")).click()
   await driver.findElement(webdriver.By.css(`li[data-value='${selectedGender}']`)).click()
   await driver.findElement(webdriver.By.css("div[aria-labelledby='disease-label']")).click()
@@ -104,48 +88,22 @@ async function registerPatient(driver, patient, disease, values) {
   await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 5000, 'Timed out after 5 sec', 100)
 }
 
-test('ID:S1. Test start application', async () => {
-  await getHomePage(localURL)
-})
-
-test('ID:S2. Test registration follow by auto login for parent', async () => {
+test('TestCaseID:105.1.1 calculateDiabetesSim', async () => {
   const user = new User()
-  await register(driver, user)
-  await logut(driver)
-})
-
-test('ID:S3. Register a Patient', async () => {
-  const user = new User()
+  await connectToEHR()
   await register(driver, user)
   const patient = new User()
-  await registerPatient(driver, patient, 'diabetes', [5, 7, 13])
-  await logut(driver)
-})
-
-test('ID:S4. Log out', async () => {
-  const user = new User()
-  await register(driver, user)
-  await logut(driver)
-  await login(driver, 'parent', user)
-  await logut(driver)
-})
-
-test('ID:S5. Login as a registered Patient', async () => {
-  const parent = new User()
-  await register(driver, parent)
-  const patient = new User()
-  await registerPatient(driver, patient, 'obesity', [45])
-  await logut(driver)
-  await login(driver, 'child', patient)
-  await logut(driver)
-})
-
-test('ID:S6. Registration for an already registered email', async () => {
-  const user = new User()
-  await register(driver, user)
-  await logut(driver)
-  await register(driver, user).catch(async () => {
-    const text = await driver.findElement(webdriver.By.xpath("//p[@id='email-helper-text']"), 10000).getText()
-    await expect(text).toEqual('User already registered')
-  })
+  await registerPatient(driver, patient, 'diabetes', [1, 0, 0])
+  await driver.findElement(webdriver.By.id('parentsChildOverviewButton')).click()
+  expect(await driver.getCurrentUrl()).toContain(`${localURL}parent-child-overview`)
+  // A parent and child have been created here
+  await driver.findElement(webdriver.By.id('toChildValuesButton')).click()
+  await driver.findElement(webdriver.By.id('childValue')).sendKeys('5')
+  await driver.findElement(webdriver.By.id('addValueToChildButton')).click()
+  // A measurement value has now been added to the child
+  await driver.findElement(webdriver.By.id('healthifyIconButton')).click()
+  await driver.findElement(webdriver.By.id('parentsChildOverviewButton')).click()
+  await driver.findElement(webdriver.By.id('toSimulatePageButton')).click()
+  // User is now in the simulation page. Due to problems with the accordian on the simulation page the user has to enter values manualy
+  // await driver.wait(webdriver.until.urlIs(`${localURL}parent`), 30000, 'Timed out after 15 sec', 100)
 })
