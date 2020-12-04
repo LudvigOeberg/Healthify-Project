@@ -240,15 +240,11 @@ class ChildRewardResource(MethodResource):
     @use_kwargs(register_reward_schema)
     @marshal_with(reward_schema)
     @doc(description="Add a reward to child")
-    def post(self, nameOf, description, reward, endDate, ehrid, **kwargs):
-        try:
-            reward=Reward(nameOf, description, reward, endDate, ehrid, **kwargs)
-            db.session.add(reward)
-            db.session.commit()
-        except:
-            db.session.rollback()
-            raise InvalidUsage.unknown_error()
-        return reward
+    def post(self, nameOf, description, reward, endDate, startDate, ehrid, **kwargs):
+        reward=Reward(nameOf, description, reward, endDate, startDate, ehrid, **kwargs)
+        db.session.add(reward)
+        db.session.commit()
+        return 200
 """
     @jwt_required
     @marshal_with(user_schema)

@@ -1,15 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Container, Button, Grid, Typography, SvgIcon } from '@material-ui/core'
+import { Container, Button, Grid, Typography, SvgIcon, Paper } from '@material-ui/core'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
-import { DELETE_REWARD, PAGE_UNLOADED, LOAD_PARTY } from '../../constants/actionTypes'
+import { DELETE_REWARD, PAGE_UNLOADED, LOAD_PARTY, LOAD_BLOODSUGAR } from '../../constants/actionTypes'
 import agent from '../../agent'
 import agentEHR from '../../agentEHR'
+import Moment from 'moment'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -17,7 +18,13 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onLoad: (ehrId) => dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }),
+  onLoad: (ehrId) => { 
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
+    dispatch({
+      type: LOAD_BLOODSUGAR,
+      payload: agentEHR.Query.bloodsugar(ehrId, 0, 20),
+    })
+},
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
 
   deleteReward: (nameOf, description, reward, endDate, ehrid, snackbar) => {
@@ -29,6 +36,8 @@ const mapDispatchToProps = (dispatch) => ({
 const RewardCard = (props) => {
   const classes = styles()
   const { oneReward } = props
+  const today = new Date()
+  const { bloodsugar } = props
 
   const deleteReward = (nameOf, description, reward, endDate, id) => (ev) => {
     ev.preventDefault()
@@ -39,7 +48,26 @@ const RewardCard = (props) => {
     }
     props.deleteReward(nameOf, description, reward, endDate, id, snackbar)
   }
+  today.setDate(today.getDate()+3)
+  const daysElapsed = Moment(today).diff(Moment(oneReward.startDate), 'days')
+  const daysTot = Moment(oneReward.endDate).diff(Moment(oneReward.startDate), 'days')
 
+  const checkMeasurement = (bloodsugar) => {
+    const compare = new Date(oneReward.startDate)
+    
+    let daysLogged = 0
+    for(let i=0; i<daysElapsed+1; ++i) {
+      for(let y=0; y<bloodsugar.length; ++y) {
+        if(Moment(Moment(compare).add(i, 'days')).format('YYYY-MM-DD') === Moment(bloodsugar[y].time).format('YYYY-MM-DD')){
+          daysLogged += 1; 
+          break
+        }
+      }
+    }
+    return daysLogged
+  }
+
+  
   return (
     <Container className={classes.root}>
       <Card elevation={3} className={classes.innerCard}>
@@ -59,8 +87,9 @@ const RewardCard = (props) => {
               }
             ></CardHeader>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={2} >
             <Button
+              
               onClick={deleteReward(oneReward.nameOf, oneReward.description, oneReward.reward, oneReward.endDate)}
             >
               <DeleteIcon color="primary" />
@@ -69,13 +98,28 @@ const RewardCard = (props) => {
         </Grid>
         <CardContent className={classes.card}>{oneReward.description}</CardContent>
         <CardContent className={classes.card}>Belöning: {oneReward.reward}</CardContent>
+        <CardContent className={classes.card}>Startdatum: {oneReward.startDate}</CardContent>
         <CardContent className={classes.card}>Slutdatum: {oneReward.endDate}</CardContent>
         <CardContent className={classes.card}>
+          <Paper elevation={0} hidden={oneReward.nameOf==='Blodsocker Streak'}>
           <Typography variant="caption">
             {' '}
-            Avklarad
-            <LinearProgress color="primary" size={40} thickness={50} variant="determinate" value="40" />{' '}
+          {daysTot-daysElapsed + ' dagar kvar av utmaningen!'} 
+            <LinearProgress color="primary" variant="determinate" value={bloodsugar ? checkMeasurement(bloodsugar)/daysTot * 100 : daysElapsed/daysTot * 100} />{' '}
           </Typography>
+          </Paper>
+          <Paper  elevation={0} hidden={oneReward.nameOf!=='Blodsocker Streak' || !bloodsugar}>
+          <Typography variant="caption">
+            {' '}
+            {bloodsugar ? checkMeasurement(bloodsugar) + ' av ' + daysTot +' dagar loggade!'  : 'Ditt barn har aldrig mätt sitt blodsocker'} 
+            <LinearProgress color="primary" variant="determinate" value={bloodsugar ? checkMeasurement(bloodsugar)/daysTot * 100 : daysElapsed/daysTot * 100} />{' '}
+          </Typography>
+          </Paper>
+          <Paper elevation={0} hidden={bloodsugar && oneReward.nameOf==='Blodsocker Streak'  ? checkMeasurement(bloodsugar)===daysElapsed+1 : true}>
+          <Typography variant='subtitle2'>
+              Ditt barn har inte loggat alla dagar
+          </Typography>
+          </Paper>
         </CardContent>
       </Card>
     </Container>
