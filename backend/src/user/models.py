@@ -69,7 +69,7 @@ class Child(User):
     __mapper_args__ = {'polymorphic_identity': 'child'}
     id = Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     parents = relationship('Parent', secondary=parents_children, back_populates="children")
-    ehrid = Column(db.String, unique=True)
+    ehrid = Column(db.String)
     timer = Column(db.DateTime, default=None, nullable=True)
     rewards = relationship('Reward', backref='child', lazy=True)
 
@@ -90,7 +90,7 @@ class Reward(SurrogatePK, Model):
     reward = Column(db.String, nullable=False)
     endDate = Column(db.DateTime, nullable=False)
     startDate = Column(db.DateTime, nullable=False)
-    child_ehrid = Column(db.Integer, db.ForeignKey('child.ehrid'), nullable=False)
+    child_ehrid = Column(db.Integer, db.ForeignKey('child.id'), nullable=False)
 
     def __init__(self, nameOf, description, reward, endDate, startDate, ehrid, **kwargs):
         db.Model.__init__(self, nameOf=nameOf, description=description, reward=reward, endDate = endDate, startDate = startDate, child_ehrid = ehrid, **kwargs)
