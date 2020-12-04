@@ -152,7 +152,7 @@ const ParentOverview = (props) => {
                     </Typography>
                   </ListItem>
                   <ListItem>
-                    <ListItemText primary="2 nya avklarade utmaningar" secondary="1 aktiv" />
+                    <ListItemText primary="2 nya avklarade övning" secondary="1 aktiv" />
                   </ListItem>
                 </Grid>
                 <Grid item xs={1} style={{ alignSelf: 'center' }}>

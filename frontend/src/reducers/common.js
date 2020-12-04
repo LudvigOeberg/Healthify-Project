@@ -119,7 +119,7 @@ export default (state = defaultState, action) => {
         snackbar: action.error
           ? {
               open: true,
-              message: 'Något gick fel med att spara utmaningen',
+              message: 'Något gick fel',
               color: 'warning',
             }
           : action.snackbar,
@@ -133,7 +133,7 @@ export default (state = defaultState, action) => {
         snackbar: action.error
           ? {
               open: true,
-              message: 'Något gick fel',
+              message: 'Något gick fel med rewardcard',
               color: 'warning',
             }
           : action.snackbar,
