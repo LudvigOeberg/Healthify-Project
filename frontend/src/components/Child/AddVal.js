@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -86,6 +86,8 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
+//  let ringColor = '2px solid #FF0000'
+
 const AddVal = (props) => {
   const id = props.currentUser.ehrid;
   const classes = styles();
@@ -94,6 +96,21 @@ const AddVal = (props) => {
   const disease = props.party
     ? `${props.party[id].additionalInfo.disease}`
     : null;
+
+  const [count, setCount] = useState(0);
+
+
+  const [ringColor, setValue] = React.useState(0)
+  const handleBubbleChange = (event, newValue) => {
+    // props.onLoad(props.currentUser)
+    setValue(newValue)
+  }
+
+  // function handleBubbleChange() {
+  //   // circle border
+  // ringColor = '2px solid #23FF00'
+  // }
+
 
   useEffect(() => {
     props.onLoad(id);
@@ -194,11 +211,20 @@ const AddVal = (props) => {
                 src={thinkingAvatar}
                 alt="mood avatar"
               ></img>
+              {/* <div backgroundColor={ringColor}></div> */}
             {/* </Grid> */}
           {/* </Paper> */}
         </Grid> 
 
+       
         <Paper elevation={0} className={classes.lowerBG}>
+            <h1>{ringColor}</h1>
+            <div>
+<p>You clicked {count} times</p>
+<button onClick={() => setCount(count + 1)}>
+Click me
+</button>
+</div>
           <Grid container direction="row" justify="center" alignItems="center">
             <Grid
               container
@@ -206,7 +232,18 @@ const AddVal = (props) => {
               alignItems="center"
               className={classes.circle}
             >
-              <img id="currentMood" src={selectSad} alt="mood avatar"></img>
+              <img id="currentMood" src={selectSad} className={classes.circleAvatar} alt="mood avatar"></img>
+            </Grid>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className={classes.circle}
+            > <Button className={classes.moodButton}
+              onClick={handleBubbleChange}
+            >
+              <img id="currentMood" src={selectGrumpy} className={classes.circleAvatar} alt="mood avatar"></img>
+              </Button>
             </Grid>
             <Grid
               container
@@ -214,7 +251,12 @@ const AddVal = (props) => {
               alignItems="center"
               className={classes.circle}
             >
-              <img id="currentMood" src={selectGrumpy} alt="mood avatar"></img>
+               <Button className={classes.moodButton}
+               onClick={handleBubbleChange}
+              
+               >
+                <img id="currentMood" src={selectNormal} className={classes.circleAvatar} alt="mood avatar"></img>
+              </Button>
             </Grid>
             <Grid
               container
@@ -222,15 +264,7 @@ const AddVal = (props) => {
               alignItems="center"
               className={classes.circle}
             >
-              <img id="currentMood" src={selectNormal} alt="mood avatar"></img>
-            </Grid>
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className={classes.circle}
-            >
-              <img id="currentMood" src={selectHappy} alt="mood avatar"></img>
+              <img id="currentMood" src={selectHappy} className={classes.circleAvatar}alt="mood avatar"></img>
             </Grid>
             <Grid
               container
@@ -241,6 +275,7 @@ const AddVal = (props) => {
               <img
                 id="currentMood"
                 src={selectVeryHappy}
+                className={classes.circleAvatar}
                 alt="mood avatar"
               ></img>
             </Grid>
@@ -345,12 +380,19 @@ const styles = makeStyles((theme) => ({
     zIndex: "0",
   },
   circle: {
-    height: "70px",
-    width: "70px",
+    height: "60px",
+    width: "60px",
     borderRadius: "50%",
     background: "#72AAC9",
-    margin: theme.spacing(1),
-    border: "2px solid #696969",
+    margin: theme.spacing(0.5),
+    //border: "2px solid #696969",
+    // border: ringColor,
+  },
+  circleAvatar: {
+    width: '80%',
+    height: '80%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   inputText: {
     color: theme.palette.text.disabled,
@@ -366,6 +408,15 @@ const styles = makeStyles((theme) => ({
     width: "100%",
     maxWidth:"70vh",
     minwidth:"40vh",
+  },
+  moodButton: {
+    // background: "#72AAC9",
+    active: {
+      backgroundColor: '#FF0000',
+    },
+    visited: {
+      backgroundColor: '#FF0000',
+    },
   },
 }));
 
