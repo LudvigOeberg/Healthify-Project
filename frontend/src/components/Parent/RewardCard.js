@@ -52,13 +52,12 @@ const RewardCard = (props) => {
   const daysElapsed = Moment(today).diff(Moment(oneReward.startDate), 'days')
   const daysTot = Moment(oneReward.endDate).diff(Moment(oneReward.startDate), 'days')
 
-  const checkMeasurement = (bloodsugar) => {
+  const checkMeasurement = (data) => {
     const compare = new Date(oneReward.startDate)
-    
     let daysLogged = 0
     for(let i=0; i<daysElapsed+1; ++i) {
-      for(let y=0; y<bloodsugar.length; ++y) {
-        if(Moment(Moment(compare).add(i, 'days')).format('YYYY-MM-DD') === Moment(bloodsugar[y].time).format('YYYY-MM-DD')){
+      for(let y=0; y<data.length; ++y) {
+        if(Moment(Moment(compare).add(i, 'days')).format('YYYY-MM-DD') === Moment(data[y].time).format('YYYY-MM-DD')){
           daysLogged += 1; 
           break
         }
