@@ -206,7 +206,7 @@ const AddVal = (props) => {
           </Grid>
           <Grid item>
             <Input
-              id="childValue"
+              id="childValueInputField"
               className={classes.input}
               value={childValue}
               margin="dense"
