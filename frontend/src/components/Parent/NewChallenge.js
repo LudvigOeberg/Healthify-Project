@@ -1,12 +1,25 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Button, Container, FormControl, InputLabel, Input, Typography, Divider, Paper, SvgIcon, ListItemText} from '@material-ui/core'
+import {
+  Grid,
+  Button,
+  Container,
+  FormControl,
+  InputLabel,
+  Input,
+  Typography,
+  Divider,
+  Paper,
+  SvgIcon,
+  ListItemText,
+} from '@material-ui/core'
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents'
 import RedeemIcon from '@material-ui/icons/Redeem'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Moment from 'moment'
 import agentEHR from '../../agentEHR'
 import agent from '../../agent'
 import {
@@ -18,7 +31,6 @@ import {
   LOAD_WEIGHT,
 } from '../../constants/actionTypes'
 import profileAvatar from '../../Static/profile_avatar.png'
-import Moment from 'moment'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -45,16 +57,21 @@ const mapDispatchToProps = (dispatch) => ({
 const NewChallenge = (props) => {
   const classes = styles()
   const { id } = props.match.params
-  const { nameOf, description, reward, endDate, rew, days} = props
+  const { nameOf, description, reward, endDate, rew, days } = props
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
   const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
   const today = new Date()
 
   const premade = {
     name: disease === 'DIABETES' ? 'Blodsocker Streak' : 'Nå ditt viktmål',
-    desc: disease === 'DIABETES' ? `Logga ditt blodsocker varje dag för att vinna utmaningen!` : 'När du når ditt viktmål vinner du utmaningen!',
-    dateQuestion: disease === 'DIABETES' ? 'Hur länge ska ditt barns värde ligga inom det hälsosamma intervallet för att klara utmaningen?' : 'Till vilket datum ska ditt barn ha uppnått sitt viktmål?'
-
+    desc:
+      disease === 'DIABETES'
+        ? `Logga ditt blodsocker varje dag för att vinna utmaningen!`
+        : 'När du når ditt viktmål vinner du utmaningen!',
+    dateQuestion:
+      disease === 'DIABETES'
+        ? 'Hur länge ska ditt barns värde ligga inom det hälsosamma intervallet för att klara utmaningen?'
+        : 'Till vilket datum ska ditt barn ha uppnått sitt viktmål?',
   }
 
   useEffect(() => {
@@ -77,7 +94,7 @@ const NewChallenge = (props) => {
   }
 
   return (
-      <Container className={classes.root}>
+    <Container className={classes.root}>
       <Grid justify="center" direction="column" alignItems="center" container>
         <Grid justify="left" alignItems="left" container>
           <a href={`/parent-reward/${id}`}>
@@ -96,7 +113,10 @@ const NewChallenge = (props) => {
           <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
         </Grid>
       </Grid>
-      <form onSubmit={submitForm(nameOf, description, reward, endDate, Moment(today).format('YYYY-MM-DD'), id)} noValidate>
+      <form
+        onSubmit={submitForm(nameOf, description, reward, endDate, Moment(today).format('YYYY-MM-DD'), id)}
+        noValidate
+      >
         <Accordion elevation={2} className={classes.card}>
           <AccordionSummary avatar={<EmojiEventsIcon />} expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h5"> Skapa egen Utmaning </Typography>
@@ -133,8 +153,10 @@ const NewChallenge = (props) => {
         </Accordion>
       </form>
 
-
-      <form onSubmit={submitForm(premade.name, premade.desc, rew, days, Moment(today).format('YYYY-MM-DD'), id)} noValidate>
+      <form
+        onSubmit={submitForm(premade.name, premade.desc, rew, days, Moment(today).format('YYYY-MM-DD'), id)}
+        noValidate
+      >
         <Accordion elevation={2} className={classes.card}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h5">Välj en förbestämd utmaning</Typography>
@@ -162,18 +184,18 @@ const NewChallenge = (props) => {
           </Grid>
 
           <Grid className={classes.inputs}>
-          <FormControl fullWidth className={classes.inputs}>
-            <InputLabel>Belöning</InputLabel>
-            <Input value={rew} fullWidth id="rew" margin="dense" onChange={handleForm} />
-          </FormControl>
+            <FormControl fullWidth className={classes.inputs}>
+              <InputLabel>Belöning</InputLabel>
+              <Input value={rew} fullWidth id="rew" margin="dense" onChange={handleForm} />
+            </FormControl>
           </Grid>
 
           <Grid className={classes.inputs}>
             <FormControl fullWidth className={classes.inputs}>
-            <InputLabel shrink></InputLabel>
-            <Input fullWidth type="date" value={days} id="days" margin="dense" onChange={handleForm} />
-          </FormControl>
-{/* 
+              <InputLabel shrink></InputLabel>
+              <Input fullWidth type="date" value={days} id="days" margin="dense" onChange={handleForm} />
+            </FormControl>
+            {/* 
 
             <Typography>
               {premade.days}
@@ -183,7 +205,7 @@ const NewChallenge = (props) => {
 
           <Button
             className={classes.button}
-            type="submit" 
+            type="submit"
             fullWidth
             variant="contained"
             color="primary"
@@ -193,7 +215,7 @@ const NewChallenge = (props) => {
           </Button>
         </Accordion>
       </form>
-      </Container> 
+    </Container>
   )
 }
 
