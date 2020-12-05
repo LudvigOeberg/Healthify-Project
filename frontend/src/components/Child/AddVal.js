@@ -86,7 +86,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-//  let ringColor = '2px solid #FF0000'
+// let ringColor
 
 const AddVal = (props) => {
   const id = props.currentUser.ehrid;
@@ -97,20 +97,13 @@ const AddVal = (props) => {
     ? `${props.party[id].additionalInfo.disease}`
     : null;
 
-  const [count, setCount] = useState(0);
-
-
-  const [ringColor, setValue] = React.useState(0)
+  let [ringColor, setValue] = useState("#696969");
   const handleBubbleChange = (event, newValue) => {
     // props.onLoad(props.currentUser)
-    setValue(newValue)
-  }
-
-  // function handleBubbleChange() {
-  //   // circle border
-  // ringColor = '2px solid #23FF00'
-  // }
-
+    console.log("handleBubbleChange");
+    // setValue(newValue);
+    setValue("#FF4444");
+  };
 
   useEffect(() => {
     props.onLoad(id);
@@ -143,9 +136,9 @@ const AddVal = (props) => {
       open: true,
       message: validate(props.childValue)
         ? `Ditt värde på ${props.childValue} ${
-            disease === 'DIABETES' ? 'mmol/L' : 'kg'
+            disease === "DIABETES" ? "mmol/L" : "kg"
           } ser jättebra ut! -Att hålla koll på ditt ${
-            disease === 'DIABETES' ? 'blodsockervärde' : 'vikt'
+            disease === "DIABETES" ? "blodsockervärde" : "vikt"
           } är ett bra sätt att hålla en bra hälsa.`
         : "Fel format!",
       color: validate(props.childValue) ? "success" : "error",
@@ -199,140 +192,162 @@ const AddVal = (props) => {
   return (
     <div className={classes.backGround}>
       {/* <Container component="main" maxWidth="md"> */}
-        <Grid container justify="center" textAlign="right">
-          {/* <Paper elevation={0} > */}
-            {/* <Grid> */}
-              {/* <Typography className={classes.bubbleText} variant="h6">
-                Hur mår du just nu?
-              </Typography>  */}
-              <img
-                id="currentMood"
-                className={classes.centerIcon}
-                src={thinkingAvatar}
-                alt="mood avatar"
-              ></img>
-              {/* <div backgroundColor={ringColor}></div> */}
-            {/* </Grid> */}
-          {/* </Paper> */}
-        </Grid> 
+      <Grid container justify="center" textAlign="right">
+        {/* <Paper elevation={0} > */}
+        <Grid>
+          <img
+            id="currentMood"
+            className={classes.centerIcon}
+            src={thinkingAvatar}
+            alt="mood avatar"
+          ></img>
+          <Typography className={classes.bubbleText} variant="h6">
+            Hur mår du just nu?
+          </Typography>
+          {/* <div backgroundColor={ringColor}></div> */}
+        </Grid>
+        {/* </Paper> */}
+      </Grid>
 
-       
-        <Paper elevation={0} className={classes.lowerBG}>
-            <h1>{ringColor}</h1>
-            <div>
-<p>You clicked {count} times</p>
-<button onClick={() => setCount(count + 1)}>
-Click me
-</button>
-</div>
-          <Grid container direction="row" justify="center" alignItems="center">
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className={classes.circle}
-            >
-              <img id="currentMood" src={selectSad} className={classes.circleAvatar} alt="mood avatar"></img>
-            </Grid>
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className={classes.circle}
-            > <Button className={classes.moodButton}
-              onClick={handleBubbleChange}
-            >
-              <img id="currentMood" src={selectGrumpy} className={classes.circleAvatar} alt="mood avatar"></img>
-              </Button>
-            </Grid>
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className={classes.circle}
-            >
-               <Button className={classes.moodButton}
-               onClick={handleBubbleChange}
-              
-               >
-                <img id="currentMood" src={selectNormal} className={classes.circleAvatar} alt="mood avatar"></img>
-              </Button>
-            </Grid>
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className={classes.circle}
-            >
-              <img id="currentMood" src={selectHappy} className={classes.circleAvatar}alt="mood avatar"></img>
-            </Grid>
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className={classes.circle}
-            >
-              <img
-                id="currentMood"
-                src={selectVeryHappy}
-                className={classes.circleAvatar}
-                alt="mood avatar"
-              ></img>
-            </Grid>
-          </Grid>
-
+      <Paper elevation={0} className={classes.lowerBG}>
+        <Grid container direction="row" justify="center" alignItems="center">
           <Grid
             container
-            alignItems="center"
             justify="center"
-            direction="column"
+            alignItems="center"
+            // backgroundColor="FF000"
+            className={classes.circle}
           >
-            <Paper className={classes.bubble}>
-              <Grid item xs>
-                <Box textAlign="center">
-                  <Typography subtile1="h2" className={classes.inputText}>
-                    {disease === "DIABETES"
-                      ? "Hur högt blodsocker har du?"
-                      : "Hur mycket väger du?"}
-                  </Typography>
-                </Box>
+            {" "}
+            <Button className={classes.moodButton}>
+              <img
+                id="currentMood"
+                src={selectSad}
+                className={classes.circleAvatar}
+                alt="mood avatar"
+                // border={`4px solid green`}
+                border="8px"
+                borderColor="#FF0000"
 
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  id="childValue"
-                  name="childValue"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        {disease === "DIABETES" ? "mmol/L" : "kg"}
-                      </InputAdornment>
-                    ),
-                  }}
-                  value={childValue}
-                  disabled={open}
-                  onChange={changeField}
-                  className={classes.submit}
-                />
-              </Grid>
-            </Paper>
-
-            <Box justify="center">
-              <Button
-                id="addButton weight/bloodsugar"
-                variant="contained"
-                color="primary"
-                onClick={(ev) => submitForm(ev)}
-                disabled={props.inProgress || open}
-                className={classes.submit}
-              >
-                {" "}
-                Spara
-              </Button>
-            </Box>
+                //value={"#FF0000"}
+                onClick={() => handleBubbleChange + console.log("clicked!!")}
+                //onClick={ringColor=20+ console.log("clicked!!")}
+              ></img>
+            </Button>
           </Grid>
-        </Paper>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.circle}
+            border="4px solid red"
+          >
+            {" "}
+            <Button className={classes.moodButton}>
+              <img
+                id="currentMood"
+                src={selectGrumpy}
+                className={classes.circleAvatar}
+                alt="mood avatar"
+                ></img>
+            </Button>
+          </Grid>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.circle}
+          >
+            {console.log(`ringColor: ${ringColor}`)}
+              <Button
+                className={classes.moodButton}
+                onClick={handleBubbleChange}
+              >
+                {console.log(`ringColor: ${ringColor}`)}
+                <img
+                  id="currentMood"
+                  src={selectNormal}
+                  className={classes.circleAvatar}
+                  alt="mood avatar"
+                  borderRadius="50%"
+                ></img>
+              </Button>
+          </Grid>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.circle}
+          >
+            <img
+              id="currentMood"
+              src={selectHappy}
+              className={classes.circleAvatar}
+              alt="mood avatar"
+            ></img>
+          </Grid>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.circle}
+          >
+            <img
+              id="currentMood"
+              src={selectVeryHappy}
+              className={classes.circleAvatar}
+              alt="mood avatar"
+            ></img>
+          </Grid>
+        </Grid>
+
+        <Grid container alignItems="center" justify="center" direction="column">
+          <Paper className={classes.bubble}>
+            <Grid item xs>
+              <Box textAlign="center">
+                <Typography subtile1="h2" className={classes.inputText}>
+                  {disease === "DIABETES"
+                    ? "Hur högt blodsocker har du?"
+                    : "Hur mycket väger du?"}
+                </Typography>
+              </Box>
+
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                id="childValue"
+                name="childValue"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      {disease === "DIABETES" ? "mmol/L" : "kg"}
+                    </InputAdornment>
+                  ),
+                }}
+                value={childValue}
+                disabled={open}
+                onChange={changeField}
+                className={classes.submit}
+              />
+            </Grid>
+          </Paper>
+
+          <Box justify="center">
+            <Button
+              id="addButton weight/bloodsugar"
+              variant="contained"
+              color="primary"
+              onClick={(ev) => submitForm(ev)}
+              disabled={props.inProgress || open}
+              className={classes.submit}
+            >
+              {" "}
+              Spara
+            </Button>
+          </Box>
+        </Grid>
+      </Paper>
       {/* </Container> */}
     </div>
   );
@@ -359,7 +374,7 @@ const styles = makeStyles((theme) => ({
   },
   backGround: {
     //position: "relative",
-    marginTop: '-3%',
+    marginTop: "-3%",
     background: "#72AAC9",
     height: "100%",
     width: "100%",
@@ -369,7 +384,7 @@ const styles = makeStyles((theme) => ({
     background: "250, 250, 250",
     borderRadius: "3vmax 3vmax 0% 0%",
     marginTop: "-2%",
-    zIndex: "4",
+    //zIndex: "0",
     position: "relative",
     borderTop: "1px solid #c3bebe",
   },
@@ -383,39 +398,40 @@ const styles = makeStyles((theme) => ({
     height: "60px",
     width: "60px",
     borderRadius: "50%",
-    background: "#72AAC9",
+    // background: ringColor,
     margin: theme.spacing(0.5),
     //border: "2px solid #696969",
     // border: ringColor,
   },
   circleAvatar: {
-    width: '80%',
-    height: '80%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    width: "80%",
+    height: "80%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderColor: 'red',
   },
   inputText: {
     color: theme.palette.text.disabled,
   },
   bubbleText: {
     color: theme.palette.text.primary,
-    position: "relative",
-    top: "250px",
-    left: "480px",
-    fontSize: "2vh",
+    position: "absolute",
+    top: "17vh",
+    left: "48vw",
+    fontSize: "130%",
   },
   centerIcon: {
     width: "100%",
-    maxWidth:"70vh",
-    minwidth:"40vh",
+    maxWidth: "70vh",
+    minwidth: "40vh",
   },
   moodButton: {
     // background: "#72AAC9",
     active: {
-      backgroundColor: '#FF0000',
+      backgroundColor: "#FF0000",
     },
     visited: {
-      backgroundColor: '#FF0000',
+      backgroundColor: "#FF0000",
     },
   },
 }));
