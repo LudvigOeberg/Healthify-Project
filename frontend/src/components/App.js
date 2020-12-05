@@ -35,6 +35,7 @@ import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
 import ChildSimulationObesity from './Child/ChildSimulationObesity'
 import AddVal from './Child/AddVal'
 import NewChallenge from './Parent/NewChallenge'
+import ChildRealLifeRewards from './Child/ChildRealLifeRewards'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -278,6 +279,13 @@ class App extends React.Component {
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}
                 component={NewChallenge}
+              />
+              <RequiredRoute
+                exact
+                path="/child-rewards"
+                requires={['auth', 'child']}
+                user={this.props.currentUser}
+                component={ChildRealLifeRewards}
               />
               <Redirect exact from="/swagger-ui" to="/swagger-ui/" />
               <Route path="*" component={NotFound} />

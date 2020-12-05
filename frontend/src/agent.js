@@ -54,6 +54,10 @@ const Parent = {
 const Child = {
   parents: () => requests.get('/child'),
   timer: (timer) => requests.post(`/child/timer?timer=${timer}`),
+  // eslint-disable-next-line
+  deleteReward: (nameOf, description, reward, endDate, ehrid) => requests.del(`/child/reward?ehrid=${ehrid}?nameOf=${nameOf}`, {
+      reward: { nameOf, description, reward, endDate, ehrid },
+    }),
 }
 
 export default {

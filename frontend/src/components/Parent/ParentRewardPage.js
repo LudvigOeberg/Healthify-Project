@@ -44,6 +44,8 @@ const ParentRewardPage = (props) => {
     for (let i = 0; i < _children.length; ++i) {
       if (_children[i].child.ehrid === _id) rewards = _children[i].child.rewards
     }
+    // eslint-disable-next-line no-console
+    console.log(`REWARDS: ${rewards}`)
     return rewards
   }
   useEffect(() => {
