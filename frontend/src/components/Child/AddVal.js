@@ -3,10 +3,9 @@ import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import { Grid } from '@material-ui/core'
-import Slider from '@material-ui/core/Slider'
-import Input from '@material-ui/core/Input'
+import { Grid, Box, Paper, Tabs, Tab } from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
+import InputAdornment from '@material-ui/core/InputAdornment'
 import {
   OPEN_SNACKBAR,
   FIELD_CHANGE,
@@ -19,6 +18,12 @@ import {
 } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import agent from '../../agent'
+import thinkingAvatar from '../../Static/thinking_avatar.png'
+import selectSad from '../../Static/select_sad.png'
+import selectGrumpy from '../../Static/select_grumpy.png'
+import selectNormal from '../../Static/select_normal.png'
+import selectHappy from '../../Static/select_happy.png'
+import selectVeryHappy from '../../Static/select_very_happy.png'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -75,12 +80,25 @@ const mapDispatchToProps = (dispatch) => ({
   },
 })
 
+function a11yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    'aria-controls': `vertical-tabpanel-${index}`,
+  }
+}
+
 const AddVal = (props) => {
   const id = props.currentUser.ehrid
   const classes = styles()
   const { childValue } = props
   const open = props.snackbarOpen
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+
+  const [value, setValue] = React.useState(2)
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
 
   useEffect(() => {
     props.onLoad(id)
@@ -102,6 +120,9 @@ const AddVal = (props) => {
         }
       }
     }
+
+    // const SU_LO = props.party ? `${props.party[id].additionalInfo.SU_LO}` : null
+    // const SU_HI = props.party ? `${props.party[id].additionalInfo.SU_HI}` : null
 
     const measurementChild = props.childValue
     const HIGH_VAL = disease === 'DIABETES' ? measurementChild > 8 : measurementChild > 70
@@ -164,98 +185,184 @@ const AddVal = (props) => {
     props.onChangeField(ev.target.id, ev.target.value)
   }
 
-  const changeAuthSlider = (ev, value) => {
-    props.onChangeField(ev.target.id, value)
-  }
-
-  const marks = [
-    {
-      value: 0,
-      label: disease === 'DIABETES' ? '0 mmol/L' : '0 kg',
-    },
-    {
-      value: disease === 'DIABETES' ? 15 : 100,
-      label: disease === 'DIABETES' ? '15 mmol/L' : '100 kg',
-    },
-  ]
-
   return (
-    <Container component="main" maxWidth="md">
-      <div className={classes.paper}>
-        <Grid item xs={12} container spacing={5}>
-          <Grid item xs={12} align="center">
-            <Typography component="h1" variant="h5">
-              Skriv in {disease === 'DIABETES' ? 'ditt blodsockervärde' : 'din uppmätta vikt'}
-            </Typography>
-            <form className={classes.form} noValidate onSubmit={(ev) => submitForm(ev)} autoComplete="off"></form>
-          </Grid>
-          <Grid container spacing={5} alignItems="center"></Grid>
-          <Grid item xs>
-            <Slider
-              id="childValue"
-              value={typeof childValue === 'number' ? childValue : 0}
-              onChange={(ev, value) => changeAuthSlider(ev, value)}
-              aria-labelledby="input-slider"
-              defaultValue={10}
-              step={disease === 'DIABETES' ? 0.1 : 1}
-              valueLabelDisplay="auto"
-              marks={marks}
-              max={disease === 'DIABETES' ? 15 : 100}
-              min={0}
-            />
-          </Grid>
-          <Grid item>
-            <Input
-              id="childValueInputField"
-              className={classes.input}
-              value={childValue}
-              margin="dense"
-              onChange={changeField}
-              inputProps={{
-                step: disease === 'DIABETES' ? 0.1 : 1,
-                min: disease === 'DIABETES' ? 0.1 : 1,
-                max: disease === 'DIABETES' ? 15 : 100,
-                type: 'number',
-                'aria-labelledby': 'input-slider',
-              }}
-            />
-          </Grid>
+    <div className={classes.backGround}>
+      <Grid container justify="center" textAlign="right">
+        {/* <Paper elevation={0} > */}
+        <Grid>
+          <img id="currentMood" className={classes.centerIcon} src={thinkingAvatar} alt="mood avatar"></img>
+          <Typography className={classes.bubbleText} variant="h6">
+            Hur mår du just nu?
+          </Typography>
         </Grid>
-        <Grid item>
-          <Button
-            id="addButton weight/bloodsugar"
-            variant="contained"
-            color="secondary"
-            onClick={(ev) => submitForm(ev)}
-            disabled={props.inProgress || open}
-            className={classes.submit}
-          >
-            {' '}
-            Spara
-          </Button>
+      </Grid>
+
+      <Paper elevation={0} className={classes.lowerBG}>
+        <Grid container direction="row" justify="center" alignItems="center">
+          <Grid>
+            <Tabs
+              orientation="horizontal"
+              variant="scrollable"
+              indicatorColor="primary"
+              value={value}
+              onChange={handleChange}
+            >
+              <Tab
+                {...a11yProps(0)}
+                component={() => (
+                  <Button id="childSelectSad" className={classes.circle} onClick={() => setValue(0)}>
+                    <img className={classes.circleAvatar} src={selectSad} alt="Selected Sad"></img>
+                  </Button>
+                )}
+              />
+              <Tab
+                {...a11yProps(1)}
+                component={() => (
+                  <Button id="childSelectGrumpy" className={classes.circle} onClick={() => setValue(1)}>
+                    <img className={classes.circleAvatar} src={selectGrumpy} alt="Selected Grympy"></img>
+                  </Button>
+                )}
+              />
+              <Tab
+                {...a11yProps(2)}
+                component={() => (
+                  <Button id="childSelectNormal" className={classes.circle} onClick={() => setValue(2)}>
+                    <img className={classes.circleAvatar} src={selectNormal} alt="Selected Normal"></img>
+                  </Button>
+                )}
+              />
+              <Tab
+                {...a11yProps(3)}
+                component={() => (
+                  <Button id="childSelectHappy" className={classes.circle} onClick={() => setValue(3)}>
+                    <img className={classes.circleAvatar} src={selectHappy} alt="Selected Happy"></img>
+                  </Button>
+                )}
+              />
+              <Tab
+                {...a11yProps(4)}
+                component={() => (
+                  <Button id="childSelectVeryHappy" className={classes.circle} onClick={() => setValue(4)}>
+                    <img className={classes.circleAvatar} src={selectVeryHappy} alt="Selected very happy"></img>
+                  </Button>
+                )}
+              />
+            </Tabs>
+          </Grid>
+        </Grid>{' '}
+        <Grid container alignItems="center" justify="center" direction="column">
+          <Paper className={classes.bubble}>
+            <Grid item xs>
+              <Box textAlign="center">
+                <Typography subtile1="h2" className={classes.inputText}>
+                  {disease === 'DIABETES' ? 'Hur högt blodsocker har du?' : 'Hur mycket väger du?'}
+                </Typography>
+              </Box>
+
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                id="childValue"
+                name="childValue"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">{disease === 'DIABETES' ? 'mmol/L' : 'kg'}</InputAdornment>
+                  ),
+                }}
+                value={childValue}
+                disabled={open}
+                onChange={changeField}
+                className={classes.submit}
+              />
+            </Grid>
+          </Paper>
+
+          <Box justify="center">
+            <Button
+              id="addButton weight/bloodsugar"
+              variant="contained"
+              color="primary"
+              onClick={(ev) => submitForm(ev)}
+              disabled={props.inProgress || open}
+              className={classes.submit}
+            >
+              {' '}
+              Spara
+            </Button>
+          </Box>
         </Grid>
-      </div>
-    </Container>
+      </Paper>
+    </div>
   )
 }
 
 const styles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(3),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    background: '#72AAC9',
   },
   form: {
     width: '50%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(4),
+  },
+  backGround: {
+    marginTop: '-3%',
+    background: '#72AAC9',
+    height: '100%',
+    width: '100%',
+  },
+  lowerBG: {
+    background: 'rgb(250, 250, 250)',
+    borderRadius: '3vmax 3vmax 0% 0%',
+    marginTop: '-2%',
+    position: 'relative',
+    borderTop: '1px solid #c3bebe',
+  },
+  bubble: {
+    border: '3px solid #64B4EA',
+    margin: theme.spacing(3),
+    borderRadius: '2vmin',
+    zIndex: '0',
+  },
+  circle: {
+    height: '60px',
+    width: '50px',
+    borderRadius: '50%',
+    background: '#43A4E7',
+    border: '3px solid #fff',
+    margin: theme.spacing(0.5),
+    boxShadow: theme.shadows[3],
+  },
+  circleAvatar: {
+    width: '70%',
+    height: '80%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    position: 'absolute',
+    bottom: '0',
+  },
+  inputText: {
+    color: theme.palette.text.primary,
+    marginTop: '3%',
+  },
+  bubbleText: {
+    color: theme.palette.text.primary,
+    position: 'absolute',
+    top: '17vh',
+    left: '48vw',
+    fontSize: '130%',
+  },
+  centerIcon: {
+    width: '100%',
+    maxWidth: '70vh',
+    minwidth: '40vh',
   },
 }))
 

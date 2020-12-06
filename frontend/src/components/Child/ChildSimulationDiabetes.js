@@ -96,7 +96,6 @@ const ChildSimulationDiabetes = (props) => {
 
   const [Meal_size, setValue] = React.useState(2)
   const handleSliderChange = (event, newValue) => {
-    props.onLoad(props.currentUser.ehrid)
     setValue(newValue)
   }
 
