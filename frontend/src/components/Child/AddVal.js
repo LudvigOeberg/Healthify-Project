@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { Grid, Box, Paper, GridList } from "@material-ui/core";
-import Slider from "@material-ui/core/Slider";
-import Input from "@material-ui/core/Input";
+import { Grid, Box, Paper, Tabs, Tab } from "@material-ui/core";
 import {
   OPEN_SNACKBAR,
   FIELD_CHANGE,
@@ -27,6 +24,7 @@ import selectGrumpy from "../../Static/select_grumpy.png";
 import selectNormal from "../../Static/select_normal.png";
 import selectHappy from "../../Static/select_happy.png";
 import selectVeryHappy from "../../Static/select_very_happy.png";
+
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -86,7 +84,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-// let ringColor
+function a11yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
+  };
+}
 
 const AddVal = (props) => {
   const id = props.currentUser.ehrid;
@@ -97,12 +100,10 @@ const AddVal = (props) => {
     ? `${props.party[id].additionalInfo.disease}`
     : null;
 
-  let [ringColor, setValue] = useState("#696969");
-  const handleBubbleChange = (event, newValue) => {
-    // props.onLoad(props.currentUser)
-    console.log("handleBubbleChange");
-    // setValue(newValue);
-    setValue("#FF4444");
+  const [value, setValue] = React.useState(2);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   useEffect(() => {
@@ -126,11 +127,14 @@ const AddVal = (props) => {
       }
     }
 
+    const SU_LO = props.party ? `${props.party[id].additionalInfo.SU_LO}` : null
+    const SU_HI = props.party ? `${props.party[id].additionalInfo.SU_HI}` : null
+
     const measurementChild = props.childValue;
     const HIGH_VAL =
-      disease === "DIABETES" ? measurementChild > 8 : measurementChild > 70;
-    const LOW_VAL =
-      disease === "DIABETES" ? measurementChild < 4 : measurementChild < 0;
+      disease === "DIABETES" ? SU_HI : measurementChild > 70;
+
+
 
     let snackbar = {
       open: true,
@@ -168,7 +172,7 @@ const AddVal = (props) => {
       };
     }
 
-    if (LOW_VAL) {
+    if (SU_LO<=measurementChild) {
       startTimer();
       snackbar = {
         open: true,
@@ -191,7 +195,6 @@ const AddVal = (props) => {
 
   return (
     <div className={classes.backGround}>
-      {/* <Container component="main" maxWidth="md"> */}
       <Grid container justify="center" textAlign="right">
         {/* <Paper elevation={0} > */}
         <Grid>
@@ -204,103 +207,93 @@ const AddVal = (props) => {
           <Typography className={classes.bubbleText} variant="h6">
             Hur mår du just nu?
           </Typography>
-          {/* <div backgroundColor={ringColor}></div> */}
         </Grid>
-        {/* </Paper> */}
       </Grid>
 
       <Paper elevation={0} className={classes.lowerBG}>
         <Grid container direction="row" justify="center" alignItems="center">
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            // backgroundColor="FF000"
-            className={classes.circle}
-          >
-            {" "}
-            <Button className={classes.moodButton}>
-              <img
-                id="currentMood"
-                src={selectSad}
-                className={classes.circleAvatar}
-                alt="mood avatar"
-                // border={`4px solid green`}
-                border="8px"
-                borderColor="#FF0000"
-
-                //value={"#FF0000"}
-                onClick={() => handleBubbleChange + console.log("clicked!!")}
-                //onClick={ringColor=20+ console.log("clicked!!")}
-              ></img>
-            </Button>
+          <Grid>
+            <Tabs
+              orientation="horizontal"
+              variant="scrollable"
+              indicatorColor="primary"
+              value={value}
+              onChange={handleChange}
+            >
+              <Tab
+                {...a11yProps(0)}
+                component={() => (
+                  <Button
+                    className={classes.circle}
+                    onClick={() => setValue(0)}
+                  >
+                    <img className={classes.circleAvatar} src={selectSad}></img>
+                  </Button>
+                )}
+              />
+              <Tab
+                // label="Item Two"
+                {...a11yProps(1)}
+                component={() => (
+                  <Button
+                    className={classes.circle}
+                    onClick={() => setValue(1)}
+                  >
+                    <img
+                      className={classes.circleAvatar}
+                      src={selectGrumpy}
+                    ></img>
+                  </Button>
+                )}
+              />
+              <Tab
+                // label="Item Three"
+                {...a11yProps(2)}
+                component={() => (
+                  <Button
+                    className={classes.circle}
+                    onClick={() => setValue(2)}
+                  >
+                    <img
+                      className={classes.circleAvatar}
+                      src={selectNormal}
+                    ></img>
+                  </Button>
+                )}
+              />
+              <Tab
+                // label="Item Three"
+                {...a11yProps(3)}
+                component={() => (
+                  <Button
+                    className={classes.circle}
+                    onClick={() => setValue(3)}
+                  >
+                    <img
+                      className={classes.circleAvatar}
+                      src={selectHappy}
+                    ></img>
+                  </Button>
+                )}
+              />
+              <Tab
+                // label="Item Three"
+                {...a11yProps(4)}
+                component={() => (
+                  <Button
+                    className={classes.circle}
+                    onClick={() => setValue(4)}
+                  >
+                    <img
+                      className={classes.circleAvatar}
+                      src={selectVeryHappy}
+                    ></img>
+                  </Button>
+                )}
+              />
+            </Tabs>
           </Grid>
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.circle}
-            border="4px solid red"
-          >
-            {" "}
-            <Button className={classes.moodButton}>
-              <img
-                id="currentMood"
-                src={selectGrumpy}
-                className={classes.circleAvatar}
-                alt="mood avatar"
-                ></img>
-            </Button>
-          </Grid>
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.circle}
-          >
-            {console.log(`ringColor: ${ringColor}`)}
-              <Button
-                className={classes.moodButton}
-                onClick={handleBubbleChange}
-              >
-                {console.log(`ringColor: ${ringColor}`)}
-                <img
-                  id="currentMood"
-                  src={selectNormal}
-                  className={classes.circleAvatar}
-                  alt="mood avatar"
-                  borderRadius="50%"
-                ></img>
-              </Button>
-          </Grid>
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.circle}
-          >
-            <img
-              id="currentMood"
-              src={selectHappy}
-              className={classes.circleAvatar}
-              alt="mood avatar"
-            ></img>
-          </Grid>
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            className={classes.circle}
-          >
-            <img
-              id="currentMood"
-              src={selectVeryHappy}
-              className={classes.circleAvatar}
-              alt="mood avatar"
-            ></img>
-          </Grid>
-        </Grid>
-
+        </Grid>{" "}
         <Grid container alignItems="center" justify="center" direction="column">
           <Paper className={classes.bubble}>
             <Grid item xs>
@@ -353,17 +346,13 @@ const AddVal = (props) => {
   );
 };
 
-const styles = makeStyles((theme) => ({
+const styles = makeStyles((theme, test) => ({
   paper: {
     marginTop: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     background: "#72AAC9",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "50%", // Fix IE 11 issue.
@@ -373,18 +362,15 @@ const styles = makeStyles((theme) => ({
     margin: theme.spacing(4),
   },
   backGround: {
-    //position: "relative",
     marginTop: "-3%",
     background: "#72AAC9",
     height: "100%",
     width: "100%",
-    //zIndex: '0',
   },
   lowerBG: {
-    background: "250, 250, 250",
+    background: "rgb(250, 250, 250)",
     borderRadius: "3vmax 3vmax 0% 0%",
     marginTop: "-2%",
-    //zIndex: "0",
     position: "relative",
     borderTop: "1px solid #c3bebe",
   },
@@ -396,22 +382,24 @@ const styles = makeStyles((theme) => ({
   },
   circle: {
     height: "60px",
-    width: "60px",
+    width: "50px",
     borderRadius: "50%",
-    // background: ringColor,
+    background: "#43A4E7",
+    border: "3px solid #fff",
     margin: theme.spacing(0.5),
-    //border: "2px solid #696969",
-    // border: ringColor,
+    boxShadow: theme.shadows[3],
   },
   circleAvatar: {
-    width: "80%",
+    width: "70%",
     height: "80%",
     marginLeft: "auto",
     marginRight: "auto",
-    borderColor: 'red',
+    position: "absolute",
+    bottom: "0",
   },
   inputText: {
-    color: theme.palette.text.disabled,
+    color: theme.palette.text.primary,
+    marginTop: "3%"
   },
   bubbleText: {
     color: theme.palette.text.primary,
@@ -424,15 +412,6 @@ const styles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: "70vh",
     minwidth: "40vh",
-  },
-  moodButton: {
-    // background: "#72AAC9",
-    active: {
-      backgroundColor: "#FF0000",
-    },
-    visited: {
-      backgroundColor: "#FF0000",
-    },
   },
 }));
 
