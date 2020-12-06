@@ -14,6 +14,7 @@ import agentEHR from '../../agentEHR'
 import bgAvatar from '../../Static/real_life_rewards_child_bg.png'
 import RewardCardList from '../Parent/RewardCardList'
 import RewardCard from '../Parent/RewardCard'
+import RewardCardChild from './RewardCardChild'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -71,6 +72,10 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  wrapper: {
+    position: 'relative',
+    top: '-10vh',
+  },
 }))
 
 const ChildRealLifeRewards = (props) => {
@@ -112,9 +117,12 @@ const ChildRealLifeRewards = (props) => {
           </Typography>
         </CardContent>
       </Card>
-      {/* <RewardCardList /> */}
-      <RewardCard oneReward={testReward}></RewardCard>
-      <RewardCardList rewards={rewards}></RewardCardList>
+      <Container className={classes.wrapper}>
+        {/* <RewardCardList /> */}
+        <RewardCard oneReward={testReward}></RewardCard>
+        <RewardCardChild oneReward={testReward}></RewardCardChild>
+        <RewardCardList rewards={rewards}></RewardCardList>
+      </Container>
     </Container>
   )
 }
