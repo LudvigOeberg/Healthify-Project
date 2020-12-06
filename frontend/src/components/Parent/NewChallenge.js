@@ -1,12 +1,25 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Button, FormControl, InputLabel, Input, Typography, Divider } from '@material-ui/core'
+import {
+  Grid,
+  Button,
+  Container,
+  FormControl,
+  InputLabel,
+  Input,
+  Typography,
+  Divider,
+  Paper,
+  SvgIcon,
+  ListItemText,
+} from '@material-ui/core'
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents'
 import RedeemIcon from '@material-ui/icons/Redeem'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Moment from 'moment'
 import agentEHR from '../../agentEHR'
 import agent from '../../agent'
 import {
@@ -17,6 +30,7 @@ import {
   LOAD_BLOODSUGAR,
   LOAD_WEIGHT,
 } from '../../constants/actionTypes'
+import profileAvatar from '../../Static/profile_avatar.png'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -24,7 +38,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onLoad: (ehrId) => dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) }),
+  onLoad: (ehrId) => {
+    dispatch({ type: LOAD_PARTY, payload: agentEHR.EHR.getParty(ehrId) })
+  },
   onChange: (key, value) => dispatch({ type: FIELD_CHANGE, key, value }),
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
   loadValues: (ehrId, offset, limit, disease) => {
@@ -32,8 +48,8 @@ const mapDispatchToProps = (dispatch) => ({
       dispatch({ type: LOAD_BLOODSUGAR, payload: agentEHR.Query.bloodsugar(ehrId, offset, limit) })
     else if (disease === 'OBESITY') dispatch({ type: LOAD_WEIGHT, payload: agentEHR.Query.weight(ehrId, limit) })
   },
-  submitGoal: (nameOf, description, reward, endDate, ehrid, snackbar) => {
-    const payload = agent.Parent.addReward(nameOf, description, reward, endDate, ehrid)
+  submitGoal: (nameOf, description, reward, endDate, startDate, ehrid, snackbar) => {
+    const payload = agent.Parent.addReward(nameOf, description, reward, endDate, startDate, ehrid)
     dispatch({ type: SAVE_REWARD, ehrid, payload, snackbar })
   },
 })
@@ -41,15 +57,21 @@ const mapDispatchToProps = (dispatch) => ({
 const NewChallenge = (props) => {
   const classes = styles()
   const { id } = props.match.params
-  const { nameOf, description, reward, endDate } = props
+  const { nameOf, description, reward, endDate, rew, days } = props
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const name = props.party ? `${props.party[id].firstNames} ${props.party[id].lastNames}` : null
+  const today = new Date()
 
   const premade = {
-    name: disease === 'DIABETES' ? 'Blodsocker Streak' : 'Logga vikt',
+    name: disease === 'DIABETES' ? 'Blodsocker Streak' : 'Nå ditt viktmål',
     desc:
-      disease === 'DIABETES' ? 'Logga ditt blodsocker 7 dagar på raken för att vinna utmaningen!' : 'Spring 20 gånger',
-    rew: disease === 'DIABETES' ? 'Åka och bada' : 'Biobesök',
-    days: disease === 'DIABETES' ? '7' : '20',
+      disease === 'DIABETES'
+        ? `Logga ditt blodsocker varje dag för att vinna utmaningen!`
+        : 'När du når ditt viktmål vinner du utmaningen!',
+    dateQuestion:
+      disease === 'DIABETES'
+        ? 'Hur länge ska ditt barns värde ligga inom det hälsosamma intervallet för att klara utmaningen?'
+        : 'Till vilket datum ska ditt barn ha uppnått sitt viktmål?',
   }
 
   useEffect(() => {
@@ -61,20 +83,40 @@ const NewChallenge = (props) => {
     props.onChange(ev.target.id, ev.target.value)
   }
 
-  const submitForm = (_nameOf, _description, _reward, _endDate, _id) => (ev) => {
+  const submitForm = (_nameOf, _description, _reward, _endDate, _startDate, _id) => (ev) => {
     ev.preventDefault()
     const snackbar = {
       message: 'Du skapade en ny utmaning',
       color: 'success',
       open: true,
     }
-    props.submitGoal(_nameOf, _description, _reward, _endDate, _id, snackbar)
-    // redirect href={`/add-reward/${id}`}
+    props.submitGoal(_nameOf, _description, _reward, _endDate, _startDate, _id, snackbar)
   }
 
   return (
-    <Grid item xs={12} className={classes.card}>
-      <form onSubmit={submitForm(nameOf, description, reward, endDate, id)} noValidate>
+    <Container className={classes.root}>
+      <Grid justify="center" direction="column" alignItems="center" container>
+        <Grid justify="left" alignItems="left" container>
+          <a href={`/parent-reward/${id}`}>
+            <Paper className={classes.backpaper} elevation={5}>
+              <SvgIcon viewBox="0 0 15 22">
+                <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" fill="#4F4F4F" fillOpacity="1"></path>
+              </SvgIcon>
+            </Paper>
+          </a>
+        </Grid>
+        <Grid item xs={6}>
+          <img src={profileAvatar} alt="Profile"></img>
+        </Grid>
+        <Grid item xs={4} className={classes.avatarName}>
+          <Typography variant="h5"> {name} </Typography>
+          <ListItemText secondary={disease === 'DIABETES' ? 'Diabetes' : 'Fetma'} />
+        </Grid>
+      </Grid>
+      <form
+        onSubmit={submitForm(nameOf, description, reward, endDate, Moment(today).format('YYYY-MM-DD'), id)}
+        noValidate
+      >
         <Accordion elevation={2} className={classes.card}>
           <AccordionSummary avatar={<EmojiEventsIcon />} expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h5"> Skapa egen Utmaning </Typography>
@@ -111,9 +153,10 @@ const NewChallenge = (props) => {
         </Accordion>
       </form>
 
-      {/* ---------------------------- */}
-
-      <form onSubmit={submitForm(premade.name, premade.desc, premade.rew, premade.days, id)} noValidate>
+      <form
+        onSubmit={submitForm(premade.name, premade.desc, rew, days, Moment(today).format('YYYY-MM-DD'), id)}
+        noValidate
+      >
         <Accordion elevation={2} className={classes.card}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h5">Välj en förbestämd utmaning</Typography>
@@ -141,23 +184,23 @@ const NewChallenge = (props) => {
           </Grid>
 
           <Grid className={classes.inputs}>
-            <Typography color="primary" variant="caption">
-              Belöning
-            </Typography>
-            <Typography>
-              {premade.rew}
-              <Divider />
-            </Typography>
+            <FormControl fullWidth className={classes.inputs}>
+              <InputLabel>Belöning</InputLabel>
+              <Input value={rew} fullWidth id="rew" margin="dense" onChange={handleForm} />
+            </FormControl>
           </Grid>
 
           <Grid className={classes.inputs}>
-            <Typography color="primary" variant="caption">
-              Antal Dagar
-            </Typography>
+            <FormControl fullWidth className={classes.inputs}>
+              <InputLabel shrink></InputLabel>
+              <Input fullWidth type="date" value={days} id="days" margin="dense" onChange={handleForm} />
+            </FormControl>
+            {/* 
+
             <Typography>
               {premade.days}
               <Divider />
-            </Typography>
+            </Typography> */}
           </Grid>
 
           <Button
@@ -172,15 +215,14 @@ const NewChallenge = (props) => {
           </Button>
         </Accordion>
       </form>
-    </Grid>
+    </Container>
   )
 }
 
 const styles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(0),
     alignItems: 'top',
-    display: 'flex',
     padding: theme.spacing(1),
   },
   card: {
@@ -204,6 +246,17 @@ const styles = makeStyles((theme) => ({
   RedeemIcon: {
     display: 'flex',
     margin: 'auto',
+  },
+  backpaper: {
+    width: '60px',
+    height: '60px',
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    borderRadius: '50%',
+  },
+  avatarName: {
+    textAlign: 'center',
   },
 }))
 

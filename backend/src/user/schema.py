@@ -46,6 +46,7 @@ class UserSchema(Schema):
     ehrid = fields.Str(dump_only=True)
     type = fields.Str(dump_only=True)
     timer = fields.DateTime(dump_only=True)
+    rewards = fields.List(fields.Nested(lambda:RewardSchema()))
 
     @pre_load
     def make_user(self, data, **kwargs):
@@ -145,6 +146,7 @@ class RewardSchema(Schema):
     description = fields.Str()
     reward = fields.Str()
     endDate = fields.Date()
+    startDate = fields.Date()
     ehrid = fields.Str()
 
     @pre_load
@@ -157,12 +159,17 @@ class RegisterRewardSchema(Schema):
     description = fields.Str(required=True)
     reward = fields.Str(required=True)
     endDate = fields.Date(required=True)
+    startDate = fields.Date(required=True)
     ehrid = fields.Str(required=True)
 
     @pre_load
     def make_reward(self, data, **kwargs):
         data = data.get('reward')
         return data
+
+    def handle_error(self, exc, data, **kwargs):
+        """Log and raise our custom exception when (de)serialization fails."""
+        raise InvalidUsage(exc.messages)
 
 class ChildSchema(Schema):
     name = fields.Str(dump_only=True)

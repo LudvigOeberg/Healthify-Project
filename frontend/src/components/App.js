@@ -21,6 +21,7 @@ import Parent from './Parent/Parent'
 import ParentOverview from './Parent/ParentOverview'
 import PatientRegister from './Parent/PatientRegister'
 import MySnackbar from './MySnackbar'
+// eslint-disable-next-line import/no-named-as-default-member
 import MonitorChildValue from './Parent/MonitorChildValue'
 import PatientEdit from './Parent/PatientEdit'
 import ChildMonitor from './Child/ChildMonitor'
@@ -28,14 +29,17 @@ import AccessedData from './Child/AccessedData'
 import ParentSettingsPage from './Parent/ParentSettingsPage'
 import Integrations from './Child/Integrations'
 import SimulatePatient from './Parent/SimulatePatient'
+// eslint-disable-next-line import/no-named-as-default-member
 import FooterBar from './FooterBar'
 import ParentRewardPage from './Parent/ParentRewardPage'
 import ChildLaboration from './Child/ChildLaboration'
 import ChildSimulationDiabetes from './Child/ChildSimulationDiabetes'
 import ChildSimulationObesity from './Child/ChildSimulationObesity'
 import AddVal from './Child/AddVal'
-import NewChallenge from './Parent/NewChallenge'
+// eslint-disable-next-line import/no-named-as-default-member
 import ChildRealLifeRewards from './Child/ChildRealLifeRewards'
+import NewChallenge from './Parent/NewChallenge'
+// import ChildRealLifeRewards from './Child/ChildRealLifeRewards'
 
 const mapStateToProps = (state) => ({
   appLoaded: state.common.appLoaded,
@@ -267,7 +271,6 @@ class App extends React.Component {
                 component={ChildSimulationObesity}
               />
               <RequiredRoute
-                exact
                 path="/parent-reward/:id"
                 requires={['auth', 'parent']}
                 user={this.props.currentUser}

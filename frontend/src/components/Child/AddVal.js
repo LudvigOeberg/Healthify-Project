@@ -112,7 +112,7 @@ const AddVal = (props) => {
       message: validate(props.childValue)
         ? `Ditt värde på ${props.childValue} ${
             disease === 'DIABETES' ? 'mmol/L' : 'kg'
-          } jättebra ut! -Att hålla koll på ditt ${
+          } ser jättebra ut! -Att hålla koll på ditt ${
             disease === 'DIABETES' ? 'blodsockervärde' : 'vikt'
           } är ett bra sätt att hålla en bra hälsa.`
         : 'Fel format!',
@@ -206,7 +206,7 @@ const AddVal = (props) => {
           </Grid>
           <Grid item>
             <Input
-              id="childValue"
+              id="childValueInputField"
               className={classes.input}
               value={childValue}
               margin="dense"
