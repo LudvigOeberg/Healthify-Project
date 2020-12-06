@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
@@ -75,6 +76,10 @@ export default function MyDialog(props) {
   const { weeks } = props
   let avatar
 
+  let borderProp = '1px solid #000'
+  let arrowVisibility = 'visible'
+  let imageHeight = '200px'
+
   if (alt === 'sad avatar') {
     avatar = sadAvatar
   } else if (alt === 'happy avatar') {
@@ -83,6 +88,11 @@ export default function MyDialog(props) {
     avatar = neutralAvatar
   } else if (alt === 'running avatar') {
     avatar = runningAvatar
+  } else if (alt === '') {
+    avatar = null
+    borderProp = 'none'
+    arrowVisibility = 'hidden'
+    imageHeight = '0'
   } else {
     avatar = trainingAvatar
   }
@@ -128,7 +138,7 @@ export default function MyDialog(props) {
             style={{
               padding: '15px',
               borderRadius: '30px',
-              border: '1px solid #000',
+              border: borderProp,
             }}
           >
             <Typography textAlign="center" id="bubbleText" gutterBottom>
@@ -138,10 +148,10 @@ export default function MyDialog(props) {
             </Typography>
           </Container>
           <Box display="flex" justifyContent="center" alignItems="center" height="45px">
-            <DetailsIcon fontSize="large" />
+            <DetailsIcon fontSize="large" visibility={arrowVisibility} />
           </Box>
-          <Box display="flex" justifyContent="center" alignItems="center" minHeight="30vh">
-            <img src={avatar} alt={alt} height="200px"></img>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <img src={avatar} alt={alt} height={imageHeight}></img>
           </Box>
         </DialogContent>
         <DialogActions>

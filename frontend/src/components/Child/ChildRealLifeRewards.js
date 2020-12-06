@@ -5,13 +5,12 @@ import Container from '@material-ui/core/Container'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-// import Grid from '@material-ui/core/Grid'
-// import Button from '@material-ui/core/Button'
-// import Link from '@material-ui/core/Link'
 
 import { LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import bgAvatar from '../../Static/real_life_rewards_child_bg.png'
+import RewardCardList from '../Parent/RewardCardList'
+import RewardCardChild from './RewardCardChild'
 
 const mapStateToProps = (state) => ({
   ...state.common,
@@ -69,11 +68,16 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  wrapper: {
+    position: 'relative',
+    top: '-10vh',
+  },
 }))
 
 const ChildRealLifeRewards = (props) => {
   const id = props.currentUser.ehrid
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
+  const { rewards } = props.currentUser
 
   useEffect(() => {
     props.onLoad(id)
@@ -81,6 +85,13 @@ const ChildRealLifeRewards = (props) => {
   }, [id, disease]); // eslint-disable-line
 
   const classes = useStyles()
+
+  const finishedReward = {
+    description: 'Ta ett test om dagen',
+    endDate: '2020-12-17',
+    nameOf: 'Gå på bio',
+    reward: 'Se Bilar 4 på bio',
+  }
 
   return (
     <Container component="main" maxWidth="" className={classes.paper}>
@@ -95,6 +106,10 @@ const ChildRealLifeRewards = (props) => {
           </Typography>
         </CardContent>
       </Card>
+      <Container className={classes.wrapper}>
+        <RewardCardChild oneReward={finishedReward}></RewardCardChild>
+        <RewardCardList rewards={rewards}></RewardCardList>
+      </Container>
     </Container>
   )
 }

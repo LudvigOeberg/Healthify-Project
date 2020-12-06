@@ -46,6 +46,7 @@ class UserSchema(Schema):
     ehrid = fields.Str(dump_only=True)
     type = fields.Str(dump_only=True)
     timer = fields.DateTime(dump_only=True)
+    rewards = fields.List(fields.Nested(lambda:RewardSchema()))
 
     @pre_load
     def make_user(self, data, **kwargs):
