@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Container, Button, Grid, Typography, SvgIcon, Paper } from '@material-ui/core'
+import { Container, Grid, Typography, SvgIcon, Paper, IconButton } from '@material-ui/core'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Card from '@material-ui/core/Card'
@@ -38,6 +38,17 @@ const RewardCard = (props) => {
   const { oneReward } = props
   const today = new Date()
   const { bloodsugar } = props
+  const { type } = props.currentUser
+
+  let deleteVisibilityType = 'visible'
+
+  // eslint-disable-next-line no-console
+  console.log(`type: ${type}`)
+  if (type === 'child') {
+    deleteVisibilityType = 'hidden'
+    // eslint-disable-next-line no-console
+    console.log(`visibility: ${deleteVisibilityType}`)
+  }
 
   const deleteReward = (nameOf, description, reward, endDate, id) => (ev) => {
     ev.preventDefault()
@@ -86,11 +97,11 @@ const RewardCard = (props) => {
             ></CardHeader>
           </Grid>
           <Grid item xs={2}>
-            <Button
+            <IconButton
               onClick={deleteReward(oneReward.nameOf, oneReward.description, oneReward.reward, oneReward.endDate)}
             >
-              <DeleteIcon color="primary" />
-            </Button>
+              <DeleteIcon color="primary" visibility={deleteVisibilityType} />
+            </IconButton>
           </Grid>
         </Grid>
         <CardContent className={classes.card}>{oneReward.description}</CardContent>
