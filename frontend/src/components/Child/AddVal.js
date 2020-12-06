@@ -25,7 +25,6 @@ import selectNormal from "../../Static/select_normal.png";
 import selectHappy from "../../Static/select_happy.png";
 import selectVeryHappy from "../../Static/select_very_happy.png";
 
-
 const mapStateToProps = (state) => ({
   ...state.common,
   ...state.ehr,
@@ -111,7 +110,7 @@ const AddVal = (props) => {
     props.loadValues(id, 0, 20, disease);
   }, [id, disease]); // eslint-disable-line
 
-  const validate = (val) => val < 100 && val > 0;
+  const validate = (val) => disease === "DIABETES" ? val < 15 && val > 0 : val < 200 && val > 0;
 
   const submitForm = (ev) => {
     ev.preventDefault();
@@ -127,16 +126,14 @@ const AddVal = (props) => {
       }
     }
 
-    // const SU_LO = props.party ? `${props.party[id].additionalInfo.SU_LO}` : null
-    // const SU_HI = props.party ? `${props.party[id].additionalInfo.SU_HI}` : null
-    
+    const SU_LO = props.party
+      ? `${props.party[id].additionalInfo.SU_LO}`
+      : null;
+    const SU_HI = props.party
+      ? `${props.party[id].additionalInfo.SU_HI}`
+      : null;
+
     const measurementChild = props.childValue;
-    const HIGH_VAL =
-      disease === "DIABETES" ? measurementChild > 8 : measurementChild > 70;
-    const LOW_VAL =
-      disease === "DIABETES" ? measurementChild < 4 : measurementChild < 0;
-
-
 
     let snackbar = {
       open: true,
@@ -159,34 +156,38 @@ const AddVal = (props) => {
       };
     }
 
-    if (HIGH_VAL) {
-      startTimer();
-      snackbar = {
-        open: true,
-        message: validate(props.childValue)
-          ? `Åh nej, det ser ut som att ${
-              disease === "DIABETES"
-                ? "ditt blodsocker börjar bli högt. Se till att ta lite insulin snart så du inte börjar må dåligt."
-                : "din vikt börjar gå upp. Försök röra på dig mer och äta hälsosammare."
-            } `
-          : "Fel format!",
-        color: validate(props.childValue) ? "error" : "error",
-      };
+    if (measurementChild !== null) {
+      if (parseFloat(measurementChild) > parseFloat(SU_HI)) {
+        startTimer();
+        snackbar = {
+          open: true,
+          message: validate(props.childValue)
+            ? `Åh nej, det ser ut som att ${
+                disease === "DIABETES"
+                  ? "ditt blodsocker börjar bli högt. Se till att ta lite insulin snart så du inte börjar må dåligt."
+                  : "din vikt börjar gå upp. Försök röra på dig mer och äta hälsosammare."
+              } `
+            : "Fel format!",
+          color: validate(props.childValue) ? "error" : "error",
+        };
+      }
     }
 
-    if (LOW_VAL) {
-      startTimer();
-      snackbar = {
-        open: true,
-        message: validate(props.childValue)
-          ? `Åh nej, det ser ut som att ${
-              disease === "DIABETES"
-                ? "ditt blodsocker börjar bli lågt. Se till att äta något snart innan du börjar må dåligt och registrera ett nytt värde därefter."
-                : "din vikt gått ner. Försök att äta mer."
-            } `
-          : "Fel format!",
-        color: validate(props.childValue) ? "error" : "error",
-      };
+    if (measurementChild !== null) {
+      if (parseFloat(measurementChild) < parseFloat(SU_LO)) {
+        startTimer();
+        snackbar = {
+          open: true,
+          message: validate(props.childValue)
+            ? `Åh nej, det ser ut som att ${
+                disease === "DIABETES"
+                  ? "ditt blodsocker börjar bli lågt. Se till att äta något snart innan du börjar må dåligt och registrera ett nytt värde därefter."
+                  : "din vikt har gått ner. Försök att äta mer."
+              } `
+            : "Fel format!",
+          color: validate(props.childValue) ? "error" : "error",
+        };
+      }
     }
     props.onSubmit(id, measurementChild, snackbar, disease, timer);
   };
@@ -230,7 +231,11 @@ const AddVal = (props) => {
                     className={classes.circle}
                     onClick={() => setValue(0)}
                   >
-                    <img className={classes.circleAvatar} src={selectSad} alt="Selected Sad"></img>
+                    <img
+                      className={classes.circleAvatar}
+                      src={selectSad}
+                      alt="Selected Sad"
+                    ></img>
                   </Button>
                 )}
               />
@@ -405,7 +410,7 @@ const styles = makeStyles((theme) => ({
   },
   inputText: {
     color: theme.palette.text.primary,
-    marginTop: "3%"
+    marginTop: "3%",
   },
   bubbleText: {
     color: theme.palette.text.primary,
