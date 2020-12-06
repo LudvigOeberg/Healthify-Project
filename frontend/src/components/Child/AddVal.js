@@ -127,12 +127,14 @@ const AddVal = (props) => {
       }
     }
 
-    const SU_LO = props.party ? `${props.party[id].additionalInfo.SU_LO}` : null
-    const SU_HI = props.party ? `${props.party[id].additionalInfo.SU_HI}` : null
-
+    // const SU_LO = props.party ? `${props.party[id].additionalInfo.SU_LO}` : null
+    // const SU_HI = props.party ? `${props.party[id].additionalInfo.SU_HI}` : null
+    
     const measurementChild = props.childValue;
     const HIGH_VAL =
-      disease === "DIABETES" ? SU_HI : measurementChild > 70;
+      disease === "DIABETES" ? measurementChild > 8 : measurementChild > 70;
+    const LOW_VAL =
+      disease === "DIABETES" ? measurementChild < 4 : measurementChild < 0;
 
 
 
@@ -172,7 +174,7 @@ const AddVal = (props) => {
       };
     }
 
-    if (SU_LO<=measurementChild) {
+    if (LOW_VAL) {
       startTimer();
       snackbar = {
         open: true,
@@ -224,69 +226,74 @@ const AddVal = (props) => {
                 {...a11yProps(0)}
                 component={() => (
                   <Button
+                    id="childSelectSad"
                     className={classes.circle}
                     onClick={() => setValue(0)}
                   >
-                    <img className={classes.circleAvatar} src={selectSad}></img>
+                    <img className={classes.circleAvatar} src={selectSad} alt="Selected Sad"></img>
                   </Button>
                 )}
               />
               <Tab
-                // label="Item Two"
                 {...a11yProps(1)}
                 component={() => (
                   <Button
+                    id="childSelectGrumpy"
                     className={classes.circle}
                     onClick={() => setValue(1)}
                   >
                     <img
                       className={classes.circleAvatar}
                       src={selectGrumpy}
+                      alt="Selected Grympy"
                     ></img>
                   </Button>
                 )}
               />
               <Tab
-                // label="Item Three"
                 {...a11yProps(2)}
                 component={() => (
                   <Button
+                    id="childSelectNormal"
                     className={classes.circle}
                     onClick={() => setValue(2)}
                   >
                     <img
                       className={classes.circleAvatar}
                       src={selectNormal}
+                      alt="Selected Normal"
                     ></img>
                   </Button>
                 )}
               />
               <Tab
-                // label="Item Three"
                 {...a11yProps(3)}
                 component={() => (
                   <Button
+                    id="childSelectHappy"
                     className={classes.circle}
                     onClick={() => setValue(3)}
                   >
                     <img
                       className={classes.circleAvatar}
                       src={selectHappy}
+                      alt="Selected Happy"
                     ></img>
                   </Button>
                 )}
               />
               <Tab
-                // label="Item Three"
                 {...a11yProps(4)}
                 component={() => (
                   <Button
+                    id="childSelectVeryHappy"
                     className={classes.circle}
                     onClick={() => setValue(4)}
                   >
                     <img
                       className={classes.circleAvatar}
                       src={selectVeryHappy}
+                      alt="Selected very happy"
                     ></img>
                   </Button>
                 )}
@@ -341,12 +348,11 @@ const AddVal = (props) => {
           </Box>
         </Grid>
       </Paper>
-      {/* </Container> */}
     </div>
   );
 };
 
-const styles = makeStyles((theme, test) => ({
+const styles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(3),
     display: "flex",
