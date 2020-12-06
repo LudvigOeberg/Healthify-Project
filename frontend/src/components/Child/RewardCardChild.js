@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Container, Button, Grid, Typography, SvgIcon } from '@material-ui/core'
+import { Container, Grid, Typography, SvgIcon } from '@material-ui/core'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import DeleteIcon from '@material-ui/icons/Delete'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
@@ -31,20 +30,10 @@ const RewardCard = (props) => {
   const classes = styles()
   const { oneReward } = props
 
-  const deleteReward = (nameOf, description, reward, endDate, id) => (ev) => {
-    ev.preventDefault()
-    const snackbar = {
-      message: `Du tog bort reward`,
-      color: 'success',
-      open: true,
-    }
-    props.deleteReward(nameOf, description, reward, endDate, id, snackbar)
-  }
-
   const dialogInfo = [
     'Hämta belöning',
     '',
-    'Bra jobbat! En notis har skickats till din förälder/vårdnadsgivare.',
+    'Bra jobbat! En notis har skickats till din förälder/ vårdnadsgivare.',
     '',
     '',
   ]
@@ -67,13 +56,6 @@ const RewardCard = (props) => {
                 </SvgIcon>
               }
             ></CardHeader>
-          </Grid>
-          <Grid item xs={2}>
-            <Button
-              onClick={deleteReward(oneReward.nameOf, oneReward.description, oneReward.reward, oneReward.endDate)}
-            >
-              <DeleteIcon color="primary" />
-            </Button>
           </Grid>
         </Grid>
         <CardContent className={classes.card}>{oneReward.description}</CardContent>

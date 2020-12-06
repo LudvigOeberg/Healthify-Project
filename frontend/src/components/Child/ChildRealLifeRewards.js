@@ -5,15 +5,11 @@ import Container from '@material-ui/core/Container'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-// import Grid from '@material-ui/core/Grid'
-// import Button from '@material-ui/core/Button'
-// import Link from '@material-ui/core/Link'
 
 import { LOAD_BLOODSUGAR, LOAD_PARTY, LOAD_WEIGHT } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 import bgAvatar from '../../Static/real_life_rewards_child_bg.png'
 import RewardCardList from '../Parent/RewardCardList'
-import RewardCard from '../Parent/RewardCard'
 import RewardCardChild from './RewardCardChild'
 
 const mapStateToProps = (state) => ({
@@ -82,13 +78,6 @@ const ChildRealLifeRewards = (props) => {
   const id = props.currentUser.ehrid
   const disease = props.party ? `${props.party[id].additionalInfo.disease}` : null
   const { rewards } = props.currentUser
-  //   const { rewards } = props.currentUser.rewards
-  //  const currentUser = props
-
-  // eslint-disable-next-line no-console
-  console.log(`rewards: ${rewards}`)
-
-  // eslint-disable-next-line no-console
 
   useEffect(() => {
     props.onLoad(id)
@@ -97,7 +86,7 @@ const ChildRealLifeRewards = (props) => {
 
   const classes = useStyles()
 
-  const testReward = {
+  const finishedReward = {
     description: 'Ta ett test om dagen',
     endDate: '2020-12-17',
     nameOf: 'Gå på bio',
@@ -118,9 +107,7 @@ const ChildRealLifeRewards = (props) => {
         </CardContent>
       </Card>
       <Container className={classes.wrapper}>
-        {/* <RewardCardList /> */}
-        <RewardCard oneReward={testReward}></RewardCard>
-        <RewardCardChild oneReward={testReward}></RewardCardChild>
+        <RewardCardChild oneReward={finishedReward}></RewardCardChild>
         <RewardCardList rewards={rewards}></RewardCardList>
       </Container>
     </Container>
