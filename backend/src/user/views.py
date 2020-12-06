@@ -241,8 +241,10 @@ class ChildRewardResource(MethodResource):
     @marshal_with(reward_schema)
     @doc(description="Add a reward to child")
     def post(self, nameOf, description, reward, endDate, startDate, ehrid, **kwargs):
-        reward=Reward(nameOf, description, reward, endDate, startDate, ehrid, **kwargs)
-        db.session.add(reward)
+        #get rid of ID
+        child = Child.query.filter_by(ehrid = ehrid).first()
+        reward=Reward(nameOf, description, reward, endDate, startDate)
+        child.rewards.append(reward)
         db.session.commit()
         return 200
 """

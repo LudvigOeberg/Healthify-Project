@@ -90,10 +90,10 @@ class Reward(SurrogatePK, Model):
     reward = Column(db.String, nullable=False)
     endDate = Column(db.DateTime, nullable=False)
     startDate = Column(db.DateTime, nullable=False)
-    child_ehrid = Column(db.Integer, db.ForeignKey('child.id'), nullable=False)
+    child_id = Column(db.Integer, db.ForeignKey('child.id'), nullable=False)
 
-    def __init__(self, nameOf, description, reward, endDate, startDate, ehrid, **kwargs):
-        db.Model.__init__(self, nameOf=nameOf, description=description, reward=reward, endDate = endDate, startDate = startDate, child_ehrid = ehrid, **kwargs)
+    def __init__(self, nameOf, description, reward, endDate, startDate):
+        db.Model.__init__(self, nameOf=nameOf, description=description, reward=reward, endDate = endDate, startDate = startDate)
         
     
     def __repr__(self):
