@@ -59,7 +59,7 @@ const RewardCard = (props) => {
     }
     props.deleteReward(nameOf, description, reward, endDate, id, snackbar)
   }
-  today.setDate(today.getDate() + 3)
+
   const daysElapsed = Moment(today).diff(Moment(oneReward.startDate), 'days')
   const daysTot = Moment(oneReward.endDate).diff(Moment(oneReward.startDate), 'days')
 
