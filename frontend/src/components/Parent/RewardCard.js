@@ -3,13 +3,11 @@ import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { Container, Grid, Typography, SvgIcon, Paper, IconButton } from '@material-ui/core'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import DeleteIcon from '@material-ui/icons/Delete'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
 import Moment from 'moment'
-import { DELETE_REWARD, PAGE_UNLOADED, LOAD_PARTY, LOAD_BLOODSUGAR } from '../../constants/actionTypes'
-import agent from '../../agent'
+import { PAGE_UNLOADED, LOAD_PARTY, LOAD_BLOODSUGAR } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 
 const mapStateToProps = (state) => ({
@@ -26,11 +24,6 @@ const mapDispatchToProps = (dispatch) => ({
     })
   },
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
-
-  deleteReward: (nameOf, description, reward, endDate, ehrid, snackbar) => {
-    const payload = agent.Parent.deleteReward(nameOf, description, reward, endDate, ehrid)
-    dispatch({ type: DELETE_REWARD, payload, snackbar })
-  },
 })
 
 const RewardCard = (props) => {
@@ -48,16 +41,6 @@ const RewardCard = (props) => {
     deleteVisibilityType = 'hidden'
     // eslint-disable-next-line no-console
     console.log(`visibility: ${deleteVisibilityType}`)
-  }
-
-  const deleteReward = (nameOf, description, reward, endDate, id) => (ev) => {
-    ev.preventDefault()
-    const snackbar = {
-      message: `Du tog bort reward`,
-      color: 'success',
-      open: true,
-    }
-    props.deleteReward(nameOf, description, reward, endDate, id, snackbar)
   }
 
   const daysElapsed = Moment(today).diff(Moment(oneReward.startDate), 'days')
