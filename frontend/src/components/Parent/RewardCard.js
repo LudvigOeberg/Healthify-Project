@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Container, Grid, Typography, SvgIcon, Paper, IconButton } from '@material-ui/core'
+import { Container, Grid, Typography, SvgIcon, Paper } from '@material-ui/core'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
