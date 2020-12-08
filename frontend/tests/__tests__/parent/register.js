@@ -53,14 +53,14 @@ async function logout(driver) {
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
 }
 
-test('TestCaseID:12.1.1. Registration with a new email', async () => {
+test('TestCaseID:3.1.1. Registration with a new email', async () => {
   const user = new User()
   await connectToEHR()
   await register(driver, user)
   await logout(driver)
 })
 
-test('TestCaseID:12.1.2 Registration with an already registered email', async () => {
+test('TestCaseID:3.1.2 Registration with an already registered email', async () => {
   const user = new User()
   expect(await driver.getTitle()).toEqual('Healthify')
   await register(driver, user)
@@ -68,7 +68,7 @@ test('TestCaseID:12.1.2 Registration with an already registered email', async ()
   await expect(register(driver, user)).rejects.toThrow('Timed out after 5 sec')
 })
 
-test('TestCaseID:12.1.3. Registration with a new email with invalid data', async () => {
+test('TestCaseID:3.1.3. Registration with a new email with invalid data', async () => {
   await driver.get(localURL)
   await driver.findElement(webdriver.By.id('registerHeaderButton')).click()
   await driver.findElement(webdriver.By.id('registerUserButton')).click()

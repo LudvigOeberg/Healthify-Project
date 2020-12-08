@@ -52,7 +52,7 @@ async function logut(driver) {
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
 }
 
-test('TestCaseID:257. Check if navbar exists', async () => {
+test('TestCaseID:25.1.1. Check if navbar exists', async () => {
   const user = new User()
   await connectToEHR()
   await register(driver, user)
@@ -66,7 +66,7 @@ test('TestCaseID:257. Check if navbar exists', async () => {
   expect(present).toEqual(true)
 })
 
-test('TestCaseID:255. Check if Healthify text exists', async () => {
+test('TestCaseID:25.1.6. Check if Healthify text exists', async () => {
   const user = new User()
   // await connectToEHR()
   await register(driver, user)
@@ -80,7 +80,7 @@ test('TestCaseID:255. Check if Healthify text exists', async () => {
   expect(present).toEqual(true)
 })
 
-test('TestCaseID:256. Check if Healthify text is a link to the profile page', async () => {
+test('TestCaseID:25.1.7. Check if Healthify text is a link to the profile page', async () => {
   const user = new User()
   // await connectToEHR()
   await register(driver, user)
@@ -90,7 +90,7 @@ test('TestCaseID:256. Check if Healthify text is a link to the profile page', as
   await logut(driver)
 })
 
-test('TestCaseID:251. Check if navbar drawer exists', async () => {
+test('TestCaseID:25.1.2. Check if navbar drawer exists', async () => {
   const user = new User()
   // await connectToEHR()
   await register(driver, user)
@@ -105,7 +105,7 @@ test('TestCaseID:251. Check if navbar drawer exists', async () => {
   await logut(driver)
 })
 
-test('TestCaseID:252. Check profile link to the profile page', async () => {
+test('TestCaseID:25.1.3. Check profile link to the profile page', async () => {
   const user = new User()
   // await connectToEHR()
   await register(driver, user)
@@ -124,7 +124,7 @@ test('TestCaseID:252. Check profile link to the profile page', async () => {
   await logut(driver)
 })
 
-test('TestCaseID:253. Check settings link to the settings page', async () => {
+test('TestCaseID:25.1.4. Check settings link to the settings page', async () => {
   const user = new User()
   // await connectToEHR()
   await register(driver, user)
@@ -143,7 +143,7 @@ test('TestCaseID:253. Check settings link to the settings page', async () => {
   await logut(driver)
 })
 
-test('TestCaseID:254. Check child registration link to child registration page', async () => {
+test('TestCaseID:25.1.5. Check child registration link to child registration page', async () => {
   const user = new User()
   await register(driver, user)
   await driver.findElement(webdriver.By.id('openDrawerButton')).click()

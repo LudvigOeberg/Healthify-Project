@@ -32,11 +32,11 @@ async function connectToEHR() {
   await alert2.accept()
 }
 
-test('TestCaseID:51. Check Healthify startpage', async () => {
+test('TestCaseID:5.1.1. Check Healthify startpage', async () => {
   await connectToEHR()
   expect(await driver.getTitle()).toEqual('Healthify')
 })
-test('TestCaseID:52. Check if log in button exists', async () => {
+test('TestCaseID:5.1.2. Check if log in button exists', async () => {
   await connectToEHR()
   await driver.get(localURL)
 
@@ -49,7 +49,7 @@ test('TestCaseID:52. Check if log in button exists', async () => {
   expect(present).toEqual(true)
 })
 
-test('TestCaseID:53. Check if registration button exists', async () => {
+test('TestCaseID:5.1.3. Check if registration button exists', async () => {
   await connectToEHR()
   await driver.get(localURL)
 
@@ -62,14 +62,14 @@ test('TestCaseID:53. Check if registration button exists', async () => {
   expect(present).toEqual(true)
 })
 
-test('TestCaseID:54. Check log in button functionallity', async () => {
+test('TestCaseID:5.1.4. Check log in button functionallity', async () => {
   await connectToEHR()
   await driver.get(localURL)
   await driver.findElement(webdriver.By.xpath("//span[text()='Logga in']")).click()
   expect(await driver.getCurrentUrl()).toEqual(`${localURL}login`)
 })
 
-test('TestCaseID:55. Check registration button functionallity', async () => {
+test('TestCaseID:5.1.5. Check registration button functionallity', async () => {
   await connectToEHR()
   await driver.get(localURL)
   await driver.findElement(webdriver.By.xpath("//span[text()='Registrera dig']")).click()
