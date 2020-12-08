@@ -82,7 +82,7 @@ def registerParent(email):
     assert resp.status_code == 200
     return resp.json()["user"]["token"]
 
-#TestCaseID:22.2.1
+#TestCaseID:22.3.1
 def test_addChild():
     token = registerParent(email3)
     child = Child(emailC4, "FEMALE", "OBESITY")
@@ -92,7 +92,7 @@ def test_addChild():
     resp = addChild(headers, task1)
     assertChild(headers, resp, child)  
 
-#TestCaseID:22.2.2
+#TestCaseID:22.3.2
 def test_addChildren():
     token = registerParent(email1)
     headers = {'authorization': 'Token ' + token, 'Content-Type': 'application/json'}
@@ -122,7 +122,7 @@ def test_addChildren():
                   parentHasTheChild = True
     assert parentHasTheChild == True  
 
-#TestCaseID:22.2.3
+#TestCaseID:22.3.3
 def test_addSameChildAgain():
     token = registerParent(email2)
     headers = {'authorization': 'Token ' + token, 'Content-Type': 'application/json'}
@@ -135,7 +135,7 @@ def test_addSameChildAgain():
     assert resp2.status_code == 422 
 
 
-#TestCaseID:22.2.4
+#TestCaseID:22.3.4
 def test_addChildWithInvalidData():
     token = registerParent(email4)
     headers = {'authorization': 'Token ' + token, 'Content-Type': 'application/json'}
@@ -145,7 +145,7 @@ def test_addChildWithInvalidData():
     assert resp.status_code == 500  
 
 
-#TestCaseID:98.2.1
+#TestCaseID:98.3.1
 def test_addChildWithDiabetes_ValuesOnLowerBoundary():
     token = registerParent(email5)
     headers = {'authorization': 'Token ' + token, 'Content-Type': 'application/json'}
@@ -155,7 +155,7 @@ def test_addChildWithDiabetes_ValuesOnLowerBoundary():
     resp = addChild(headers, task)
     assert resp.status_code == 200 
 
-#TestCaseID:98.2.2
+#TestCaseID:98.3.2
 def test_addChildWithDiabetes_NoValues():
     token = registerParent(email6)
     headers = {'authorization': 'Token ' + token, 'Content-Type': 'application/json'}
@@ -165,7 +165,7 @@ def test_addChildWithDiabetes_NoValues():
     resp = addChild(headers, task)
     assert resp.status_code == 500 
 
-#TestCaseID:98.2.3
+#TestCaseID:98.3.3
 def test_addChildWithDiabetes_ValuesOnUpperBoundary():
     token = registerParent(email7)
     headers = {'authorization': 'Token ' + token, 'Content-Type': 'application/json'}
@@ -175,7 +175,7 @@ def test_addChildWithDiabetes_ValuesOnUpperBoundary():
     resp = addChild(headers, task)
     assert resp.status_code == 200 
 
-#TestCaseID:98.2.4
+#TestCaseID:98.3.4
 def test_addChildWithDiabetes_ValuesUnderLowerBoundary():
     token = registerParent(email8)
     headers = {'authorization': 'Token ' + token, 'Content-Type': 'application/json'}
@@ -185,7 +185,7 @@ def test_addChildWithDiabetes_ValuesUnderLowerBoundary():
     resp = addChild(headers, task)
     assert resp.status_code == 500 
 
-#TestCaseID:98.2.5
+#TestCaseID:98.3.5
 def test_addChildWithDiabetes_ValuesOverUpperBoundary():
     token = registerParent(email9)
     headers = {'authorization': 'Token ' + token, 'Content-Type': 'application/json'}
