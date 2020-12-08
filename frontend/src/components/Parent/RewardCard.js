@@ -97,11 +97,6 @@ const RewardCard = (props) => {
             ></CardHeader>
           </Grid>
           <Grid item xs={2}>
-            <IconButton
-              onClick={deleteReward(oneReward.nameOf, oneReward.description, oneReward.reward, oneReward.endDate)}
-            >
-              <DeleteIcon color="primary" visibility={deleteVisibilityType} />
-            </IconButton>
           </Grid>
         </Grid>
         <CardContent className={classes.card}>{oneReward.description}</CardContent>

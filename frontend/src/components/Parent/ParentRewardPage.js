@@ -107,21 +107,11 @@ const ParentRewardPage = (props) => {
             <List subheader="Avklarade">
               <ListItem>
                 <ListItemText> Spring Linköpingsloppet </ListItemText>
-                <ListItemIcon>
-                  <Button>
-                    <DeleteIcon color="primary" />
-                  </Button>
-                </ListItemIcon>
               </ListItem>
               <Divider />
 
               <ListItem>
                 <ListItemText>Logga värden varje dag</ListItemText>
-                <ListItemIcon>
-                  <Button>
-                    <DeleteIcon color="primary" />
-                  </Button>
-                </ListItemIcon>
               </ListItem>
               <Divider />
             </List>
