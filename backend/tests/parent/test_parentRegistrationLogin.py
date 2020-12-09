@@ -20,7 +20,7 @@ def registerParent(task):
     return requests.post(url, json=task)
 
 
-#TestCaseID:3.2.1
+#TestCaseID:3.3.1
 def test_registration():
     task =  {"user": {"name": name, "surname": surname, "email": email1, "password": "a", "confirmPassword": "a"}}
     resp = registerParent(task)
@@ -43,7 +43,7 @@ def test_registration():
 
     assert emailExsits == True
 
-#TestCaseID:3.2.2
+#TestCaseID:3.3.2
 def test_registrationExistingEmail():
     task = {"user": {"name": name, "surname": surname, "email": email2, "password": "a", "confirmPassword": "a"}}
     resp = registerParent(task)
@@ -53,7 +53,7 @@ def test_registrationExistingEmail():
     resp = registerParent(task)
     assert resp.status_code == 422
 
-#TestCaseID:3.2.3
+#TestCaseID:13.3.1
 def test_loginWrongPassword():
     task = {"user": {"name": name, "surname": surname, "email": email3, "password": "a", "confirmPassword": "a"}}
     resp = registerParent(task)
@@ -64,7 +64,7 @@ def test_loginWrongPassword():
     resp = requests.post(url, json=task)
     assert resp.status_code == 404
 
-#TestCaseID:3.2.4
+#TestCaseID:13.3.2
 def test_loginRightPassword():
     task = {"user": {"name": name, "surname": surname, "email": email4, "password": "a", "confirmPassword": "a"}}
     resp = registerParent(task)

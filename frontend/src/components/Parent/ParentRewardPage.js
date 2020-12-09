@@ -3,14 +3,11 @@ import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { Container, Grid, Button, SvgIcon, Typography, Paper, Divider } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
-import DeleteIcon from '@material-ui/icons/Delete'
-
 import RewardCardList from './RewardCardList'
 import agentEHR from '../../agentEHR'
 import profileAvatar from '../../Static/profile_avatar.png'
@@ -44,6 +41,8 @@ const ParentRewardPage = (props) => {
     for (let i = 0; i < _children.length; ++i) {
       if (_children[i].child.ehrid === _id) rewards = _children[i].child.rewards
     }
+    // eslint-disable-next-line no-console
+    console.log(`REWARDS: ${rewards}`)
     return rewards
   }
   useEffect(() => {
@@ -105,21 +104,11 @@ const ParentRewardPage = (props) => {
             <List subheader="Avklarade">
               <ListItem>
                 <ListItemText> Spring Linköpingsloppet </ListItemText>
-                <ListItemIcon>
-                  <Button>
-                    <DeleteIcon color="primary" />
-                  </Button>
-                </ListItemIcon>
               </ListItem>
               <Divider />
 
               <ListItem>
                 <ListItemText>Logga värden varje dag</ListItemText>
-                <ListItemIcon>
-                  <Button>
-                    <DeleteIcon color="primary" />
-                  </Button>
-                </ListItemIcon>
               </ListItem>
               <Divider />
             </List>

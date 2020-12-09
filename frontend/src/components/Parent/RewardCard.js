@@ -1,15 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Container, Button, Grid, Typography, SvgIcon, Paper } from '@material-ui/core'
+import { Container, Grid, Typography, SvgIcon, Paper } from '@material-ui/core'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import DeleteIcon from '@material-ui/icons/Delete'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
 import Moment from 'moment'
-import { DELETE_REWARD, PAGE_UNLOADED, LOAD_PARTY, LOAD_BLOODSUGAR } from '../../constants/actionTypes'
-import agent from '../../agent'
+import { PAGE_UNLOADED, LOAD_PARTY, LOAD_BLOODSUGAR } from '../../constants/actionTypes'
 import agentEHR from '../../agentEHR'
 
 const mapStateToProps = (state) => ({
@@ -26,11 +24,6 @@ const mapDispatchToProps = (dispatch) => ({
     })
   },
   onUnload: () => dispatch({ type: PAGE_UNLOADED }),
-
-  deleteReward: (nameOf, description, reward, endDate, ehrid, snackbar) => {
-    const payload = agent.Parent.deleteReward(nameOf, description, reward, endDate, ehrid)
-    dispatch({ type: DELETE_REWARD, payload, snackbar })
-  },
 })
 
 const RewardCard = (props) => {
@@ -38,17 +31,18 @@ const RewardCard = (props) => {
   const { oneReward } = props
   const today = new Date()
   const { bloodsugar } = props
+  const { type } = props.currentUser
 
-  const deleteReward = (nameOf, description, reward, endDate, id) => (ev) => {
-    ev.preventDefault()
-    const snackbar = {
-      message: `Du tog bort reward`,
-      color: 'success',
-      open: true,
-    }
-    props.deleteReward(nameOf, description, reward, endDate, id, snackbar)
+  let deleteVisibilityType = 'visible'
+
+  // eslint-disable-next-line no-console
+  console.log(`type: ${type}`)
+  if (type === 'child') {
+    deleteVisibilityType = 'hidden'
+    // eslint-disable-next-line no-console
+    console.log(`visibility: ${deleteVisibilityType}`)
   }
-  today.setDate(today.getDate() + 3)
+
   const daysElapsed = Moment(today).diff(Moment(oneReward.startDate), 'days')
   const daysTot = Moment(oneReward.endDate).diff(Moment(oneReward.startDate), 'days')
 
@@ -86,11 +80,6 @@ const RewardCard = (props) => {
             ></CardHeader>
           </Grid>
           <Grid item xs={2}>
-            <Button
-              onClick={deleteReward(oneReward.nameOf, oneReward.description, oneReward.reward, oneReward.endDate)}
-            >
-              <DeleteIcon color="primary" />
-            </Button>
           </Grid>
         </Grid>
         <CardContent className={classes.card}>{oneReward.description}</CardContent>
