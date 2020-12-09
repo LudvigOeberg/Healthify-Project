@@ -106,8 +106,7 @@ const AddVal = (props) => {
   }, [id, disease]); // eslint-disable-line
 
   const validate = (val) => disease === "DIABETES" ? val < 15 && val > 0 : val < 200 && val > 0;
-
-
+  
   const submitForm = (ev) => {
     ev.preventDefault()
 
